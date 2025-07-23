@@ -4,20 +4,6 @@ import { Button } from "@/components/ui/button";
 export default function HeroSection() {
   return (
     <section className="bg-black text-white py-16 px-4 md:px-20 relative">
-      {/* Logo & Nav */}
-      <header className="flex justify-between items-center mb-12">
-        <div className="flex items-center gap-2">
-          <Image src="/logo/logo_bg.png" alt="Logo" width={40} height={40} />
-          <h1 className="text-xl font-bold text-white">SOLAR</h1>
-        </div>
-        <nav className="flex gap-8 text-sm font-medium">
-          <a href="#home" className="hover:text-green-400">HOME</a>
-          <a href="#about" className="hover:text-green-400">ABOUT</a>
-          <a href="#products" className="hover:text-green-400">PRODUCTS</a>
-          <a href="#contact" className="hover:text-green-400">CONTACT</a>
-        </nav>
-      </header>
-
       {/* Hero Content */}
       <div className="flex flex-col md:flex-row items-center gap-10">
         {/* Text */}
