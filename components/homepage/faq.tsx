@@ -16,7 +16,7 @@ export default function Faqs() {
               📄 Download Presentation
             </div>
             <img
-              src="/assets/company-profile.png"
+              src="/images/logo/logo-bg-remove.png"
               alt="Company Profile"
               className="rounded"
             />
