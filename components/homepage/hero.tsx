@@ -1,13 +1,23 @@
-import Image from 'next/image'; // Use this if you're using Next.js
+import Image from 'next/image';
 import { Button } from "@/components/ui/button";
+import GlowingBackground from "./GlowingBackground";
 
 export default function HeroSection() {
   return (
-    <section className="bg-black text-white py-16 px-4 md:px-20 relative">
-      {/* Hero Content */}
-      <div className="flex flex-col md:flex-row items-center gap-10">
+    <section className="relative min-h-screen bg-black  overflow-hidden px-4 md:px-20 text-white flex items-center justify-center" >
+      <div className=' px-4 md:px-20' style={{
+          position: "absolute",
+          inset: 0,
+          zIndex: 1,
+          pointerEvents: "none",
+          background: "rgba(0, 0, 0, 0)",
+          // backdropFilter: "blur(5px)",
+          // WebkitBackdropFilter: "blur(5px)", // Safari support
+        }}></div>
+      <GlowingBackground />
+      <div className="relative z-10 flex flex-col md:flex-row items-center gap-10 w-full">
         {/* Text */}
-        <div className="flex-1">
+        <div className="flex-1 text-center md:text-left">
           <h2 className="text-4xl md:text-5xl font-extrabold mb-6 leading-tight">
             SOLAR PANELS <br /> FOR YOUR HOME
           </h2>
@@ -18,41 +28,16 @@ export default function HeroSection() {
             GET A QUOTE
           </Button>
         </div>
-
         {/* Image */}
         <div className="flex-1 relative">
-          <Image
+          {/* <Image
             src="/images/base_image.jpeg"
             alt="Solar Panel"
             width={600}
             height={400}
             className="rounded-lg shadow-lg"
-          />
-        </div>
-      </div>
-
-      {/* Advantages Section */}
-      <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-10 text-center">
-        <div>
-          <div className="text-green-400 text-3xl mb-2">⚡</div>
-          <h3 className="font-bold text-lg mb-1">Efficiency</h3>
-          <p className="text-gray-400 text-sm">
-            Our solar panels offer high efficiency and performance
-          </p>
-        </div>
-        <div>
-          <div className="text-green-400 text-3xl mb-2">✔️</div>
-          <h3 className="font-bold text-lg mb-1">Reliability</h3>
-          <p className="text-gray-400 text-sm">
-            We provide durable and dependable solar energy solutions
-          </p>
-        </div>
-        <div>
-          <div className="text-green-400 text-3xl mb-2">🌿</div>
-          <h3 className="font-bold text-lg mb-1">Sustainability</h3>
-          <p className="text-gray-400 text-sm">
-            Power your home with clean, renewable energy
-          </p>
+            priority
+          /> */}
         </div>
       </div>
     </section>
