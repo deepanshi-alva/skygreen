@@ -9,7 +9,7 @@ const paragraphArray = [
   "a",
   "brighter",
   "tomorrow,",
-  <Sun key="sun" className="inline mx-4 text-yellow-400 w-8 h-8" />,
+//   <Sun key="sun" className="inline mx-4 text-yellow-400 w-8 h-8" />,
   "we",
   "deliver",
   "smart",
@@ -21,7 +21,7 @@ const paragraphArray = [
   "to",
   "your",
   "needs.",
-  <DollarSign key="dollar" className="inline mx-4 text-green-400 w-8 h-8" />,
+//   <DollarSign key="dollar" className="inline mx-4 text-green-400 w-8 h-8" />,
   "Our",
   "cutting-edge",
   "technology",
@@ -33,7 +33,7 @@ const paragraphArray = [
   "your",
   "energy",
   "savings.",
-  <Hammer key="hammer" className="inline mx-4 text-blue-400 w-8 h-8" />,
+//   <Hammer key="hammer" className="inline mx-4 text-blue-400 w-8 h-8" />,
   "Experience",
   "hassle-free",
   "installation,",
@@ -49,7 +49,7 @@ const paragraphArray = [
   "more",
   "sustainable",
   "planet.",
-  <Leaf key="leaf" className="inline mx-4 text-green-500 w-8 h-8" />,
+//   <Leaf key="leaf" className="inline mx-4 text-green-500 w-8 h-8" />,
 ];
 
 const features = [
