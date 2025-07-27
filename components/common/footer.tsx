@@ -38,7 +38,7 @@ export default function Footer() {
 
   return (
     <div
-      className="relative text-white min-h-screen w-full overflow-hidden justify-end px-30 py-20"
+      className="relative text-white w-full overflow-hidden justify-end px-30 py-20"
       ref={ref}
     >
       {/* Diagonal Green Layer */}
