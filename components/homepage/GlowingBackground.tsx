@@ -1,4 +1,4 @@
-import styles from './GlowingBackground.module.css';
+import styles from '../../public/styles/GlowingBackground.module.css';
 
 // Colors for bubbles
 const COLORS = [
