@@ -5,7 +5,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const testimonials = [
   {
-    image: "/images/testimonials/testimonial1.png", // replace with your images
+    image: "/images/testimonials/testimonial1.png", 
     company: "The Patel Family",
     quote:
       "Switching to solar with GreenSpark was the best decision we’ve made for our home. Our electricity bills have dropped by over 70%, and the installation process was smooth and hassle-free. The team answered all our questions and handled everything from start to finish.",

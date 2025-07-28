@@ -4,6 +4,7 @@ import Faq from "../components/homepage/faq"
 import WhyUs from "../components/homepage/whyUs"
 import Testimonial from "../components/homepage/testimonial";
 import HiddenLayer from "../components/homepage/hiddenLayer";
+import Climate from "../components/homepage/climate"
 
 export default function Home() {
   return (
@@ -11,6 +12,7 @@ export default function Home() {
       <Hero/>
       <WhyUs/>
       {/* <HiddenLayer/> */}
+      <Climate/>
       <Testimonial/>
       <Faq/>
     </div>
