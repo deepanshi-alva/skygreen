@@ -1,20 +1,23 @@
-"use client"
+"use client";
+
 import { useState } from "react";
 import { faqData } from "@/lib/faqData";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import { motion } from "framer-motion";
 
 export default function Faqs() {
-  const [openIndexes, setOpenIndexes] = useState(
-    faqData.map((_, index) => index) // all open by default
-  );
+  const [openIndexes, setOpenIndexes] = useState(faqData.map((_, i) => i)); // all open by default
+  const [showAll, setShowAll] = useState(false); // toggle for full FAQ visibility
 
   const toggleFAQ = (index: number) => {
     setOpenIndexes((prev) =>
       prev.includes(index)
-        ? prev.filter((i) => i !== index) // close
-        : [...prev, index] // open
+        ? prev.filter((i) => i !== index)
+        : [...prev, index]
     );
   };
+
+  const visibleFAQs = showAll ? faqData : faqData.slice(0, 5);
 
   return (
     <section className="w-full bg-black text-white px-28 py-12">
@@ -47,9 +50,9 @@ export default function Faqs() {
           </div>
         </div>
 
-        {/* Right Column - Expandable FAQs */}
+        {/* Right Column */}
         <div className="space-y-6 mt-4 w-full">
-          {faqData.map((faq, index) => {
+          {visibleFAQs.map((faq, index) => {
             const isOpen = openIndexes.includes(index);
             return (
               <div
@@ -63,17 +66,42 @@ export default function Faqs() {
                   <h4 className="text-xl md:text-4xl font-medium text-white">
                     {faq.question}
                   </h4>
-                  <span className="text-green-500 text-xl md:text-3xl">
-                    {isOpen ? <ChevronUp /> : <ChevronDown />}
-                  </span>
+                  <motion.span
+                    className="text-green-500"
+                    initial={false}
+                    animate={{ rotate: isOpen ? 180 : 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <ChevronDown size={28} />
+                  </motion.span>
                 </div>
 
                 {isOpen && (
-                  <p className="mt-2 text-xl text-zinc-300">{faq.answer}</p>
+                  <motion.p
+                    className="mt-2 text-xl text-zinc-300"
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    {faq.answer}
+                  </motion.p>
                 )}
               </div>
             );
           })}
+
+          {/* Show More / Less Button */}
+          {faqData.length > 5 && (
+            <div className="pt-6">
+              <button
+                onClick={() => setShowAll((prev) => !prev)}
+                className="px-6 py-2 border border-white rounded-full text-white hover:bg-white hover:text-black transition duration-300"
+              >
+                {showAll ? "Show less" : "More solutions"}
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </section>
