@@ -87,7 +87,7 @@ export default function WhyUs() {
       className="min-h-screen w-full flex flex-col items-center justify-center p-2 md:p-12 bg-[black] text-white"
       style={{
         boxSizing: "border-box",
-        backgroundImage: `url("https://ae-solar.com/images/solarSystem.svg")`,
+        backgroundImage: "url('/images/whyUs/solarSystem.svg')",
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center",
         backgroundSize: "cover",
