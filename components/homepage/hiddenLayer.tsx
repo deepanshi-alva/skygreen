@@ -16,13 +16,13 @@ const LayerSection: React.FC = () => {
   const [isAnimating, setIsAnimating] = useState<boolean>(false);
 
   const layers: Layer[] = [
-    { id: 1, name: 'SiNx AR Coating', description: 'Anti-reflective coating that reduces light reflection and increases absorption', color: 'from-blue-400 to-blue-600', thickness: '8px' },
-    { id: 2, name: 'Passivation', description: 'Protective layer that reduces surface recombination and improves efficiency', color: 'from-green-400 to-green-600', thickness: '6px' },
-    { id: 3, name: 'P+ Emitter', description: 'Heavily doped p-type layer that creates the p-n junction', color: 'from-red-400 to-red-600', thickness: '12px' },
-    { id: 4, name: 'n-Silicon Substrate', description: 'Main silicon wafer that absorbs photons and generates electron-hole pairs', color: 'from-gray-600 to-gray-800', thickness: '40px' },
-    { id: 5, name: 'Tunneling Layer', description: 'Ultra-thin oxide layer that allows selective carrier transport', color: 'from-purple-400 to-purple-600', thickness: '4px' },
-    { id: 6, name: 'n+ Poly', description: 'Heavily doped polysilicon layer for enhanced conductivity', color: 'from-orange-400 to-orange-600', thickness: '10px' },
-    { id: 7, name: 'SiNx AR Coating', description: 'Bottom anti-reflective coating for optimal light management', color: 'from-cyan-400 to-cyan-600', thickness: '8px' },
+    { id: 1, name: 'SiNx AR Coating', description: 'Anti-reflective coating that reduces light reflection and increases absorption', color: 'from-blue-400 to-blue-600', thickness: '16px' },
+    { id: 2, name: 'Passivation', description: 'Protective layer that reduces surface recombination and improves efficiency', color: 'from-green-400 to-green-600', thickness: '12px' },
+    { id: 3, name: 'P+ Emitter', description: 'Heavily doped p-type layer that creates the p-n junction', color: 'from-red-400 to-red-600', thickness: '24px' },
+    { id: 4, name: 'n-Silicon Substrate', description: 'Main silicon wafer that absorbs photons and generates electron-hole pairs', color: 'from-gray-600 to-gray-800', thickness: '80px' },
+    { id: 5, name: 'Tunneling Layer', description: 'Ultra-thin oxide layer that allows selective carrier transport', color: 'from-purple-400 to-purple-600', thickness: '8px' },
+    { id: 6, name: 'n+ Poly', description: 'Heavily doped polysilicon layer for enhanced conductivity', color: 'from-orange-400 to-orange-600', thickness: '20px' },
+    { id: 7, name: 'SiNx AR Coating', description: 'Bottom anti-reflective coating for optimal light management', color: 'from-cyan-400 to-cyan-600', thickness: '16px' },
   ];
 
   const handleLayerClick = (layerId: number) => {
@@ -34,8 +34,10 @@ const LayerSection: React.FC = () => {
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white">
       {/* Section-scoped background glow (absolute, not fixed) */}
-      <div className="pointer-events-none absolute top-20 right-20 w-32 h-32 bg-gradient-to-br from-green-500/10 to-transparent rounded-full blur-xl"></div>
+      <div className="pointer-events-none absolute top-20 right-20 w-32 h-32 bg-gradient-to-br from-green-500/40 to-transparent rounded-full blur-md"></div>
       <div className="pointer-events-none absolute bottom-20 left-20 w-24 h-24 bg-gradient-to-br from-green-500/20 to-transparent rounded-full blur-lg"></div>
+      <div className="pointer-events-none absolute bottom-150 left-20 w-24 h-24 bg-gradient-to-br from-green-500/20 to-transparent rounded-full blur-sm"></div>
+      <div className="pointer-events-none absolute bottom-40 right-20 w-24 h-24 bg-gradient-to-br from-green-500/20 to-transparent rounded-full blur-sm"></div>
 
       <div className="container mx-auto px-6 py-12">
         {/* Header */}
