@@ -51,7 +51,7 @@ export default function HeroSection() {
       </video>
 
       {/* Dark overlay */}
-      <div className="absolute inset-0 bg-black/60 z-0" />
+      <div className="absolute inset-0 z-0" />
 
       {/* Main Content */}
       <div className={`relative z-10 text-center px-4 flex-1 flex flex-col items-center justify-center ${reveal ? "animate-fadeInSlow" : "opacity-0"}`}>
