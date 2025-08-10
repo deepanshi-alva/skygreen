@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -46,20 +47,37 @@ export default function Navbar() {
 
         {/* Desktop Menu */}
         <div className="hidden md:flex space-x-12 font-medium">
-          <button onClick={() => handleNavigate("/company")} className="hover:text-red-500">
-            Company
-          </button>
-          <button onClick={() => handleNavigate("/products")} className="hover:text-red-500">
+          <Link
+            href={"/"}
+            onClick={() => handleNavigate("/company")}
+            className="hover:text-green-500"
+          >
+            Home
+          </Link>
+          <Link
+            href={"/products"}
+            onClick={() => handleNavigate("/products")}
+            className="hover:text-green-500"
+          >
             Products
-          </button>
-          <button onClick={() => handleNavigate("/calculator")} className="hover:text-red-500">
+          </Link>
+          <button
+            onClick={() => handleNavigate("/calculator")}
+            className="hover:text-green-500"
+          >
             Calculator
           </button>
-          <button onClick={() => handleNavigate("/events")} className="hover:text-red-500">
-            Events
+          <button
+            onClick={() => handleNavigate("/events")}
+            className="hover:text-green-500"
+          >
+            Solutions
           </button>
-          <button onClick={() => handleNavigate("/b2b-solutions")} className="hover:text-red-500">
-            B2B Solutions
+          <button
+            onClick={() => handleNavigate("/b2b-solutions")}
+            className="hover:text-green-500"
+          >
+            Join Us
           </button>
         </div>
 
@@ -69,12 +87,13 @@ export default function Navbar() {
             <span>🇬🇧</span>
             <span>EN</span>
           </div>
-          <button
-            onClick={() => handleNavigate("/contact")}
+          <Link
+            // onClick={() => handleNavigate("/contact")}
+            href={"/contact"}
             className="bg-red-600 px-4 py-1 rounded-full text-white font-semibold hover:bg-red-700 transition"
           >
             Contact Us
-          </button>
+          </Link>
         </div>
 
         {/* Mobile Menu Button */}
@@ -88,19 +107,34 @@ export default function Navbar() {
       {/* Mobile Menu */}
       {mobileMenuOpen && (
         <div className="md:hidden bg-black text-white px-4 pb-4 space-y-2">
-          <button onClick={() => handleNavigate("/company")} className="block hover:text-red-500">
+          <button
+            onClick={() => handleNavigate("/company")}
+            className="block hover:text-red-500"
+          >
             Company
           </button>
-          <button onClick={() => handleNavigate("/products")} className="block hover:text-red-500">
+          <button
+            onClick={() => handleNavigate("/products")}
+            className="block hover:text-red-500"
+          >
             Products
           </button>
-          <button onClick={() => handleNavigate("/downloads")} className="block hover:text-red-500">
+          <button
+            onClick={() => handleNavigate("/downloads")}
+            className="block hover:text-red-500"
+          >
             Downloads
           </button>
-          <button onClick={() => handleNavigate("/events")} className="block hover:text-red-500">
+          <button
+            onClick={() => handleNavigate("/events")}
+            className="block hover:text-red-500"
+          >
             Events
           </button>
-          <button onClick={() => handleNavigate("/b2b-solutions")} className="block hover:text-red-500">
+          <button
+            onClick={() => handleNavigate("/b2b-solutions")}
+            className="block hover:text-red-500"
+          >
             B2B Solutions
           </button>
           <div className="flex items-center gap-2 mt-2">
