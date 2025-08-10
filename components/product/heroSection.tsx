@@ -41,7 +41,7 @@ export default function HeroSection() {
 
       {/* SPECS STRIP (white band like in ref) */}
       <section className="z-20 bg-black">
-        <div className="mx-auto max-w-7xl px-6 py-8 md:py-10">
+        <div className="mx-auto max-w-7xl px-6 pt-8 md:pt-10">
           <div
             className="relative top-[-15vh] bg-neutral-900 grid grid-cols-2 gap-4 rounded-xl border border-neutral-700 p-4 shadow-sm md:grid-cols-4 md:gap-6 md:p-6"
             style={{
