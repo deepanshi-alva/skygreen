@@ -88,7 +88,7 @@ export default function AcronymSection() {
       </div>
 
      <div className="relative w-full md:w-3/5 h-full min-h-0 bg-black
-                p-4 sm:p-5 md:p-15 lg:p-28
+                p-4 py-2 sm:p-5 sm:p-2 md:p-15 lg:p-28  lg:py-4
                 flex flex-col justify-between overflow-hidden">
   {inView && <Glowing className="absolute inset-0 -z-10 pointer-events-none" />}
 
