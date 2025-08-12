@@ -9,7 +9,7 @@ const paragraphArray = [
   "a",
   "brighter",
   "tomorrow,",
-//   <Sun key="sun" className="inline mx-4 text-yellow-400 w-8 h-8" />,
+  //   <Sun key="sun" className="inline mx-4 text-yellow-400 w-8 h-8" />,
   "we",
   "deliver",
   "smart",
@@ -21,7 +21,7 @@ const paragraphArray = [
   "to",
   "your",
   "needs.",
-//   <DollarSign key="dollar" className="inline mx-4 text-green-400 w-8 h-8" />,
+  //   <DollarSign key="dollar" className="inline mx-4 text-green-400 w-8 h-8" />,
   "Our",
   "cutting-edge",
   "technology",
@@ -33,7 +33,7 @@ const paragraphArray = [
   "your",
   "energy",
   "savings.",
-//   <Hammer key="hammer" className="inline mx-4 text-blue-400 w-8 h-8" />,
+  //   <Hammer key="hammer" className="inline mx-4 text-blue-400 w-8 h-8" />,
   "Experience",
   "hassle-free",
   "installation,",
@@ -49,7 +49,7 @@ const paragraphArray = [
   "more",
   "sustainable",
   "planet.",
-//   <Leaf key="leaf" className="inline mx-4 text-green-500 w-8 h-8" />,
+  //   <Leaf key="leaf" className="inline mx-4 text-green-500 w-8 h-8" />,
 ];
 
 const features = [
@@ -94,7 +94,7 @@ export default function WhyUs() {
       }}
     >
       <div
-        className="px-30 pb-8 items-center"
+        className="px-12 pb-8 items-center"
         style={{
           borderImage:
             "linear-gradient(140deg, #3ef838ff, #202020ff, #202020ff, #202020ff, #202020ff, #3ef838ff) 1",
@@ -108,8 +108,7 @@ export default function WhyUs() {
         </h2>
         <div
           ref={containerRef}
-          className="max-w-6xl mx-auto leading-relaxed text-3xl "
-          style={{ textAlign: "justify" }}
+          className="max-w-6xl mx-auto leading-relaxed text-3xl text-center flex flex-wrap justify-center"
         >
           {words.map((word, index) => {
             const wordStart = (index / words.length) * 100;
@@ -129,7 +128,7 @@ export default function WhyUs() {
           })}
         </div>
         <div className="flex justify-center w-full">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 py-8 max-w-6xl">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 py-8 max-w-6xl">
             {features.map((feature) => (
               <div
                 key={feature.title}

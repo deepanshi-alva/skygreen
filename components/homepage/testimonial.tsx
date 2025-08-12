@@ -43,25 +43,30 @@ export default function TestimonialSlider() {
     setIndex((prev) => (prev === testimonials.length - 1 ? 0 : prev + 1));
 
   return (
-    <section className="flex flex-col items-center justify-top min-h-screen bg-black w-full py-12">
-
+    <section className="flex flex-col items-center min-h-screen bg-black w-full py-12">
       <div className="mb-15 text-center">
-        <h2 className="shadow-xl/40 px-10 shadow-green-500/30 shadow-custom-inner text-5xl mb-8 md:text-6xl font-extrabold text-[#3ef838ff] mb-3 tracking-tight drop-shadow-lg border-b-2 border-red-500 pb-7" style={{
-          borderBottom: '2px solid',
-          borderImage: 'linear-gradient(to right, #000000ff, #3ef838, #000000ff) 1',
-        }}>
+        <h2
+          className="shadow-xl/40 px-10 shadow-green-500/30 shadow-custom-inner text-5xl mb-8 md:text-6xl font-extrabold text-[#3ef838ff] mb-3 tracking-tight drop-shadow-lg border-b-2 border-red-500 pb-7"
+          style={{
+            borderBottom: "2px solid",
+            borderImage:
+              "linear-gradient(to right, #000000ff, #3ef838, #000000ff) 1",
+          }}
+        >
           Hear From Our Happy Solar Clients
         </h2>
         <p className="text-xl md:text-2xl text-gray-200 max-w-2xl mx-auto font-light">
-          Discover how GreenSpark has transformed lives and businesses with clean, reliable solar energy solutions.
+          Discover how GreenSpark has transformed lives and businesses with
+          clean, reliable solar energy solutions.
         </p>
       </div>
       {/* BG band with image + gradient (not full section) */}
-      <div className="w-full flex items-center justify-center px-6 md:px-10 mt-10">
+      <div className="w-full flex items-center justify-center px-6 md:px-6 mt-10">
         <div
-          className="relative w-full max-w-6xl rounded-2xl overflow-hidden px-10 pt-16 pb-20"
+          className="relative w-full max-w-[78rem] rounded-2xl overflow-hidden px-10 pt-16 pb-20"
           style={{
-            backgroundImage: "url('/images/testimonials/download_converted.png')",
+            backgroundImage:
+              "url('/images/testimonials/download_converted.png')",
             backgroundRepeat: "no-repeat",
             backgroundPosition: "center bottom",
             // Use 'contain' so the image does NOT fill the entire band
@@ -91,7 +96,9 @@ export default function TestimonialSlider() {
                         exit={{ opacity: 0, scale: 0.98, x: -40 }}
                         transition={{ duration: 0.5 }}
                         className="w-72 h-72 object-cover rounded-3xl shadow-2xl border-2 border-[#222] z-20 relative"
-                        style={{ boxShadow: "0 12px 36px #0009, 0 0 0 4px #222 inset" }}
+                        style={{
+                          boxShadow: "0 12px 36px #0009, 0 0 0 4px #222 inset",
+                        }}
                       />
                     </AnimatePresence>
                   );
@@ -107,7 +114,10 @@ export default function TestimonialSlider() {
                     />
                   );
                 }
-                if (i === (index - 1 + testimonials.length) % testimonials.length) {
+                if (
+                  i ===
+                  (index - 1 + testimonials.length) % testimonials.length
+                ) {
                   return (
                     <img
                       key={i}
@@ -125,7 +135,9 @@ export default function TestimonialSlider() {
               <div className="absolute left-1/2 -bottom-16 flex gap-4 -translate-x-1/2">
                 <button
                   onClick={() =>
-                    setIndex((prev) => (prev === 0 ? testimonials.length - 1 : prev - 1))
+                    setIndex((prev) =>
+                      prev === 0 ? testimonials.length - 1 : prev - 1
+                    )
                   }
                   className="w-12 h-12 bg-transparent border border-[#ccc] rounded-lg flex items-center justify-center hover:bg-[#222] transition"
                   aria-label="Previous"
@@ -134,7 +146,9 @@ export default function TestimonialSlider() {
                 </button>
                 <button
                   onClick={() =>
-                    setIndex((prev) => (prev === testimonials.length - 1 ? 0 : prev + 1))
+                    setIndex((prev) =>
+                      prev === testimonials.length - 1 ? 0 : prev + 1
+                    )
                   }
                   className="w-12 h-12 bg-transparent border border-[#ccc] rounded-lg flex items-center justify-center hover:bg-[#222] transition"
                   aria-label="Next"
@@ -161,8 +175,12 @@ export default function TestimonialSlider() {
                     “{testimonials[index].quote}”
                   </blockquote>
                   <div className="mb-3">
-                    <div className="font-bold text-white">{testimonials[index].author}</div>
-                    <div className="text-[#b7b7b7] text-base">{testimonials[index].position}</div>
+                    <div className="font-bold text-white">
+                      {testimonials[index].author}
+                    </div>
+                    <div className="text-[#b7b7b7] text-base">
+                      {testimonials[index].position}
+                    </div>
                   </div>
                   <a
                     href={testimonials[index].caseStudyLink}
@@ -176,7 +194,6 @@ export default function TestimonialSlider() {
           </div>
         </div>
       </div>
-
     </section>
   );
 }

@@ -4,12 +4,17 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 
 type Feature = { title: string; description: string; icon?: React.ReactNode };
+type ImgCfg = { src: string; zoom?: number; objectPosition?: string };
 
 export default function CoreAdvantages() {
-  const images = [
-    "/images/products/zoomed-image.png",
-    "/images/products/front-image.png",
-    "/images/products/side-image.png",
+  const images: ImgCfg[] = [
+    { src: "/images/products/front-image.png" },
+    {
+      src: "/images/products/side-image.png",
+      zoom: 1.35,
+      objectPosition: "left center",
+    }, // <- zoom in
+    { src: "/images/products/zoomed-image.png" },
   ];
 
   const [idx, setIdx] = useState(0);
@@ -55,25 +60,45 @@ export default function CoreAdvantages() {
         </h2>
 
         {/* 3-column layout */}
-        <div className="mt-10 grid grid-cols-1 gap-10 md:grid-cols-3 md:items-start">
+        <div
+          className="mt-10 grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] items-center gap-10 md:gap-12"
+          style={{ ["--viewer-h" as any]: "clamp(380px, 60vh, 640px)" }} // shared column height
+        >
           {/* Left list */}
-          <div className="space-y-12">
+          <div
+            className="
+              min-h-[var(--viewer-h)]
+              md:grid md:grid-rows-2 md:content-center md:gap-24
+              space-y-12 md:space-y-0
+            "
+          >
             {leftFeatures.map((f, i) => (
               <FeatureItem key={i} {...f} />
             ))}
           </div>
 
           {/* Center viewer */}
-          <div className="relative mx-auto flex w-full max-w-[420px] items-center justify-center">
-            <div>
-              <Image
-                src={images[idx]}
-                alt="Solar panel angle"
-                width={420}
-                height={720}
-                className="w-full h-auto rounded-md object-cover"
-                priority
-              />
+          <div className="relative mx-auto flex items-center justify-center">
+            <div className="relative aspect-[2/3] h-[var(--viewer-h)] w-auto max-w-[420px] rounded-md overflow-hidden">
+              {/* wrapper to apply zoom */}
+              <div
+                className="absolute inset-0 transition-transform duration-300 will-change-transform"
+                style={{
+                  transform: `scale(${images[idx].zoom ?? 1})`,
+                  transformOrigin: "center",
+                }}
+              >
+                <Image
+                  src={images[idx].src}
+                  alt="Solar panel angle"
+                  fill
+                  className="object-contain"
+                  style={{
+                    objectPosition: images[idx].objectPosition ?? "center",
+                  }}
+                  priority
+                />
+              </div>
             </div>
 
             {/* Arrows */}
@@ -99,7 +124,13 @@ export default function CoreAdvantages() {
           </div>
 
           {/* Right list */}
-          <div className="space-y-12">
+          <div
+            className="
+              min-h-[var(--viewer-h)]
+              md:grid md:grid-rows-2 md:content-center md:gap-24
+              space-y-12 md:space-y-0
+            "
+          >
             {rightFeatures.map((f, i) => (
               <FeatureItem key={i} {...f} />
             ))}
@@ -137,7 +168,7 @@ function ArrowIcon() {
 }
 function ShieldIcon() {
   return (
-    <span className="inline-flex h-10 w-10 items-center justify-center rounded-full ring-1 ring-white/20">
+    <span className="inline-flex h-10 w-10 items-center justify-center rounded-full ">
       <svg
         viewBox="0 0 24 24"
         width="20"
@@ -153,7 +184,7 @@ function ShieldIcon() {
 }
 function BoltIcon() {
   return (
-    <span className="inline-flex h-10 w-10 items-center justify-center rounded-full ring-1 ring-white/20">
+    <span className="inline-flex h-10 w-10 items-center justify-center rounded-full">
       <svg
         viewBox="0 0 24 24"
         width="20"
@@ -168,7 +199,7 @@ function BoltIcon() {
 }
 function CoinIcon() {
   return (
-    <span className="inline-flex h-10 w-10 items-center justify-center rounded-full ring-1 ring-white/20">
+    <span className="inline-flex h-10 w-10 items-center justify-center rounded-full">
       <svg
         viewBox="0 0 24 24"
         width="20"
@@ -184,7 +215,7 @@ function CoinIcon() {
 }
 function WrenchIcon() {
   return (
-    <span className="inline-flex h-10 w-10 items-center justify-center rounded-full ring-1 ring-white/20">
+    <span className="inline-flex h-10 w-10 items-center justify-center rounded-full">
       <svg
         viewBox="0 0 24 24"
         width="20"

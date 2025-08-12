@@ -5,7 +5,7 @@ import WhyUs from "../components/homepage/whyUs";
 import Testimonial from "../components/homepage/testimonial";
 import WhySkygreen from "../components/homepage/whySkyGreen";
 import Climate from "../components/homepage/climate";
-import HiddenLayerSection from "@/components/homepage/hiddenLayer";
+// import HiddenLayerSection from "@/components/homepage/hiddenLayer";
 
 export default function Home() {
   return (
@@ -14,7 +14,7 @@ export default function Home() {
       {/* <WhySkygreen/> */}
       <WhyUs />
       <Climate />
-      <HiddenLayerSection />
+      {/* <HiddenLayerSection /> */}
       <Testimonial />
       <Faq />
     </div>
