@@ -69,11 +69,12 @@ export default function Navbar() {
           >
             Solutions
           </button>
-          <button
+          <Link
+            href={"/join"}
             className={linkClasses("/join")}
           >
             Join Us
-          </button>
+          </Link>
         </div>
 
         {/* Language & Button */}
@@ -126,7 +127,7 @@ export default function Navbar() {
             Solutions
           </Link>
           <Link
-            href={"#"}
+            href={"/join"}
             className={linkClasses("/join")}
           >
             Join Us
