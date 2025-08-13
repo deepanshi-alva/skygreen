@@ -3,13 +3,13 @@
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isSticky, setIsSticky] = useState(false);
-  const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -19,10 +19,10 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const handleNavigate = (path: string) => {
-    setMobileMenuOpen(false); // close mobile menu on navigation
-    router.push(path);
-  };
+  const linkClasses = (path: string) =>
+    `hover:text-green-500 transform hover:scale-110 transition-transform duration-300 ${
+      pathname === path ? "text-green-500 font-semibold" : ""
+    }`;
 
   return (
     <header
@@ -32,8 +32,8 @@ export default function Navbar() {
     >
       <nav className="max-w-7xl mx-auto flex items-center justify-between px-4 py-3 text-white">
         {/* Logo */}
-        <button
-          onClick={() => handleNavigate("/")}
+        <Link
+          href={"/"}
           className="flex items-center space-x-2 mb-3"
         >
           <Image
@@ -43,39 +43,34 @@ export default function Navbar() {
             height={40}
             priority
           />
-        </button>
+        </Link>
 
         {/* Desktop Menu */}
         <div className="hidden md:flex space-x-12 font-medium">
           <Link
             href={"/"}
-            onClick={() => handleNavigate("/company")}
-            className="hover:text-green-500 transform hover:scale-110 transition-transform duration-300"
+            className={linkClasses("/")}
           >
             Home
           </Link>
           <Link
             href={"/products"}
-            onClick={() => handleNavigate("/products")}
-            className="hover:text-green-500 transform hover:scale-110 transition-transform duration-300"
+            className={linkClasses("/products")}
           >
             Products
           </Link>
           <button
-            onClick={() => handleNavigate("/calculator")}
-            className="hover:text-green-500 transform hover:scale-110 transition-transform duration-300"
+            className={linkClasses("/calculator")}
           >
             Calculator
           </button>
           <button
-            onClick={() => handleNavigate("/events")}
-            className="hover:text-green-500 transform hover:scale-110 transition-transform duration-300"
+            className={linkClasses("/solutions")}
           >
             Solutions
           </button>
           <button
-            onClick={() => handleNavigate("/b2b-solutions")}
-            className="hover:text-green-500 transform hover:scale-110 transition-transform duration-300"
+            className={linkClasses("/join")}
           >
             Join Us
           </button>
@@ -88,7 +83,6 @@ export default function Navbar() {
             <span>EN</span>
           </div>
           <Link
-            // onClick={() => handleNavigate("/contact")}
             href={"/contact"}
             className="bg-red-600 px-4 py-1 rounded-full text-white font-semibold hover:bg-red-700 transition"
           >
@@ -107,44 +101,44 @@ export default function Navbar() {
       {/* Mobile Menu */}
       {mobileMenuOpen && (
         <div className="md:hidden bg-black text-white px-4 pb-4 space-y-2">
-          <button
-            onClick={() => handleNavigate("/company")}
-            className="block hover:text-red-500"
+          <Link
+            href={"/"}
+            className={linkClasses("/")}
           >
-            Company
-          </button>
-          <button
-            onClick={() => handleNavigate("/products")}
-            className="block hover:text-red-500"
+            Home
+          </Link>
+          <Link
+            href={"/products"}
+            className={linkClasses("/products")}
           >
             Products
-          </button>
-          <button
-            onClick={() => handleNavigate("/downloads")}
-            className="block hover:text-red-500"
+          </Link>
+          <Link
+            href={"#"}
+            className={linkClasses("/calculator")}
           >
-            Downloads
-          </button>
-          <button
-            onClick={() => handleNavigate("/events")}
-            className="block hover:text-red-500"
+            Calculator
+          </Link>
+          <Link
+            href={"#"}
+            className={linkClasses("/solutions")}
           >
-            Events
-          </button>
-          <button
-            onClick={() => handleNavigate("/b2b-solutions")}
-            className="block hover:text-red-500"
+            Solutions
+          </Link>
+          <Link
+            href={"#"}
+            className={linkClasses("/join")}
           >
-            B2B Solutions
-          </button>
+            Join Us
+          </Link>
           <div className="flex items-center gap-2 mt-2">
             <span>🇬🇧 EN</span>
-            <button
-              onClick={() => handleNavigate("/contact")}
+            <Link
+              href={"/contact"}
               className="bg-green-600 px-4 py-1 rounded-full text-white font-semibold hover:bg-green-700 transition"
             >
               Contact Us
-            </button>
+            </Link>
           </div>
         </div>
       )}

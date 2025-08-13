@@ -7,23 +7,24 @@ type Item = { title: string; note?: string };
 const DOS: Item[] = [
   { title: "Clean panels regularly", note: "Use a soft cloth or sponge and clean water to remove dust, bird droppings, or leaves." },
   { title: "Schedule professional inspections", note: "Get your panels checked at least once a year for wiring, mounting, and performance." },
-  { title: "Monitor your system’s output", note: "Track daily generation through your inverter app or monitoring system." },
+  { title: "Monitor your system's output", note: "Track daily generation through your inverter app or monitoring system." },
   { title: "Trim nearby trees", note: "Prevent shading from branches that can reduce energy output." },
   { title: "Check for physical damage after storms", note: "Look for cracks, loose wires, or broken mounts." },
-  { title: "Follow manufacturer’s warranty conditions", note: "Keep service records and comply with recommended maintenance." },
+  { title: "Follow manufacturer's warranty conditions", note: "Keep service records and comply with recommended maintenance." },
   { title: "Ensure good ventilation", note: "Keep the back of panels free from obstructions for cooling and efficiency." },
   { title: "Report issues early", note: "Inform your installer immediately if you notice sudden drops in output." },
 ];
 
 const DONTS: Item[] = [
-  { title: "Don’t use harsh chemicals", note: "Avoid detergents, bleach, or abrasive cleaning tools that can damage glass." },
-  { title: "Don’t step or place heavy objects on panels", note: "Even slight pressure can cause micro-cracks." },
-  { title: "Don’t spray high-pressure water", note: "It can damage seals and cause water ingress." },
-  { title: "Don’t tamper with wiring or inverters", note: "Only certified technicians should handle electrical components." },
-  { title: "Don’t ignore shading issues", note: "Even small shadows can drastically lower system performance." },
-  { title: "Don’t cover panels for long periods", note: "Keep them exposed to sunlight for optimal generation." },
-  { title: "Don’t delay cleaning", note: "Dust buildup over months can permanently reduce efficiency." },
-  { title: "Don’t store flammable materials nearby", note: "Maintain a safe clearance around electrical components." },
+  { title: "Don't use harsh chemicals", note: "Avoid detergents, bleach, or abrasive cleaning tools that can damage glass." },
+  { title: "Don't step or place heavy objects on panels", note: "Even slight pressure can cause micro-cracks." },
+  { title: "Don't spray high-pressure water", note: "It can damage seals and cause water ingress." },
+  { title: "Don't tamper with wiring or inverters", note: "Only certified technicians should handle electrical components." },
+  { title: "Don't go near the solar panel system unnecessarily", note: "High voltage may be hazardous to life. Keep a safe distance and allow only trained professionals near the setup." },
+  { title: "Don't ignore shading issues", note: "Even small shadows can drastically lower system performance." },
+  { title: "Don't cover panels for long periods", note: "Keep them exposed to sunlight for optimal generation." },
+  { title: "Don't delay cleaning", note: "Dust buildup over months can permanently reduce efficiency." },
+  { title: "Don't store flammable materials nearby", note: "Maintain a safe clearance around electrical components." },
 ];
 
 export default function SolarPanelDosAndDonts() {
@@ -74,7 +75,7 @@ function Card({
       />
       <div className="relative p-6 md:p-8">
         <div className="mb-6 flex items-center gap-3">
-          <Badge tone={tone} />
+          {/* <Badge tone={tone} /> */}
           <h3 className="text-2xl font-semibold">{title}</h3>
         </div>
 

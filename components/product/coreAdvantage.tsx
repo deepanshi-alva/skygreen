@@ -154,7 +154,7 @@ function IconBadge({ children }: { children: React.ReactNode }) {
   // small circular badge with red accent like the reference
   return (
     <span className="inline-flex h-11 w-11 items-center justify-center ">
-      <span className="text-rose-500">{children}</span>
+      <span className="text-green-500">{children}</span>
     </span>
   );
 }
@@ -170,14 +170,14 @@ function ShieldIcon() {
   return (
     <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor">
       <path d="M12 3l7 3v6c0 5-3.5 9-7 9s-7-4-7-9V6l7-3z" strokeWidth="1.6" />
-      <path d="M9 12l2 2 4-4" strokeWidth="1.6" className="stroke-rose-500" />
+      <path d="M9 12l2 2 4-4" strokeWidth="1.6" className="stroke-green-500" />
     </svg>
   );
 }
 function BoltIcon() {
   return (
     <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor">
-      <path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z" strokeWidth="1.6" className="stroke-rose-500" />
+      <path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z" strokeWidth="1.6" className="stroke-green-500" />
     </svg>
   );
 }
@@ -185,7 +185,7 @@ function CoinIcon() {
   return (
     <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor">
       <circle cx="12" cy="12" r="9" strokeWidth="1.6" />
-      <path d="M8 12h8m-4-4v8" strokeWidth="1.6" className="stroke-rose-500" />
+      <path d="M8 12h8m-4-4v8" strokeWidth="1.6" className="stroke-green-500" />
     </svg>
   );
 }
@@ -195,7 +195,7 @@ function GearIcon() {
       <path
         d="M12 15.5A3.5 3.5 0 1 0 12 8.5a3.5 3.5 0 0 0 0 7z"
         strokeWidth="1.6"
-        className="stroke-rose-500"
+        className="stroke-green-500"
       />
       <path
         d="M19.4 15a7.5 7.5 0 0 0 .2-1 7.5 7.5 0 0 0-.2-1l2.1-1.6a.5.5 0 0 0 .1-.7l-2-3.5a.5.5 0 0 0-.6-.2l-2.5 1a6.8 6.8 0 0 0-1.7-1L15 3.5a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 0-.5.5l-.4 2.6a6.8 6.8 0 0 0-1.7 1l-2.5-1a.5.5 0 0 0-.6.2l-2 3.5a.5.5 0 0 0 .1.7L4.6 13a7.5 7.5 0 0 0-.2 1c0 .3.1.7.2 1l-2.1 1.6a.5.5 0 0 0-.1.7l2 3.5c.1.2.4.3.6.2l2.5-1a6.8 6.8 0 0 0 1.7 1l.4 2.6a.5.5 0 0 0 .5.5h4c.3 0 .5-.2.5-.5l.4-2.6a6.8 6.8 0 0 0 1.7-1l2.5 1c.2.1.5 0 .6-.2l2-3.5a.5.5 0 0 0-.1-.7L19.4 15z"
