@@ -50,32 +50,32 @@ export default function Navbar() {
           <Link
             href={"/"}
             onClick={() => handleNavigate("/company")}
-            className="hover:text-green-500"
+            className="hover:text-green-500 transform hover:scale-110 transition-transform duration-300"
           >
             Home
           </Link>
           <Link
             href={"/products"}
             onClick={() => handleNavigate("/products")}
-            className="hover:text-green-500"
+            className="hover:text-green-500 transform hover:scale-110 transition-transform duration-300"
           >
             Products
           </Link>
           <button
             onClick={() => handleNavigate("/calculator")}
-            className="hover:text-green-500"
+            className="hover:text-green-500 transform hover:scale-110 transition-transform duration-300"
           >
             Calculator
           </button>
           <button
             onClick={() => handleNavigate("/events")}
-            className="hover:text-green-500"
+            className="hover:text-green-500 transform hover:scale-110 transition-transform duration-300"
           >
             Solutions
           </button>
           <button
             onClick={() => handleNavigate("/b2b-solutions")}
-            className="hover:text-green-500"
+            className="hover:text-green-500 transform hover:scale-110 transition-transform duration-300"
           >
             Join Us
           </button>
