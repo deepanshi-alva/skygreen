@@ -5,6 +5,7 @@ import { Menu, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import LanguageDropdown from "@/components/LanguageDropdown"
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -79,10 +80,7 @@ export default function Navbar() {
 
         {/* Language & Button */}
         <div className="hidden md:flex items-center space-x-4">
-          <div className="flex items-center gap-1">
-            <span>🇬🇧</span>
-            <span>EN</span>
-          </div>
+          <LanguageDropdown/>
           <Link
             href={"/contact"}
             className="bg-red-600 px-4 py-1 rounded-full text-white font-semibold hover:bg-red-700 transition"
@@ -133,7 +131,7 @@ export default function Navbar() {
             Join Us
           </Link>
           <div className="flex items-center gap-2 mt-2">
-            <span>🇬🇧 EN</span>
+            <LanguageDropdown/>
             <Link
               href={"/contact"}
               className="bg-green-600 px-4 py-1 rounded-full text-white font-semibold hover:bg-green-700 transition"
