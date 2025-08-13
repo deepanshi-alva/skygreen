@@ -20,7 +20,7 @@ export default function Faqs() {
   const visibleFAQs = showAll ? faqData : faqData.slice(0, 5);
 
   return (
-    <section className="w-full bg-black text-white px-42 py-12">
+    <section className="w-full bg-black text-white px-34 py-12">
       <div className="flex flex-col mb-8 mx-auto">
         <h2 className="text-5xl md:text-7xl font-bold leading-tight">
           Got a Question?
