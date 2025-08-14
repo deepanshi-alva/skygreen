@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import { faqData } from "@/lib/faqData";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 export default function Faqs() {
   const [openIndexes, setOpenIndexes] = useState(faqData.map((_, i) => i)); // all open by default
@@ -37,7 +38,9 @@ export default function Faqs() {
             <div className="text-lg font-semibold flex items-center gap-2 text-green-500">
               📄 Download Presentation
             </div>
-            <img
+            <Image
+              width={100}
+              height={100}
               src="/images/logo/logo-bg-remove.png"
               alt="Company Profile"
               className="rounded"

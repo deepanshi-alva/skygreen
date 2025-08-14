@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import React from 'react';
 
 export default function HeroSection() {
@@ -19,7 +20,9 @@ export default function HeroSection() {
         }}
       >
         {/* background image */}
-        <img
+        <Image
+          width={100}
+          height={100}
           src="/images/contact/hero.png"
           alt="Contact Hero"
           className="absolute inset-0 h-full w-full object-cover"

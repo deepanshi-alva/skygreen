@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { useScroll, useTransform, motion } from "framer-motion";
-import { Bolt, CheckCircle, Leaf, Sun, DollarSign, Hammer } from "lucide-react";
+import { Bolt, CheckCircle, Leaf } from "lucide-react";
 
 const paragraphArray = [
   "Empowering",

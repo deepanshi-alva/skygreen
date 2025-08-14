@@ -120,21 +120,6 @@ function ListItem({
   );
 }
 
-function Badge({ tone }: { tone: "good" | "bad" }) {
-  return (
-    <span
-      className={
-        "inline-flex h-10 w-10 items-center justify-center rounded-full ring-1 " +
-        (tone === "good"
-          ? "bg-green-500/15 text-green-400 ring-green-500/40"
-          : "bg-rose-500/15 text-rose-400 ring-rose-500/40")
-      }
-    >
-      {tone === "good" ? <CheckIcon /> : <XIcon />}
-    </span>
-  );
-}
-
 /* ========== Icons ========== */
 function CheckIcon() {
   return (

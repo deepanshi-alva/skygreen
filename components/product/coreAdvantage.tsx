@@ -55,7 +55,7 @@ export default function CoreAdvantages() {
         {/* 3-column layout */}
         <div
           className="mt-10 grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] items-center gap-14"
-          style={{ ["--viewer-h" as any]: "clamp(420px, 60vh, 640px)" }}
+          style={{ ["--viewer-h" as string]: "clamp(420px, 60vh, 640px)" }}
         >
           {/* Left list (left-aligned, two rows, centered vertically) */}
           <div className="min-h-[var(--viewer-h)] grid grid-rows-2 content-center justify-items-start">

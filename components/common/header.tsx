@@ -26,7 +26,7 @@ export default function Navbar() {
     }`;
 
   return (
-    <header
+    <div
       className={`fixed top-0 w-full z-50 transition-shadow ${
         isSticky ? "shadow-md bg-black/90" : "bg-black"
       }`}
@@ -141,6 +141,6 @@ export default function Navbar() {
           </div>
         </div>
       )}
-    </header>
+    </div>
   );
 }

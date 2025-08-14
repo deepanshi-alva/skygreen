@@ -48,7 +48,7 @@ function DownloadCard() {
                 PROFILE
               </h3>
               <p className="text-sm text-gray-300">
-                It's time to save the world.
+                It&apos;s time to save the world.
               </p>
             </div>
 
@@ -85,7 +85,7 @@ function InterestChips({
   return (
     <div className="space-y-4">
       <div className="flex items-center gap-2 text-lg">
-        <span>I'm interested in</span>
+        <span>I&apos;m interested in</span>
       </div>
       <div className="flex flex-wrap gap-3">
         {options.map((opt) => (
@@ -140,7 +140,7 @@ function ContactForm() {
   return (
     <div className="space-y-8">
       <h1 className="text-4xl lg:text-5xl font-bold mb-2">
-        We're Ready to <span className="text-green-500">Consult You</span>
+        We&apos;re Ready to <span className="text-green-500">Consult You</span>
       </h1>
 
       <form onSubmit={handleSubmit} className="space-y-6">

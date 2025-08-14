@@ -48,7 +48,7 @@ function DownloadCard() {
                 PROFILE
               </h3>
               <p className="text-sm text-gray-300">
-                It's time to save the world.
+                It&apos;s time to save the world.
               </p>
             </div>
 
@@ -85,7 +85,7 @@ function InterestChips({
   return (
     <div className="space-y-4">
       <div className="flex items-center gap-2 text-lg">
-        <span>I'm interested in</span>
+        <span>I&apos;m interested in</span>
       </div>
       <div className="flex flex-wrap gap-3">
         {options.map((opt) => (
@@ -93,11 +93,10 @@ function InterestChips({
             key={opt}
             type="button"
             onClick={() => onChange(opt)}
-            className={`px-6 py-2 rounded-full border-2 transition-all duration-200 ${
-              value === opt
+            className={`px-6 py-2 rounded-full border-2 transition-all duration-200 ${value === opt
                 ? "border-green-500 bg-green-500/10 text-green-400"
                 : "border-gray-600 text-gray-300 hover:border-gray-500"
-            }`}
+              }`}
           >
             {opt}
           </button>
@@ -140,7 +139,7 @@ function ContactForm() {
   return (
     <div className="space-y-8">
       <h1 className="text-4xl lg:text-5xl font-bold mb-2">
-        We're Ready to <span className="text-green-500">Consult You</span>
+        We&apos;re Ready to <span className="text-green-500">Consult You</span>
       </h1>
 
       <form onSubmit={handleSubmit} className="space-y-6">
@@ -298,14 +297,14 @@ export default function ContactUs() {
 
           {/* Right: 75% width */}
           <main
-            
+
           >
             <div className="p-16 bg-[url('/images/testimonials/download_converted.png')] bg-no-repeat bg-cover bg-center rounded-4xl">
-            <ContactForm />
+              <ContactForm />
             </div>
             <HeadOfficeInfo />
           </main>
-          
+
         </div>
       </div>
     </div>

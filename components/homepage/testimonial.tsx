@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import Image from "next/image";
 
 const testimonials = [
   {
@@ -37,10 +38,10 @@ const testimonials = [
 export default function TestimonialSlider() {
   const [index, setIndex] = useState(0);
 
-  const prev = () =>
-    setIndex((prev) => (prev === 0 ? testimonials.length - 1 : prev - 1));
-  const next = () =>
-    setIndex((prev) => (prev === testimonials.length - 1 ? 0 : prev + 1));
+  // const prev = () =>
+  //   setIndex((prev) => (prev === 0 ? testimonials.length - 1 : prev - 1));
+  // const next = () =>
+  //   setIndex((prev) => (prev === testimonials.length - 1 ? 0 : prev + 1));
 
   return (
     <section className="flex flex-col items-center min-h-screen bg-black w-full py-12">
@@ -105,7 +106,9 @@ export default function TestimonialSlider() {
                 }
                 if (i === (index + 1) % testimonials.length) {
                   return (
-                    <img
+                    <Image
+                      width={64}
+                      height={64}
                       key={i}
                       src={t.image}
                       alt=""
@@ -119,7 +122,9 @@ export default function TestimonialSlider() {
                   (index - 1 + testimonials.length) % testimonials.length
                 ) {
                   return (
-                    <img
+                    <Image
+                      width={64}
+                      height={64}
                       key={i}
                       src={t.image}
                       alt=""

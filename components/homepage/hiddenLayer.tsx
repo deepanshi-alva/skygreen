@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from 'react';
-import { Zap, Eye, Layers, Activity } from 'lucide-react';
+import { Eye, Layers, Activity } from 'lucide-react';
 
 interface Layer {
   id: number;

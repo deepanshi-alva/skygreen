@@ -58,7 +58,6 @@ const seasons = [
 export default function ClimateShowcase() {
   const [active, setActive] = useState('sunny');
   const [hovered, setHovered] = useState<string | null>(null);
-  const [showContent, setShowContent] = useState<string | null>(null);
 
   return (
     <section className="w-full min-h-screen px-16 py-12 bg-black flex flex-col justify-center"
