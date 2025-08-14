@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { Facebook, Linkedin, Youtube, Twitter } from "lucide-react";
+import Image from "next/image";
 
 export default function Footer() {
   const ref = useRef(null);
@@ -72,7 +73,7 @@ export default function Footer() {
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 text-sm">
           {/* Company Info */}
           <div>
-            <img
+            <Image
               src="/images/logo/logo-bg-remove.png"
               alt="SKYGREEN Logo"
               className="w-40 h-auto mb-4"

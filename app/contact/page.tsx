@@ -1,4 +1,3 @@
-import dynamic from "next/dynamic";
 import Hero from "@/components/contact/hero" ;
 import Form from "@/components/contact/contactform"
 
