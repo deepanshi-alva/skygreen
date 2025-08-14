@@ -1,5 +1,5 @@
 import Hero from "../components/homepage/hero";
-import Faq from "../components/homepage/faq";
+// import Faq from "../components/homepage/faq";
 import WhyUs from "../components/homepage/whyUs";
 import Testimonial from "../components/homepage/testimonial";
 // import WhySkygreen from "../components/homepage/whySkyGreen";
@@ -18,7 +18,7 @@ export default function Home() {
       {/* <HiddenLayerSection /> */}
       <NewsEventsBlogs data={mockData} initialTab="news" autoplayMs={5000} />
       <Testimonial />
-      <Faq />
+      {/* <Faq /> */}
     </div>
   );
 }

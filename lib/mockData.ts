@@ -20,7 +20,7 @@ export const mockData: Data = {
   news: [
     {
       id: 1,
-      title: "China mulls OPEC‑style fund to shut excess polysilicon capacity",
+      title: "China mulls OPEC-style fund to shut excess polysilicon capacity",
       excerpt:
         "Industry leaders discuss a ¥50bn restructuring fund to curb overcapacity and stabilize prices amid intense competition.",
       date: "2025-08-14",
@@ -30,7 +30,7 @@ export const mockData: Data = {
     },
     {
       id: 2,
-      title: "China’s solar capacity growth to slow in H2 after pricing reforms",
+      title: "China's solar capacity growth to slow in H2 after pricing reforms",
       excerpt:
         "Removal of guaranteed tariffs spurs uncertainty; analysts still see a record year after H1 front‑loading.",
       date: "2025-08-13",
@@ -50,7 +50,7 @@ export const mockData: Data = {
     },
     {
       id: 4,
-      title: "MNRE posts updated ALMM List‑I for solar PV modules",
+      title: "MNRE posts updated ALMM List-I for solar PV modules",
       excerpt:
         "Official update to the Approved List of Models & Manufacturers (Modules).",
       date: "2025-08-13",
@@ -60,9 +60,9 @@ export const mockData: Data = {
     },
     {
       id: 5,
-      title: "MNRE clarifies ALMM mandate for govt projects under net‑metering & open access",
+      title: "MNRE clarifies ALMM mandate for govt projects under net-metering & open access",
       excerpt:
-        "Clarifies applicability where bid submission dates and cut‑offs created confusion; List‑II for cells effective July 1, 2026.",
+        "Clarifies applicability where bid submission dates and cut-offs created confusion; List-II for cells effective July 1, 2026.",
       date: "2025-08-13",
       tag: "India · ALMM",
       href: "https://www.mercomindia.com/mnre-issues-clarification-on-almm-list-ii-mandate-for-government-projects",
@@ -72,7 +72,7 @@ export const mockData: Data = {
       id: 6,
       title: "ACME secures ₹3,184 crore REC funding for 280 MW FDRE project",
       excerpt:
-        "Financing boost for firm’s round‑the‑clock renewable development.",
+        "Financing boost for firm's round-the-clock renewable development.",
       date: "2025-08-13",
       tag: "Finance · India",
       href: "https://www.pv-magazine-india.com/",
@@ -80,7 +80,7 @@ export const mockData: Data = {
     },
     {
       id: 7,
-      title: "India’s battery storage boom—minister outlines push at IESW 2025 keynote",
+      title: "India's battery storage boom—minister outlines push at IESW 2025 keynote",
       excerpt:
         "Policy mix and tendering pipeline highlighted as India scales storage; 171 GWh of tenders noted.",
       date: "2025-08-14",
@@ -104,20 +104,20 @@ export const mockData: Data = {
     {
       id: "ev-1",
       title: "Renewable Energy India (REI) Expo 2025 — Greater Noida",
-      excerpt: "India’s flagship clean‑energy trade show.",
+      excerpt: "India's flagship clean-energy trade show.",
       date: "2025-10-30",
       tag: "Expo",
       href: "https://renewableenergyindiaexpo.com/",
-      meta: "India Expo Mart · Oct 30 – Nov 1",
+      meta: "India Expo Mart · Oct 30 - Nov 1",
     },
     {
       id: "ev-2",
       title: "Intersolar India 2025 — Gandhinagar",
-      excerpt: "Conference & expo focused on PV, storage and e‑mobility.",
+      excerpt: "Conference & expo focused on PV, storage and e-mobility.",
       date: "2025-02-12",
       tag: "Expo",
       href: "https://www.solarpowereurope.org/events/intersolar-india-2025",
-      meta: "Helipad Exhibition Centre · Feb 12–14",
+      meta: "Helipad Exhibition Centre · Feb 12-14",
     },
   ],
 
