@@ -7,6 +7,9 @@ import Climate from "../components/homepage/climate";
 // import HiddenLayerSection from "@/components/homepage/hiddenLayer";
 import NewsEventsBlogs from "@/components/homepage/newsEventsBlogs";
 import { mockData } from "@/lib/mockData";
+import CertificateCarousel from "@/components/homepage/certificates";
+import PartOfSkygreen from "@/components/homepage/partOfSkyGreen/PartOfSkygree";
+import WhySkyGreen from "@/components/homepage/whyShop"
 
 export default function Home() {
   return (
@@ -14,10 +17,14 @@ export default function Home() {
       <Hero />
       {/* <WhySkygreen/> */}
       <WhyUs />
+      <CertificateCarousel/>
       <Climate />
       {/* <HiddenLayerSection /> */}
+      <PartOfSkygreen/>
       <NewsEventsBlogs data={mockData} initialTab="news" autoplayMs={5000} />
+      <WhySkyGreen/>
       <Testimonial />
+
       {/* <Faq /> */}
     </div>
   );
