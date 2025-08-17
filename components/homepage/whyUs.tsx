@@ -1,55 +1,14 @@
 "use client";
 
-import { useRef } from "react";
-import { useScroll, useTransform, motion } from "framer-motion";
+import { useRef, useState } from "react";
+import { useScroll, useTransform, useMotionValueEvent } from "framer-motion";
 import { Bolt, CheckCircle, Leaf } from "lucide-react";
 
 const paragraphArray = [
-  "Empowering",
-  "a",
-  "brighter",
-  "tomorrow,",
-  //   <Sun key="sun" className="inline mx-4 text-yellow-400 w-8 h-8" />,
-  "we",
-  "deliver",
-  "smart",
-  "and",
-  "affordable",
-  "solar",
-  "solutions",
-  "tailored",
-  "to",
-  "your",
-  "needs.",
-  //   <DollarSign key="dollar" className="inline mx-4 text-green-400 w-8 h-8" />,
-  "Our",
-  "cutting-edge",
-  "technology",
-  "ensures",
-  "lasting",
-  "performance",
-  "and",
-  "maximizes",
-  "your",
-  "energy",
-  "savings.",
-  //   <Hammer key="hammer" className="inline mx-4 text-blue-400 w-8 h-8" />,
-  "Experience",
-  "hassle-free",
-  "installation,",
-  "reliable",
-  "service,",
-  "and",
-  "join",
-  "us",
-  "in",
-  "creating",
-  "a",
-  "cleaner,",
-  "more",
-  "sustainable",
-  "planet.",
-  //   <Leaf key="leaf" className="inline mx-4 text-green-500 w-8 h-8" />,
+  "Empowering", "a", "brighter", "tomorrow,",
+  "we", "deliver", "smart", "and", "affordable", "solar", "solutions", "tailored", "to", "your", "needs.",
+  "Our", "cutting-edge", "technology", "ensures", "lasting", "performance", "and", "maximizes", "your", "energy", "savings.",
+  "Experience", "hassle-free", "installation,", "reliable", "service,", "and", "join", "us", "in", "creating", "a", "cleaner,", "more", "sustainable", "planet.",
 ];
 
 const features = [
@@ -78,8 +37,13 @@ export default function WhyUs() {
     offset: ["end end", "start start"],
   });
 
-  // Reveal percentage from 0 to 100
+  // One transform -> percentage 0..100
   const revealPercentage = useTransform(scrollYProgress, [0, 1], [0, 100]);
+
+  // Keep latest numeric value in state (so we can use it inside map without hooks)
+  const [reveal, setReveal] = useState(0);
+  useMotionValueEvent(revealPercentage, "change", (v) => setReveal(v));
+
   const words = paragraphArray;
 
   return (
@@ -106,39 +70,34 @@ export default function WhyUs() {
         <h2 className="text-6xl font-bold text-center pb-5 my-8 text-green-400">
           Why Choose Us ?
         </h2>
+
+        {/* Text reveal */}
         <div
           ref={containerRef}
           className="max-w-6xl mx-auto leading-relaxed text-3xl text-center flex flex-wrap justify-center"
         >
           {words.map((word, index) => {
             const wordStart = (index / words.length) * 100;
+            const color = reveal > wordStart ? "#ffffffff" : "#646464ff";
             return (
-              <motion.span
-                key={index}
-                style={{
-                  color: useTransform(revealPercentage, (p) =>
-                    p > wordStart ? "#ffffffff" : "#646464ff"
-                  ),
-                }}
-                className="inline-block mr-2"
-              >
+              <span key={index} style={{ color }} className="inline-block mr-2">
                 {word}
-              </motion.span>
+              </span>
             );
           })}
         </div>
+
+        {/* Feature cards */}
         <div className="flex justify-center w-full">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 py-8 max-w-6xl">
             {features.map((feature) => (
               <div
                 key={feature.title}
-                className={`bg-[#111] rounded-2xl flex flex-col items-center justify-top text-center p-8 border border-green-800 hover:border-green-400 transition-all duration-300 w-full hover:shadow-[0_0_20px_3px_rgba(34,197,94,0.4)]`}
+                className="bg-[#111] rounded-2xl flex flex-col items-center text-center p-8 border border-green-800 hover:border-green-400 transition-all duration-300 w-full hover:shadow-[0_0_20px_3px_rgba(34,197,94,0.4)]"
               >
-                <div className="flex flex-row items-center gap-3 mb-2 flex justify-center">
+                <div className="flex flex-row items-center gap-3 mb-2 justify-center">
                   {feature.icon}
-                  <h3 className="text-white text-2xl font-semibold">
-                    {feature.title}
-                  </h3>
+                  <h3 className="text-white text-2xl font-semibold">{feature.title}</h3>
                 </div>
                 <p className="text-gray-300 text-base">{feature.description}</p>
               </div>

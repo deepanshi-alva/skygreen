@@ -111,7 +111,7 @@ export default function ClimateSelector() {
   // }, [selected]);
 
   return (
-    <section className="relative min-h-screen bg-black overflow-hidden" >
+    <section className="relative min-h-screen bg-black overflow-hidden pt-15 pb-15" >
       {/* Heading */}
       <div className="text-center py-5 md:py-4 px-6 md:px-10 mb-5 ">
         <h1

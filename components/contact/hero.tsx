@@ -21,8 +21,8 @@ export default function HeroSection() {
       >
         {/* background image */}
         <Image
-          width={100}
-          height={100}
+          width={1000}
+          height={1000}
           src="/images/contact/hero.png"
           alt="Contact Hero"
           className="absolute inset-0 h-full w-full object-cover"
