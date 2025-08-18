@@ -4,6 +4,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import Image from "next/image";
 
 /**
  * @typedef {Object} Item
@@ -188,60 +189,90 @@ export default function NewsEventsBlogs({
                     href={current?.href || "#"}
                     target={current?.href ? "_self" : undefined}
                     rel={current?.href ? "noopener" : undefined}
-                    className="absolute inset-0 grid md:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]"
+                    className={`absolute inset-0 ${current?.image
+                        ? "grid md:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]"
+                        : "flex"
+                      }`}
                     initial={{ opacity: 0, x: 40 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -40 }}
                     transition={{ duration: 0.35 }}
                   >
-                    {/* Image */}
-                    <div className="relative overflow-hidden">
-                      {current?.image ? (
+                    {/* Image — only if present */}
+                    {current?.image && (
+                      <div className="relative overflow-hidden">
                         <img
                           src={current.image}
                           alt={current.title}
                           className="h-full w-full object-cover"
                           loading="lazy"
                         />
-                      ) : (
-                        <div className="h-full w-full bg-gradient-to-br from-green-600/20 to-green-300/10" />
-                      )}
-                      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-                      <div className="absolute bottom-4 left-4 flex flex-wrap items-center gap-2">
-                        {isLatest(items[0], safeIndex) && (
-                          <span className="rounded-full border border-green-400/50 bg-green-500/15 px-3 py-1 text-xs font-semibold text-green-300">
-                            Latest
-                          </span>
-                        )}
-                        {current?.tag && (
-                          <span className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs text-white/80">
-                            {current.tag}
-                          </span>
-                        )}
-                        {current?.date && (
-                          <span className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs text-white/70">
-                            {formatDate(current.date)}
-                          </span>
-                        )}
+                        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                        <div className="absolute bottom-4 left-4 flex flex-wrap items-center gap-2">
+                          {isLatest(items[0], safeIndex) && (
+                            <span className="rounded-full border border-green-400/50 bg-green-500/15 px-3 py-1 text-xs font-semibold text-green-300">
+                              Latest
+                            </span>
+                          )}
+                          {current?.tag && (
+                            <span className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs text-white/80">
+                              {current.tag}
+                            </span>
+                          )}
+                          {current?.date && (
+                            <span className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs text-white/70">
+                              {formatDate(current.date)}
+                            </span>
+                          )}
+                        </div>
                       </div>
-                    </div>
+                    )}
 
-                    {/* Text */}
-                    <div className="p-6 md:p-8 flex flex-col justify-between">
+                    {/* Text — full width when no image */}
+                    <div
+                      className={`p-6 md:p-10 flex flex-col ${current?.image ? "justify-between" : "justify-center w-full"
+                        }`}
+                    >
+                      {/* Badges row (shown here if no image) */}
+                      {!current?.image && (
+                        <div className="mb-4 flex flex-wrap items-center gap-2">
+                          {isLatest(items[0], safeIndex) && (
+                            <span className="rounded-full border border-green-400/50 bg-green-500/15 px-3 py-1 text-xs font-semibold text-green-300">
+                              Latest
+                            </span>
+                          )}
+                          {current?.tag && (
+                            <span className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs text-white/80">
+                              {current.tag}
+                            </span>
+                          )}
+                          {current?.date && (
+                            <span className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs text-white/70">
+                              {formatDate(current.date)}
+                            </span>
+                          )}
+                        </div>
+                      )}
+
                       <div>
-                        <h3 className="text-2xl md:text-3xl font-bold leading-tight">
+                        <h3
+                          className={`font-bold leading-tight ${current?.image ? "text-2xl md:text-3xl" : "text-3xl md:text-5xl"
+                            }`}
+                        >
                           {current?.title}
                         </h3>
                         {current?.meta && (
                           <p className="mt-2 text-sm text-white/60">{current.meta}</p>
                         )}
                         {current?.excerpt && (
-                          <p className="mt-4 text-white/80 line-clamp-4 md:line-clamp-5">
+                          <p
+                            className={`mt-4 text-white/80 ${current?.image ? "line-clamp-4 md:line-clamp-5" : ""
+                              }`}
+                          >
                             {current.excerpt}
                           </p>
                         )}
                       </div>
-                      <div className="mt-6" />
                     </div>
                   </motion.a>
                 </AnimatePresence>

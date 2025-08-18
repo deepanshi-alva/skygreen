@@ -27,7 +27,7 @@ export default function HeroSection() {
 
           {/* floating download button near lower-left (kept) */}
           <div className="hidden md:block absolute bottom-24 left-4 md:left-6">
-            <button className="group inline-flex items-center gap-2 rounded-md border border-white/30 bg-white/5 px-6 py-3 text-white backdrop-blur transition hover:bg-white/10">
+            <button className="group inline-flex items-center gap-2 rounded-md border border-white/30 bg-white/5 px-6 py-3 text-white backdrop-blur transition hover:bg-white/10 mb-8">
               <span className="font-medium">Download</span>
               <span className="grid h-5 w-5 place-items-center rounded border border-white/30 text-xs">
                 ↧
