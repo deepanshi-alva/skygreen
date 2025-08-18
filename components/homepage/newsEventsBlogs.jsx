@@ -230,7 +230,7 @@ export default function NewsEventsBlogs({
 
                     {/* Text — full width when no image */}
                     <div
-                      className={`p-6 md:p-10 flex flex-col ${current?.image ? "justify-between" : "justify-center w-full"
+                      className={`p-6  flex flex-col ${current?.image ? "justify-between md:p-10" : "justify-center w-full md:p-16"
                         }`}
                     >
                       {/* Badges row (shown here if no image) */}
