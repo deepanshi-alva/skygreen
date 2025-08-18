@@ -90,12 +90,21 @@ export default function NewsEventsBlogs({
 
   return (
     <section
-      className={`w-full bg-black text-white py-10 md:py-14 ${className}`}
+      className={`w-full bg-black text-white  ${className}`}
       onKeyDown={onKeyDown}
       tabIndex={0}
       aria-label="News, Events, and Blogs carousel"
     >
       <div className="mx-auto max-w-7xl px-2 md:px-4">
+        {/* Section Title */}
+        <div className="mb-12 text-center">
+          <h2 className="text-4xl text-green-400 md:text-5xl lg:text-6xl font-bold leading-tight">
+            Latest Updates & Insights
+          </h2>
+          <p className="mt-3 text-white/60 text-sm md:text-base max-w-2xl mx-auto">
+            Stay informed with the newest news, upcoming events, and in-depth blogs from the solar industry.
+          </p>
+        </div>
         {/* Shared height wrapper → BOTH columns use the same height */}
         <div className="grid grid-cols-1 md:grid-cols-[200px_minmax(0,1fr)] gap-6 items-stretch h-[460px] md:h-[520px]">
           {/* Vertical rail (left) — full height, evenly distributed buttons */}
@@ -190,8 +199,8 @@ export default function NewsEventsBlogs({
                     target={current?.href ? "_self" : undefined}
                     rel={current?.href ? "noopener" : undefined}
                     className={`absolute inset-0 ${current?.image
-                        ? "grid md:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]"
-                        : "flex"
+                      ? "grid md:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]"
+                      : "flex"
                       }`}
                     initial={{ opacity: 0, x: 40 }}
                     animate={{ opacity: 1, x: 0 }}
