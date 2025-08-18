@@ -69,7 +69,7 @@ export default function Navbar() {
             href={"/faqs"}
             className={linkClasses("/faqs")}
           >
-            FAQ's
+            FAQ&apos;s
           </Link>
           <Link
             href={"/join"}
@@ -123,7 +123,7 @@ export default function Navbar() {
             href={"/faqs"}
             className={linkClasses("/faqs")}
           >
-            FAQ's
+            FAQ&apos;s
           </Link>
           <Link
             href={"/join"}
