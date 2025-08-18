@@ -65,11 +65,12 @@ export default function Navbar() {
           >
             Calculator
           </button>
-          <button
-            className={linkClasses("/solutions")}
+          <Link
+            href={"/faqs"}
+            className={linkClasses("/faqs")}
           >
-            Solutions
-          </button>
+            FAQ's
+          </Link>
           <Link
             href={"/join"}
             className={linkClasses("/join")}
@@ -119,10 +120,10 @@ export default function Navbar() {
             Calculator
           </Link>
           <Link
-            href={"#"}
-            className={linkClasses("/solutions")}
+            href={"/faqs"}
+            className={linkClasses("/faqs")}
           >
-            Solutions
+            FAQ's
           </Link>
           <Link
             href={"/join"}

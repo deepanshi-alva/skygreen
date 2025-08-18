@@ -74,8 +74,8 @@ export default function Footer() {
           {/* Company Info */}
           <div>
             <Image
-              width={40}
-              height={40}
+              width={100}
+              height={100}
               src="/images/logo/logo-bg-remove.png"
               alt="SKYGREEN Logo"
               className="w-40 h-auto mb-4"

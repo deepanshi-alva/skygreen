@@ -6,8 +6,8 @@ export function HeroSection() {
     <div className="relative w-full h-full min-h-[500px] rounded-2xl overflow-hidden shadow-lg">
       <Image
         src="/images/refer.png"
-        width={300}
-        height={300}
+        width={1000}
+        height={1000}
         alt="Friends camping outdoors with portable power station"
         className="w-full h-full object-cover"
       />
