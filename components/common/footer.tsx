@@ -39,7 +39,7 @@ export default function Footer() {
 
   return (
     <div
-      className="relative text-white w-full overflow-hidden justify-end px-36 py-20"
+      className="relative text-white w-full overflow-hidden justify-end py-20"
       ref={ref}
     >
       {/* Diagonal Green Layer */}
@@ -49,7 +49,7 @@ export default function Footer() {
         transition={{ duration: 1.2, ease: "easeOut" }}
         className="absolute top-0 left-0 w-full h-full overflow-hidden"
         style={{
-          backgroundColor: "#00762d",
+          backgroundColor: "#001707",
           clipPath: "polygon(0 0, 100% 0, 0 100%)",
           zIndex: -2,
         }}
@@ -62,14 +62,14 @@ export default function Footer() {
         transition={{ duration: 1.2, ease: "easeOut" }}
         className="absolute top-0 left-0 w-full h-full overflow-hidden"
         style={{
-          backgroundColor: "#001707",
+          backgroundColor: "#00762d",
           clipPath: "polygon(100% 0, 100% 100%, 0 100%)",
           zIndex: -3,
         }}
       />
 
       {/* Footer content remains the same below */}
-      <div className="backdrop-blur-md bg-black/80 max-w-[90rem] px-15 py-12">
+      <div className="backdrop-blur-md bg-black/80 max-w-[90rem] px-15 py-12 mx-auto">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 text-sm">
           {/* Company Info */}
           <div>

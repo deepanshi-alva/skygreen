@@ -31,8 +31,8 @@ const CertificateCarousel = () => {
                 <div key={index} className="flex-shrink-0 group">
                   <Image
                     src={image}
-                    width={100}
-                    height={100}
+                    width={120}
+                    height={120}
                     alt={`Certificate ${index + 1}`}
                     className="w-30 h-auto transition-transform duration-300 ease-in-out group-hover:scale-110"
                   />

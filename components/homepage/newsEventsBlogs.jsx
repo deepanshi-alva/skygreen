@@ -4,6 +4,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import Image from "next/image";
 
 /**
  * @typedef {Object} Item
@@ -89,12 +90,21 @@ export default function NewsEventsBlogs({
 
   return (
     <section
-      className={`w-full bg-black text-white py-10 md:py-14 ${className}`}
+      className={`w-full bg-black text-white pt-15 ${className}`}
       onKeyDown={onKeyDown}
       tabIndex={0}
       aria-label="News, Events, and Blogs carousel"
     >
       <div className="mx-auto max-w-7xl px-2 md:px-4">
+        {/* Section Title */}
+        <div className="mb-12 text-center">
+          <h2 className="text-4xl text-green-400 md:text-5xl lg:text-6xl font-bold leading-tight">
+            Latest Updates & Insights
+          </h2>
+          <p className="mt-3 text-white/60 text-sm md:text-base max-w-2xl mx-auto">
+            Stay informed with the newest news, upcoming events, and in-depth blogs from the solar industry.
+          </p>
+        </div>
         {/* Shared height wrapper → BOTH columns use the same height */}
         <div className="grid grid-cols-1 md:grid-cols-[200px_minmax(0,1fr)] gap-6 items-stretch h-[460px] md:h-[520px]">
           {/* Vertical rail (left) — full height, evenly distributed buttons */}
@@ -188,60 +198,90 @@ export default function NewsEventsBlogs({
                     href={current?.href || "#"}
                     target={current?.href ? "_self" : undefined}
                     rel={current?.href ? "noopener" : undefined}
-                    className="absolute inset-0 grid md:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]"
+                    className={`absolute inset-0 ${current?.image
+                      ? "grid md:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]"
+                      : "flex"
+                      }`}
                     initial={{ opacity: 0, x: 40 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -40 }}
                     transition={{ duration: 0.35 }}
                   >
-                    {/* Image */}
-                    <div className="relative overflow-hidden">
-                      {current?.image ? (
+                    {/* Image — only if present */}
+                    {current?.image && (
+                      <div className="relative overflow-hidden">
                         <img
                           src={current.image}
                           alt={current.title}
                           className="h-full w-full object-cover"
                           loading="lazy"
                         />
-                      ) : (
-                        <div className="h-full w-full bg-gradient-to-br from-green-600/20 to-green-300/10" />
-                      )}
-                      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-                      <div className="absolute bottom-4 left-4 flex flex-wrap items-center gap-2">
-                        {isLatest(items[0], safeIndex) && (
-                          <span className="rounded-full border border-green-400/50 bg-green-500/15 px-3 py-1 text-xs font-semibold text-green-300">
-                            Latest
-                          </span>
-                        )}
-                        {current?.tag && (
-                          <span className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs text-white/80">
-                            {current.tag}
-                          </span>
-                        )}
-                        {current?.date && (
-                          <span className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs text-white/70">
-                            {formatDate(current.date)}
-                          </span>
-                        )}
+                        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                        <div className="absolute bottom-4 left-4 flex flex-wrap items-center gap-2">
+                          {isLatest(items[0], safeIndex) && (
+                            <span className="rounded-full border border-green-400/50 bg-green-500/15 px-3 py-1 text-xs font-semibold text-green-300">
+                              Latest
+                            </span>
+                          )}
+                          {current?.tag && (
+                            <span className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs text-white/80">
+                              {current.tag}
+                            </span>
+                          )}
+                          {current?.date && (
+                            <span className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs text-white/70">
+                              {formatDate(current.date)}
+                            </span>
+                          )}
+                        </div>
                       </div>
-                    </div>
+                    )}
 
-                    {/* Text */}
-                    <div className="p-6 md:p-8 flex flex-col justify-between">
+                    {/* Text — full width when no image */}
+                    <div
+                      className={`p-6  flex flex-col ${current?.image ? "justify-between md:p-10" : "justify-center w-full md:p-16"
+                        }`}
+                    >
+                      {/* Badges row (shown here if no image) */}
+                      {!current?.image && (
+                        <div className="mb-4 flex flex-wrap items-center gap-2">
+                          {isLatest(items[0], safeIndex) && (
+                            <span className="rounded-full border border-green-400/50 bg-green-500/15 px-3 py-1 text-xs font-semibold text-green-300">
+                              Latest
+                            </span>
+                          )}
+                          {current?.tag && (
+                            <span className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs text-white/80">
+                              {current.tag}
+                            </span>
+                          )}
+                          {current?.date && (
+                            <span className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs text-white/70">
+                              {formatDate(current.date)}
+                            </span>
+                          )}
+                        </div>
+                      )}
+
                       <div>
-                        <h3 className="text-2xl md:text-3xl font-bold leading-tight">
+                        <h3
+                          className={`font-bold leading-tight ${current?.image ? "text-2xl md:text-3xl" : "text-3xl md:text-5xl"
+                            }`}
+                        >
                           {current?.title}
                         </h3>
                         {current?.meta && (
                           <p className="mt-2 text-sm text-white/60">{current.meta}</p>
                         )}
                         {current?.excerpt && (
-                          <p className="mt-4 text-white/80 line-clamp-4 md:line-clamp-5">
+                          <p
+                            className={`mt-4 text-white/80 ${current?.image ? "line-clamp-4 md:line-clamp-5" : ""
+                              }`}
+                          >
                             {current.excerpt}
                           </p>
                         )}
                       </div>
-                      <div className="mt-6" />
                     </div>
                   </motion.a>
                 </AnimatePresence>

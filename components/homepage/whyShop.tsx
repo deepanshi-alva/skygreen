@@ -36,7 +36,7 @@ function App() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-black to-[#021f0c] text-white">
+    <div className=" bg-gradient-to-b from-black to-[#196d16ff] text-white">
       <div className="container mx-auto px-6 py-16">
         <h2 className="text-4xl md:text-5xl font-bold text-center mb-16 ">
           <span className='px-15 pb-2' style={{
@@ -46,7 +46,7 @@ function App() {
           }}>Why Shop on <span className='text-[#acfe53]'>Sky Green</span></span>
         </h2>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 max-w-7xl mx-auto">
           {features.map((feature, index) => {
             const IconComponent = feature.icon;
             return (
