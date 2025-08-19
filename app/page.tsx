@@ -22,8 +22,8 @@ export default function Home() {
       {/* <HiddenLayerSection /> */}
       <PartOfSkygreen/>
       <NewsEventsBlogs data={mockData} initialTab="news" autoplayMs={5000} />
-      <WhySkyGreen/>
       <Testimonial />
+      <WhySkyGreen/>
 
       {/* <Faq /> */}
     </div>

@@ -90,7 +90,7 @@ export default function NewsEventsBlogs({
 
   return (
     <section
-      className={`w-full bg-black text-white  ${className}`}
+      className={`w-full bg-black text-white pt-15 ${className}`}
       onKeyDown={onKeyDown}
       tabIndex={0}
       aria-label="News, Events, and Blogs carousel"
