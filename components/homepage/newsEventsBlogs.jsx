@@ -195,9 +195,6 @@ export default function NewsEventsBlogs({
                 <AnimatePresence initial={false} mode="wait">
                   <motion.a
                     key={current?.id ?? `idx-${safeIndex}`}
-                    href={current?.href || "#"}
-                    target={current?.href ? "_self" : undefined}
-                    rel={current?.href ? "noopener" : undefined}
                     className={`absolute inset-0 ${current?.image
                       ? "grid md:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]"
                       : "flex"
