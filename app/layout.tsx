@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Footer from "@/components/common/footer";
-import Header from "@/components/common/header"
+import Header from "@/components/common/header";
+import WhatsAppWidget from "@/components/WhatsAppWidget";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,6 +33,11 @@ export default function RootLayout({
         <Header />
         {children}
         <Footer />
+        <WhatsAppWidget
+          message="Hi SKYGREEN, I'm interested in your imported TOPCon panels (575W). Please contact me."
+          bottom={24}
+          right={24}
+        />
       </body>
     </html>
   );

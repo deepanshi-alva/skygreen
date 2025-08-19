@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
-import { Download, ChevronRight, ChevronDown } from "lucide-react";
+import { Download, ChevronDown } from "lucide-react";
 import { motion } from "framer-motion";
-import Image from "next/image";
+// import Image from "next/image";
 import { faqData } from "@/lib/faqData";
 
 /* ----------------------------- Left Components ---------------------------- */
