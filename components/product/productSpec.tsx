@@ -17,9 +17,9 @@ function FancyCard({
     <div className="group relative">
       {/* gradient border */}
       <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-emerald-500/25 via-emerald-500/0 to-emerald-500/25 opacity-70 blur-[2px]" />
-      <div className="relative h-full rounded-3xl bg-zinc-950/70 ring-1 ring-white/10 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.7)] backdrop-blur">
+      <div className="relative h-full rounded-3xl bg-zinc-950/70 border border-green-500 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.7)] backdrop-blur">
         {/* Header */}
-        <div className="flex items-center gap-2 px-6 py-4 border-b border-white/10">
+        <div className="flex items-center gap-2 px-6 py-4 border-b border-green-500">
           <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500/15 ring-1 ring-emerald-400/30">
             {icon}
           </span>
@@ -34,9 +34,8 @@ function FancyCard({
             {rows.map((r, i) => (
               <li
                 key={i}
-                className={`grid grid-cols-1 sm:grid-cols-[1fr_auto] items-start gap-2 px-4 py-3 rounded-2xl sm:rounded-none ${
-                  i % 2 === 0 ? "bg-white/[0.02] sm:bg-transparent" : ""
-                }`}
+                className={`grid grid-cols-1 sm:grid-cols-[1fr_auto] items-start gap-2 px-4 py-3 rounded-2xl sm:rounded-none ${i % 2 === 0 ? "bg-white/[0.02] sm:bg-transparent" : ""
+                  }`}
               >
                 <span className="text-sm text-zinc-400">{r.label}</span>
                 <span className="text-sm sm:text-right font-medium text-zinc-100">
@@ -104,7 +103,7 @@ export default function ProductSpecsPretty() {
           />
         </div>
 
-        <p className="mt-6 text-xs text-zinc-500">
+        <p className="mt-6 text-xs flex justify-center text-zinc-500">
           Specifications are subject to change. Confirm before installation.
         </p>
       </div>

@@ -34,54 +34,55 @@ export default function ElectricalPerformanceTable() {
   return (
     <section className="w-full bg-black text-white">
       <div className="mx-auto max-w-7xl px-4 md:px-6 py-10">
-        {/* Heading */}
-        <div className="mb-6">
+        {/* Heading (centered) */}
+        <div className="mb-6 text-center">
           <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight">
             Electrical Performance Parameters{" "}
-            <span className="text-green-500">({tab.toUpperCase()} Test)</span>
+            {/* <span className="text-green-500">({tab.toUpperCase()} Test)</span> */}
           </h2>
           <p className="mt-2 text-sm text-gray-400">
             {tab === "stc" ? "STC: 1000 W/m², 25°C, AM1.5" : "NOCT: 800 W/m², 20°C, 1 m/s wind"}
           </p>
         </div>
 
-        {/* Toggle (green-only effect) */}
-        <div
-          className="
-            relative inline-flex p-1 rounded-full
-            bg-zinc-900/70 ring-1 ring-green-500/40
-            shadow-[0_0_0_1px_rgba(34,197,94,0.15)]
-            mb-6
-          "
-          role="tablist"
-          aria-label="Performance Mode"
-        >
-          <button
-            onClick={() => setTab("stc")}
-            aria-selected={tab === "stc"}
-            role="tab"
-            className={`
-              px-5 py-2 text-sm font-semibold rounded-full transition
-              ${tab === "stc"
-                ? "bg-green-500 text-black shadow-[0_8px_24px_rgba(34,197,94,0.45)]"
-                : "text-zinc-300 hover:text-white hover:shadow-[0_0_0_1px_rgba(34,197,94,0.35)]"}
-            `}
+        {/* Toggle (centered) */}
+        <div className="mb-6 flex justify-center">
+          <div
+            className="
+              relative inline-flex p-1 rounded-full
+              bg-zinc-900/70 ring-1 ring-green-500/40
+              shadow-[0_0_0_1px_rgba(34,197,94,0.15)]
+            "
+            role="tablist"
+            aria-label="Performance Mode"
           >
-            STC
-          </button>
-          <button
-            onClick={() => setTab("noct")}
-            aria-selected={tab === "noct"}
-            role="tab"
-            className={`
-              px-5 py-2 text-sm font-semibold rounded-full transition
-              ${tab === "noct"
-                ? "bg-green-500 text-black shadow-[0_8px_24px_rgba(34,197,94,0.45)]"
-                : "text-zinc-300 hover:text-white hover:shadow-[0_0_0_1px_rgba(34,197,94,0.35)]"}
-            `}
-          >
-            NOCT
-          </button>
+            <button
+              onClick={() => setTab("stc")}
+              aria-selected={tab === "stc"}
+              role="tab"
+              className={`
+                px-5 py-2 text-sm font-semibold rounded-full transition
+                ${tab === "stc"
+                  ? "bg-green-500 text-black shadow-[0_8px_24px_rgba(34,197,94,0.45)]"
+                  : "text-zinc-300 hover:text-white hover:shadow-[0_0_0_1px_rgba(34,197,94,0.35)]"}
+              `}
+            >
+              STC
+            </button>
+            <button
+              onClick={() => setTab("noct")}
+              aria-selected={tab === "noct"}
+              role="tab"
+              className={`
+                px-5 py-2 text-sm font-semibold rounded-full transition
+                ${tab === "noct"
+                  ? "bg-green-500 text-black shadow-[0_8px_24px_rgba(34,197,94,0.45)]"
+                  : "text-zinc-300 hover:text-white hover:shadow-[0_0_0_1px_rgba(34,197,94,0.35)]"}
+              `}
+            >
+              NOCT
+            </button>
+          </div>
         </div>
 
         {/* Table (desktop) */}
@@ -116,7 +117,6 @@ export default function ElectricalPerformanceTable() {
             <tbody>
               {rows.map((r, idx) => (
                 <tr key={r.key} className={idx % 2 === 0 ? "bg-zinc-900/40" : "bg-zinc-900/25"}>
-                  {/* left column */}
                   <td
                     className="
                       px-6 py-4 text-sm text-zinc-200
@@ -124,14 +124,11 @@ export default function ElectricalPerformanceTable() {
                       first:border-l-0 border-l border-green-800/70
                     "
                   >
-                    {r.label}{" "}
-                    {r.unit ? <span className="text-zinc-500">({r.unit})</span> : null}
+                    {r.label} {r.unit ? <span className="text-zinc-500">({r.unit})</span> : null}
                   </td>
 
-                  {/* value cells */}
                   {models.map((m) => {
-                    const value =
-                      m.data[tab as keyof ElectricalBlock][r.key as keyof ElectricalBlock["stc"]];
+                    const value = m.data[tab as keyof ElectricalBlock][r.key as keyof ElectricalBlock["stc"]];
                     return (
                       <td
                         key={m.key + r.key}
@@ -160,8 +157,7 @@ export default function ElectricalPerformanceTable() {
               </div>
               <div className="divide-y divide-green-800/70">
                 {rows.map((r) => {
-                  const value =
-                    m.data[tab as keyof ElectricalBlock][r.key as keyof ElectricalBlock["stc"]];
+                  const value = m.data[tab as keyof ElectricalBlock][r.key as keyof ElectricalBlock["stc"]];
                   return (
                     <div key={r.key} className="flex items-center justify-between px-4 py-3">
                       <span className="text-sm text-zinc-300">
@@ -178,7 +174,7 @@ export default function ElectricalPerformanceTable() {
           ))}
         </div>
 
-        <p className="mt-4 text-xs text-zinc-500">
+        <p className="mt-4 flex items-center justify-center text-xs text-zinc-500">
           Specs are subject to change. Confirm before installation.
         </p>
       </div>
