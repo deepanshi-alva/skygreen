@@ -6,19 +6,6 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { faqData } from "@/lib/faqData";
 
-/* -------------------------------- Types --------------------------------- */
-type FormData = {
-  company: string;
-  name: string;
-  email: string;
-  phone: string;
-  country: string;
-  capacity: string;
-  message: string;
-  agreeToProcessing: boolean;
-};
-type Interest = "installing" | "partnership" | "investing";
-
 /* ----------------------------- Left Components ---------------------------- */
 
 function DownloadCard() {
@@ -78,23 +65,46 @@ function DownloadCard() {
 /* ---------------------------- Right: FAQs Block --------------------------- */
 
 function RightFaqs() {
-  const [openIndexes, setOpenIndexes] = useState<number[]>(
-    faqData.map((_, i) => i) // all open by default
-  );
-  const [showAll, setShowAll] = useState(false);
+  const [query, setQuery] = useState("");
+  const [itemsToShow, setItemsToShow] = useState(15);
+  const [openIndexes, setOpenIndexes] = useState<number[]>([]);
 
-  const toggleFAQ = (index: number) => {
+  // Normalize search once for question + answer, case-insensitive
+  const normalizedQuery = query.trim().toLowerCase();
+
+  const filtered = normalizedQuery
+    ? faqData.filter((f) =>
+        (f.question).toLowerCase().includes(normalizedQuery)
+      )
+    : faqData;
+
+  // Decide what to render: paginate only when there is NO search query
+  const visibleFAQs =
+    normalizedQuery.length === 0
+      ? filtered.slice(0, itemsToShow)
+      : filtered;
+
+  const canShowMore =
+    normalizedQuery.length === 0 && itemsToShow < filtered.length;
+
+  const toggleFAQ = (indexInVisible: number) => {
     setOpenIndexes((prev) =>
-      prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index]
+      prev.includes(indexInVisible)
+        ? prev.filter((i) => i !== indexInVisible)
+        : [...prev, indexInVisible]
     );
   };
 
-  const visibleFAQs = faqData;
+  // When search changes or the visible list changes drastically,
+  // reset the open panels to avoid index mismatches.
+  React.useEffect(() => {
+    setOpenIndexes([]);
+  }, [normalizedQuery, itemsToShow]);
 
   return (
     <div className="px-6 md:px-12 lg:px-16 bg-[url('/images/testimonials/download_converted.png')] bg-no-repeat bg-cover bg-center rounded-4xl">
       {/* Title */}
-      <div className="flex flex-col mb-8">
+      <div className="flex flex-col mb-6 md:mb-8">
         <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
           Got a Question?
         </h2>
@@ -103,18 +113,54 @@ function RightFaqs() {
         </h3>
       </div>
 
+      {/* Search */}
+      <div className="mb-8">
+        <div className="relative">
+          <input
+            value={query}
+            onChange={(e) => {
+              setQuery(e.target.value);
+              // Reset pagination when searching
+              if (e.target.value.trim().length > 0) setItemsToShow(15);
+            }}
+            placeholder="Search questions (e.g., warranty, installation, subsidy)"
+            className="w-full rounded-xl bg-black/40 border border-zinc-700 px-4 py-3 outline-none focus:border-green-500 transition"
+            aria-label="Search FAQs"
+          />
+          {query && (
+            <button
+              onClick={() => {
+                setQuery("");
+                setItemsToShow(15);
+              }}
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-sm text-zinc-300 hover:text-white"
+              aria-label="Clear search"
+              type="button"
+            >
+              Clear
+            </button>
+          )}
+        </div>
+
+        {/* Result count (optional) */}
+        <p className="mt-4 text-sm text-zinc-400">
+          {filtered.length} result{filtered.length === 1 ? "" : "s"}
+          {normalizedQuery ? " for “" + query + "”" : ""}
+        </p>
+      </div>
+
       {/* FAQs */}
       <div className="space-y-6 w-full">
-        {visibleFAQs.map((faq, index) => {
-          const isOpen = openIndexes.includes(index);
+        {visibleFAQs.map((faq, i) => {
+          const isOpen = openIndexes.includes(i);
           return (
             <div
-              key={index}
+              key={i}
               className="border-b border-zinc-700 pb-4 cursor-pointer"
             >
               <div
                 className="flex justify-between items-center"
-                onClick={() => toggleFAQ(index)}
+                onClick={() => toggleFAQ(i)}
               >
                 <h4 className="text-lg md:text-2xl lg:text-3xl font-medium text-white">
                   {faq.question}
@@ -144,21 +190,23 @@ function RightFaqs() {
           );
         })}
 
-        {/* Show More / Less Button */}
-        {/* {faqData.length > 5 && (
-          <div className="pt-4">
+        {/* Show More button (only when not searching and more items remain) */}
+        {canShowMore && (
+          <div className="pt-2">
             <button
-              onClick={() => setShowAll((prev) => !prev)}
+              onClick={() => setItemsToShow((n) => n + 15)}
               className="px-6 py-2 border border-white rounded-full text-white hover:bg-white hover:text-black transition duration-300"
+              type="button"
             >
-              {showAll ? "Show less" : "More solutions"}
+              Show more
             </button>
           </div>
-        )} */}
+        )}
       </div>
     </div>
   );
 }
+
 
 /* ------------------------------- Main Shell ------------------------------- */
 
