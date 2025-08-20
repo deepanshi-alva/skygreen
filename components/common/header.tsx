@@ -1,15 +1,16 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ChevronDown, Headphones } from "lucide-react"; // Added Headphones icon
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-// import LanguageDropdown from "@/components/LanguageDropdown"
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isSticky, setIsSticky] = useState(false);
+  const [supportOpen, setSupportOpen] = useState(false);
+  const [mobileSupportOpen, setMobileSupportOpen] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -21,22 +22,17 @@ export default function Navbar() {
   }, []);
 
   const linkClasses = (path: string) =>
-    `hover:text-green-500 transform hover:scale-110 transition-transform duration-300 ${
-      pathname === path ? "text-green-500 font-semibold" : ""
+    `hover:text-green-500 transform hover:scale-110 transition-transform duration-300 ${pathname === path ? "text-green-500 font-semibold" : ""
     }`;
 
   return (
     <div
-      className={`fixed top-0 w-full z-50 transition-shadow ${
-        isSticky ? "shadow-md bg-black/90" : "bg-black"
-      }`}
+      className={`fixed top-0 w-full z-50 transition-shadow ${isSticky ? "shadow-md bg-black/90" : "bg-black"
+        }`}
     >
       <nav className="max-w-7xl mx-auto flex items-center justify-between px-4 py-3 text-white">
         {/* Logo */}
-        <Link
-          href={"/"}
-          className="flex items-center space-x-2 mb-3"
-        >
+        <Link href={"/"} className="flex items-center space-x-2 mb-3">
           <Image
             src="/images/logo/logo-bg-remove.png"
             alt="Logo"
@@ -48,40 +44,59 @@ export default function Navbar() {
 
         {/* Desktop Menu */}
         <div className="hidden md:flex space-x-12 font-medium">
-          <Link
-            href={"/"}
-            className={linkClasses("/")}
-          >
+          <Link href={"/"} className={linkClasses("/")}>
             Home
           </Link>
-          <Link
-            href={"/products"}
-            className={linkClasses("/products")}
-          >
+          <Link href={"/products"} className={linkClasses("/products")}>
             Products
           </Link>
-          {/* <button
-            className={linkClasses("/calculator")}
-          >
-            Calculator
-          </button> */}
-          <Link
-            href={"/faqs"}
-            className={linkClasses("/faqs")}
-          >
+          <Link href={"/faqs"} className={linkClasses("/faqs")}>
             FAQ&apos;s
           </Link>
-          <Link
-            href={"/join"}
-            className={linkClasses("/join")}
-          >
+          <Link href={"/join"} className={linkClasses("/join")}>
             Join Us
           </Link>
         </div>
 
-        {/* Language & Button */}
-        <div className="hidden md:flex items-center space-x-4">
-          {/* <LanguageDropdown/> */}
+        {/* Support + Contact */}
+        <div className="hidden md:flex items-center space-x-4 relative">
+          {/* Support Dropdown */}
+          <div
+            className="relative"
+            onMouseEnter={() => setSupportOpen(true)}
+            onMouseLeave={() => setSupportOpen(false)}
+          >
+            <button className={`font-semibold flex items-center mr-8 transition-transform duration-300 ${supportOpen ? "text-green-500 scale-110" : "hover:text-green-400 hover:scale-110"
+              }`}>
+              <Headphones size={24} />
+            </button>
+
+            {supportOpen && (
+              <div className="absolute right-0 mt-2 w-72 bg-white text-black rounded-lg shadow-lg p-4 z-50">
+                <p className="font-semibold mb-1">pre-sale</p>
+                <a href="mailto:sale@skygreen.com" className="text-blue-600">
+                  sale@skygreen.com
+                </a>
+
+                <p className="font-semibold mt-3 mb-1">after-sale</p>
+                <a href="mailto:service@skygreen.com" className="text-blue-600">
+                  service@skygreen.com
+                </a>
+                <p className="text-sm text-gray-500 mt-1">Respond in 24 hours</p>
+
+                <hr className="my-3" />
+                <p className="font-semibold">Customer Support</p>
+                <a href="tel:+19085700909" className="text-blue-600 block">
+                  +1 908-570-0909
+                </a>
+                <p className="text-sm text-gray-500">
+                  Monday to Saturday 10:00-18:00 (PDT)
+                </p>
+              </div>
+            )}
+          </div>
+
+          {/* Contact Us */}
           <Link
             href={"/contact"}
             className="bg-red-600 px-4 py-1 rounded-full text-white font-semibold hover:bg-red-700 transition"
@@ -101,41 +116,60 @@ export default function Navbar() {
       {/* Mobile Menu */}
       {mobileMenuOpen && (
         <div className="md:hidden bg-black text-white px-4 pb-4 space-y-2">
-          <Link
-            href={"/"}
-            className={linkClasses("/")}
-          >
+          <Link href={"/"} className={linkClasses("/")}>
             Home
           </Link>
-          <Link
-            href={"/products"}
-            className={linkClasses("/products")}
-          >
+          <Link href={"/products"} className={linkClasses("/products")}>
             Products
           </Link>
-          {/* <Link
-            href={"#"}
-            className={linkClasses("/calculator")}
-          >
-            Calculator
-          </Link> */}
-          <Link
-            href={"/faqs"}
-            className={linkClasses("/faqs")}
-          >
+          <Link href={"/faqs"} className={linkClasses("/faqs")}>
             FAQ&apos;s
           </Link>
-          <Link
-            href={"/join"}
-            className={linkClasses("/join")}
-          >
+          <Link href={"/join"} className={linkClasses("/join")}>
             Join Us
           </Link>
-          <div className="flex items-center gap-2 mt-2">
-            {/* <LanguageDropdown/> */}
+
+          {/* Mobile Support Dropdown */}
+          <div className="mt-3">
+            <button
+              className={`font-semibold flex items-center mr-8 transition-transform duration-300 ${supportOpen ? "text-green-500 scale-110" : "hover:text-green-400 hover:scale-110"}`}
+              onClick={() => setMobileSupportOpen(!mobileSupportOpen)}
+            >
+              <Headphones size={18} />
+            </button>
+
+            {mobileSupportOpen && (
+              <div className="mt-2 w-full bg-white text-black rounded-lg shadow-lg p-4">
+                <p className="font-semibold mb-1">pre-sale</p>
+                <a href="mailto:sale@skygreen.com" className="text-blue-600">
+                  sale@skygreen.com
+                </a>
+
+                <p className="font-semibold mt-3 mb-1">after-sale</p>
+                <a
+                  href="mailto:service@skygreen.com"
+                  className="text-blue-600"
+                >
+                  service@skygreen.com
+                </a>
+                <p className="text-sm text-gray-500 mt-1">Respond in 24 hours</p>
+
+                <hr className="my-3" />
+                <p className="font-semibold">Customer Support</p>
+                <a href="tel:+19085700909" className="text-blue-600 block">
+                  +1 908-570-0909
+                </a>
+                <p className="text-sm text-gray-500">
+                  Monday to Saturday 10:00-18:00 (PDT)
+                </p>
+              </div>
+            )}
+          </div>
+
+          <div className="flex items-center gap-2 mt-3">
             <Link
               href={"/contact"}
-              className="bg-green-600 px-4 py-1 rounded-full text-white font-semibold hover:bg-green-700 transition"
+              className="bg-red-600 px-4 py-2 rounded-full text-white font-semibold hover:bg-red-700 transition w-full text-center"
             >
               Contact Us
             </Link>
