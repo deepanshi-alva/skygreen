@@ -114,8 +114,8 @@ export default function ClimateSelector() {
               "linear-gradient(to right, #000000ff, #3ef838, #000000ff) 1",
           }}
         >
-          Engineered for Every {" "}
-          <span className="text-[#acfe53]">Season</span>
+          Engineered for {" "}
+          <span className="text-[#acfe53]">Every Season</span>
         </h1>
       </div>
 

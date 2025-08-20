@@ -18,7 +18,7 @@ function App() {
         <div className="text-center mb-18">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
             <span className="text-white">Become a Part of </span>
-            <span className="text-green-400">Sky Green</span>
+            <span className="text-[#3ef838]">SkyGreen</span>
           </h1>
         </div>
 

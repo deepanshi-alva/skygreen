@@ -121,3 +121,20 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* custom-scrollbar.css */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #3ef838;
+  border-radius: 8px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #222;
+  border-radius: 8px;
+}
+.custom-scrollbar {
+  scrollbar-width: thin;              /* Firefox */
+  scrollbar-color: #3ef838 #222;      /* Firefox */
+}

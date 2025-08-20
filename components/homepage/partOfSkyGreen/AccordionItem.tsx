@@ -28,14 +28,14 @@ export function AccordionItem({ title, children, defaultOpen = false }: Accordio
         </div>
       </button>
       <div
-        className={`overflow-hidden transition-all duration-300 ease-in-out ${
-          isOpen ? 'max-h-96 pb-6' : 'max-h-0'
-        }`}
+        className={`transition-all duration-300 ease-in-out ${isOpen ? 'max-h-[500px] overflow-y-auto pb-6 custom-scrollbar' : 'max-h-0 overflow-hidden'
+          }`}
       >
         <div className="text-white">
           {children}
         </div>
       </div>
+
     </div>
   );
 }

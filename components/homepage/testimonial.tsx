@@ -47,14 +47,14 @@ export default function TestimonialSlider() {
     <section className="flex flex-col items-center min-h-screen bg-black w-full pt-30">
       <div className="mb-15 text-center">
         <h2
-          className="shadow-xl/40 px-10 shadow-green-500/30 shadow-custom-inner text-5xl mb-8 md:text-6xl font-extrabold text-[#3ef838ff] mb-3 tracking-tight drop-shadow-lg border-b-2 border-red-500 pb-7"
+          className="shadow-xl/40 px-10 shadow-green-500/30 shadow-custom-inner text-5xl mb-8 md:text-6xl font-extrabold text-white mb-3 tracking-tight drop-shadow-lg border-b-2 border-red-500 pb-7"
           style={{
             borderBottom: "2px solid",
             borderImage:
               "linear-gradient(to right, #000000ff, #3ef838, #000000ff) 1",
           }}
         >
-          Hear From Our Happy Solar Clients
+          Hear From Our <span className="text-[#acfe53]">Happy Solar Clients</span> 
         </h2>
         <p className="text-xl md:text-2xl text-gray-200 max-w-2xl mx-auto font-light">
           Discover how GreenSpark has transformed lives and businesses with

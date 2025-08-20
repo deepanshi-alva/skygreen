@@ -36,7 +36,7 @@ function App() {
   ];
 
   return (
-    <div className=" bg-gradient-to-b from-black to-[#196d16ff] text-white">
+    <div className=" bg-black text-white">
       <div className="container mx-auto px-6 py-16">
         <h2 className="text-4xl md:text-5xl font-bold text-center mb-16 ">
           <span className='px-15 pb-2' style={{
@@ -46,23 +46,28 @@ function App() {
           }}>Why Shop on <span className='text-[#acfe53]'>Sky Green</span></span>
         </h2>
         
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
           {features.map((feature, index) => {
             const IconComponent = feature.icon;
             return (
-              <div 
+              <div
                 key={index}
-                className="flex flex-col items-center text-center p-8 rounded-lg bg-gray-900 hover:bg-gray-800 transition-all duration-300 hover:scale-105"
+                className="flex flex-row items-center text-left p-12 w-full min-w-[340px] rounded-lg 
+             bg-gray-900 hover:bg-gray-800 transition-all duration-300 hover:scale-105 
+             hover:shadow-[0_0_24px_4px_#7ffe36]
+             bg-[radial-gradient(circle,_#194500_1.2px,_transparent_1.7px)] bg-[size:16px_16px]"
               >
-                <div className="w-16 h-16 bg-green-400 rounded-full flex items-center justify-center mb-6">
+                <div className="w-16 h-16 bg-green-400 rounded-full flex items-center justify-center mr-6 flex-shrink-0">
                   <IconComponent className="w-8 h-8 text-black" />
                 </div>
-                <h3 className="text-xl font-semibold text-white mb-2">
-                  {feature.title}
-                </h3>
-                <p className="text-gray-300 text-sm">
-                  {feature.description}
-                </p>
+                <div>
+                  <h3 className="text-xl font-semibold text-white mb-2">
+                    {feature.title}
+                  </h3>
+                  <p className="text-gray-300 text-sm">
+                    {feature.description}
+                  </p>
+                </div>
               </div>
             );
           })}

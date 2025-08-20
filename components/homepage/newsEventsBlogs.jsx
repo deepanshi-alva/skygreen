@@ -98,8 +98,8 @@ export default function NewsEventsBlogs({
       <div className="mx-auto max-w-7xl px-2 md:px-4">
         {/* Section Title */}
         <div className="mb-12 text-center">
-          <h2 className="text-4xl text-green-400 md:text-5xl lg:text-6xl font-bold leading-tight">
-            Latest Updates & Insights
+          <h2 className="text-4xl text-white md:text-5xl lg:text-6xl font-bold leading-tight">
+            Latest  <span className="text-[#acfe53]">Updates & Insights</span> 
           </h2>
           <p className="mt-3 text-white/60 text-sm md:text-base max-w-2xl mx-auto">
             Stay informed with the newest news, upcoming events, and in-depth blogs from the solar industry.
