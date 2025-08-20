@@ -71,29 +71,43 @@ export default function Navbar() {
               <Headphones size={24} />
             </button>
 
+            {/* Support Popup (Dark Theme) */}
             {supportOpen && (
-              <div className="absolute right-0 mt-2 w-72 bg-white text-black rounded-lg shadow-lg p-4 z-50">
-                <p className="font-semibold mb-1">pre-sale</p>
-                <a href="mailto:sale@skygreen.com" className="text-blue-600">
+              <div className="absolute right-0 mt-2 w-80 bg-gray-900/95 text-white rounded-xl shadow-xl p-5 z-50 border border-gray-700">
+                <p className="font-semibold text-green-400 mb-2">Pre-Sale</p>
+                <a
+                  href="mailto:sale@skygreen.com"
+                  className="block text-gray-300 hover:text-green-400"
+                >
                   sale@skygreen.com
                 </a>
 
-                <p className="font-semibold mt-3 mb-1">after-sale</p>
-                <a href="mailto:service@skygreen.com" className="text-blue-600">
+                <hr className="my-4 border-gray-700" />
+
+                <p className="font-semibold text-green-400 mb-2">After-Sale</p>
+                <a
+                  href="mailto:service@skygreen.com"
+                  className="block text-gray-300 hover:text-green-400"
+                >
                   service@skygreen.com
                 </a>
-                <p className="text-sm text-gray-500 mt-1">Respond in 24 hours</p>
+                <p className="text-sm text-gray-500 mt-1">Responds within 24 hours</p>
 
-                <hr className="my-3" />
-                <p className="font-semibold">Customer Support</p>
-                <a href="tel:+19085700909" className="text-blue-600 block">
+                <hr className="my-4 border-gray-700" />
+
+                <p className="font-semibold text-green-400 mb-2">Customer Support</p>
+                <a
+                  href="tel:+19085700909"
+                  className="block text-gray-300 hover:text-green-400"
+                >
                   +1 908-570-0909
                 </a>
                 <p className="text-sm text-gray-500">
-                  Monday to Saturday 10:00-18:00 (PDT)
+                  Mon – Sat, 10:00–18:00 (PDT)
                 </p>
               </div>
             )}
+
           </div>
 
           {/* Contact Us */}
@@ -140,12 +154,12 @@ export default function Navbar() {
 
             {mobileSupportOpen && (
               <div className="mt-2 w-full bg-white text-black rounded-lg shadow-lg p-4">
-                <p className="font-semibold mb-1">pre-sale</p>
+                <p className="font-semibold mb-1">Pre-Sale</p>
                 <a href="mailto:sale@skygreen.com" className="text-blue-600">
                   sale@skygreen.com
                 </a>
 
-                <p className="font-semibold mt-3 mb-1">after-sale</p>
+                <p className="font-semibold mt-3 mb-1">After-Sale</p>
                 <a
                   href="mailto:service@skygreen.com"
                   className="text-blue-600"
