@@ -9,7 +9,7 @@ type ImgCfg = { src: string; zoom?: number; objectPosition?: string };
 export default function CoreAdvantages() {
   const images: ImgCfg[] = [
     { src: "/images/products/front-image.png" },
-    { src: "/images/products/side-image.png", zoom: 1.35, objectPosition: "left center" },
+    // { src: "/images/products/side-image.png", zoom: 1.35, objectPosition: "left center" },
     { src: "/images/products/zoomed-image.png" },
   ];
 
@@ -19,30 +19,30 @@ export default function CoreAdvantages() {
 
   const leftFeatures: Feature[] = [
     {
-      title: "Reliable upgrade, leading warranty",
+      title: "Reliable Upgrade, Strong Warranty",
       description:
-        "Optimized wafers, cells, and packaging deliver a linear power warranty with ~0.4% annual degradation.",
+        "Optimized wafers, cells, and packaging ensure linear performance with just ~0.4% annual degradation, backed by 12-year product & 30-year performance warranty.",
       icon: <ShieldIcon />,
     },
     {
-      title: "Significant improvement in power generation performance",
+      title: "Higher Power Generation",
       description:
-        "Higher bifacial ratio and improved temperature coefficient can yield up to ~3% extra generation.",
+        "Bifacial design + improved temperature coefficient deliver up to 3% more energy compared to standard modules.",
       icon: <BoltIcon />,
     },
   ];
 
   const rightFeatures: Feature[] = [
     {
-      title: "BOS cost savings",
+      title: "BOS Cost Savings",
       description:
-        "≈4.5% power increase enables fewer racks, cables, land, and AC‑side equipment per watt.",
+        "~4.5% higher power density means fewer racks, cables, and land area — lowering system cost per watt.",
       icon: <CoinIcon />,
     },
     {
-      title: "Operation and Maintenance cost savings",
+      title: "Lower O&M Costs",
       description:
-        "Improved efficiency reduces cleaning, land rental, and maintenance overhead over the lifetime.",
+        "High efficiency + robust build reduce cleaning, maintenance, and land rental costs across the project lifetime.",
       icon: <GearIcon />,
     },
   ];
@@ -113,6 +113,8 @@ export default function CoreAdvantages() {
             ))}
           </div>
         </div>
+
+        <p className="text-center text-2xl text-green-500">Every unit of extra energy generated today is a step towards a greener India.</p>
       </div>
     </section>
   );

@@ -24,8 +24,8 @@ const rows: ElectricalRow[] = [
   { label: "Maximum power (Pmax)", key: "pmax", unit: "W" },
   { label: "Open-circuit voltage (Voc)", key: "voc", unit: "V" },
   { label: "Short-circuit current (Isc)", key: "isc", unit: "A" },
-  { label: "Peak power voltage (Vmp)", key: "vmp", unit: "V" },
-  { label: "Peak power current (Imp)", key: "imp", unit: "A" },
+  { label: "Voltage at Pmax (Vmp)", key: "vmp", unit: "V" },
+  { label: "Current at Pmax (Imp)", key: "imp", unit: "A" },
 ];
 
 export default function ElectricalPerformanceTable() {

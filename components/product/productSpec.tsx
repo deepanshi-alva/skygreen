@@ -52,8 +52,8 @@ function FancyCard({
 
 /** ---- Your data ---- */
 const MAX_RATINGS: Row[] = [
-  { label: "Max system voltage", value: "1500 V DC" },
-  { label: "Max series fuse rating", value: "30 A" },
+  { label: "Max system voltage", value: "1500 V (DC)" },
+  { label: "Max fuse rating", value: "30 A" },
   { label: "Fire rating", value: "Class C" },
   { label: "Application class", value: "Class A" },
   { label: "Mechanical load", value: "5400 Pa (front), 2400 Pa (rear)" },
@@ -73,7 +73,7 @@ const MECHANICAL: Row[] = [
   { label: "Cell type", value: "144 Half‑Cut N‑Type TOPCon" },
   { label: "Cell format", value: "182 mm (M10)" },
   { label: "Busbar technology", value: "16BB Multi‑Busbar" },
-  { label: "Glass", value: "Dual 2.0 mm tempered (front & rear)" },
+  { label: "Glass", value: "2 x 2.0 mm dual-glass, AR-coated" },
   { label: "Frame", value: "Anodized aluminum alloy" },
   { label: "Junction box", value: "IP68, 3 bypass diodes" },
   { label: "Connector", value: "MC4 compatible" },

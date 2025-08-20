@@ -72,7 +72,7 @@ const CLIMATES: Record<
     colors: ["#94a3b8", "#0ea5e9"],
     overview:
       "Durable against hailstorms & extreme gusts.",
-    video: "/images/climate/hailstrom.mp4",
+    video: "/images/climate/hailStrom.mp4",
     specs: [
       { title: "25 mm @ 23 m/s hail certified", description: "Proven IEC hail test." },
       { title: "3.2-3.5 mm tempered glass ", description: "Absorbs high impacts." },
@@ -114,8 +114,8 @@ export default function ClimateSelector() {
               "linear-gradient(to right, #000000ff, #3ef838, #000000ff) 1",
           }}
         >
-          The next level{" "}
-          <span className="text-[#acfe53]">High-quality solar modules</span>
+          Engineered for Every {" "}
+          <span className="text-[#acfe53]">Season</span>
         </h1>
       </div>
 
