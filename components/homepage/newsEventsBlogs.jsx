@@ -193,7 +193,7 @@ export default function NewsEventsBlogs({
             {!!items.length && (
               <div className="relative h-full">
                 <AnimatePresence initial={false} mode="wait">
-                  <motion.a
+                  <motion.div
                     key={current?.id ?? `idx-${safeIndex}`}
                     className={`absolute inset-0 ${current?.image
                       ? "grid md:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]"
@@ -272,15 +272,29 @@ export default function NewsEventsBlogs({
                         )}
                         {current?.excerpt && (
                           <p
-                            className={`mt-4 text-white/80 ${current?.image ? "line-clamp-4 md:line-clamp-5" : ""
+                            className={`mt-4 text-white/80 ${current?.image ? "leading-7" : ""
                               }`}
                           >
                             {current.excerpt}
                           </p>
                         )}
+                        {current?.href && (
+                          <div className="mt-4">
+                            <a
+                              href={current.href}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-medium text-white hover:bg-white/20 transition"
+                              aria-label={`Read more about: ${current?.title ?? "item"}`}
+                            >
+                              Read more
+                              <ChevronRight className="h-4 w-4" aria-hidden="true" />
+                            </a>
+                          </div>
+                        )}
                       </div>
                     </div>
-                  </motion.a>
+                  </motion.div>
                 </AnimatePresence>
               </div>
             )}
