@@ -9,6 +9,7 @@ const CLIMATES: Record<
   ClimateKey,
   {
     label: string;
+    sublabel: string;
     icon: string; // <-- changed from emoji to icon path
     colors: [string, string];
     overview: string;
@@ -18,97 +19,88 @@ const CLIMATES: Record<
 > = {
   rainy: {
     label: "Rainy",
+    sublabel:"Monsoon Ready",
     icon: "/images/climate/rain.png",
     colors: ["#3b82f6", "#22d3ee"],
     overview:
-      "Sealed connectors, hydrophobic glass, and anti-PID keep output stable in monsoons.",
+      "Performance remains stable in heavy rain & monsoon humidity.",
     video: "images/climate/rain.mp4",
     specs: [
-      { title: "Hydrophobic glass", description: "Water beads, light stays." },
-      { title: "Sealed frame", description: "Stops moisture ingress." },
-      { title: "IP68 build", description: "Flood-safe connectors." },
-      { title: "Bypass diodes", description: "Safer in drizzle shade." },
-      { title: "100% RH ready", description: "Condensation tested." },
+      { title: "Hydrophobic glass", description: "Water beads, light transmission stays high." },
+      { title: "Sealed frame", description: "Prevents moisture ingress." },
+      { title: "IP68 build", description: "Flood-safe, long-term reliability." },
+      { title: "Bypass diodes", description: "Stable output in shaded drizzle." },
+      { title: "100% RH ready", description: "Condensation and humidity resistant." },
     ],
   },
   snowy: {
     label: "Snowy",
+    sublabel:"Cold Climate Performance",
     icon: "/images/climate/cold.png",
     colors: ["#bfdbfe", "#60a5fa"],
     overview:
-      "High load frames and low temp-coeff keep performance steady under snow.",
+      "Reliable output in sub-zero, snowy regions.",
     video: "images/climate/snow.mp4",
     specs: [
-      { title: "5400 Pa load", description: "Handles heavy snow." },
-      { title: "Drain channels", description: "Meltwater exits fast." },
-      { title: "−0.34%/°C", description: "Cold boosts output." },
-      { title: "Black backsheet", description: "Helps mild melt." },
-      { title: "−40 °C cycles", description: "Freeze-thaw safe." },
+      { title: "5400 Pa load", description: "Handles heavy snow pressure." },
+      { title: "Drain channels", description: "Meltwater exits quickly." },
+      { title: "Low temp coefficient (-0.34%/°C)", description: "Higher efficiency in cold." },
+      { title: "Black backsheet", description: "Retains heat, helps snow melt." },
+      { title: "-40 °C cycle tested", description: "Freeze-thaw durable." },
     ],
   },
   desert: {
     label: "Desert",
+    sublabel:"Heat & Dust Resistant",
     icon: "/images/climate/hot.png",
     colors: ["#fbbf24", "#f59e0b"],
     overview:
-      "UV-hard materials and anti-soiling coatings keep yield high in arid sites.",
+      "Engineered for hot, dusty, high-radiation sites.",
     video: "images/climate/desert.mp4",
     specs: [
-      { title: "UV 2× tested", description: "Slower aging." },
-      { title: "−40–85 °C", description: "Wide temp range." },
-      { title: "Abrasion glass", description: "Dust-scratch tough." },
-      { title: "IEC dust test", description: "Ingress controlled." },
-      { title: "Dry-clean OK", description: "Robot-friendly." },
+      { title: "UV-resistant materials", description: "Slower aging under intense sun." },
+      { title: "-40°C to +85°C range ", description: "Wide temperature endurance." },
+      { title: "Abrasion-resistant glass", description: "Withstands dust and sandstorms." },
+      { title: "IEC dust ingress test passed", description: "Desert-certified protection." },
+      { title: "Dry-clean compatible", description: "Supports robotic & manual cleaning." },
     ],
   },
   hailing: {
     label: "Hailing",
+    sublabel:"Impact Resistant",
     icon: "/images/climate/hail.png",
     colors: ["#94a3b8", "#0ea5e9"],
     overview:
-      "Thick tempered glass and reinforced frames resist hail impacts and gusts.",
+      "Durable against hailstorms & extreme gusts.",
     video: "/images/climate/hailstrom.mp4",
     specs: [
-      { title: "25 mm @ 23 m/s", description: "Hail certified." },
-      { title: "3.2–3.5 mm glass", description: "Absorbs impact." },
-      { title: "Corner keys", description: "Spreads shock." },
-      { title: "2400 Pa wind", description: "Gust-ready." },
-      { title: "12/25-yr cover", description: "Product/perf." },
+      { title: "25 mm @ 23 m/s hail certified", description: "Proven IEC hail test." },
+      { title: "3.2-3.5 mm tempered glass ", description: "Absorbs high impacts." },
+      { title: "Reinforced frame with corner keys", description: "Distributes shock." },
+      { title: "2400 Pa wind load", description: "Gust-resistant structure." },
+      { title: "12/30-year warranty cover", description: "Long-term reliability guaranteed." },
     ],
   },
   windy: {
     label: "Windy",
+    sublabel:"Storm Secured",
     icon: "/images/climate/windy.png", // you can use the white wind SVG you made
     colors: ["#1f2937", "#7dd3fc"],
     overview:
-      "Aerodynamic frames, proper clamp zones, and SS hardware stay secure in wind.",
+      "Secure in coastal, cyclone & high-wind regions.",
     video: "/images/climate/wind.mp4",
     specs: [
-      { title: "2400 Pa rating", description: "Resists uplift." },
-      { title: "20–25% clamps", description: "Stress minimized." },
-      { title: "M6 SS fasteners", description: "Corrosion-safe." },
-      { title: "Integrated ground", description: "Stable bonding." },
-      { title: "IEC 61215/61730", description: "Global standards." },
+      { title: "2400Pa wind rating", description: "Withstands strong winds." },
+      { title: "20-25% clamps zones", description: "Reduces structural stress." },
+      { title: "M6 SS fasteners", description: "Corrosion-proof mounting." },
+      { title: "Integrated grounding", description: "Stable, safe bonding." },
+      { title: "IEC 61215/61730 certified", description: "Tested to global standards." },
     ],
   },
 };
 
 export default function ClimateSelector() {
   const [selected, setSelected] = useState<ClimateKey>("rainy");
-  // const [fadeKey, setFadeKey] = useState(0);
-
-  // const gradient = useMemo(() => {
-  //   const [c1, c2] = CLIMATES[selected].colors;
-  //   return `radial-gradient(120% 120% at 20% 10%,
-  //   ${c1} 0%,
-  //   ${c2} 55%,
-  //   rgba(0,0,0,0.6) 85%,
-  //   #000 100%)`;
-  // }, [selected]);
-
-  // useEffect(() => {
-  //   setFadeKey((k) => k + 1); 
-  // }, [selected]);
 
   return (
     <section className="relative min-h-screen bg-black overflow-hidden pt-15 pb-15" >
@@ -129,17 +121,6 @@ export default function ClimateSelector() {
 
       {/* Main section with animated background only here */}
       <div className="relative py-12 mx-auto max-w-7xl">
-        {/* Optional bg gradient layer */}
-        {/* <div
-          key={fadeKey}
-          className="absolute inset-0 animate-fadeIn"
-          style={{
-            backgroundImage: `${gradient}, linear-gradient(to bottom, rgba(0,0,0,0) 60%, #000 100%)`,
-            backgroundRepeat: "no-repeat, no-repeat",
-            backgroundSize: "cover, cover",
-            backgroundPosition: "center, center",
-          }}
-        /> */}
         <div className="absolute inset-0 bg-black/30" />
 
         {/* Content */}
@@ -147,7 +128,7 @@ export default function ClimateSelector() {
           {/* Left column */}
           <div className="relative mr-10 ml-4 text-white flex flex-col justify-center">
             {/* Icon + climate label as H1 */}
-            <h1 className="inline-flex items-center gap-2 px-3 py-1 text-6xl md:text-7xl font-bold leading-none">
+            <h1 className="inline-flex items-center gap-2 py-1 text-6xl md:text-7xl font-bold leading-none">
               <Image
                 src={CLIMATES[selected].icon}
                 alt="" // decorative; screen readers will read the text next to it
@@ -160,8 +141,8 @@ export default function ClimateSelector() {
               <span className="tracking-wide">{CLIMATES[selected].label}</span>
             </h1>
 
-            <h3 className="mt-4 text-3xl md:text-4xl font-bold">
-              How Our <span className="text-[#acfe53]">Panels Perform</span>
+            <h3 className="mt-4 text-2xl md:text-3xl text-[#acfe53] font-bold">
+              {CLIMATES[selected].sublabel}
             </h3>
 
             <p

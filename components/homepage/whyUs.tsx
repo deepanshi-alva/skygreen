@@ -5,31 +5,28 @@ import { useScroll, useTransform, useMotionValueEvent } from "framer-motion";
 import { Bolt, CheckCircle, Leaf } from "lucide-react";
 
 const paragraphArray = [
-  "Empowering", "a", "brighter", "tomorrow,",
-  "we", "deliver", "smart", "and", "affordable", "solar", "solutions", "tailored", "to", "your", "needs.",
-  "Our", "cutting-edge", "technology", "ensures", "lasting", "performance", "and", "maximizes", "your", "energy", "savings.",
-  "Experience", "hassle-free", "installation,", "reliable", "service,", "and", "join", "us", "in", "creating", "a", "cleaner,", "more", "sustainable", "planet.",
-  "Reduce", "your", "carbon", "footprint", "and", "unlock", "the", "power", "of", "the", "sun.",
-  "Trusted", "across", "India,", "SKYGREEN", "panels", "are", "built", "for", "all", "terrains", "and", "weather.",
-  "Make", "the", "smart", "choice", "for", "a", "greener", "future.",
+  "Empowering", "India’s", "clean", "energy", "future", "with", "solar", "built", "for", "every", "season", "of", "life.",
+  "From", "scorching", "summers", "to", "heavy", "monsoons,", "freezing", "winters", "to", "dusty", "deserts,", "SKYGREEN", "panels", "are", "made", "to", "power", "homes,", "businesses,", "and", "industries", "across", "India’s", "diverse", "landscapes.",
+  "We", "bring", "the", "world’s", "latest", "solar", "innovations", "to", "India", "—", "starting", "with", "our", "N-Type", "TOPCon", "bifacial", "modules", "—", "to", "ensure", "that", "every", "sunrise", "turns", "into", "reliable", "savings,", "stronger", "energy", "security,", "and", "a", "brighter", "tomorrow."
 ];
+
 
 
 const features = [
   {
     icon: <Bolt className="h-10 w-10 text-green-400 mb-3" />,
-    title: "Efficiency",
-    description: "Our solar panels offer high efficiency and performance",
+    title: "High Efficiency",
+    description: "Advanced solar technology designed to deliver maximum power per square meter, reducing electricity costs for decades.",
   },
   {
     icon: <CheckCircle className="h-10 w-10 text-green-400 mb-3" />,
-    title: "Reliability",
-    description: "We provide durable and dependable solar energy solutions",
+    title: "Certified Reliability",
+    description: "BIS registered (R-41239518), IEC, CE, ISO, TÜV certified — engineered to endure snow, wind, hail, and desert storms.",
   },
   {
     icon: <Leaf className="h-10 w-10 text-green-400 mb-3" />,
-    title: "Sustainability",
-    description: "Power your home with clean, renewable energy",
+    title: "Future-Ready Sustainability",
+    description: "Backed by long-term warranties, low degradation, and eco-friendly materials, ensuring clean energy for generations to come.",
   },
 ];
 
@@ -67,9 +64,10 @@ export default function WhyUs() {
           background: "rgba(0, 0, 0, 0.42)",
         }}
       >
-        <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-center pb-5 my-8 text-green-400">
-          Why Choose Us?
+        <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-center my-4 text-green-400">
+          Why Choose SKYGREEN?
         </h2>
+        <p className="text-lg sm:text-xl md:text-2xl pb-6 font-semibold text-center ">Born for Every Season. Built for India’s Future.</p>
 
         {/* Text reveal */}
         <div
@@ -105,9 +103,9 @@ export default function WhyUs() {
                 key={feature.title}
                 className="bg-[#111] rounded-2xl flex flex-col items-center text-center p-4 sm:p-6 md:p-8 border border-green-800 hover:border-green-400 transition-all duration-300 w-full max-w-xs sm:max-w-sm md:max-w-md min-w-[220px] mx-auto hover:shadow-[0_0_20px_3px_rgba(34,197,94,0.4)]"
               >
-                <div className="flex flex-row items-center gap-3 mb-2 justify-center">
+                <div className="flex flex-row items-center gap-x-2 mb-2 justify-center">
                   {feature.icon}
-                  <h3 className="text-white text-xl sm:text-2xl font-semibold">{feature.title}</h3>
+                  <h3 className="text-white text-lg sm:text-xl flex items-center mb-4 font-semibold">{feature.title}</h3>
                 </div>
                 <p className="text-gray-300 text-sm sm:text-base">
                   {feature.description}
