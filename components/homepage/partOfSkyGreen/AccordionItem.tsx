@@ -14,7 +14,7 @@ export function AccordionItem({ title, children, defaultOpen = false }: Accordio
     <div className="border-b border-gray-700 last:border-b-0">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full py-6 px-0 text-left flex items-center justify-between hover:bg-gray-800 transition-colors duration-200"
+        className="w-full py-2 px-0 text-left flex items-center justify-between hover:bg-gray-800 transition-colors duration-200"
       >
         <h3 className="text-lg font-semibold text-green-400 pr-4">
           {title}

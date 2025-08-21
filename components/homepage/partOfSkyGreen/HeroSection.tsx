@@ -20,8 +20,8 @@ export function HeroSection() {
         <h2 className="text-4xl font-bold mb-4 leading-tight">
           Refer a friend
         </h2>
-        <p className="text-xl text-gray-100 font-medium">
-          Earn up to $500 in cash per referral.
+        <p className="text-xl text-gray-100 font-medium text-justify">
+          At SKYGREEN, we don’t just sell solar panels — we build a community of partners, installers, and customers who believe in a brighter and cleaner future. When you join the Skygreen Family, you’re not just a buyer or seller — you’re a partner in India’s clean energy journey.
         </p>
       </div>
     </div>

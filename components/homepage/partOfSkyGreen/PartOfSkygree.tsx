@@ -17,8 +17,9 @@ function App() {
         {/* Main heading */}
         <div className="text-center mb-18">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-            <span className="text-white">Become a Part of </span>
-            <span className="text-[#3ef838]">SkyGreen</span>
+            <span className="text-white">Become a Part of the </span>
+            <span className="text-[#3ef838]">SKYGREEN </span>
+            <span className="text-white">Family</span>
           </h1>
         </div>
 
@@ -31,7 +32,7 @@ function App() {
 
           {/* Right column - Referral program info */}
           <div
-            className="order-1 lg:order-2 bg-gray-900 rounded-2xl shadow-lg border border-gray-800 p-8 lg:p-10 h-full" style={{
+            className="order-1 lg:order-2 bg-gray-900 rounded-2xl shadow-lg border border-gray-800 sm:px-8 lg:px-8 lg:py-4" style={{
               backgroundImage:
                 "url(/images/testimonials/download_converted.png)", // Replace with your image path
               backgroundSize: "cover", // Ensure the image covers the entire container

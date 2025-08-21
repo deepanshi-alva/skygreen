@@ -64,12 +64,12 @@ export default function HeroSection() {
         <h2
           className={`${orbitron.className} font-extrabold mb-4 leading-tight tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-green-800 via-green-300 to-green-500 animate-gradient text-[clamp(2rem,5vw+1rem,4.5rem)]`}
         >
-          SOLAR PANELS
-          <br className="hidden md:block" /> FOR YOUR HOME
+          SMART SOLAR
+          <br className="hidden md:block" /> for a Sustainable Future.
         </h2>
 
         <p className="text-green-200 mb-6 text-[clamp(1rem,1.2vw+0.6rem,1.25rem)] max-w-[70ch]">
-          High-quality solar solutions for a sustainable future
+          BIS & TÜV Certified panels, built for India’s toughest climates.
         </p>
 
         <div className="flex items-center justify-center gap-[clamp(0.5rem,1.5vw,1rem)]">
@@ -80,7 +80,7 @@ export default function HeroSection() {
             variant="outline"
             className="border-green-400/60 text-green-300 hover:text-black hover:bg-green-300 rounded-lg text-[clamp(0.95rem,0.8vw+0.7rem,1.1rem)] px-[clamp(1rem,2.2vw,1.75rem)] py-[clamp(0.55rem,1.2vw,0.9rem)]"
           >
-            JOIN US
+            Explore Products
           </Button>
         </div>
       </div>
@@ -100,7 +100,7 @@ export default function HeroSection() {
             d="M19 9l-7 7-7-7"
           />
         </svg>
-        <span className="text-green-300 text-sm">Scroll</span>
+        <span className="text-green-300 text-sm">Step Into Tomorrow</span>
       </div>
 
       {/* Animations */}

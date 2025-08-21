@@ -5,77 +5,39 @@ export function ReferralProgram() {
   return (
     <div className="space-y-0">
       {/* Section 1: Refer Friends */}
-      <AccordionItem title="Refer Friends to Sky Green and Earn Cash Rewards." defaultOpen={true}>
+      <AccordionItem title="The Skygreen Rewards Program" defaultOpen={true}>
         <div className="space-y-4">
-          <p className="text-lg text-white">
-            Give a 5% off coupon, and earn up to ₹40,000 cash per referral.
-          </p>
           <div className="space-y-3">
             <p>
-              Share the power of Sky Green with your network. When your friends make their first 
-              purchase using your referral code, they’ll get 5% off their order and you’ll earn 
-              cash rewards based on their purchase amount.
+              We value the trust you place in us, and we believe it should be rewarded. The Skygreen Rewards Program is designed to give back to everyone who helps our community grow.
             </p>
-            <div className="bg-gray-800 p-4 rounded-lg border border-gray-700">
+            <div className="">
               <h4 className="font-semibold text-green-400 mb-2">How it works:</h4>
               <ul className="list-disc pl-6 space-y-1 text-white">
-                <li>Share your unique referral link</li>
-                <li>Your friend gets 5% off their first order</li>
-                <li>You earn up to ₹40,000 cash per successful referral</li>
-                <li>No limit on the number of referrals</li>
+                <li><span className='font-semibold'>Join the Program</span> → Sign up and get your unique Skygreen Family ID & referral code.</li>
+                <li><span className='font-semibold'>Share & Refer</span> → Invite friends, dealers, installers, or customers to join the SKYGREEN Family.</li>
+                <li><span className='font-semibold'>Earn Rewards</span> → For every successful installation, you earn ₹1500 cash reward or an exclusive gift voucher.</li>
               </ul>
             </div>
           </div>
-          <a 
-            href="#" 
-            className="inline-flex items-center text-green-400 hover:text-green-300 font-medium transition-colors duration-200"
-          >
-            Learn More
-            <svg className="w-4 h-4 ml-1" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
-            </svg>
-          </a>
+          <p className='text-sm'>💡 The more you share, the more you earn — there’s no limit to your rewards.</p>
         </div>
       </AccordionItem>
 
       {/* Section 2: Join SkyCredits */}
-      <AccordionItem title="Join the SkyCredits Reward Program.">
+      <AccordionItem title="Why Join the Skygreen Family?">
         <div className="space-y-4">
-          <p className="text-lg text-white">
-            Unlock exclusive rewards and benefits every time you shop, refer, or engage with Sky Green.
-          </p>
           <div className="space-y-3">
-            <p>
-              The SkyCredits Reward Program lets you collect points for every purchase, successful referral, or special activity. 
-              Redeem your SkyCredits for discounts, exclusive merchandise, or even cashback.
-            </p>
-            <div className="bg-gray-800 p-4 rounded-lg border border-gray-700">
-              <h4 className="font-semibold text-green-400 mb-2">How to Earn SkyCredits:</h4>
+            <div className="">
               <ul className="list-disc pl-6 space-y-1 text-white">
-                <li>Earn SkyCredits for every ₹ spent on our platform</li>
-                <li>Get bonus credits for referring friends and family</li>
-                <li>Participate in special promotions and events</li>
-                <li>Share feedback or reviews to earn extra credits</li>
-              </ul>
-            </div>
-            <div className="bg-gray-800 p-4 rounded-lg border border-gray-700">
-              <h4 className="font-semibold text-green-400 mb-2">How to Use SkyCredits:</h4>
-              <ul className="list-disc pl-6 space-y-1 text-white">
-                <li>Redeem for instant discounts on future purchases</li>
-                <li>Exchange for exclusive SkyGreen merchandise</li>
-                <li>Use credits for cashback or gift cards</li>
+                <li><span className='font-semibold'>Belonging</span>: Be part of a fast-growing clean energy network across India.</li>
+                <li><span className='font-semibold'>Earnings</span>: Turn your referrals into real income or rewards.</li>
+                <li><span className='font-semibold'>Recognition</span>: Get featured on our leaderboards and special campaigns.</li>
+                <li><span className='font-semibold'>Transparency</span>: Every referral is tracked in your Rewards Dashboard.</li>
+                <li><span className='font-semibold'>Impact</span>: Every panel installed through you contributes to India’s clean energy mission.</li>
               </ul>
             </div>
           </div>
-          <a 
-            href="#" 
-            className="inline-flex items-center text-green-400 hover:text-green-300 font-medium transition-colors duration-200"
-          >
-            Discover More
-            <svg className="w-4 h-4 ml-1" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
-            </svg>
-          </a>
         </div>
       </AccordionItem>
     </div>

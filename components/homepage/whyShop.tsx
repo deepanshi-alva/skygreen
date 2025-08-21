@@ -6,32 +6,37 @@ function App() {
     {
       icon: Clock,
       title: "Price Guarantee",
-      description: "30 Days"
+      description: "Transparent pricing — no hidden costs. If you find a lower price for the same certified product, we’ll match it."
     },
     {
       icon: CreditCard,
-      title: "Buy Now, Pay Later",
-      description: "Flexible payment options"
+      title: "48-Hour Dispatch",
+      description: "Fastest supply chain in India. All confirmed orders are dispatched within 48 hours — or you get a discount."
     },
     {
       icon: Shield,
-      title: "Warranty Protection",
-      description: "Full coverage"
+      title: "Fast Warranty (48 hrs)",
+      description: "No more waiting weeks for replacements. Genuine warranty cases approved within 48 hours."
     },
     {
       icon: MessageCircle,
-      title: "24/7 Help Center",
-      description: "Always available"
+      title: "Buy Now, Pay Later",
+      description: "Flexible payment plans and credit options so dealers and EPCs can scale projects without cash-flow stress."
     },
     {
       icon: RefreshCw,
-      title: "Trade in",
-      description: "Easy exchanges"
+      title: "Dedicated Help Center",
+      description: "24/7 WhatsApp, phone and email support for dealers, EPCs and customers. Real people, real help."
     },
+    // {
+    //   icon: Hand,
+    //   title: "Referral & Rewards Program",
+    //   description: "Earn ₹1500 or gift vouchers for every successful installation you refer. Track your rewards live in your dashboard."
+    // },
     {
       icon: Hand,
-      title: "30% Tax Rebate",
-      description: "Save more"
+      title: "EPC Rescue Hotline",
+      description: "When competitors fail to deliver, our eamergency hotline ensures panels reach your site same day."
     }
   ];
 
