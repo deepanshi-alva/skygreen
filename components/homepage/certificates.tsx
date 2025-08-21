@@ -4,13 +4,16 @@ import React from "react";
 import Image from "next/image";
 
 const certificates = [
+  "/images/certificates/30-yr-warranty.png",
+  "/images/certificates/ass.png",
+  "/images/certificates/bis.png",
   "/images/certificates/ce.png",
-  "/images/certificates/cec.png",
-  "/images/certificates/cqc.png",
-  "/images/certificates/lapi.png",
-  "/images/certificates/mcs.png",
-  "/images/certificates/n.png",
-  "/images/certificates/solar.png",
+  "/images/certificates/delivery.png",
+  "/images/certificates/eco.png",
+  "/images/certificates/iec.png",
+  "/images/certificates/ip68.png",
+  "/images/certificates/iso.png",
+  "/images/certificates/trusted.png",
   "/images/certificates/tuv.png",
 ];
 
