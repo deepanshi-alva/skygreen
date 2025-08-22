@@ -1,10 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Menu, X, ChevronDown, Headphones } from "lucide-react"; // Added Headphones icon
+import { Menu, X, ChevronDown, Headphones } from "lucide-react"; 
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useAuth } from "@/lib/authContext"; // ✅ import auth context
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -12,6 +13,8 @@ export default function Navbar() {
   const [supportOpen, setSupportOpen] = useState(false);
   const [mobileSupportOpen, setMobileSupportOpen] = useState(false);
   const pathname = usePathname();
+
+  const { user, logout } = useAuth(); // ✅ get user & logout
 
   useEffect(() => {
     const handleScroll = () => {
@@ -22,13 +25,15 @@ export default function Navbar() {
   }, []);
 
   const linkClasses = (path: string) =>
-    `hover:text-green-500 transform hover:scale-110 transition-transform duration-300 ${pathname === path ? "text-green-500 font-semibold" : ""
+    `hover:text-green-500 transform hover:scale-110 transition-transform duration-300 ${
+      pathname === path ? "text-green-500 font-semibold" : ""
     }`;
 
   return (
     <div
-      className={`fixed top-0 w-full z-50 transition-shadow ${isSticky ? "shadow-md bg-black/90" : "bg-black"
-        }`}
+      className={`fixed top-0 w-full z-50 transition-shadow ${
+        isSticky ? "shadow-md bg-black/90" : "bg-black"
+      }`}
     >
       <nav className="max-w-7xl mx-auto flex items-center justify-between px-4 py-3 text-white">
         {/* Logo */}
@@ -58,7 +63,7 @@ export default function Navbar() {
           </Link>
         </div>
 
-        {/* Support + Contact */}
+        {/* Right Section: Support + Auth */}
         <div className="hidden md:flex items-center space-x-4 relative">
           {/* Support Dropdown */}
           <div
@@ -66,12 +71,17 @@ export default function Navbar() {
             onMouseEnter={() => setSupportOpen(true)}
             onMouseLeave={() => setSupportOpen(false)}
           >
-            <button className={`font-semibold flex items-center mr-8 transition-transform duration-300 ${supportOpen ? "text-green-500 scale-110" : "hover:text-green-400 hover:scale-110"
-              }`}>
+            <button
+              className={`font-semibold flex items-center mr-8 transition-transform duration-300 ${
+                supportOpen
+                  ? "text-green-500 scale-110"
+                  : "hover:text-green-400 hover:scale-110"
+              }`}
+            >
               <Headphones size={24} />
             </button>
 
-            {/* Support Popup (Dark Theme) */}
+            {/* Support Popup */}
             {supportOpen && (
               <div className="absolute right-0 mt-2 w-80 bg-gray-900/95 text-white rounded-xl shadow-xl p-5 z-50 border border-gray-700">
                 <p className="font-semibold text-green-400 mb-2">Pre-Sale</p>
@@ -91,11 +101,15 @@ export default function Navbar() {
                 >
                   service@skygreen.com
                 </a>
-                <p className="text-sm text-gray-500 mt-1">Responds within 24 hours</p>
+                <p className="text-sm text-gray-500 mt-1">
+                  Responds within 24 hours
+                </p>
 
                 <hr className="my-4 border-gray-700" />
 
-                <p className="font-semibold text-green-400 mb-2">Customer Support</p>
+                <p className="font-semibold text-green-400 mb-2">
+                  Customer Support
+                </p>
                 <a
                   href="tel:+19085700909"
                   className="block text-gray-300 hover:text-green-400"
@@ -107,8 +121,68 @@ export default function Navbar() {
                 </p>
               </div>
             )}
-
           </div>
+
+          {/* ✅ Auth Section */}
+          {!user ? (
+            <Link
+              href={"/login"}
+              className="bg-green-600 px-4 py-1 rounded-full text-white font-semibold hover:bg-green-700 transition"
+            >
+              Login
+            </Link>
+          ) : (
+            <div className="relative group">
+              <button className="px-4 py-2 bg-gray-100 text-black rounded">
+                {user.username} <ChevronDown className="inline w-4 h-4" />
+              </button>
+              <div className="absolute right-0 mt-2 w-48 bg-white text-black shadow-lg rounded hidden group-hover:block">
+                {/* Common */}
+                <Link
+                  href="/profile"
+                  className="block px-4 py-2 hover:bg-gray-100"
+                >
+                  My Profile
+                </Link>
+
+                {/* Role-specific */}
+                {user?.role?.name === "Admin" && (
+                  <Link
+                    href="/admin/users"
+                    className="block px-4 py-2 hover:bg-gray-100"
+                  >
+                    Manage Users
+                  </Link>
+                )}
+
+                {user?.role?.name === "Caller" && (
+                  <Link
+                    href="/caller/users"
+                    className="block px-4 py-2 hover:bg-gray-100"
+                  >
+                    Assigned Users
+                  </Link>
+                )}
+
+                {user?.role?.name === "Customer" && (
+                  <Link
+                    href="/orders"
+                    className="block px-4 py-2 hover:bg-gray-100"
+                  >
+                    My Orders
+                  </Link>
+                )}
+
+                {/* Logout */}
+                <button
+                  onClick={logout}
+                  className="w-full text-left px-4 py-2 hover:bg-red-50 text-red-600"
+                >
+                  Logout
+                </button>
+              </div>
+            </div>
+          )}
 
           {/* Contact Us */}
           <Link
@@ -143,10 +217,71 @@ export default function Navbar() {
             Join Us
           </Link>
 
+          {/* ✅ Mobile Auth */}
+          {!user ? (
+            <Link
+              href={"/login"}
+              className="block bg-green-600 px-4 py-2 rounded text-center mt-3"
+            >
+              Login
+            </Link>
+          ) : (
+            <div className="mt-3 bg-white text-black rounded-lg shadow-lg">
+              <p className="px-4 py-2 font-semibold border-b">
+                Hello, {user.username}
+              </p>
+
+              <Link
+                href="/profile"
+                className="block px-4 py-2 hover:bg-gray-100"
+              >
+                My Profile
+              </Link>
+
+              {user?.role?.name === "Admin" && (
+                <Link
+                  href="/admin/users"
+                  className="block px-4 py-2 hover:bg-gray-100"
+                >
+                  Manage Users
+                </Link>
+              )}
+
+              {user?.role?.name === "Caller" && (
+                <Link
+                  href="/caller/users"
+                  className="block px-4 py-2 hover:bg-gray-100"
+                >
+                  Assigned Users
+                </Link>
+              )}
+
+              {user?.role?.name === "Customer" && (
+                <Link
+                  href="/orders"
+                  className="block px-4 py-2 hover:bg-gray-100"
+                >
+                  My Orders
+                </Link>
+              )}
+
+              <button
+                onClick={logout}
+                className="w-full text-left px-4 py-2 hover:bg-red-50 text-red-600"
+              >
+                Logout
+              </button>
+            </div>
+          )}
+
           {/* Mobile Support Dropdown */}
           <div className="mt-3">
             <button
-              className={`font-semibold flex items-center mr-8 transition-transform duration-300 ${supportOpen ? "text-green-500 scale-110" : "hover:text-green-400 hover:scale-110"}`}
+              className={`font-semibold flex items-center mr-8 transition-transform duration-300 ${
+                supportOpen
+                  ? "text-green-500 scale-110"
+                  : "hover:text-green-400 hover:scale-110"
+              }`}
               onClick={() => setMobileSupportOpen(!mobileSupportOpen)}
             >
               <Headphones size={18} />
@@ -160,10 +295,7 @@ export default function Navbar() {
                 </a>
 
                 <p className="font-semibold mt-3 mb-1">After-Sale</p>
-                <a
-                  href="mailto:service@skygreen.com"
-                  className="text-blue-600"
-                >
+                <a href="mailto:service@skygreen.com" className="text-blue-600">
                   service@skygreen.com
                 </a>
                 <p className="text-sm text-gray-500 mt-1">Respond in 24 hours</p>

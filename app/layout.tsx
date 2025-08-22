@@ -4,6 +4,7 @@ import "./globals.css";
 import Footer from "@/components/common/footer";
 import Header from "@/components/common/header";
 import WhatsAppWidget from "@/components/WhatsAppWidget";
+import { AuthProvider } from "@/lib/authContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,14 +31,16 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground `}
       >
-        <Header />
-        {children}
-        <Footer />
-        <WhatsAppWidget
-          message="Hi SKYGREEN, I'm interested in your imported TOPCon panels (575W). Please contact me."
-          bottom={24}
-          right={24}
-        />
+        <AuthProvider>
+          <Header />
+          {children}
+          <Footer />
+          <WhatsAppWidget
+            message="Hi SKYGREEN, I'm interested in your imported TOPCon panels (575W). Please contact me."
+            bottom={24}
+            right={24}
+          />
+        </AuthProvider>
       </body>
     </html>
   );
