@@ -38,9 +38,6 @@ export default function HeroSection() {
           <h1 className="font-extrabold leading-none tracking-tight text-white text-[44px] md:text-[72px] lg:text-[100px]">
             FAQ&apos;s
           </h1>
-          {/* <p className="mt-1 text-green-500 font-extrabold leading-none tracking-tight text-[28px] md:text-[40px] lg:text-[56px]">
-            Information
-          </p> */}
         </div>
       </div>
     </section>
