@@ -35,11 +35,11 @@ function FancyCard({
               <li
                 key={i}
                 className={`grid grid-cols-1 sm:grid-cols-[1fr_auto] items-start gap-2 px-4 py-3 rounded-2xl sm:rounded-none transition-colors duration-300
-    hover:bg-emerald-500/10  hover:rounded-xl hover:scale-[1.02] hover:shadow-[inset_0_0_0_1px_rgba(16,185,129,0.4)] ${i % 2 === 0 ? "bg-white/[0.02] sm:bg-transparent" : ""
+    hover:bg-white-10  hover:rounded-xl hover:scale-[1.08] hover:shadow-[inset_0_0_0_1px_rgba(255,255,255,0.6)] ${i % 2 === 0 ? "bg-white/[0.02] sm:bg-transparent" : ""
                   }`}
               >
-                <span className="text-sm text-zinc-400">{r.label}</span>
-                <span className="text-sm sm:text-right font-medium text-zinc-100">
+                <span className="text-sm text-zinc-400 ">{r.label}</span>
+                <span className="text-sm sm:text-right font-medium text-zinc-100 ">
                   {r.value}
                 </span>
               </li>
