@@ -36,7 +36,7 @@ export default function CoreAdvantages() {
     {
       title: "BOS Cost Savings",
       description:
-        "~4.5% higher power density means fewer racks, cables, and land area — lowering system cost per watt.",
+        "4.5% higher power density means fewer racks, cables, and land area — lowering system cost per watt.",
       icon: <CoinIcon />,
     },
     {
@@ -128,7 +128,7 @@ function FeatureItem({
 }: Feature & { align?: "center" | "center" }) {
   const isRight = align === "center";
   return (
-    <div className={isRight ? "text-center" : "text-center"}>
+    <div >
       <div
         className={
           "mb-4 flex items-center " + (isRight ? "justify-center" : "justify-center")
@@ -136,17 +136,22 @@ function FeatureItem({
       >
         <IconBadge>{icon}</IconBadge>
       </div>
-      <h3 className="text-xl md:text-2xl font-semibold leading-tight">
+      <h3 className="text-xl md:text-2xl font-semibold leading-tight text-center">
         {title}
       </h3>
       <p
         className={
-          "mt-2 text-base leading-relaxed text-neutral-300 " +
-          (isRight ? "ml-auto" : "")
+          "mt-2 text-base leading-relaxed text-neutral-300 text-justify" +
+          (isRight ? " ml-auto" : "")
         }
+        style={{
+          textAlign: "justify",
+          textJustify: "inter-word",
+        }}
       >
         {description}
       </p>
+
     </div>
   );
 }
