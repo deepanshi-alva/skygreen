@@ -50,7 +50,7 @@ export default function CoreAdvantages() {
   return (
     <section className="bg-black text-white pb-20">
       <div className="mx-auto max-w-7xl px-6">
-        <h2 className="text-center text-3xl md:text-4xl font-semibold">Core Advantages</h2>
+        <h2 className="text-center text-3xl md:text-4xl text-green-500 font-semibold">Core Advantages</h2>
 
         {/* 3-column layout */}
         <div

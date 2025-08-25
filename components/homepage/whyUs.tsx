@@ -101,7 +101,7 @@ export default function WhyUs() {
             {features.map((feature) => (
               <div
                 key={feature.title}
-                className="bg-[#111] rounded-2xl flex flex-col items-center text-center p-4 sm:p-6 md:p-8 border border-green-800 hover:border-green-400 transition-all duration-300 w-full max-w-xs sm:max-w-sm md:max-w-md min-w-[220px] mx-auto hover:shadow-[0_0_20px_3px_rgba(34,197,94,0.4)]"
+                className="bg-[#111] rounded-2xl flex flex-col items-center text-center p-4 sm:p-6 md:p-8 border border-green-800 hover:border-green-400 transition-all duration-300 w-full max-w-xs sm:max-w-sm md:max-w-md min-w-[220px] mx-auto hover:shadow-[0_0_20px_3px_rgba(34,197,94,0.4)] transform hover:scale-105"
               >
                 <div className="flex flex-row items-center gap-x-2 mb-2 justify-center">
                   {feature.icon}
