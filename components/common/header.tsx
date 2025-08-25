@@ -124,7 +124,7 @@ export default function Navbar() {
           </div>
 
           {/* ✅ Auth Section */}
-          {!user ? (
+          {/* {!user ? (
             <Link
               href={"/login"}
               className="bg-green-600 px-4 py-1 rounded-full text-white font-semibold hover:bg-green-700 transition"
@@ -137,7 +137,6 @@ export default function Navbar() {
                 {user.username} <ChevronDown className="inline w-4 h-4" />
               </button>
               <div className="absolute right-0 mt-2 w-48 bg-white text-black shadow-lg rounded hidden group-hover:block">
-                {/* Common */}
                 <Link
                   href="/profile"
                   className="block px-4 py-2 hover:bg-gray-100"
@@ -145,7 +144,6 @@ export default function Navbar() {
                   My Profile
                 </Link>
 
-                {/* Role-specific */}
                 {user?.role?.name === "Admin" && (
                   <Link
                     href="/admin/users"
@@ -173,7 +171,6 @@ export default function Navbar() {
                   </Link>
                 )}
 
-                {/* Logout */}
                 <button
                   onClick={logout}
                   className="w-full text-left px-4 py-2 hover:bg-red-50 text-red-600"
@@ -182,7 +179,7 @@ export default function Navbar() {
                 </button>
               </div>
             </div>
-          )}
+          )} */}
 
           {/* Contact Us */}
           <Link
@@ -218,7 +215,7 @@ export default function Navbar() {
           </Link>
 
           {/* ✅ Mobile Auth */}
-          {!user ? (
+          {/* {!user ? (
             <Link
               href={"/login"}
               className="block bg-green-600 px-4 py-2 rounded text-center mt-3"
@@ -272,7 +269,7 @@ export default function Navbar() {
                 Logout
               </button>
             </div>
-          )}
+          )} */}
 
           {/* Mobile Support Dropdown */}
           <div className="mt-3">

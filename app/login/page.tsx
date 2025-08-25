@@ -5,7 +5,7 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = async (e: any) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/local`, {
       method: "POST",
