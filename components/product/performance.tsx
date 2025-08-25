@@ -1,6 +1,4 @@
-// "use client";
-
-// import { useState } from "react";
+"use client";
 
 /** ---- Types ---- */
 type ElectricalRow = { label: string; key: string; unit?: string };
@@ -41,12 +39,13 @@ export default function ElectricalPerformanceTable() {
             Electrical Performance Parameters
           </h2>
           <p className="mt-2 text-sm text-gray-400">
-            STC: 1000 W/m², 25°C, AM1.5 | NOCT: 800 W/m², 20°C, 1 m/s wind | Tolerance ±3%
+            STC: 1000 W/m², 25°C, AM1.5 | NOCT: 800 W/m², 20°C, 1 m/s wind |
+            Tolerance ±3%
           </p>
         </div>
 
         {/* Table */}
-        <div className="mx-auto max-w-5xl h-full flex flex-col overflow-hidden rounded-2xl border border-green-500 ">
+        <div className="mx-auto max-w-5xl h-full flex flex-col overflow-hidden rounded-2xl border border-green-500">
           <table className="w-full border-collapse table-fixed">
             <colgroup>
               <col className="w-1/3" />
@@ -71,9 +70,10 @@ export default function ElectricalPerformanceTable() {
                 <tr
                   key={r.key}
                   className={`
-        
-        ${idx % 2 === 0 ? "bg-zinc-900/40" : "bg-zinc-900/25"}
-      `}
+                    transition-all duration-300 cursor-pointer
+                    ${idx % 2 === 0 ? "bg-zinc-900/40" : "bg-zinc-900/25"}
+                    hover:bg-green-600/20 hover:scale-[1.01]
+                  `}
                 >
                   {/* Parameter */}
                   <td className="px-6 py-4 text-sm text-zinc-200 border-t border-green-800/50 border-r border-green-800/50 text-center">
