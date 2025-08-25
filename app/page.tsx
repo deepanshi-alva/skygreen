@@ -24,7 +24,6 @@ export default function Home() {
       <NewsEventsBlogs data={mockData} initialTab="news" autoplayMs={5000} />
       <Testimonial />
       <WhySkyGreen/>
-
       {/* <Faq /> */}
     </div>
   );

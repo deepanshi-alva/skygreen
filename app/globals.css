@@ -138,9 +138,6 @@
   scrollbar-width: thin;              /* Firefox */
   scrollbar-color: #3ef838 #222;      /* Firefox */
 }
-
-
-
 .glowButton {
   position: relative;
   display: inline-flex;
