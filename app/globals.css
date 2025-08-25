@@ -138,19 +138,3 @@
   scrollbar-width: thin;              /* Firefox */
   scrollbar-color: #3ef838 #222;      /* Firefox */
 }
-
-@keyframes gradient-rotate {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-.animate-gradient-rotate {
-  animation: gradient-rotate 3s ease-in-out infinite;
-}

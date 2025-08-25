@@ -29,18 +29,17 @@ export default function HeroSection() {
               height={140}
               priority
             />
-            <span className="text-green-500 text-[2.4rem] ml-30 font-bold">MODULES</span> 
+            <span className="text-green-500 text-[2.4rem] ml-30 font-bold">MODULES</span>
           </div>
 
           {/* floating download button near lower-left (kept) */}
-          <div className="hidden md:block absolute bottom-24 left-4 md:left-6">
-            <button className="group inline-flex items-center gap-2 rounded-md border border-white/30 bg-white/5 px-6 py-3 text-white backdrop-blur transition hover:bg-white/10 mb-8">
-              <span className="grid h-5 w-5 place-items-center rounded border border-white/30 text-xs">
-                ↧
-              </span>
-              <span className="font-medium">Download Datasheet</span>
+          <div className="hidden md:block absolute bottom-32 left-4 md:left-6">
+            <button className="glowButton">
+              <span className="relative z-10 font-medium">↧ Download Datasheet</span>
+              <span className="glowEffect"></span>
             </button>
           </div>
+
 
           {/* RIGHT: big headline */}
           <div className="ml-auto text-right">

@@ -32,8 +32,7 @@ export default function BifacialGain() {
         </div>
 
         <div className="mx-auto h-full flex flex-col max-w-4xl overflow-hidden
-    rounded-2xl border border-green-500
-    bg-gradient-to-b from-green-900/60 to-green-900/20">
+    rounded-2xl border border-green-500">
           <table className="w-full border-collapse">
             <thead className="bg-zinc-900/70">
               <tr>
@@ -53,8 +52,6 @@ export default function BifacialGain() {
                 <tr
                   key={i}
                   className={`
-        transition-all duration-300
-        hover:bg-emerald-500/10 hover:scale-[1.01] hover:rounded-xl hover:border hover:border-white
         ${i % 2 === 0 ? "bg-zinc-900/40" : "bg-zinc-900/25"}
       `}
                 >
