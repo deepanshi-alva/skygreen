@@ -1,6 +1,6 @@
-"use client";
+// "use client";
 
-import { useState } from "react";
+// import { useState } from "react";
 
 /** ---- Types ---- */
 type ElectricalRow = { label: string; key: string; unit?: string };
@@ -46,7 +46,7 @@ export default function ElectricalPerformanceTable() {
         </div>
 
         {/* Table */}
-        <div className="mx-auto max-w-5xl h-full flex flex-col overflow-hidden rounded-2xl border border-green-500 bg-gradient-to-b from-green-900/60 to-green-900/20">
+        <div className="mx-auto max-w-5xl h-full flex flex-col overflow-hidden rounded-2xl border border-green-500 ">
           <table className="w-full border-collapse table-fixed">
             <colgroup>
               <col className="w-1/3" />
@@ -71,8 +71,7 @@ export default function ElectricalPerformanceTable() {
                 <tr
                   key={r.key}
                   className={`
-        transition-all duration-300
-        hover:bg-emerald-500/10 hover:scale-[1.01] hover:rounded-xl hover:border hover:border-white
+        
         ${idx % 2 === 0 ? "bg-zinc-900/40" : "bg-zinc-900/25"}
       `}
                 >
