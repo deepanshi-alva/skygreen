@@ -101,7 +101,7 @@ function RightFaqs() {
   }, [normalizedQuery, itemsToShow]);
 
   return (
-    <div className="px-6 md:px-12 lg:px-16 bg-[url('/images/testimonials/download_converted.png')] bg-no-repeat bg-cover bg-center rounded-4xl">
+    <div className="px-6 md:px-12 lg:px-16 py-4 pb-8 bg-[url('/images/testimonials/download_converted.png')] bg-no-repeat bg-cover bg-center rounded-4xl">
       {/* Title */}
       <div className="flex flex-col mb-6 md:mb-8">
         <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">

@@ -70,7 +70,11 @@ export default function ElectricalPerformanceTable() {
               {rows.map((r, idx) => (
                 <tr
                   key={r.key}
-                  className={idx % 2 === 0 ? "bg-zinc-900/40" : "bg-zinc-900/25"}
+                  className={`
+        transition-all duration-300
+        hover:bg-emerald-500/10 hover:scale-[1.01] hover:rounded-xl hover:border hover:border-white
+        ${idx % 2 === 0 ? "bg-zinc-900/40" : "bg-zinc-900/25"}
+      `}
                 >
                   {/* Parameter */}
                   <td className="px-6 py-4 text-sm text-zinc-200 border-t border-green-800/50 border-r border-green-800/50 text-center">
