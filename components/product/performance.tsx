@@ -41,8 +41,11 @@ export default function ElectricalPerformanceTable() {
             {/* <span className="text-green-500">({tab.toUpperCase()} Test)</span> */}
           </h2>
           <p className="mt-2 text-sm text-gray-400">
-            {tab === "stc" ? "STC: 1000 W/m², 25°C, AM1.5" : "NOCT: 800 W/m², 20°C, 1 m/s wind"}
+            {tab === "stc" ? "STC: 1000 W/m², 25°C, AM1.5 | Tolerance ±3%" : "NOCT: 800 W/m², 20°C, 1 m/s wind | Tolerance ±3%"}
           </p>
+          {/* <p className="mt-2 text-sm text-gray-400">
+            Tolerance ±3%.
+          </p> */}
         </div>
 
         {/* Toggle (centered) */}
@@ -175,7 +178,7 @@ export default function ElectricalPerformanceTable() {
         </div>
 
         <p className="mt-4 flex items-center justify-center text-xs text-zinc-500">
-          Specs are subject to change. Confirm before installation.
+          Specifications are subject to change without notice. For the latest technical details, please contact a SKYGREEN sales representative.
         </p>
       </div>
     </section>

@@ -38,11 +38,11 @@ export default function HeroSection() {
 
           {/* RIGHT: big headline */}
           <div className="ml-auto text-right">
-            <p className="text-neutral-200/90 text-xl md:text-2xl">
+            <p className="text-neutral-200/90 text-2xl md:text-3xl">
               High-Efficiency Bifacial N-Type TOPCon
             </p>
-            <h1 className="mt-3 text-xl md:text-2xl lg:text-3xl font-extrabold tracking-tight text-white">
-              Bifacial N-Type TOPCon
+            <h1 className="mt-3 text-lg md:text-xl lg:text-2xl font-extrabold tracking-tight text-white">
+              144 Half-Cut Cells | 16BB Multi-Busbar
             </h1>
             <p className="text-green-600 text-4xl mt-3 font-bold">Class-A</p>
           </div>
