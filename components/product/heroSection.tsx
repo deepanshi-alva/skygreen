@@ -98,7 +98,7 @@ export default function HeroSection() {
         </div>
       </section>
 
-      <p className="text-center text-2xl text-green-500 -mt-28 mb-24">Engineered for India’s toughest climates. Certified worldwide.</p>
+      <p className="text-center text-2xl text-green-500 -mt-24 mb-16">Engineered for India’s toughest climates. Certified worldwide.</p>
     </>
   );
 }

@@ -34,15 +34,23 @@ function FancyCard({
             {rows.map((r, i) => (
               <li
                 key={i}
-                className={`grid grid-cols-1 sm:grid-cols-[1fr_auto] items-start gap-2 px-4 py-3 rounded-2xl sm:rounded-none transition-colors duration-300
-    hover:bg-white-10  hover:rounded-xl hover:scale-[1.08] hover:shadow-[inset_0_0_0_1px_rgba(255,255,255,0.6)] ${i % 2 === 0 ? "bg-white/[0.02] sm:bg-transparent" : ""
-                  }`}
+                className={`
+    grid grid-cols-1 sm:grid-cols-[1fr_auto] items-start gap-2 px-4 py-3
+    rounded-2xl sm:rounded-none transition-all duration-300
+    hover:bg-[#161616] hover:backdrop-blur-md
+    hover:rounded-xl hover:scale-[1.10]
+    hover:shadow-[inset_0_0_0_1px_rgba(255,255,255,0.5)]
+    ${i % 2 === 0 ? "bg-white/[0.02] sm:bg-transparent" : ""}
+  `}
               >
-                <span className="text-sm text-zinc-400 ">{r.label}</span>
-                <span className="text-sm sm:text-right font-medium text-zinc-100 ">
+                <span className="text-sm text-zinc-400 transition-all duration-300 group-hover:text-white">
+                  {r.label}
+                </span>
+                <span className="text-sm sm:text-right font-medium text-zinc-100 transition-all duration-300 group-hover:text-white">
                   {r.value}
                 </span>
               </li>
+
             ))}
           </ul>
         </div>
