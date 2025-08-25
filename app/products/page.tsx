@@ -11,7 +11,7 @@ export default function ProductPage() {
       <HeroSection />
       <CoreAdvantages />
       <ProductSpecCards />
-      <div className="flex flex-row px-78">
+      <div className="flex flex-row px-78 bg-black">
         <Performance />
         <BifacialPower />
       </div>
