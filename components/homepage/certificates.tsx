@@ -46,7 +46,7 @@ const CertificateCarousel: React.FC = () => {
               <div className="flex items-center animate-marquee space-x-20">
                 {[...certificates, ...certificates].map((image, index) => (
                   <div key={index} className="flex-shrink-0 group">
-                    <Image
+                    <img
                       src={image}
                       width={120}
                       height={120}
