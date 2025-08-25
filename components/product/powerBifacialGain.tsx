@@ -52,8 +52,10 @@ export default function BifacialGain() {
                 <tr
                   key={i}
                   className={`
-        ${i % 2 === 0 ? "bg-zinc-900/40" : "bg-zinc-900/25"}
-      `}
+                    transition-all duration-300 cursor-pointer
+                    ${i % 2 === 0 ? "bg-zinc-900/40" : "bg-zinc-900/25"}
+                    hover:bg-green-600/20 hover:scale-[1.01]
+                  `}
                 >
                   <td className="px-6 py-4 text-sm text-zinc-200 border-t border-green-800/70 border-l border-green-800/70 text-center">
                     {g.rear}
