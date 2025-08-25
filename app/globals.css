@@ -138,3 +138,54 @@
   scrollbar-width: thin;              /* Firefox */
   scrollbar-color: #3ef838 #222;      /* Firefox */
 }
+.glowButton {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 32px;
+  border-radius: 50rem;
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  overflow: hidden;
+  border: none;
+  z-index: 1;
+  background: rgba(0, 0, 0, 0.6); /* base matches black theme */
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 12px rgba(0, 255, 170, 0.25);
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.glowButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 255, 170, 0.45);
+}
+
+.glowEffect {
+  position: absolute;
+  top: -40%;
+  left: -40%;
+  width: 180%;
+  height: 180%;
+  background: conic-gradient(
+    from 0deg,
+    #00ff99,
+    #00e0ff,
+    #00ff99
+  ); /* green + teal rotation */
+  animation: rotateColors 4s linear infinite;
+  opacity: 0.3;
+  filter: blur(50px);
+  z-index: 0;
+}
+
+@keyframes rotateColors {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
