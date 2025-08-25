@@ -1,13 +1,17 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Menu, X, ChevronDown, Headphones } from "lucide-react"; 
+import { Menu, X, ChevronDown, Headphones } from "lucide-react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/lib/authContext"; // ✅ import auth context
+import React from 'react';
+import { ArrowRight } from 'lucide-react';
 
 export default function Navbar() {
+  const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isSticky, setIsSticky] = useState(false);
   const [supportOpen, setSupportOpen] = useState(false);
@@ -25,15 +29,13 @@ export default function Navbar() {
   }, []);
 
   const linkClasses = (path: string) =>
-    `hover:text-green-500 transform hover:scale-110 transition-transform duration-300 ${
-      pathname === path ? "text-green-500 font-semibold" : ""
+    `hover:text-green-500 transform hover:scale-110 transition-transform duration-300 ${pathname === path ? "text-green-500 font-semibold" : ""
     }`;
 
   return (
     <div
-      className={`fixed top-0 w-full z-50 transition-shadow ${
-        isSticky ? "shadow-md bg-black/90" : "bg-black"
-      }`}
+      className={`fixed top-0 w-full z-50 transition-shadow ${isSticky ? "shadow-md bg-black/90" : "bg-black"
+        }`}
     >
       <nav className="max-w-7xl mx-auto flex items-center justify-between px-4 py-3 text-white">
         {/* Logo */}
@@ -72,11 +74,10 @@ export default function Navbar() {
             onMouseLeave={() => setSupportOpen(false)}
           >
             <button
-              className={`font-semibold flex items-center mr-8 transition-transform duration-300 ${
-                supportOpen
-                  ? "text-green-500 scale-110"
-                  : "hover:text-green-400 hover:scale-110"
-              }`}
+              className={`font-semibold flex items-center mr-8 transition-transform duration-300 ${supportOpen
+                ? "text-green-500 scale-110"
+                : "hover:text-green-400 hover:scale-110"
+                }`}
             >
               <Headphones size={24} />
             </button>
@@ -182,12 +183,24 @@ export default function Navbar() {
           )} */}
 
           {/* Contact Us */}
-          <Link
-            href={"/contact"}
-            className="bg-red-600 px-4 py-1 rounded-full text-white font-semibold hover:bg-red-700 transition"
-          >
-            Contact Us
-          </Link>
+          <button
+            type="button"
+            onClick={() => router.push("/contact")}
+            className="group relative px-6 py-2 font-semibold text-white rounded-full overflow-hidden transition-all duration-300 hover:scale-110 hover:shadow-2xl hover:shadow-green-500">
+            {/* Animated gradient background */}
+            <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 via-blue-500 via-purple-500 via-pink-500 to-green-400 bg-[length:800%_100%] animate-gradient-rotate"></div>
+
+            {/* Button content */}
+            <div className="relative z-10 flex items-center space-x-2">
+              <span className="transition-transform duration-300 group-hover:translate-x-1">
+                Contact Us
+              </span>
+              <ArrowRight className="w-5 h-5 transition-all duration-300 group-hover:translate-x-1 group-hover:scale-110" />
+            </div>
+
+            {/* Hover glow effect */}
+            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-cyan-400/20 via-blue-500/20 to-purple-500/20 blur-xl opacity-0 transition-opacity duration-300 group-hover:opacity-100 scale-150"></div>
+          </button>
         </div>
 
         {/* Mobile Menu Button */}
@@ -274,11 +287,10 @@ export default function Navbar() {
           {/* Mobile Support Dropdown */}
           <div className="mt-3">
             <button
-              className={`font-semibold flex items-center mr-8 transition-transform duration-300 ${
-                supportOpen
-                  ? "text-green-500 scale-110"
-                  : "hover:text-green-400 hover:scale-110"
-              }`}
+              className={`font-semibold flex items-center mr-8 transition-transform duration-300 ${supportOpen
+                ? "text-green-500 scale-110"
+                : "hover:text-green-400 hover:scale-110"
+                }`}
               onClick={() => setMobileSupportOpen(!mobileSupportOpen)}
             >
               <Headphones size={18} />

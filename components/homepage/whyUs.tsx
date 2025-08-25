@@ -1,16 +1,15 @@
 "use client";
 
-import { useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { useScroll, useTransform, useMotionValueEvent } from "framer-motion";
 import { Bolt, CheckCircle, Leaf } from "lucide-react";
 
+/* paragraphArray and features as before */
 const paragraphArray = [
   "Empowering", "India’s", "clean", "energy", "future", "with", "solar", "built", "for", "every", "season", "of", "life.",
   "From", "scorching", "summers", "to", "heavy", "monsoons,", "freezing", "winters", "to", "dusty", "deserts,", "SKYGREEN", "panels", "are", "made", "to", "power", "homes,", "businesses,", "and", "industries", "across", "India’s", "diverse", "landscapes.",
   "We", "bring", "the", "world’s", "latest", "solar", "innovations", "to", "India", "—", "starting", "with", "our", "N-Type", "TOPCon", "bifacial", "modules", "—", "to", "ensure", "that", "every", "sunrise", "turns", "into", "reliable", "savings,", "stronger", "energy", "security,", "and", "a", "brighter", "tomorrow."
 ];
-
-
 
 const features = [
   {
@@ -43,6 +42,28 @@ export default function WhyUs() {
   useMotionValueEvent(revealPercentage, "change", (v) => setReveal(v));
   const words = paragraphArray;
 
+  // Type the style object so we can include vendor-prefixed keys safely
+  const justifiedStyle: React.CSSProperties & { [key: string]: string | number } = {
+    boxSizing: "border-box",
+    textAlign: "justify",
+    // TS knows textJustify/hyphens but using index signature above allows vendor props too
+    textJustify: "inter-word",
+    hyphens: "auto",
+    textAlignLast: "left",
+    WebkitTextAlignLast: "left",
+  };
+
+  // Style used for feature description paragraphs (justified)
+  const descJustifyStyle: React.CSSProperties & { [key: string]: string | number } = {
+    textAlign: "justify",
+    textJustify: "inter-word",
+    hyphens: "auto",
+    textAlignLast: "left",
+    WebkitTextAlignLast: "left",
+    // keep word-break safe for narrow cards
+    wordBreak: "break-word",
+  };
+
   return (
     <section
       className="min-h-screen w-full flex flex-col items-center justify-center p-2 sm:p-6 md:p-12 bg-[black] text-white"
@@ -67,17 +88,15 @@ export default function WhyUs() {
         <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-center my-4 text-green-400">
           Why Choose SKYGREEN?
         </h2>
-        <p className="text-lg sm:text-xl md:text-2xl pb-6 font-semibold text-center ">Born for Every Season. Built for India’s Future.</p>
+        <p className="text-lg sm:text-xl md:text-2xl pb-6 font-semibold text-center">
+          Born for Every Season. Built for India’s Future.
+        </p>
 
-        {/* Text reveal */}
+        {/* Text reveal (justified; last line left-aligned) */}
         <div
           ref={containerRef}
-          className="
-    max-w-6xl mx-auto
-    leading-snug sm:leading-relaxed
-    text-base sm:text-xl md:text-2xl
-    text-center flex flex-wrap justify-center break-words
-  "
+          className="max-w-6xl mx-auto leading-snug sm:leading-relaxed text-base sm:text-xl md:text-2xl break-words"
+          style={justifiedStyle}
         >
           {words.map((word, index) => {
             const wordStart = (index / words.length) * 100;
@@ -85,15 +104,15 @@ export default function WhyUs() {
             return (
               <span
                 key={index}
-                style={{ color }}
-                className="inline-block mr-1 sm:mr-2 mb-1 sm:mb-2 max-w-full"
+                style={{ color, display: "inline" }}
               >
                 {word}
+                {index !== words.length - 1 ? " " : ""}
               </span>
             );
           })}
+          {/* No spacer — letting last line be left aligned prevents large gaps */}
         </div>
-
 
         {/* Feature cards */}
         <div className="flex justify-center w-full">
@@ -107,7 +126,10 @@ export default function WhyUs() {
                   {feature.icon}
                   <h3 className="text-white text-lg sm:text-xl flex items-center mb-4 font-semibold">{feature.title}</h3>
                 </div>
-                <p className="text-gray-300 text-sm sm:text-base">
+                <p
+                  className="text-gray-300 text-sm sm:text-base"
+                  style={descJustifyStyle}
+                >
                   {feature.description}
                 </p>
               </div>
