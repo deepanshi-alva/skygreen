@@ -50,7 +50,6 @@ function FancyCard({
                   {r.value}
                 </span>
               </li>
-
             ))}
           </ul>
         </div>
@@ -113,7 +112,8 @@ export default function ProductSpecsPretty() {
         </div>
 
         <p className="mt-6 text-xs flex justify-center text-zinc-500">
-          Specifications are subject to change without notice. For the latest technical details, please contact a SKYGREEN sales representative.
+          Specifications are subject to change without notice. For the latest
+          technical details, please contact a SKYGREEN sales representative.
         </p>
       </div>
     </section>

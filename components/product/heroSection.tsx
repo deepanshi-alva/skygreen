@@ -29,17 +29,20 @@ export default function HeroSection() {
               height={140}
               priority
             />
-            <span className="text-green-500 text-[2.4rem] ml-30 font-bold">MODULES</span>
+            <span className="text-green-500 text-[2.4rem] ml-30 font-bold">
+              MODULES
+            </span>
           </div>
 
           {/* floating download button near lower-left (kept) */}
           <div className="hidden md:block absolute bottom-32 left-4 md:left-6">
             <button className="glowButton">
-              <span className="relative z-10 font-medium">↧ Download Datasheet</span>
+              <span className="relative z-10 font-medium">
+                ↧ Download Datasheet
+              </span>
               <span className="glowEffect"></span>
             </button>
           </div>
-
 
           {/* RIGHT: big headline */}
           <div className="ml-auto text-right">
@@ -58,8 +61,9 @@ export default function HeroSection() {
       <section className="z-20 bg-black">
         <div className="mx-auto max-w-7xl px-6 pt-8 md:pt-10">
           <div
-            className="relative top-[-15vh] bg-neutral-900 grid grid-cols-2 gap-4 rounded-xl border border-neutral-700 p-4 shadow-sm md:grid-cols-4 md:gap-6 md:p-6"
-            style={{ boxShadow: "0 10px 30px rgba(0,0,0,0.15)" }}
+            className="relative top-[-15vh] grid grid-cols-2 gap-4 rounded-xl border border-white/20 
+                 bg-white/10 backdrop-blur-md shadow-lg md:grid-cols-4 md:gap-6 md:p-6 p-4"
+            style={{ boxShadow: "0 10px 30px rgba(0,0,0,0.25)" }}
           >
             {/* 1: Module Power */}
             <Spec
@@ -97,7 +101,9 @@ export default function HeroSection() {
         </div>
       </section>
 
-      <p className="text-center text-2xl text-green-500 -mt-24 mb-16">Engineered for India’s toughest climates. Certified worldwide.</p>
+      <p className="text-center text-2xl text-green-500 -mt-24 mb-16">
+        Engineered for India’s toughest climates. Certified worldwide.
+      </p>
     </>
   );
 }
@@ -118,10 +124,7 @@ function Spec({
   return (
     <div className="flex items-center md:items-center gap-3 md:gap-4">
       {/* Icon */}
-      <div
-        className="grid h-10 w-10 place-items-center"
-        aria-hidden="true"
-      >
+      <div className="grid h-10 w-10 place-items-center" aria-hidden="true">
         <Icon className="h-8 w-8 text-green-500" aria-label={iconLabel} />
       </div>
 

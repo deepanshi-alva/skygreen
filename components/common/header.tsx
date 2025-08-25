@@ -7,8 +7,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/lib/authContext"; // ✅ import auth context
-import React from 'react';
-import { ArrowRight } from 'lucide-react';
+import React from "react";
+import { ArrowRight } from "lucide-react";
 
 export default function Navbar() {
   const router = useRouter();
@@ -29,17 +29,23 @@ export default function Navbar() {
   }, []);
 
   const linkClasses = (path: string) =>
-    `hover:text-green-500 transform hover:scale-110 transition-transform duration-300 ${pathname === path ? "text-green-500 font-semibold" : ""
+    `hover:text-green-500 transform hover:scale-110 transition-transform duration-300 ${
+      pathname === path ? "text-green-500 font-semibold" : ""
     }`;
 
   return (
     <div
-      className={`fixed top-0 w-full z-50 transition-shadow ${isSticky ? "shadow-md bg-black/90" : "bg-black"
+      className={`fixed top-0 w-full z-50 transition-shadow"
         }`}
     >
       <nav className="max-w-7xl mx-auto flex items-center justify-between px-4 py-3 text-white">
         {/* Logo */}
-        <Link href={"/"} className="flex items-center space-x-2 mb-3">
+        <Link
+          href={"/"}
+          className="flex items-center space-x-2 mb-3 pb-4 pt-1 px-4
+             rounded-full border border-white/20 
+             bg-black/40 backdrop-blur-md shadow-md"
+        >
           <Image
             src="/images/logo/logo-bg-remove.png"
             alt="Logo"
@@ -50,7 +56,11 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop Menu */}
-        <div className="hidden md:flex space-x-12 font-medium">
+        <div
+          className="hidden md:flex space-x-12 font-medium py-4 px-4 
+             rounded-full border border-white/20 
+             bg-black/60 backdrop-blur-md shadow-md"
+        >
           <Link href={"/"} className={linkClasses("/")}>
             Home
           </Link>
@@ -74,10 +84,13 @@ export default function Navbar() {
             onMouseLeave={() => setSupportOpen(false)}
           >
             <button
-              className={`font-semibold flex items-center mr-8 transition-transform duration-300 ${supportOpen
-                ? "text-green-500 scale-110"
-                : "hover:text-green-400 hover:scale-110"
-                }`}
+              className={`font-semibold flex items-center mr-8 transition-transform duration-300 ${
+                supportOpen
+                  ? "text-green-500 scale-110"
+                  : "hover:text-green-400 hover:scale-110"
+              } py-4  px-4
+             rounded-full border border-white/20 
+             bg-black/60 backdrop-blur-md shadow-md`}
             >
               <Headphones size={24} />
             </button>
@@ -186,20 +199,19 @@ export default function Navbar() {
           <button
             type="button"
             onClick={() => router.push("/contact")}
-            className="group relative px-6 py-2 font-semibold text-white rounded-full overflow-hidden transition-all duration-300 hover:scale-110 hover:shadow-2xl hover:shadow-green-500">
-            {/* Animated gradient background */}
-            <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 via-blue-500 via-purple-500 via-pink-500 to-green-400 bg-[length:800%_100%] animate-gradient-rotate"></div>
-
+            className="relative group rounded-full px-6 py-3 
+             bg-green-800/20 border border-green-400/40 
+             backdrop-blur-md text-white font-semibold 
+             shadow-[0_0_15px_rgba(34,197,94,0.7)]
+             hover:shadow-[0_0_25px_rgba(34,197,94,0.9)]
+             transition-all duration-300 cursor-pointer
+             flex items-center space-x-2"
+          >
             {/* Button content */}
-            <div className="relative z-10 flex items-center space-x-2">
-              <span className="transition-transform duration-300 group-hover:translate-x-1">
-                Contact Us
-              </span>
-              <ArrowRight className="w-5 h-5 transition-all duration-300 group-hover:translate-x-1 group-hover:scale-110" />
-            </div>
-
-            {/* Hover glow effect */}
-            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-cyan-400/20 via-blue-500/20 to-purple-500/20 blur-xl opacity-0 transition-opacity duration-300 group-hover:opacity-100 scale-150"></div>
+            <span className="transition-transform duration-300 group-hover:translate-x-1">
+              Contact Us
+            </span>
+            <ArrowRight className="w-5 h-5 transition-all duration-300 group-hover:translate-x-1 group-hover:scale-110" />
           </button>
         </div>
 
@@ -287,10 +299,11 @@ export default function Navbar() {
           {/* Mobile Support Dropdown */}
           <div className="mt-3">
             <button
-              className={`font-semibold flex items-center mr-8 transition-transform duration-300 ${supportOpen
-                ? "text-green-500 scale-110"
-                : "hover:text-green-400 hover:scale-110"
-                }`}
+              className={`font-semibold flex items-center mr-8 transition-transform duration-300 ${
+                supportOpen
+                  ? "text-green-500 scale-110"
+                  : "hover:text-green-400 hover:scale-110"
+              }`}
               onClick={() => setMobileSupportOpen(!mobileSupportOpen)}
             >
               <Headphones size={18} />
@@ -307,7 +320,9 @@ export default function Navbar() {
                 <a href="mailto:service@skygreen.com" className="text-blue-600">
                   service@skygreen.com
                 </a>
-                <p className="text-sm text-gray-500 mt-1">Respond in 24 hours</p>
+                <p className="text-sm text-gray-500 mt-1">
+                  Respond in 24 hours
+                </p>
 
                 <hr className="my-3" />
                 <p className="font-semibold">Customer Support</p>

@@ -73,12 +73,27 @@ export default function HeroSection() {
         </p>
 
         <div className="flex items-center justify-center gap-[clamp(0.5rem,1.5vw,1rem)]">
-          <Button className="bg-green-500 hover:bg-green-600 text-black font-bold rounded-lg text-[clamp(0.95rem,0.8vw+0.7rem,1.1rem)] px-[clamp(1rem,2.2vw,1.75rem)] py-[clamp(0.55rem,1.2vw,0.9rem)]">
-            GET A QUOTE
+          <Button
+            className=" glowButton"
+            style={{ padding: "25px 20px", background: "black" }}
+          >
+            <span className="z-3">GET A QUOTE</span>
+            <span
+              className="glowEffect"
+              style={{ opacity: " 0.8", filter: "blur(35px)" }}
+            ></span>
           </Button>
           <Button
             variant="outline"
-            className="border-green-400/60 text-green-300 hover:text-black hover:bg-green-300 rounded-lg text-[clamp(0.95rem,0.8vw+0.7rem,1.1rem)] px-[clamp(1rem,2.2vw,1.75rem)] py-[clamp(0.55rem,1.2vw,0.9rem)]"
+            className="
+    rounded-full border border-green-400/40
+    bg-black/50 backdrop-blur-md
+    text-green-300 font-semibold
+    hover:bg-green-300 hover:text-black
+    shadow-md transition-all duration-300
+    text-[clamp(0.95rem,0.8vw+0.7rem,1.1rem)]
+    px-6 py-6
+  "
           >
             Explore Products
           </Button>
