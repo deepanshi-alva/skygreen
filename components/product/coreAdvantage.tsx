@@ -141,7 +141,7 @@ function FeatureItem({
       </h3>
       <p
         className={
-          "mt-2 text-base leading-relaxed text-neutral-300" +
+          "mt-2 text-base leading-relaxed text-neutral-300 " +
           (isRight ? "ml-auto" : "")
         }
       >

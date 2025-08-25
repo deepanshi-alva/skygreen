@@ -2,6 +2,7 @@
 
 // import React from "react";
 import { Zap, BarChart3, ShieldCheck, RefreshCcw } from "lucide-react";
+import Image from "next/image";
 
 export default function HeroSection() {
   return (
@@ -20,10 +21,15 @@ export default function HeroSection() {
         {/* content */}
         <div className="relative z-10 mx-auto flex h-full max-w-7xl items-center justify-between px-4 md:px-6">
           {/* LEFT: heading */}
-          <div className="text-left">
-            <h2 className="text-white text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight drop-shadow">
-              <span className="text-green-500">SKYGREEN</span> MODULES
-            </h2>
+          <div className="text-left mb-20">
+            <Image
+              src="/images/logo/logo-bg-remove.png"
+              alt="Logo"
+              width={340}
+              height={140}
+              priority
+            />
+            <span className="text-green-500 text-[2.4rem] ml-30 font-bold">MODULES</span> 
           </div>
 
           {/* floating download button near lower-left (kept) */}

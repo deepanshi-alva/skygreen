@@ -10,10 +10,12 @@ export default function ProductPage() {
     <>
       <HeroSection />
       <CoreAdvantages />
-      <ProductSpecCards/>
-      <Performance/>
-      <BifacialPower/>
-      <DosDonts/>
+      <ProductSpecCards />
+      <div className="flex flex-row mx-80">
+        <Performance />
+        <BifacialPower />
+      </div>
+      <DosDonts />
     </>
   );
 }
