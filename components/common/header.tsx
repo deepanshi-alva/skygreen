@@ -9,6 +9,7 @@ import { usePathname } from "next/navigation";
 import { useAuth } from "@/lib/authContext"; // ✅ import auth context
 import React from "react";
 import { ArrowRight } from "lucide-react";
+import AuthDropdown from "./authDropdown";
 
 export default function Navbar() {
   const router = useRouter();
@@ -144,53 +145,7 @@ export default function Navbar() {
               Login
             </Link>
           ) : (
-            <div className="relative group">
-              <button className="px-4 py-2 bg-gray-100 text-black rounded">
-                {user.username} <ChevronDown className="inline w-4 h-4" />
-              </button>
-              <div className="absolute right-0 mt-2 w-48 bg-white text-black shadow-lg rounded hidden group-hover:block">
-                <Link
-                  href="/profile"
-                  className="block px-4 py-2 hover:bg-gray-100"
-                >
-                  My Profile
-                </Link>
-
-                {user?.role?.name === "Admin" && (
-                  <Link
-                    href="/admin/users"
-                    className="block px-4 py-2 hover:bg-gray-100"
-                  >
-                    Manage Users
-                  </Link>
-                )}
-
-                {user?.role?.name === "Caller" && (
-                  <Link
-                    href="/caller/users"
-                    className="block px-4 py-2 hover:bg-gray-100"
-                  >
-                    Assigned Users
-                  </Link>
-                )}
-
-                {user?.role?.name === "Customer" && (
-                  <Link
-                    href="/orders"
-                    className="block px-4 py-2 hover:bg-gray-100"
-                  >
-                    My Orders
-                  </Link>
-                )}
-
-                <button
-                  onClick={logout}
-                  className="w-full text-left px-4 py-2 hover:bg-red-50 text-red-600"
-                >
-                  Logout
-                </button>
-              </div>
-            </div>
+            <AuthDropdown/>
           )} */}
 
           {/* Contact Us */}
