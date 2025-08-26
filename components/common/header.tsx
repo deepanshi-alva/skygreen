@@ -42,15 +42,13 @@ export default function Navbar() {
         {/* Logo */}
         <Link
           href={"/"}
-          className="flex items-center space-x-2 mb-3 pb-4 pt-1 px-4
-             rounded-full border border-white/20 
-             bg-black/40 backdrop-blur-md shadow-md"
+          className=""
         >
           <Image
             src="/images/logo/logo-bg-remove.png"
             alt="Logo"
-            width={120}
-            height={40}
+            width={160}
+            height={80}
             priority
           />
         </Link>
