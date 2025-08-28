@@ -66,6 +66,9 @@ export default function Navbar() {
           <Link href={"/products"} className={linkClasses("/products")}>
             Products
           </Link>
+          <Link href={"#"} className={linkClasses("/calculator")}>
+            Solar Calculator
+          </Link>
           <Link href={"/faqs"} className={linkClasses("/faqs")}>
             FAQ&apos;s
           </Link>

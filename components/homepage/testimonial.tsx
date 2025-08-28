@@ -1,42 +1,103 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Star } from "lucide-react";
 import Image from "next/image";
 
-const testimonials = [
-  {
-    image: "/images/testimonials/testimonial1.png",
-    company: "The Patel Family",
-    quote:
-      "Switching to solar with GreenSpark was the best decision we’ve made for our home. Our electricity bills have dropped by over 70%, and the installation process was smooth and hassle-free. The team answered all our questions and handled everything from start to finish.",
-    author: "Anjali Patel",
-    position: "Homeowner",
-    caseStudyLink: "#",
-  },
-  // Add more testimonials as needed
-  {
-    image: "/images/testimonials/testimonial2.jpg",
-    company: "Lotus Organic Farms",
-    quote:
-      "GreenSpark’s solar solutions have helped our business cut energy costs and align with our sustainability goals. We were impressed with their professionalism and how quickly the system was up and running. Highly recommend for any business looking to go green!",
-    author: "Rajesh Mehra",
-    position: "Managing Director",
-    caseStudyLink: "#",
-  },
-  {
-    image: "/images/testimonials/testimonial3.png",
-    company: "Orbit Tech Industries",
-    quote:
-      "Our factory’s power needs are substantial, but GreenSpark’s custom solar setup delivers consistent performance, even on high-demand days. Their ongoing support and monitoring tools give us complete peace of mind. It’s a smart investment that’s paying off every month.",
-    author: "Meera Narayanan",
-    position: "Operations Manager",
-    caseStudyLink: "#",
-  },
-];
+// const testimonials = [
+//   {
+//     image: "/images/testimonials/testimonial1.png",
+//     company: "The Patel Family",
+//     quote:
+//       "Switching to solar with GreenSpark was the best decision we’ve made for our home. Our electricity bills have dropped by over 70%, and the installation process was smooth and hassle-free. The team answered all our questions and handled everything from start to finish.",
+//     author: "Anjali Patel",
+//     position: "Homeowner",
+//     caseStudyLink: "#",
+//   },
+//   // Add more testimonials as needed
+//   {
+//     image: "/images/testimonials/testimonial2.jpg",
+//     company: "Lotus Organic Farms",
+//     quote:
+//       "GreenSpark’s solar solutions have helped our business cut energy costs and align with our sustainability goals. We were impressed with their professionalism and how quickly the system was up and running. Highly recommend for any business looking to go green!",
+//     author: "Rajesh Mehra",
+//     position: "Managing Director",
+//     caseStudyLink: "#",
+//   },
+//   {
+//     image: "/images/testimonials/testimonial3.png",
+//     company: "Orbit Tech Industries",
+//     quote:
+//       "Our factory’s power needs are substantial, but GreenSpark’s custom solar setup delivers consistent performance, even on high-demand days. Their ongoing support and monitoring tools give us complete peace of mind. It’s a smart investment that’s paying off every month.",
+//     author: "Meera Narayanan",
+//     position: "Operations Manager",
+//     caseStudyLink: "#",
+//   },
+// ];
+
+type Testimonial = {
+  id: number;
+  attributes: {
+    company_name: string;
+    quote: string;
+    author: string;
+    position: string;
+    case_study_link: string;
+    rating: number;
+    image: {
+      data: {
+        attributes: {
+          url: string;
+          alternativeText: string;
+        };
+      };
+    };
+  };
+};
+
+const renderStars = (rating: number) => {
+  return (
+    <div className="flex items-center gap-1 ml-3">
+      {Array.from({ length: 5 }).map((_, i) => (
+        <Star
+          key={i}
+          className={`w-4 h-4 ${i < rating ? "text-yellow-400 fill-yellow-400" : "text-gray-500"
+            }`}
+        />
+      ))}
+    </div>
+  );
+};
+
 
 export default function TestimonialSlider() {
+  // const [index, setIndex] = useState(0);
+
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    async function fetchTestimonials() {
+      try {
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/testimonials?populate=image`,
+          { cache: "no-store" }
+        );
+        const data = await res.json();
+        console.log("this is the testimonials data", data);
+        setTestimonials(data.data);
+      } catch (error) {
+        console.error("Failed to load testimonials", error);
+      }
+    }
+    fetchTestimonials();
+  }, []);
+
+  if (testimonials.length === 0) return null;
+  const t = testimonials[index].attributes;
+  const imageUrl = t.image?.data?.attributes?.url
+    ? `${process.env.NEXT_PUBLIC_STRAPI_URL}${t.image.data.attributes.url}`
+    : "/placeholder.png";
 
   // const prev = () =>
   //   setIndex((prev) => (prev === 0 ? testimonials.length - 1 : prev - 1));
@@ -54,7 +115,7 @@ export default function TestimonialSlider() {
               "linear-gradient(to right, #000000ff, #3ef838, #000000ff) 1",
           }}
         >
-          Hear From Our <span className="text-[#acfe53]">Happy Solar Clients</span> 
+          Hear From Our <span className="text-[#acfe53]">Happy Solar Clients</span>
         </h2>
         <p className="text-xl md:text-2xl text-gray-200 max-w-2xl mx-auto font-light">
           Discover how GreenSpark has transformed lives and businesses with
@@ -90,8 +151,8 @@ export default function TestimonialSlider() {
                     <AnimatePresence key={i} mode="wait">
                       <motion.img
                         key={i}
-                        src={t.image}
-                        alt={t.author}
+                        src={imageUrl}
+                        alt="user image"
                         initial={{ opacity: 0, scale: 0.98, x: 40 }}
                         animate={{ opacity: 1, scale: 1, x: 0 }}
                         exit={{ opacity: 0, scale: 0.98, x: -40 }}
@@ -110,7 +171,7 @@ export default function TestimonialSlider() {
                       width={64}
                       height={64}
                       key={i}
-                      src={t.image}
+                      src={imageUrl}
                       alt=""
                       className="w-64 h-64 object-cover rounded-3xl absolute left-6 top-8 opacity-50 -rotate-3 z-10 border-2 border-[#222] scale-95"
                       style={{ filter: "blur(1px)" }}
@@ -126,7 +187,7 @@ export default function TestimonialSlider() {
                       width={64}
                       height={64}
                       key={i}
-                      src={t.image}
+                      src={imageUrl}
                       alt=""
                       className="w-64 h-64 object-cover rounded-3xl absolute -left-6 top-8 opacity-50 rotate-3 z-10 border-2 border-[#222] scale-95"
                       style={{ filter: "blur(1px)" }}
@@ -174,21 +235,22 @@ export default function TestimonialSlider() {
                   transition={{ duration: 0.5 }}
                 >
                   <div className="text-3xl font-bold mb-4 text-white tracking-wider">
-                    {testimonials[index].company}
+                    {t.company_name}
                   </div>
                   <blockquote className="text-xl text-white mb-6 font-normal leading-relaxed">
-                    “{testimonials[index].quote}”
+                    “{t.quote}”
                   </blockquote>
                   <div className="mb-3">
-                    <div className="font-bold text-white">
-                      {testimonials[index].author}
+                    <div className="mb-3 flex items-center">
+                      <div className="font-bold text-white">{t.author}</div>
+                      {renderStars(t.rating)}<span className="text-white ml-1 mb-1">({t.rating})</span>
                     </div>
                     <div className="text-[#b7b7b7] text-base">
-                      {testimonials[index].position}
+                      {t.position}
                     </div>
                   </div>
                   <a
-                    href={testimonials[index].caseStudyLink}
+                    href={t.case_study_link}
                     className="text-lime-300 font-semibold hover:underline text-base inline-flex items-center gap-2 mt-3"
                   >
                     Read Case Study <span className="ml-1">→</span>
