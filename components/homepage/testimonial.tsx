@@ -55,20 +55,43 @@ type Testimonial = {
   };
 };
 
+const FilledStar = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 20 20"
+    fill="currentColor"
+    {...props}   // spread all props (className, style, etc.)
+  >
+    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.357 4.182a1 1 0 00.95.69h4.396c.969 0 1.371 1.24.588 1.81l-3.562 2.586a1 1 0 00-.364 1.118l1.357 4.182c.3.921-.755 1.688-1.54 1.118l-3.562-2.586a1 1 0 00-1.176 0l-3.562 2.586c-.785.57-1.84-.197-1.54-1.118l1.357-4.182a1 1 0 00-.364-1.118L2.11 9.61c-.783-.57-.38-1.81.588-1.81h4.396a1 1 0 00.95-.69l1.357-4.182z" />
+  </svg>
+);
+
 const renderStars = (rating: number) => {
   return (
     <div className="flex items-center gap-1 ml-3">
-      {Array.from({ length: 5 }).map((_, i) => (
-        <Star
-          key={i}
-          className={`w-4 h-4 ${i < rating ? "text-yellow-400 fill-yellow-400" : "text-gray-500"
-            }`}
-        />
-      ))}
+      {Array.from({ length: 5 }).map((_, i) => {
+        const starNumber = i + 1;
+        const fillPercentage = Math.min(
+          Math.max(rating - (starNumber - 1), 0),
+          1
+        ) * 100;
+
+        return (
+          <div key={i} className="relative w-5 h-5">
+            {/* Empty gray star */}
+            <FilledStar className="w-5 h-5 text-gray-500" />
+
+            {/* Filled yellow star with clip */}
+            <FilledStar
+              className="w-5 h-5 text-yellow-400 absolute top-0 left-0"
+              style={{ clipPath: `inset(0 ${100 - fillPercentage}% 0 0)` }}
+            />
+          </div>
+        );
+      })}
     </div>
   );
 };
-
 
 export default function TestimonialSlider() {
   // const [index, setIndex] = useState(0);
@@ -243,7 +266,7 @@ export default function TestimonialSlider() {
                   <div className="mb-3">
                     <div className="mb-3 flex items-center">
                       <div className="font-bold text-white">{t.author}</div>
-                      {renderStars(t.rating)}<span className="text-white ml-1 mb-1">({t.rating})</span>
+                      {renderStars(t.rating)}<span className="text-white ml-1">({t.rating})</span>
                     </div>
                     <div className="text-[#b7b7b7] text-base">
                       {t.position}
