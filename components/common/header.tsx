@@ -66,7 +66,7 @@ export default function Navbar() {
           <Link href={"/products"} className={linkClasses("/products")}>
             Products
           </Link>
-          <Link href={"#"} className={linkClasses("/calculator")}>
+          <Link href={"/calculator"} className={linkClasses("/calculator")}>
             Solar Calculator
           </Link>
           <Link href={"/faqs"} className={linkClasses("/faqs")}>
@@ -187,6 +187,9 @@ export default function Navbar() {
           </Link>
           <Link href={"/products"} className={linkClasses("/products")}>
             Products
+          </Link>
+          <Link href={"/calculator"} className={linkClasses("/calculator")}>
+            Solar Calculator
           </Link>
           <Link href={"/faqs"} className={linkClasses("/faqs")}>
             FAQ&apos;s
