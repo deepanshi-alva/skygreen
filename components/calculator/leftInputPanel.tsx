@@ -134,7 +134,7 @@ export default function LeftInputPanel({ onResults }: LeftInputPanelProps) {
 
 
     return (
-        <div className="col-span-3 p-4 shadow-lg relative">
+        <div className="col-span-3 p-4 shadow-lg relative sticky top-24 self-start">
             <h2 className="text-xl font-bold mb-4">Your Details</h2>
 
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -280,6 +280,33 @@ export default function LeftInputPanel({ onResults }: LeftInputPanelProps) {
                             </div>
                         </div>
 
+                        <div className="flex flex-row gap-x-6">
+
+                            <div>
+                                <label className="block mb-1">Sanctioned Load (kW)</label>
+                                <input
+                                    type="number"
+                                    name="sanctionedLoad"
+                                    value={formData.sanctionedLoad}
+                                    onChange={handleChange}
+                                    className="w-full p-2 rounded-lg bg-black border border-green-500"
+                                    placeholder="Default 1"
+                                />
+                            </div>
+
+                            <div>
+                                <label className="block mb-1">Tariff (₹/kWh)</label>
+                                <input
+                                    type="number"
+                                    name="tariff"
+                                    value={formData.tariff}
+                                    onChange={handleChange}
+                                    className="w-full p-2 rounded-lg bg-black border border-green-500"
+                                    placeholder="Default 8"
+                                />
+                            </div>
+                        </div>
+
                     </>
                 ) : (
                     <>
@@ -386,37 +413,20 @@ export default function LeftInputPanel({ onResults }: LeftInputPanelProps) {
                                 placeholder="Enter monthly units consumed"
                             />
                         </div>
+                        <div>
+                            <label className="block mb-1">Tariff (₹/kWh)</label>
+                            <input
+                                type="number"
+                                name="tariff"
+                                value={formData.tariff}
+                                onChange={handleChange}
+                                className="w-full p-2 rounded-lg bg-black border border-green-500"
+                                placeholder="Default 8"
+                            />
+                        </div>
 
                     </>
                 )}
-
-                {/* Always visible fields */}
-                <div className="flex flex-row gap-x-6">
-
-                    <div>
-                        <label className="block mb-1">Sanctioned Load (kW)</label>
-                        <input
-                            type="number"
-                            name="sanctionedLoad"
-                            value={formData.sanctionedLoad}
-                            onChange={handleChange}
-                            className="w-full p-2 rounded-lg bg-black border border-green-500"
-                            placeholder="Default 1"
-                        />
-                    </div>
-
-                    <div>
-                        <label className="block mb-1">Tariff (₹/kWh)</label>
-                        <input
-                            type="number"
-                            name="tariff"
-                            value={formData.tariff}
-                            onChange={handleChange}
-                            className="w-full p-2 rounded-lg bg-black border border-green-500"
-                            placeholder="Default 8"
-                        />
-                    </div>
-                </div>
 
                 <button
                     type="submit"

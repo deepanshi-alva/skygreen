@@ -1,6 +1,6 @@
 export default function RightAds() {
   return (
-    <div className="col-span-2 p-4 space-y-4">
+    <div className="col-span-2 p-4 space-y-4 sticky top-24 self-start">
       <h2 className="text-xl font-bold">Sponsored</h2>
       <div className="bg-black/70 p-4 rounded-xl border border-green-500">
         <p className="font-bold">SKYGREEN Premium Panels</p>

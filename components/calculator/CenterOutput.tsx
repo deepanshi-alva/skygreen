@@ -7,7 +7,7 @@ type Props = {
 };
 
 export default function CenterOutput({ results }: Props) {
-  const [mode, setMode] = useState<"grid" | "solar">("grid");
+  const [mode, setMode] = useState<"grid" | "solar">("solar");
   if (!results) {
     return (
       <div className="col-span-7 p-6 flex items-center justify-center">
@@ -25,11 +25,14 @@ export default function CenterOutput({ results }: Props) {
     );
   }
 
-  const format = (value: any) =>
-    typeof value === "number" ? value.toFixed(2) : value;
+  const format = (value: any) => {
+    if (typeof value !== "number") return value;
+    return value.toLocaleString("en-IN", { maximumFractionDigits: 2 });
+  };
+
 
   // ---- PIE DATA ----
-  const COLORS = ["#22c55e", "#1e293b"]; // green + gray
+  const COLORS = ["#e60707ff", "#22c55e"]; // green + gray
 
   const gridData = [
     { name: "30-Year Grid Bill", value: results.total_spend },
@@ -37,7 +40,7 @@ export default function CenterOutput({ results }: Props) {
 
   const solarData = [
     { name: "Payback Period", value: results.payback_years * results.annual_saving_inr },
-    { name: "Net Saving After Payback", value: results.net_gain_after_payback },
+    { name: "Net Saving After 30 Years", value: results.net_gain_after_payback },
   ];
 
   return (
@@ -72,7 +75,7 @@ export default function CenterOutput({ results }: Props) {
         <div className="bg-[#1a1a1a] p-4 rounded-lg border border-white/10 shadow-md">
           <p className="text-sm text-gray-400">Payback Period</p>
           <p className="text-2xl font-bold text-green-400 ">
-            {results.payback_years.toFixed(1)} years
+            {results?.payback_years?.toFixed(1)} years
           </p>
         </div>
       </div>
@@ -114,9 +117,9 @@ export default function CenterOutput({ results }: Props) {
                 ₹{format(results.gross_cost_inr)}
               </span>
             </div>
-            <div className="flex justify-between text-sm">
-              <span className="text-gray-300">Net Cost (After Subsidy)</span>
-              <span className="font-semibold text-green-400">
+            <div className=" flex flex-col mt-6 justify-center items-center text-sm">
+              <span className="text-gray-300 text-[1rem] font-semibold">Net Cost (After Subsidy)</span>
+              <span className="font-semibold mt-2 text-4xl text-green-400">
                 ₹{format(results.net_cost_inr)}
               </span>
             </div>
@@ -157,7 +160,7 @@ export default function CenterOutput({ results }: Props) {
 
         {/* Right column → Pie + Buttons */}
         <div className="bg-[#1a1a1a] p-6 rounded-xl border border-white/10 shadow-md col-span-2 flex flex-col items-center">
-          <h3 className="text-lg font-bold mb-4">30-Year Comparison</h3>
+          <h3 className="text-lg font-bold mb-4">30-Year Economics</h3>
           <ResponsiveContainer width="100%" height={220}>
             <PieChart>
               <Pie
@@ -168,28 +171,32 @@ export default function CenterOutput({ results }: Props) {
                 cy="50%"
                 innerRadius={50}
                 outerRadius={80}
-                label
+                label={({ value }) => `₹${format(value)}`}
+                labelLine={{ stroke: "white", strokeWidth: 1.5 }}
+                fontSize={16}
+                fill="white"
               >
                 {(mode === "grid" ? gridData : solarData).map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                 ))}
               </Pie>
-              <Tooltip formatter={(val: number, name: string) => [`₹${val.toFixed(0)}`, name]} />
-              <Legend />
+              <Tooltip formatter={(val: number, name: string) => [`₹${val.toFixed(0)}`, name]}
+                contentStyle={{ backgroundColor: "#1a1a1a", border: "1px solid #22c55e", color: "white" }}
+                itemStyle={{ color: "white" }}
+                labelStyle={{ color: "white" }}
+              />
+              <Legend 
+                wrapperStyle={{ color: 'white' }}
+                iconType="rect"
+                formatter={(value, entry) => (
+                  <span style={{ color: 'white', fontSize: '14px' }}>{value}</span>
+                )}
+              />
             </PieChart>
           </ResponsiveContainer>
 
           {/* Toggle buttons */}
           <div className="flex gap-4 mt-4">
-            <button
-              onClick={() => setMode("grid")}
-              className={`px-4 py-1 rounded-md font-semibold ${mode === "grid"
-                ? "bg-green-500 text-black"
-                : "bg-[#111] text-green-400 border border-green-500"
-                }`}
-            >
-              With Grid
-            </button>
             <button
               onClick={() => setMode("solar")}
               className={`px-4 py-1 rounded-md font-semibold ${mode === "solar"
@@ -199,9 +206,39 @@ export default function CenterOutput({ results }: Props) {
             >
               With Solar
             </button>
+            <button
+              onClick={() => setMode("grid")}
+              className={`px-4 py-1 rounded-md font-semibold ${mode === "grid"
+                ? "bg-green-500 text-black"
+                : "bg-[#111] text-green-400 border border-green-500"
+                }`}
+            >
+              With Grid
+            </button>
           </div>
         </div>
       </div>
+
+      {/* Disclaimer Section */}
+      {Array.isArray(results?.disclaimer) && results.disclaimer.length > 0 && (
+        <div className="mt-6 bg-[#1a1a1a] p-4 rounded-lg border border-white/10 shadow-md">
+          <h3 className="text-lg font-bold mb-2 text-green-400">Subsidy Guidelines</h3>
+          <div className="space-y-2 text-sm text-gray-300">
+            {results.disclaimer.map((block: any, idx: number) => {
+              if (block.type === "paragraph") {
+                return (
+                  <p key={idx}>
+                    {block.children.map((child: any, cIdx: number) => (
+                      <span key={cIdx}>{child.text}</span>
+                    ))}
+                  </p>
+                );
+              }
+              return null;
+            })}
+          </div>
+        </div>
+      )}
 
       <button className="mt-6 bg-green-500 hover:bg-green-600 text-black font-bold py-2 px-4 rounded-lg transition">
         Download Full Report
