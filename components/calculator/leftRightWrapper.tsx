@@ -1,10 +1,10 @@
 "use client";
 import { useState } from "react";
-import LeftInputPanel from "@/components/calculator/leftInputPanel";
+import LeftInputPanel, {CalculatorResult} from "@/components/calculator/leftInputPanel";
 import CenterOutput from "@/components/calculator/CenterOutput";
 
 export default function LeftRightWrapper() {
-    const [results, setResults] = useState<any | null>(null);
+    const [results, setResults] = useState<CalculatorResult | null>(null);
   return (
     <>
       {/* LEFT GRID */}

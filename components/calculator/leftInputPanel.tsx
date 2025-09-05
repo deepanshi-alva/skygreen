@@ -9,8 +9,35 @@ type StateType = {
     rwa_enabled: boolean;
 };
 
+// Define what the API returns for calculator results (simplified)
+export type CalculatorResult = {
+    state: string;
+    recommended_kw: number;
+    final_dc_kw: number;
+    panel_count: number;
+    subsidy_eligible_kw: number;
+    monthly_unit: number;
+    total_spend: number;
+    daily_unit: number;
+    central_subsidy_inr: number;
+    state_subsidy: number;
+    total_subsidy: number;
+    gross_cost_inr: number;
+    net_cost_inr: number;
+    daily_gen_kwh: number;
+    monthly_gen_kwh: number;
+    annual_gen_y1_kwh: number;
+    lifetime_gen_kwh: number;
+    monthly_saving_inr: number;
+    annual_saving_inr: number;
+    lifetime_saving_inr: number;
+    payback_years: number;
+    roof_needed_sqft: number;
+    disclaimer: { type: string; children: { type: string; text: string }[] }[];
+};
+
 type LeftInputPanelProps = {
-    onResults: (data: any) => void; // 👈 this is the correct prop type
+    onResults: (data: CalculatorResult) => void;
 };
 
 export default function LeftInputPanel({ onResults }: LeftInputPanelProps) {
@@ -48,8 +75,12 @@ export default function LeftInputPanel({ onResults }: LeftInputPanelProps) {
                     { cache: "no-store" }
                 );
                 const data = await res.json();
+                type ApiState = {
+                    id: number;
+                    attributes: { name: string; rwa_enabled: boolean };
+                };
                 const formatted = Array.isArray(data.data)
-                    ? data.data.map((item: any) => ({
+                    ? data.data.map((item: ApiState) => ({
                         id: item.id,
                         name: item.attributes.name,
                         rwa_enabled: item.attributes.rwa_enabled,

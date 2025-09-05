@@ -2,6 +2,47 @@
 import { useState } from "react";
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from "recharts";
 
+type DisclaimerBlock = {
+  type: "paragraph";
+  children: { type: string; text: string }[];
+};
+
+type ResultType = {
+  state: string;
+  is_rwa: boolean;
+  num_houses?: number;
+  recommended_kw: number;
+  final_dc_kw: number;
+  sanctioned_load_must_be?: number;
+  panel_count: number;
+  subsidy_eligible_kw: number;
+  monthly_unit: number;
+  monthly_spend?: number;
+  total_spend: number;
+  daily_unit: number;
+  central_subsidy_inr: number;
+  state_subsidy: number;
+  total_subsidy: number;
+  gross_cost_inr: number;
+  net_cost_inr: number;
+  daily_gen_kwh: number;
+  monthly_gen_kwh: number;
+  annual_gen_y1_kwh: number;
+  lifetime_gen_kwh: number;
+  monthly_saving_inr: number;
+  annual_saving_inr: number;
+  lifetime_saving_inr: number;
+  annual_saving_net: number;
+  years_after_payback: number;
+  net_gain_after_payback: number;
+  payback_years: number;
+  roof_needed_sqft: number;
+  roof_area_available?: number;
+  roof_fits?: boolean | null;
+  disclaimer: DisclaimerBlock[];
+};
+
+
 type Props = {
   results: any | null;
 };
@@ -25,7 +66,7 @@ export default function CenterOutput({ results }: Props) {
     );
   }
 
-  const format = (value: any) => {
+  const format = (value:  number | string | undefined) => {
     if (typeof value !== "number") return value;
     return value.toLocaleString("en-IN", { maximumFractionDigits: 2 });
   };
