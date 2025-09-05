@@ -9,6 +9,7 @@ import { usePathname } from "next/navigation";
 import { useAuth } from "@/lib/authContext"; // ✅ import auth context
 import React from "react";
 import { ArrowRight } from "lucide-react";
+import AuthDropdown from "./authDropdown";
 
 export default function Navbar() {
   const router = useRouter();
@@ -35,8 +36,11 @@ export default function Navbar() {
 
   return (
     <div
-      className={`fixed top-0 w-full z-50 transition-shadow"
-        }`}
+      className={`fixed top-0 w-full z-50 pb-1 transition-all duration-300 ${
+    isSticky
+      ? "bg-black/10 backdrop-blur-md shadow-lg" // Opaque when scrolled
+      : "bg-transparent" // Transparent at top
+  }`}
     >
       <nav className="max-w-7xl mx-auto flex items-center justify-between px-4 py-3 text-white">
         {/* Logo */}
@@ -55,15 +59,18 @@ export default function Navbar() {
 
         {/* Desktop Menu */}
         <div
-          className="hidden md:flex space-x-12 font-medium py-4 px-4 
+          className="hidden md:flex mt-2 space-x-12 font-medium py-4 px-4 
              rounded-full border border-white/20 
-             bg-black/60 backdrop-blur-md shadow-md"
+             bg-white/30 backdrop-blur-md shadow-md"
         >
           <Link href={"/"} className={linkClasses("/")}>
             Home
           </Link>
           <Link href={"/products"} className={linkClasses("/products")}>
             Products
+          </Link>
+          <Link href={"/calculator"} className={linkClasses("/calculator")}>
+            Solar Calculator
           </Link>
           <Link href={"/faqs"} className={linkClasses("/faqs")}>
             FAQ&apos;s
@@ -82,7 +89,7 @@ export default function Navbar() {
             onMouseLeave={() => setSupportOpen(false)}
           >
             <button
-              className={`font-semibold flex items-center mr-8 transition-transform duration-300 ${
+              className={`font-semibold flex mt-2 items-center mr-8 transition-transform duration-300 ${
                 supportOpen
                   ? "text-green-500 scale-110"
                   : "hover:text-green-400 hover:scale-110"
@@ -144,53 +151,7 @@ export default function Navbar() {
               Login
             </Link>
           ) : (
-            <div className="relative group">
-              <button className="px-4 py-2 bg-gray-100 text-black rounded">
-                {user.username} <ChevronDown className="inline w-4 h-4" />
-              </button>
-              <div className="absolute right-0 mt-2 w-48 bg-white text-black shadow-lg rounded hidden group-hover:block">
-                <Link
-                  href="/profile"
-                  className="block px-4 py-2 hover:bg-gray-100"
-                >
-                  My Profile
-                </Link>
-
-                {user?.role?.name === "Admin" && (
-                  <Link
-                    href="/admin/users"
-                    className="block px-4 py-2 hover:bg-gray-100"
-                  >
-                    Manage Users
-                  </Link>
-                )}
-
-                {user?.role?.name === "Caller" && (
-                  <Link
-                    href="/caller/users"
-                    className="block px-4 py-2 hover:bg-gray-100"
-                  >
-                    Assigned Users
-                  </Link>
-                )}
-
-                {user?.role?.name === "Customer" && (
-                  <Link
-                    href="/orders"
-                    className="block px-4 py-2 hover:bg-gray-100"
-                  >
-                    My Orders
-                  </Link>
-                )}
-
-                <button
-                  onClick={logout}
-                  className="w-full text-left px-4 py-2 hover:bg-red-50 text-red-600"
-                >
-                  Logout
-                </button>
-              </div>
-            </div>
+            <AuthDropdown/>
           )} */}
 
           {/* Contact Us */}
@@ -203,7 +164,7 @@ export default function Navbar() {
              shadow-[0_0_15px_rgba(34,197,94,0.7)]
              hover:shadow-[0_0_25px_rgba(34,197,94,0.9)]
              transition-all duration-300 cursor-pointer
-             flex items-center space-x-2"
+             flex items-center space-x-2 mt-2"
           >
             {/* Button content */}
             <span className="transition-transform duration-300 group-hover:translate-x-1">
@@ -229,6 +190,9 @@ export default function Navbar() {
           </Link>
           <Link href={"/products"} className={linkClasses("/products")}>
             Products
+          </Link>
+          <Link href={"/calculator"} className={linkClasses("/calculator")}>
+            Solar Calculator
           </Link>
           <Link href={"/faqs"} className={linkClasses("/faqs")}>
             FAQ&apos;s
