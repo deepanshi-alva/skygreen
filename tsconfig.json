@@ -22,6 +22,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "lib/mockData.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "lib/mockData.js", "components/calculator/leftRightWrapper.jsx", "components/calculator/leftInputPanel.jsx", "components/calculator/CenterOutput.jsx"],
   "exclude": ["node_modules"]
 }

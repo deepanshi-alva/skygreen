@@ -39,10 +39,10 @@ export default function LeftInputPanel({ onResults }) {
         const data = await res.json();
         const formatted = Array.isArray(data.data)
           ? data.data.map((item) => ({
-              id: item.id,
-              name: item.attributes.name,
-              rwa_enabled: item.attributes.rwa_enabled,
-            }))
+            id: item.id,
+            name: item.attributes.name,
+            rwa_enabled: item.attributes.rwa_enabled,
+          }))
           : [];
 
         setStates(formatted);
@@ -85,6 +85,22 @@ export default function LeftInputPanel({ onResults }) {
     setFilteredStates(filtered);
   };
 
+  let sizingMethod;
+  if (formData.mode === "residential") {
+    if (formData.bill) sizingMethod = "bill";
+    else if (formData.units) sizingMethod = "units";
+    else sizingMethod = "bill"; // default fallback
+  } else if (formData.mode === "rwa") {
+    if (formData.proposedCapacity) sizingMethod = "proposed";
+    else if (formData.societySanctionedLoad) sizingMethod = "sanctioned_total";
+    else if (formData.perHouseSanctionedLoad) sizingMethod = "sanctioned_per_house";
+    else if (formData.societyBill) sizingMethod = "bill";
+    else if (formData.societyUnits) sizingMethod = "units";
+  }
+
+
+  console.log("this is the sizing method", sizingMethod);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -95,7 +111,7 @@ export default function LeftInputPanel({ onResults }) {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             state_name: formData.state,
-            sizing_method: formData.bill ? "bill" : "units",
+            sizing_method: sizingMethod,
             monthly_bill_inr: Number(formData.bill) || 0,
             monthly_units_kwh: Number(formData.units) || 0,
             roof_area_value: Number(formData.roofArea) || 0,
