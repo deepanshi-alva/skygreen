@@ -6,6 +6,7 @@ export default function LeftInputPanel({ onResults }) {
   const [states, setStates] = useState([]);
   const [filteredStates, setFilteredStates] = useState([]);
   const [selectedState, setSelectedState] = useState(null);
+  const [error, setError] = useState("");
 
   const [formData, setFormData] = useState({
     state: "",
@@ -103,6 +104,36 @@ export default function LeftInputPanel({ onResults }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+
+    // --- Edge Case 1: No State selected ---
+    if (!formData.state.trim()) {
+      setError("⚠️ Please select a State.");
+      return;
+    }
+
+    // --- Residential Mode Validation ---
+    if (formData.mode === "residential") {
+      if (!formData.bill && !formData.units) {
+        setError("⚠️ Please enter your Monthly Bill or Monthly Units to proceed.");
+        return;
+      }
+    }
+
+    // --- RWA Mode Validation ---
+    if (formData.mode === "rwa") {
+      if (
+        !formData.proposedCapacity &&
+        !formData.societySanctionedLoad &&
+        !formData.perHouseSanctionedLoad &&
+        !formData.societyBill &&
+        !formData.societyUnits
+      ) {
+        setError("⚠️ Please enter at least one RWA sizing input (Capacity, Load, Bill, or Units).");
+        return;
+      }
+    }
+
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/calculator/estimate`,
@@ -236,7 +267,10 @@ export default function LeftInputPanel({ onResults }) {
                   value={formData.bill}
                   onChange={handleChange}
                   disabled={!!formData.units}
-                  className="w-full p-2 rounded-lg bg-black border border-green-500 appearance-none"
+                  className={`w-full p-2 rounded-lg border appearance-none
+    ${formData.units
+                      ? "bg-gray-700 border-gray-500 text-gray-400 cursor-not-allowed"
+                      : "bg-black border-green-500 text-white"}`}
                   placeholder="Average bill amount"
                 />
               </div>
@@ -251,7 +285,10 @@ export default function LeftInputPanel({ onResults }) {
                   value={formData.units}
                   onChange={handleChange}
                   disabled={!!formData.bill}
-                  className="w-full p-2 rounded-lg bg-black border border-green-500"
+                  className={`w-full p-2 rounded-lg border appearance-none
+    ${formData.bill
+                      ? "bg-gray-700 border-gray-500 text-gray-400 cursor-not-allowed"
+                      : "bg-black border-green-500 text-white"}`}
                   placeholder="Average monthly units"
                 />
               </div>
@@ -435,6 +472,13 @@ export default function LeftInputPanel({ onResults }) {
             </div>
           </>
         )}
+
+        {error && (
+          <div className="p-2 bg-red-600 text-white rounded-lg text-sm">
+            {error}
+          </div>
+        )}
+
 
         <button
           type="submit"
