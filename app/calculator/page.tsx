@@ -7,7 +7,7 @@ export default function SolarDashboardPage() {
       <LeftRightWrapper/>
 
       {/* RIGHT GRID */}
-      <RightAds />
+      {/* <RightAds /> */}
     </div>
   );
 }
