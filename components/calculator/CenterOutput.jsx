@@ -188,18 +188,111 @@ export default function CenterOutput({ results }) {
       {/* Disclaimer Section */}
       {Array.isArray(results?.disclaimer) && results.disclaimer.length > 0 && (
         <div className="mt-6 bg-[#1a1a1a] p-4 rounded-lg border border-white/10 shadow-md">
-          <h3 className="text-lg font-bold mb-2 text-green-400">Subsidy Guidelines</h3>
-          <div className="space-y-2 text-sm text-gray-300">
+          {/* <h3 className="text-lg font-bold mb-2 text-green-400">Subsidy Guidelines</h3> */}
+          <div className="space-y-3 text-sm text-gray-300">
             {results.disclaimer.map((block, idx) => {
-              if (block.type === "paragraph") {
+              // --- Headings ---
+              if (block.type === "heading") {
+                const level = block.level || 4;
+
+                // Map levels to actual JSX elements
+                const HeadingTag =
+                  level === 1 ? "h1" :
+                    level === 2 ? "h2" :
+                      level === 3 ? "h3" :
+                        level === 4 ? "h4" :
+                          level === 5 ? "h5" : "h6";
+
+                const headingStyles = {
+                  h1: "text-2xl font-bold text-green-400 mt-4",
+                  h2: "text-xl font-bold text-green-400 mt-4",
+                  h3: "text-lg font-bold text-green-400 mt-3",
+                  h4: "text-md font-bold text-green-400 mt-3",
+                  h5: "text-sm font-bold text-green-400 mt-2",
+                  h6: "text-xs font-bold text-green-400 mt-2",
+                };
+
                 return (
-                  <p key={idx}>
-                    {block.children.map((child, cIdx) => (
-                      <span key={cIdx}>{child.text}</span>
-                    ))}
+                  <HeadingTag key={idx} className={headingStyles[HeadingTag]}>
+                    {block.children.map((child, cIdx) => {
+                      let text = child.text || "";
+                      return (
+                        <span
+                          key={cIdx}
+                          className={`${child.bold ? "font-bold" : ""} ${child.underline ? "underline" : ""
+                            }`}
+                        >
+                          {text}
+                        </span>
+                      );
+                    })}
+                  </HeadingTag>
+                );
+              }
+
+              // --- Paragraphs ---
+              if (block.type === "paragraph") {
+                // Check if all children are empty strings → treat as a line break
+                const isEmpty =
+                  !block.children || block.children.every((c) => !c.text || c.text.trim() === "");
+
+                if (isEmpty) {
+                  return <br key={idx} />;
+                }
+
+                return (
+                  <p key={idx} className="leading-relaxed">
+                    {block.children.map((child, cIdx) => {
+                      let text = child.text || "";
+
+                      if (text.includes("\n")) {
+                        return text.split("\n").map((part, i) => (
+                          <span key={i}>
+                            {part}
+                            <br />
+                          </span>
+                        ));
+                      }
+
+                      return (
+                        <span
+                          key={cIdx}
+                          className={`${child.bold ? "font-bold" : ""} ${child.underline ? "underline" : ""
+                            }`}
+                        >
+                          {text}
+                        </span>
+                      );
+                    })}
                   </p>
                 );
               }
+
+              // Render lists
+              if (block.type === "list") {
+                const ListTag = block.format === "ordered" ? "ol" : "ul";
+                return (
+                  <ListTag
+                    key={idx}
+                    className="list-disc list-inside space-y-1 ml-4"
+                  >
+                    {block.children.map((li, liIdx) => (
+                      <li key={liIdx}>
+                        {li.children.map((child, cIdx) => (
+                          <span
+                            key={cIdx}
+                            className={`${child.bold ? "font-bold" : ""} ${child.underline ? "underline" : ""
+                              }`}
+                          >
+                            {child.text}
+                          </span>
+                        ))}
+                      </li>
+                    ))}
+                  </ListTag>
+                );
+              }
+
               return null;
             })}
           </div>
