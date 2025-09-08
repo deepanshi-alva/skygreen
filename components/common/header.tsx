@@ -61,7 +61,7 @@ export default function Navbar() {
         <div
           className="hidden md:flex mt-2 space-x-12 font-medium py-4 px-4 
              rounded-full border border-white/20 
-             bg-white/30 backdrop-blur-md shadow-md"
+             bg-white/50 backdrop-blur-md shadow-md"
         >
           <Link href={"/"} className={linkClasses("/")}>
             Home
