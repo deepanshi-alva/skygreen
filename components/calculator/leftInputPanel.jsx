@@ -29,6 +29,8 @@ export default function LeftInputPanel({ onResults }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
 
+  console.log("this is the formdata", formData)
+
   // Fetch states from Strapi
   useEffect(() => {
     async function fetchStates() {
@@ -160,6 +162,8 @@ export default function LeftInputPanel({ onResults }) {
       );
 
       const data = await res.json();
+      // Add user's sanctioned load into results so RightAds can use it
+      data.user_sanctioned_load = Number(formData.sanctionedLoad) || 1;
       console.log("Results:", data);
       console.log("state name is", formData.state);
 
