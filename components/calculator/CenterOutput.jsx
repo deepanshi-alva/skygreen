@@ -241,31 +241,33 @@ export default function CenterOutput({ results }) {
                 }
 
                 return (
-                  <p key={idx} className="leading-relaxed">
-                    {block.children.map((child, cIdx) => {
-                      let text = child.text || "";
+  <p key={idx} className="leading-relaxed">
+    {block.children.map((child, cIdx) => {
+      let text = child.text || "";
 
-                      if (text.includes("\n")) {
-                        return text.split("\n").map((part, i) => (
-                          <span key={i}>
-                            {part}
-                            <br />
-                          </span>
-                        ));
-                      }
+      if (text.includes("\n")) {
+        return text.split("\n").map((part, i) => (
+          <span key={i} className="whitespace-pre-wrap">
+            {part}
+            <br />
+          </span>
+        ));
+      }
 
-                      return (
-                        <span
-                          key={cIdx}
-                          className={`${child.bold ? "font-bold" : ""} ${child.underline ? "underline" : ""
-                            }`}
-                        >
-                          {text}
-                        </span>
-                      );
-                    })}
-                  </p>
-                );
+      return (
+        <span
+          key={cIdx}
+          className={`${child.bold ? "font-bold" : ""} ${
+            child.underline ? "underline" : ""
+          } whitespace-pre-wrap`}   // ✅ Keep indentation visible
+        >
+          {text}
+        </span>
+      );
+    })}
+  </p>
+);
+
               }
 
               // Render lists
