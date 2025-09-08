@@ -145,8 +145,8 @@ export default function LeftInputPanel({ onResults }) {
           body: JSON.stringify({
             state_name: formData.state,
             sizing_method: sizingMethod,
-            monthly_bill_inr: Number(formData.bill) || 0,
-            monthly_units_kwh: Number(formData.units) || 0,
+            monthly_bill_inr: formData.mode === "rwa" ? Number(formData.societyBill) : Number(formData.bill) || 0,
+            monthly_units_kwh: formData.mode === "rwa" ? Number(formData.societyUnits) : Number(formData.units) || 0,
             roof_area_value: Number(formData.roofArea) || 0,
             roof_area_unit: formData.roofUnit,
             is_rwa: formData.mode === "rwa",

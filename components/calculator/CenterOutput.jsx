@@ -86,11 +86,11 @@ export default function CenterOutput({ results }) {
             </div>
             <div className="flex justify-between text-sm">
               <span className="text-gray-300">Central Subsidy</span>
-              <span className="font-semibold text-white break-all">₹{format(results.central_subsidy_inr)}</span>
+              <span className="font-semibold text-white break-all">- ₹{format(results.central_subsidy_inr)}</span>
             </div>
             <div className="flex justify-between text-sm">
               <span className="text-gray-300">State Subsidy</span>
-              <span className="font-semibold text-white break-all">₹{format(results.state_subsidy)}</span>
+              <span className="font-semibold text-white break-all">- ₹{format(results.state_subsidy)}</span>
             </div>
             <hr className="border-white/10 my-2" />
             <div className=" flex flex-col mt-6 justify-center items-center text-sm">
