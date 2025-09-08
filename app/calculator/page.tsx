@@ -25,7 +25,7 @@ export default function SolarDashboardPage() {
           <p className="text-base text-gray-300 mb-6 max-w-2xl">
             In just 2 minutes, see how much you can save with solar.
             <br />
-            Get instant results: system size, savings, payback, and lifetime benefits.
+            Get instant results: system size, savings, payback and lifetime benefits.
           </p>
 
           {/* Disclaimer */}
