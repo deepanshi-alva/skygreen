@@ -51,13 +51,14 @@ export default function RightAds({ results }) {
   const getStyles = (type) => {
     switch (type) {
       case "warning":
-        return "bg-red-900/30 border-red-500 text-red-300 hover:bg-red-900/50";
+        return "border-red-500 text-red-300 animate-[pulse-alert-red_1.5s_infinite]";
       case "info":
-        return "bg-blue-900/30 border-blue-500 text-blue-300 hover:bg-blue-900/50";
+        return "border-blue-500 text-blue-300 animate-[pulse-alert-blue_1.5s_infinite]";
       default:
         return "bg-gray-900/30 border-gray-500 text-gray-300";
     }
   };
+
 
   const getIcon = (type) => {
     switch (type) {
@@ -73,9 +74,9 @@ export default function RightAds({ results }) {
   return (
     <div className="col-span-2 p-4 space-y-4 sticky top-24 self-start">
       {/* Render only if there are actual notes */}
-      {notes.length > 0 && (
+      {notes.length > 0 && !results?.is_rwa && (
         <div>
-          <h2 className="text-xl font-bold mb-2">Important Notes</h2>
+          <h2 className="text-xl font-bold mb-2">🚨 Important Notes</h2>
 
           <div className="space-y-3">
             {notes.map((note, i) => (
@@ -88,6 +89,7 @@ export default function RightAds({ results }) {
                 {getIcon(note.type)}
                 <p className="text-sm leading-snug">{note.text}</p>
               </div>
+
             ))}
           </div>
         </div>
