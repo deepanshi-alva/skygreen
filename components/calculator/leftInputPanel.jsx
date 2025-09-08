@@ -6,6 +6,7 @@ export default function LeftInputPanel({ onResults }) {
   const [states, setStates] = useState([]);
   const [filteredStates, setFilteredStates] = useState([]);
   const [selectedState, setSelectedState] = useState(null);
+  const [error, setError] = useState("");
 
   const [formData, setFormData] = useState({
     state: "",
@@ -39,10 +40,10 @@ export default function LeftInputPanel({ onResults }) {
         const data = await res.json();
         const formatted = Array.isArray(data.data)
           ? data.data.map((item) => ({
-              id: item.id,
-              name: item.attributes.name,
-              rwa_enabled: item.attributes.rwa_enabled,
-            }))
+            id: item.id,
+            name: item.attributes.name,
+            rwa_enabled: item.attributes.rwa_enabled,
+          }))
           : [];
 
         setStates(formatted);
@@ -85,8 +86,54 @@ export default function LeftInputPanel({ onResults }) {
     setFilteredStates(filtered);
   };
 
+  let sizingMethod;
+  if (formData.mode === "residential") {
+    if (formData.bill) sizingMethod = "bill";
+    else if (formData.units) sizingMethod = "units";
+    else sizingMethod = "bill"; // default fallback
+  } else if (formData.mode === "rwa") {
+    if (formData.proposedCapacity) sizingMethod = "proposed";
+    else if (formData.societySanctionedLoad) sizingMethod = "sanctioned_total";
+    else if (formData.perHouseSanctionedLoad) sizingMethod = "sanctioned_per_house";
+    else if (formData.societyBill) sizingMethod = "bill";
+    else if (formData.societyUnits) sizingMethod = "units";
+  }
+
+
+  console.log("this is the sizing method", sizingMethod);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+
+    // --- Edge Case 1: No State selected ---
+    if (!formData.state.trim()) {
+      setError("⚠️ Please select a State.");
+      return;
+    }
+
+    // --- Residential Mode Validation ---
+    if (formData.mode === "residential") {
+      if (!formData.bill && !formData.units) {
+        setError("⚠️ Please enter your Monthly Bill or Monthly Units to proceed.");
+        return;
+      }
+    }
+
+    // --- RWA Mode Validation ---
+    if (formData.mode === "rwa") {
+      if (
+        !formData.proposedCapacity &&
+        !formData.societySanctionedLoad &&
+        !formData.perHouseSanctionedLoad &&
+        !formData.societyBill &&
+        !formData.societyUnits
+      ) {
+        setError("⚠️ Please enter at least one RWA sizing input (Capacity, Load, Bill, or Units).");
+        return;
+      }
+    }
+
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/calculator/estimate`,
@@ -95,7 +142,7 @@ export default function LeftInputPanel({ onResults }) {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             state_name: formData.state,
-            sizing_method: formData.bill ? "bill" : "units",
+            sizing_method: sizingMethod,
             monthly_bill_inr: Number(formData.bill) || 0,
             monthly_units_kwh: Number(formData.units) || 0,
             roof_area_value: Number(formData.roofArea) || 0,
@@ -220,7 +267,10 @@ export default function LeftInputPanel({ onResults }) {
                   value={formData.bill}
                   onChange={handleChange}
                   disabled={!!formData.units}
-                  className="w-full p-2 rounded-lg bg-black border border-green-500 appearance-none"
+                  className={`w-full p-2 rounded-lg border appearance-none
+    ${formData.units
+                      ? "bg-gray-700 border-gray-500 text-gray-400 cursor-not-allowed"
+                      : "bg-black border-green-500 text-white"}`}
                   placeholder="Average bill amount"
                 />
               </div>
@@ -235,7 +285,10 @@ export default function LeftInputPanel({ onResults }) {
                   value={formData.units}
                   onChange={handleChange}
                   disabled={!!formData.bill}
-                  className="w-full p-2 rounded-lg bg-black border border-green-500"
+                  className={`w-full p-2 rounded-lg border appearance-none
+    ${formData.bill
+                      ? "bg-gray-700 border-gray-500 text-gray-400 cursor-not-allowed"
+                      : "bg-black border-green-500 text-white"}`}
                   placeholder="Average monthly units"
                 />
               </div>
@@ -419,6 +472,13 @@ export default function LeftInputPanel({ onResults }) {
             </div>
           </>
         )}
+
+        {error && (
+          <div className="p-2 bg-red-600 text-white rounded-lg text-sm">
+            {error}
+          </div>
+        )}
+
 
         <button
           type="submit"
