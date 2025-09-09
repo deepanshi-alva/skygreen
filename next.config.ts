@@ -10,11 +10,15 @@ const nextConfig = {
         pathname: "/uploads/**", // Strapi serves images here
       },
       // if you deploy Strapi later, add your production domain too
-      // {
-      //   protocol: "https",
-      //   hostname: "cms.yourdomain.com",
-      //   pathname: "/uploads/**",
-      // },
+      {
+        protocol: "https",
+        hostname: "outgoing-harmony-87425f99db.strapiapp.com",
+        pathname: "/uploads/**",
+      },
+      {
+        protocol: "https",
+        hostname: "outgoing-harmony-87425f99db.media.strapiapp.com",
+      },
     ],
   },
 };
