@@ -28,7 +28,7 @@ export default function RightAds({ results }) {
       if (subsidyCap < proposed) {
         addNote(
           "warning",
-          `With ${numHouses} houses and ${perHouseSanctioned} kW per house, subsidy is limited to ${subsidyCap} kW. To claim subsidy on full ${proposed} kW, increase per-house sanctioned load to at least ${perHouseCap} kW (as per state rule).`
+          `With ${numHouses} houses and ${perHouseSanctioned} kW per house, subsidy is limited to ${subsidyCap} kW. To claim subsidy on full ${proposed} kW, increase per-house sanctioned load to at most ${perHouseCap} kW (as per state rule).`
         );
       }
     }
@@ -69,7 +69,7 @@ export default function RightAds({ results }) {
         if (roofAvailable < roofNeeded) {
           addNote(
             "warning",
-            `You provided ${roofAvailable} sqft rooftop area, but ${roofNeeded} sqft is required for the system.`
+            `You provided ${roofAvailable} ${results.roof_area_unit} sqft rooftop area, but ${roofNeeded} ${results.roof_area_unit} is required for the system.`
           );
         }
       } else {
