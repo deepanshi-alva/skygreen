@@ -123,6 +123,17 @@ export default function LeftInputPanel({ onResults }) {
         return;
       }
 
+      // ✅ NEW RULE: society sanctioned load must be >= (houses × per-house load)
+      if (isPositive(perHouse) && isPositive(houses)) {
+        const minSocietyLoad = houses * perHouse;
+        if (isPositive(societyLoad) && societyLoad < minSocietyLoad) {
+          setError(
+            `⚠️For ${houses} houses × ${perHouse} kW/house = ${minSocietyLoad} kW minimum required society sanctioned load.`
+          );
+          return;
+        }
+      }
+
       // At least one positive sizing input required
       const anyPositive =
         isPositive(proposed) ||
@@ -171,8 +182,15 @@ export default function LeftInputPanel({ onResults }) {
       );
 
       const data = await res.json();
-      // Add user's sanctioned load into results so RightAds can use it
+      // Always enrich results with user-provided fields for frontend logic
       data.user_sanctioned_load = Number(formData.sanctionedLoad) || 1;
+      data.user_num_houses = Number(formData.numHouses) || 0;
+      data.user_proposed_capacity = Number(formData.proposedCapacity) || 0;
+      data.user_society_sanctioned_load = Number(formData.societySanctionedLoad) || 0;
+      data.user_per_house_sanctioned_load = Number(formData.perHouseSanctionedLoad) || 0;
+      data.user_roof_area_value = Number(formData.roofArea) || 0;
+      data.user_tariff = Number(formData.tariff) || 8;
+
       console.log("Results:", data);
       console.log("state name is", formData.state);
 

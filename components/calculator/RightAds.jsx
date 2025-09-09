@@ -5,48 +5,78 @@ import { AlertTriangle, Info } from "lucide-react";
 export default function RightAds({ results }) {
   const notes = [];
 
-  // helper to format numbers to 2 decimals (but avoid ".00" if integer)
+  // helper to format numbers
   const formatNum = (num) => {
     if (num == null || isNaN(num)) return num;
-    const rounded = Number(num).toFixed(2);
-    return parseFloat(rounded); // removes trailing .00
+    return Number(num).toLocaleString("en-IN", { maximumFractionDigits: 2 });
   };
 
-  // --- Sanctioned Load Check ---
-  if (results?.sanctioned_load_must_be && results?.sanctioned_load_must_be > 0) {
-    const userLoad = formatNum(results?.user_sanctioned_load) || 1;
-    const requiredLoad = formatNum(results.sanctioned_load_must_be);
+  const addNote = (type, text) => notes.push({ type, text });
 
-    if (requiredLoad > userLoad) {
-      notes.push({
-        type: "warning",
-        text: `You provided ${userLoad} kW sanctioned load, but the recommended system is ${formatNum(
-          results.recommended_kw
-        )} kW. Please upgrade your sanctioned load to ${requiredLoad} kW.`,
-      });
-    }
-  }
+  if (results?.is_rwa) {
+    // --- RWA subsidy logic ---
 
-  // --- Rooftop Area Check ---
-  if (results?.roof_needed_sqft) {
-    const roofNeeded = formatNum(results.roof_needed_sqft);
-    if (results?.roof_area_available && results.roof_area_available > 0) {
-      const roofAvailable = formatNum(results.roof_area_available);
-      if (roofAvailable < roofNeeded) {
-        notes.push({
-          type: "warning",
-          text: `You provided ${roofAvailable} sqft rooftop area, but ${roofNeeded} sqft is required for the system.`,
-        });
+    const numHouses = results?.num_houses || results?.user_num_houses;
+    const proposed = results?.recommended_kw || results?.user_proposed_capacity;
+    const societySanctioned = results?.user_society_sanctioned_load;
+    const perHouseSanctioned = results?.user_per_house_sanctioned_load;
+    const perHouseCap = results?.rwa_per_house_cap_kw; // e.g., 3 or 10 depending on state
+
+    // 1) Per-house sanctioned load too low
+    if (numHouses && perHouseSanctioned && proposed) {
+      const subsidyCap = numHouses * perHouseSanctioned;
+      if (subsidyCap < proposed) {
+        addNote(
+          "warning",
+          `With ${numHouses} houses and ${perHouseSanctioned} kW per house, subsidy is limited to ${subsidyCap} kW. To claim subsidy on full ${proposed} kW, increase per-house sanctioned load to at least ${perHouseCap} kW (as per state rule).`
+        );
       }
-    } else {
-      notes.push({
-        type: "info",
-        text: `For this system, approx. ${roofNeeded} sqft rooftop area is required.`,
-      });
+    }
+
+    // 2) Society sanctioned load lower than proposed
+    if (societySanctioned && proposed && societySanctioned < proposed) {
+      addNote(
+        "warning",
+        `Your society sanctioned load is ${societySanctioned} kW, but the proposed system is ${proposed} kW. Please upgrade sanctioned load to at least ${proposed} kW to avail full subsidy.`
+      );
+    }
+
+    // 3) Per-house sanctioned load above state cap
+    if (perHouseSanctioned && perHouseCap && perHouseSanctioned > perHouseCap) {
+      addNote(
+        "info",
+        `You entered ${perHouseSanctioned} kW per house, but subsidy is capped at ${perHouseCap} kW per house in ${results?.state}. Extra capacity will not be subsidized.`
+      );
+    }
+
+  } else {
+    // --- Residential Notes ---
+    if (results?.sanctioned_load_must_be && results?.sanctioned_load_must_be > 0) {
+      const userLoad = results?.user_sanctioned_load || 1;
+      const requiredLoad = results.sanctioned_load_must_be;
+      if (requiredLoad > userLoad) {
+        addNote(
+          "warning",
+          `You provided ${userLoad} kW sanctioned load, but the recommended system is ${results.recommended_kw} kW. Please upgrade your sanctioned load to ${requiredLoad} kW.`
+        );
+      }
+    }
+
+    if (results?.roof_needed_sqft) {
+      const roofNeeded = formatNum(results.roof_needed_sqft);
+      if (results?.roof_area_available && results.roof_area_available > 0) {
+        const roofAvailable = formatNum(results.roof_area_available);
+        if (roofAvailable < roofNeeded) {
+          addNote(
+            "warning",
+            `You provided ${roofAvailable} sqft rooftop area, but ${roofNeeded} sqft is required for the system.`
+          );
+        }
+      } else {
+        addNote("info", `For this system, approx. ${roofNeeded} sqft rooftop area is required.`);
+      }
     }
   }
-
-  // ✅ Don’t add success message, just leave notes empty if no issues
 
   const getStyles = (type) => {
     switch (type) {
@@ -58,7 +88,6 @@ export default function RightAds({ results }) {
         return "bg-gray-900/30 border-gray-500 text-gray-300";
     }
   };
-
 
   const getIcon = (type) => {
     switch (type) {
@@ -73,11 +102,9 @@ export default function RightAds({ results }) {
 
   return (
     <div className="col-span-2 p-4 space-y-4 sticky top-24 self-start">
-      {/* Render only if there are actual notes */}
-      {notes.length > 0 && !results?.is_rwa && (
+      {notes.length > 0 && (
         <div>
           <h2 className="text-xl font-bold mb-2">🚨 Important Notes</h2>
-
           <div className="space-y-3">
             {notes.map((note, i) => (
               <div
@@ -89,13 +116,12 @@ export default function RightAds({ results }) {
                 {getIcon(note.type)}
                 <p className="text-sm leading-snug">{note.text}</p>
               </div>
-
             ))}
           </div>
         </div>
       )}
 
-      {/* Ads section (always visible) */}
+      {/* Sponsored Section (always visible) */}
       <h2 className="text-xl font-bold mt-6">Sponsored</h2>
       <div className="bg-black/70 p-4 rounded-xl border border-green-500 hover:shadow-lg transition">
         <p className="font-bold">SKYGREEN Premium Panels</p>
