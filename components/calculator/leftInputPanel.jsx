@@ -348,7 +348,7 @@ export default function LeftInputPanel({ onResults }) {
                 >
                   <option value="sqft">Sqft</option>
                   <option value="sqm">Sqm</option>
-                  <option value="sqyd">Sqyd</option>
+                  <option value="sqyd">Sqyd / Gaj</option>
                   <option value="ground">Ground</option>
                   <option value="cent">Cent</option>
                 </select>
@@ -457,7 +457,7 @@ export default function LeftInputPanel({ onResults }) {
                 >
                   <option value="sqft">Sqft</option>
                   <option value="sqm">Sqm</option>
-                  <option value="sqyd">Sqyd</option>
+                  <option value="sqyd">Sqyd / Gaj</option>
                   <option value="ground">Ground</option>
                   <option value="cent">Cent</option>
                 </select>

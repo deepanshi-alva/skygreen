@@ -120,8 +120,8 @@ export default function CenterOutput({ results }) {
             <p className="text-xl font-bold text-green-400 break-all">{results.panel_count}</p>
           </div>
           <div className="bg-[#1a1a1a] p-4 rounded-lg border border-white/10 shadow-md">
-            <p className="text-sm text-gray-400">Rooftop Area Needed</p>
-            <p className="text-xl font-bold text-green-400 break-all">{format(results.roof_needed_sqft)} sqft</p>
+            <p className="text-sm text-gray-400">Total Area Needed</p>
+            <p className="text-xl font-bold text-green-400 break-all">{format(results.roof_needed_sqft)} {results.roof_area_unit}</p>
           </div>
         </div>
 
