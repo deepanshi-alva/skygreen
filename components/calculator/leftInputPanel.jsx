@@ -10,20 +10,17 @@ export default function LeftInputPanel({ onResults }) {
 
   const [formData, setFormData] = useState({
     state: "",
-    mode: "residential", // default
+    mode: "residential",
     bill: "",
     units: "",
     roofArea: "",
     roofUnit: "sqft",
     numHouses: "",
     proposedCapacity: "",
-    sanctionedLoad: "1", // default
-    tariff: "8", // default
-    // New RWA fields
+    sanctionedLoad: "1",
+    tariff: "8",
     societySanctionedLoad: "",
     perHouseSanctionedLoad: "",
-    // societyBill: "",
-    // societyUnits: "",
   });
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -88,25 +85,13 @@ export default function LeftInputPanel({ onResults }) {
     setFilteredStates(filtered);
   };
 
-  let sizingMethod;
-  if (formData.mode === "residential") {
-    if (formData.bill) sizingMethod = "bill";
-    else if (formData.units) sizingMethod = "units";
-    else sizingMethod = "bill"; // default fallback
-  } else if (formData.mode === "rwa") {
-    if (formData.proposedCapacity) sizingMethod = "proposed";
-    else if (formData.societySanctionedLoad) sizingMethod = "sanctioned_total";
-    else if (formData.perHouseSanctionedLoad) sizingMethod = "sanctioned_per_house";
-    else if (formData.societyBill) sizingMethod = "bill";
-    else if (formData.societyUnits) sizingMethod = "units";
-  }
-
-
-  console.log("this is the sizing method", sizingMethod);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+
+    // helpers
+    const toNum = (v) => Number(v ?? 0) || 0;
+    const isPositive = (n) => n > 0;
 
     // --- Edge Case 1: No State selected ---
     if (!formData.state.trim()) {
@@ -116,22 +101,50 @@ export default function LeftInputPanel({ onResults }) {
 
     // --- Residential Mode Validation ---
     if (formData.mode === "residential") {
-      if (!formData.bill && !formData.units) {
-        setError("⚠️ Please enter your Monthly Bill or Monthly Units to proceed.");
+      const bill = toNum(formData.bill);
+      const units = toNum(formData.units);
+
+      if (!isPositive(bill) && !isPositive(units)) {
+        setError("⚠️ Please enter a positive Monthly Bill or Monthly Units to proceed.");
         return;
       }
     }
 
     // --- RWA Mode Validation ---
     if (formData.mode === "rwa") {
-      if (
-        !formData.proposedCapacity &&
-        !formData.societySanctionedLoad &&
-        !formData.perHouseSanctionedLoad
-      ) {
-        setError("⚠️ Please enter at least one RWA sizing input (Capacity, Load, Bill, or Units).");
+      const proposed = toNum(formData.proposedCapacity);
+      const societyLoad = toNum(formData.societySanctionedLoad);
+      const perHouse = toNum(formData.perHouseSanctionedLoad);
+      const houses = toNum(formData.numHouses);
+
+      // If per-house load is provided, number of houses must be > 0
+      if (isPositive(perHouse) && !isPositive(houses)) {
+        setError("⚠️ Please enter Number of Houses when Per-house Sanctioned Load is provided.");
         return;
       }
+
+      // At least one positive sizing input required
+      const anyPositive =
+        isPositive(proposed) ||
+        isPositive(societyLoad) ||
+        (isPositive(perHouse) && isPositive(houses));
+
+      if (!anyPositive) {
+        setError(
+          "⚠️ Enter at least one positive RWA sizing input: Proposed Capacity (kW) or Society Sanctioned Load (kW) or Per-house Sanctioned Load (kW) with Number of Houses."
+        );
+        return;
+      }
+    }
+
+    // 👉 Determine sizingMethod
+    let sizingMethod = "";
+    if (formData.mode === "residential") {
+      sizingMethod = isPositive(toNum(formData.bill)) ? "bill"
+        : isPositive(toNum(formData.units)) ? "units"
+          : "";
+    } else if (formData.mode === "rwa") {
+      sizingMethod = "rwa"; // backend handles the RWA sizing logic
     }
 
     try {
@@ -142,19 +155,17 @@ export default function LeftInputPanel({ onResults }) {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             state_name: formData.state,
-            sizing_method: sizingMethod,
-            monthly_bill_inr: formData.mode === "rwa" ? Number(formData.societyBill) : Number(formData.bill) || 0,
-            monthly_units_kwh: formData.mode === "rwa" ? Number(formData.societyUnits) : Number(formData.units) || 0,
-            roof_area_value: Number(formData.roofArea) || 0,
-            roof_area_unit: formData.roofUnit,
             is_rwa: formData.mode === "rwa",
             num_houses: Number(formData.numHouses) || 1,
             proposed_capacity_kw: Number(formData.proposedCapacity) || 0,
-            society_sanctioned_load_kw:
-              Number(formData.societySanctionedLoad) || 0,
-            per_house_sanctioned_load_kw:
-              Number(formData.perHouseSanctionedLoad) || 0,
+            society_sanctioned_load_kw: Number(formData.societySanctionedLoad) || 0,
+            per_house_sanctioned_load_kw: Number(formData.perHouseSanctionedLoad) || 0,
+            monthly_bill_inr: Number(formData.bill) || 0,
+            monthly_units_kwh: Number(formData.units) || 0,
             tariff_inr_per_kwh: Number(formData.tariff) || 8,
+            roof_area_value: Number(formData.roofArea) || 0,
+            roof_area_unit: formData.roofUnit,
+            sizing_method: sizingMethod,
           }),
         }
       );
@@ -376,10 +387,6 @@ export default function LeftInputPanel({ onResults }) {
                 name="societySanctionedLoad"
                 value={formData.societySanctionedLoad || ""}
                 onChange={handleChange}
-                disabled={
-                  !!formData.perHouseSanctionedLoad ||
-                  !!formData.proposedCapacity
-                }
                 className="w-full p-2 rounded-lg bg-black border border-green-500"
                 placeholder="Enter total sanctioned load"
               />
@@ -392,10 +399,6 @@ export default function LeftInputPanel({ onResults }) {
                 name="perHouseSanctionedLoad"
                 value={formData.perHouseSanctionedLoad || ""}
                 onChange={handleChange}
-                disabled={
-                  !!formData.societySanctionedLoad ||
-                  !!formData.proposedCapacity
-                }
                 className="w-full p-2 rounded-lg bg-black border border-green-500"
                 placeholder="Default 1"
               />
@@ -408,13 +411,39 @@ export default function LeftInputPanel({ onResults }) {
                 name="proposedCapacity"
                 value={formData.proposedCapacity || ""}
                 onChange={handleChange}
-                disabled={
-                  !!formData.societySanctionedLoad ||
-                  !!formData.perHouseSanctionedLoad
-                }
                 className="w-full p-2 rounded-lg bg-black border border-green-500"
                 placeholder="Enter proposed capacity"
               />
+            </div>
+
+            <div className="flex flex-row gap-x-6">
+              <div>
+                <label className="block mb-1">Roof Area</label>
+                <input
+                  type="number"
+                  name="roofArea"
+                  value={formData.roofArea}
+                  onChange={handleChange}
+                  className="w-full p-2 rounded-lg bg-black border border-green-500"
+                  placeholder="Enter rooftop area"
+                />
+              </div>
+
+              <div className="w-[12.5rem]">
+                <label className="block mb-1">Roof Area Unit</label>
+                <select
+                  name="roofUnit"
+                  value={formData.roofUnit}
+                  onChange={handleChange}
+                  className="w-full p-2 px-4 rounded-lg bg-black border border-green-500"
+                >
+                  <option value="sqft">Sqft</option>
+                  <option value="sqm">Sqm</option>
+                  <option value="sqyd">Sqyd</option>
+                  <option value="ground">Ground</option>
+                  <option value="cent">Cent</option>
+                </select>
+              </div>
             </div>
 
             {/* <div>
@@ -455,7 +484,7 @@ export default function LeftInputPanel({ onResults }) {
               />
             </div> */}
 
-            <div>
+            {/* <div>
               <label className="block mb-1">Tariff (₹/kWh)</label>
               <input
                 type="number"
@@ -465,7 +494,7 @@ export default function LeftInputPanel({ onResults }) {
                 className="w-full p-2 rounded-lg bg-black border border-green-500"
                 placeholder="Default 8"
               />
-            </div>
+            </div> */}
           </>
         )}
 
