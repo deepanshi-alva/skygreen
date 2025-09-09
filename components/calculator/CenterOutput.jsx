@@ -72,9 +72,9 @@ export default function CenterOutput({ results }) {
         {/* Subsidy Overview card (big) */}
         <div className="bg-[#1a1a1a] p-6 rounded-xl border border-white/10 shadow-md col-span-1">
           {/* <h3 className="text-lg font-bold mb-4">Subsidy Overview</h3> */}
-          <div className="flex items-center justify-center mb-6">
+          <div className="flex items-center justify-center mb-8 mt-2">
             <div>
-              <p className="text-sm text-gray-400 text-[1.5rem]">Gross Plant Cost</p>
+              <p className="text-sm text-gray-400 text-center text-[1.5rem]">Gross Plant Cost</p>
               <p className="text-3xl font-bold text-green-400 text-center break-all">₹{format(results.gross_cost_inr)}</p>
             </div>
           </div>
@@ -94,9 +94,9 @@ export default function CenterOutput({ results }) {
               <span className="font-semibold text-white break-all">- ₹{format(results.state_subsidy)}</span>
             </div>
             <hr className="border-white/10 my-2" />
-            <div className=" flex flex-col mt-10 justify-center items-center text-sm">
-              <span className="text-gray-300 text-[1rem] font-semibold">Net Cost (After Subsidy)</span>
-              <span className="font-semibold mt-2 text-4xl text-green-400 break-all">
+            <div className=" flex flex-col mt-8 justify-center items-center text-sm">
+              <span className="text-gray-300 text-[1rem] text-center font-semibold">Net Cost (After Subsidy)</span>
+              <span className="font-semibold mt-2 text-center text-4xl text-green-400 break-all">
                 ₹{format(results.net_cost_inr)}
               </span>
             </div>
@@ -105,10 +105,12 @@ export default function CenterOutput({ results }) {
 
         {/* Right column → 4 small stat boxes */}
         <div className="grid grid-cols-1 gap-4">
-          <div className="bg-[#1a1a1a] p-4 rounded-lg border border-white/10 shadow-md">
-            <p className="text-sm text-gray-400">With grid daily consumption</p>
-            <p className="text-xl font-bold text-green-400 break-all">{format(results.daily_unit)}</p>
-          </div>
+          {!results?.is_rwa && (
+            <div className="bg-[#1a1a1a] p-4 rounded-lg border border-white/10 shadow-md">
+              <p className="text-sm text-gray-400">With grid daily consumption</p>
+              <p className="text-xl font-bold text-green-400 break-all">{format(results.daily_unit)}</p>
+            </div>
+          )}
           <div className="bg-[#1a1a1a] p-4 rounded-lg border border-white/10 shadow-md">
             <p className="text-sm text-gray-400">Solar Units Produced</p>
             <p className="text-xl font-bold text-green-400 break-all">{format(results.daily_gen_kwh)}</p>
