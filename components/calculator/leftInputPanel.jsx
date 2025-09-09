@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { Info } from "lucide-react";
 
 export default function LeftInputPanel({ onResults }) {
   const [states, setStates] = useState([]);
@@ -291,7 +292,15 @@ export default function LeftInputPanel({ onResults }) {
             {/* Monthly Bill OR Units */}
             <div className="flex flex-row gap-x-2">
               <div>
-                <label className="block mb-1">Monthly Bill (₹)</label>
+                <label className="block mb-1 flex items-center gap-2">
+                  Average Monthly Bill
+                  <span className="relative group cursor-pointer">
+                    <Info className="w-4 h-4 text-blue-400" />
+                    <div className="absolute left-6 top-1/2 transform -translate-y-1/2 hidden group-hover:block bg-black text-white text-xs p-2 rounded-md border border-green-500 w-56 z-10">
+                      Enter the average of your last 12 months' electricity bills (₹).
+                    </div>
+                  </span>
+                </label>
                 <input
                   type="number"
                   name="bill"
@@ -299,17 +308,25 @@ export default function LeftInputPanel({ onResults }) {
                   onChange={handleChange}
                   disabled={!!formData.units}
                   className={`w-full p-2 rounded-lg border appearance-none
-    ${formData.units
+      ${formData.units
                       ? "bg-gray-700 border-gray-500 text-gray-400 cursor-not-allowed"
                       : "bg-black border-green-500 text-white"}`}
-                  placeholder="Average bill amount"
+                  placeholder="e.g. 2500"
                 />
               </div>
 
               <span className="text-center justify-center mt-9">or</span>
 
               <div>
-                <label className="block mb-1">Monthly Units (kWh)</label>
+                <label className="block mb-1 flex items-center gap-2">
+                  Average Monthly Units
+                  <span className="relative group cursor-pointer">
+                    <Info className="w-4 h-4 text-blue-400" />
+                    <div className="absolute left-6 top-1/2 transform -translate-y-1/2 hidden group-hover:block bg-black text-white text-xs p-2 rounded-md border border-green-500 w-56 z-10">
+                      Enter the average of your last 12 months' electricity consumption in units (kWh).
+                    </div>
+                  </span>
+                </label>
                 <input
                   type="number"
                   name="units"
@@ -317,12 +334,13 @@ export default function LeftInputPanel({ onResults }) {
                   onChange={handleChange}
                   disabled={!!formData.bill}
                   className={`w-full p-2 rounded-lg border appearance-none
-    ${formData.bill
+      ${formData.bill
                       ? "bg-gray-700 border-gray-500 text-gray-400 cursor-not-allowed"
                       : "bg-black border-green-500 text-white"}`}
-                  placeholder="Average monthly units"
+                  placeholder="e.g. 350"
                 />
               </div>
+
             </div>
 
             <div className="flex flex-row gap-x-6">
