@@ -118,10 +118,11 @@ export default function TestimonialSlider() {
 
   if (testimonials.length === 0) return null;
   const t = testimonials[index].attributes;
-  const imageUrl = t.image?.data?.attributes?.url
-    ? `${process.env.NEXT_PUBLIC_STRAPI_URL}${t.image.data.attributes.url}`
-    : "/placeholder.png";
-
+  const rawUrl = t.image?.data?.attributes?.url || "";
+  const imageUrl = rawUrl.startsWith("http")
+    ? rawUrl
+    : `${process.env.NEXT_PUBLIC_STRAPI_URL}${rawUrl}`;
+    
   // const prev = () =>
   //   setIndex((prev) => (prev === 0 ? testimonials.length - 1 : prev - 1));
   // const next = () =>

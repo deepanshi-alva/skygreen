@@ -22,8 +22,8 @@ export default function LeftInputPanel({ onResults }) {
     // New RWA fields
     societySanctionedLoad: "",
     perHouseSanctionedLoad: "",
-    societyBill: "",
-    societyUnits: "",
+    // societyBill: "",
+    // societyUnits: "",
   });
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -127,9 +127,7 @@ export default function LeftInputPanel({ onResults }) {
       if (
         !formData.proposedCapacity &&
         !formData.societySanctionedLoad &&
-        !formData.perHouseSanctionedLoad &&
-        !formData.societyBill &&
-        !formData.societyUnits
+        !formData.perHouseSanctionedLoad
       ) {
         setError("⚠️ Please enter at least one RWA sizing input (Capacity, Load, Bill, or Units).");
         return;
@@ -380,9 +378,7 @@ export default function LeftInputPanel({ onResults }) {
                 onChange={handleChange}
                 disabled={
                   !!formData.perHouseSanctionedLoad ||
-                  !!formData.proposedCapacity ||
-                  !!formData.societyBill ||
-                  !!formData.societyUnits
+                  !!formData.proposedCapacity
                 }
                 className="w-full p-2 rounded-lg bg-black border border-green-500"
                 placeholder="Enter total sanctioned load"
@@ -398,9 +394,7 @@ export default function LeftInputPanel({ onResults }) {
                 onChange={handleChange}
                 disabled={
                   !!formData.societySanctionedLoad ||
-                  !!formData.proposedCapacity ||
-                  !!formData.societyBill ||
-                  !!formData.societyUnits
+                  !!formData.proposedCapacity
                 }
                 className="w-full p-2 rounded-lg bg-black border border-green-500"
                 placeholder="Default 1"
@@ -416,16 +410,14 @@ export default function LeftInputPanel({ onResults }) {
                 onChange={handleChange}
                 disabled={
                   !!formData.societySanctionedLoad ||
-                  !!formData.perHouseSanctionedLoad ||
-                  !!formData.societyBill ||
-                  !!formData.societyUnits
+                  !!formData.perHouseSanctionedLoad
                 }
                 className="w-full p-2 rounded-lg bg-black border border-green-500"
                 placeholder="Enter proposed capacity"
               />
             </div>
 
-            <div>
+            {/* <div>
               <label className="block mb-1">Total Monthly Bill of Society (₹)</label>
               <input
                 type="number"
@@ -441,9 +433,9 @@ export default function LeftInputPanel({ onResults }) {
                 className="w-full p-2 rounded-lg bg-black border border-green-500"
                 placeholder="Enter total monthly bill"
               />
-            </div>
+            </div> */}
 
-            <div>
+            {/* <div>
               <label className="block mb-1">
                 Total Monthly Units Consumed (kWh)
               </label>
@@ -461,7 +453,7 @@ export default function LeftInputPanel({ onResults }) {
                 className="w-full p-2 rounded-lg bg-black border border-green-500"
                 placeholder="Enter monthly units consumed"
               />
-            </div>
+            </div> */}
 
             <div>
               <label className="block mb-1">Tariff (₹/kWh)</label>
