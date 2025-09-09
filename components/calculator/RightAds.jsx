@@ -15,7 +15,6 @@ export default function RightAds({ results }) {
 
   if (results?.is_rwa) {
     // --- RWA subsidy logic ---
-
     const numHouses = results?.num_houses || results?.user_num_houses;
     const proposed = results?.recommended_kw || results?.user_proposed_capacity;
     const societySanctioned = results?.user_society_sanctioned_load;
@@ -48,7 +47,6 @@ export default function RightAds({ results }) {
         `You entered ${perHouseSanctioned} kW per house, but subsidy is capped at ${perHouseCap} kW per house in ${results?.state}. Extra capacity will not be subsidized.`
       );
     }
-
   } else {
     // --- Residential Notes ---
     if (results?.sanctioned_load_must_be && results?.sanctioned_load_must_be > 0) {
@@ -69,7 +67,7 @@ export default function RightAds({ results }) {
         if (roofAvailable < roofNeeded) {
           addNote(
             "warning",
-            `You provided ${roofAvailable} ${results.roof_area_unit} sqft rooftop area, but ${roofNeeded} ${results.roof_area_unit} is required for the system.`
+            `You provided ${roofAvailable} ${results.roof_area_unit} rooftop area, but ${roofNeeded} ${results.roof_area_unit} is required for the system.`
           );
         }
       } else {
@@ -117,6 +115,22 @@ export default function RightAds({ results }) {
                 <p className="text-sm leading-snug">{note.text}</p>
               </div>
             ))}
+
+            {/* ✅ Flashing DISCOM Portal Link Box */}
+            <div className="flex items-start gap-3 p-3 rounded-lg border border-green-500 text-green-300 animate-[pulse-alert-blue_1.5s_infinite]">
+              <Info className="w-5 h-5 text-green-400" />
+              <p className="text-sm leading-snug">
+                Link:{" "}
+                <a
+                  href="https://api.solarrooftop.gov.in/grid_others/discomPortalLink"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline hover:text-green-200"
+                >
+                  Official DISCOM Subsidy Portal
+                </a>
+              </p>
+            </div>
           </div>
         </div>
       )}
