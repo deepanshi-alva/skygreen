@@ -25,7 +25,7 @@ export default function RightAds({ results }) {
     if (numHouses && proposed && perHouseSanctioned) {
       // max subsidy-eligible capacity per rules
       const perHouseLimit = numHouses * Math.min(perHouseSanctioned || 0, perHouseCap);
-      const eligibleCap = Math.min(proposed, Math.max(overallSubsidyCap, perHouseLimit));
+      const eligibleCap = Math.min(proposed, Math.min(overallSubsidyCap, perHouseLimit));
 
       if (eligibleCap < proposed) {
         addNote(
@@ -35,7 +35,7 @@ export default function RightAds({ results }) {
       } else {
         addNote(
           "info",
-          `Your proposed system of ${proposed} kW is fully eligible for subsidy rules (up to 3 kW per house and 500 kW per society).`
+          `Your proposed system of ${proposed} kW is fully eligible for subsidy rules (up to ${perHouseCap} kW per house and ${overallSubsidyCap} kW per society).`
         );
       }
     }

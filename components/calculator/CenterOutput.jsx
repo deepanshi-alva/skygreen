@@ -177,13 +177,18 @@ export default function CenterOutput({ results }) {
             >
               With Solar
             </button>
-            <button
-              onClick={() => setMode("grid")}
-              className={`px-4 py-1 rounded-md font-semibold ${mode === "grid" ? "bg-green-500 text-black" : "bg-[#111] text-green-400 border border-green-500"
-                }`}
-            >
-              With Grid
-            </button>
+            {/* Show With Grid only if not RWA or plant_size */}
+            {!results?.is_rwa && results?.sizing_method !== "plant_size" && (
+              <button
+                onClick={() => setMode("grid")}
+                className={`px-4 py-1 rounded-md font-semibold ${mode === "grid"
+                    ? "bg-green-500 text-black"
+                    : "bg-[#111] text-green-400 border border-green-500"
+                  }`}
+              >
+                With Grid
+              </button>
+            )}
           </div>
         </div>
       </div>
