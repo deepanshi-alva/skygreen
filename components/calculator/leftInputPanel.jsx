@@ -23,6 +23,7 @@ export default function LeftInputPanel({ onResults }) {
     tariff: "8",
     societySanctionedLoad: "",
     perHouseSanctionedLoad: "",
+    plant_size_kw:""
   });
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -145,6 +146,8 @@ export default function LeftInputPanel({ onResults }) {
           : "";
     } else if (formData.mode === "rwa") {
       sizingMethod = "rwa"; // backend handles the RWA sizing logic
+    } else if (formData.mode === "plant_size") {
+      sizingMethod = "plant_size"; // backend handles the RWA sizing logic
     }
 
     try {
@@ -166,6 +169,7 @@ export default function LeftInputPanel({ onResults }) {
             roof_area_value: Number(formData.roofArea) || 0,
             roof_area_unit: formData.roofUnit,
             sizing_method: sizingMethod,
+            plant_size_kw: Number(formData.plant_size_kw) || 0,
           }),
         }
       );
@@ -275,6 +279,18 @@ export default function LeftInputPanel({ onResults }) {
                 Residential
               </label>
 
+              {/* <label>
+                <input
+                  type="radio"
+                  name="mode"
+                  value="plant_size"
+                  checked={formData.mode === "plant_size"}
+                  onChange={handleChange}
+                  className="mr-2"
+                />
+                Plant Size
+              </label> */}
+
               <label
                 className={
                   selectedState.rwa_enabled ? "" : "opacity-50 cursor-not-allowed"
@@ -298,7 +314,6 @@ export default function LeftInputPanel({ onResults }) {
         </div>
 
         {/* Panel Type Dropdown */}
-        {/* Panel Type Dropdown */}
         <div>
           <label className="block mb-1">Panel Type</label>
           <Select
@@ -309,7 +324,6 @@ export default function LeftInputPanel({ onResults }) {
             isSearchable={false}  // panels are limited, so no need for search
           />
         </div>
-
 
         {/* Conditional Fields */}
         {formData.mode === "residential" ? (
@@ -424,7 +438,7 @@ export default function LeftInputPanel({ onResults }) {
               </div>
             </div>
           </>
-        ) : (
+        ) : formData.mode === "rwa" ? (
           <>
             {/* RWA-specific fields */}
             <div>
@@ -506,65 +520,29 @@ export default function LeftInputPanel({ onResults }) {
                 </select>
               </div>
             </div>
-
-            {/* <div>
-              <label className="block mb-1">Total Monthly Bill of Society (₹)</label>
-              <input
-                type="number"
-                name="societyBill"
-                value={formData.societyBill || ""}
-                onChange={handleChange}
-                disabled={
-                  !!formData.societySanctionedLoad ||
-                  !!formData.perHouseSanctionedLoad ||
-                  !!formData.proposedCapacity ||
-                  !!formData.societyUnits
-                }
-                className="w-full p-2 rounded-lg bg-black border border-green-500"
-                placeholder="Enter total monthly bill"
-              />
-            </div> */}
-
-            {/* <div>
-              <label className="block mb-1">
-                Total Monthly Units Consumed (kWh)
-              </label>
-              <input
-                type="number"
-                name="societyUnits"
-                value={formData.societyUnits || ""}
-                onChange={handleChange}
-                disabled={
-                  !!formData.societySanctionedLoad ||
-                  !!formData.perHouseSanctionedLoad ||
-                  !!formData.proposedCapacity ||
-                  !!formData.societyBill
-                }
-                className="w-full p-2 rounded-lg bg-black border border-green-500"
-                placeholder="Enter monthly units consumed"
-              />
-            </div> */}
-
-            {/* <div>
-              <label className="block mb-1">Tariff (₹/kWh)</label>
-              <input
-                type="number"
-                name="tariff"
-                value={formData.tariff}
-                onChange={handleChange}
-                className="w-full p-2 rounded-lg bg-black border border-green-500"
-                placeholder="Default 8"
-              />
-            </div> */}
           </>
-        )}
+        ) : formData.mode === "plant_size" ? (
+          <>
+            {/* Plant Size Mode Inputs */}
+            <div>
+              <label className="block mb-1">Proposed Plant Size (kW)</label>
+              <input
+                type="number"
+                name="plant_size_kw"
+                value={formData.plant_size_kw || ""}
+                onChange={handleChange}
+                className="w-full p-2 rounded-lg bg-black border border-green-500"
+                placeholder="Enter desired plant size (kW)"
+              />
+            </div>
+          </>
+        ) : null}
 
         {error && (
           <div className="p-2 bg-red-600 text-white rounded-lg text-sm">
             {error}
           </div>
         )}
-
 
         <button
           type="submit"
