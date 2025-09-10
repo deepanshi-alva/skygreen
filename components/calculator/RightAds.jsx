@@ -112,7 +112,7 @@ export default function RightAds({ results }) {
   };
 
   return (
-    <div className="col-span-2 p-4 space-y-4 sticky top-24 self-start">
+    <div className="col-span-2 p-4 mt-8 space-y-4 sticky top-24 self-start">
       {/* ✅ Permanent Important Notes from state data */}
       {results?.importantNotes?.length > 0 && (
         <div>
