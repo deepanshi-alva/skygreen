@@ -41,11 +41,11 @@ export default function LeftInputPanel({ onResults }) {
         const data = await res.json();
         const formatted = Array.isArray(data.data)
           ? data.data.map((item) => ({
-              value: item.attributes.name,
-              label: item.attributes.name,
-              rwa_enabled: item.attributes.rwa_enabled,
-              id: item.id,
-            }))
+            value: item.attributes.name,
+            label: item.attributes.name,
+            rwa_enabled: item.attributes.rwa_enabled,
+            id: item.id,
+          }))
           : [];
 
         setStates(formatted);
@@ -222,6 +222,13 @@ export default function LeftInputPanel({ onResults }) {
     }),
   };
 
+  const panelOptions = [
+    { value: "skygreen_575w", label: "SKYGREEN 575W TOPCon Bifacial" },
+    // { value: "skygreen_400w", label: "SKYGREEN 400W Mono PERC" },
+    // { value: "skygreen_300w", label: "SKYGREEN 300W Polycrystalline" },
+  ];
+
+
   return (
     <div className="col-span-3 p-4 shadow-lg relative sticky top-24 self-start">
       <h2 className="text-xl font-bold mb-4">Your Details</h2>
@@ -283,17 +290,18 @@ export default function LeftInputPanel({ onResults }) {
         </div>
 
         {/* Panel Type Dropdown */}
+        {/* Panel Type Dropdown */}
         <div>
           <label className="block mb-1">Panel Type</label>
-          <select
-            name="panelType"
-            value={"skygreen_575w"}
-            onChange={handleChange}
-            className="w-full p-2 rounded-lg bg-black border border-green-500"
-          >
-            <option value="skygreen_575w">SKYGREEN 575W TOPCon Bifacial</option>
-          </select>
+          <Select
+            options={panelOptions}
+            value={panelOptions.find((opt) => opt.value === formData.panelType) || panelOptions[0]}
+            onChange={(option) => setFormData({ ...formData, panelType: option.value })}
+            styles={customStyles} // 🔥 reuse same green/black theme
+            isSearchable={false}  // panels are limited, so no need for search
+          />
         </div>
+
 
         {/* Conditional Fields */}
         {formData.mode === "residential" ? (
