@@ -20,31 +20,41 @@ export default function RightAds({ results }) {
     const societySanctioned = results?.user_society_sanctioned_load;
     const perHouseSanctioned = results?.user_per_house_sanctioned_load;
     const perHouseCap = results?.rwa_per_house_cap_kw; // e.g., 3 or 10 depending on state
+    const overallSubsidyCap = results?.rwa_overall_subsidy_cap;
 
-    // 1) Per-house sanctioned load too low
-    if (numHouses && perHouseSanctioned && proposed) {
-      const subsidyCap = numHouses * perHouseSanctioned;
-      if (subsidyCap < proposed) {
+    if (numHouses && proposed && perHouseSanctioned) {
+      // max subsidy-eligible capacity per rules
+      const perHouseLimit = numHouses * Math.min(perHouseSanctioned || 0, perHouseCap);
+      const eligibleCap = Math.min(proposed, Math.max(overallSubsidyCap, perHouseLimit));
+
+      if (eligibleCap < proposed) {
         addNote(
           "warning",
-          `With ${numHouses} houses and ${perHouseSanctioned} kW per house, subsidy is limited to ${subsidyCap} kW. To claim subsidy on full ${proposed} kW, increase per-house sanctioned load to at most ${perHouseCap} kW (as per state rule).`
+          `Subsidy is available only up to ${eligibleCap} kW. Your proposed system is ${proposed} kW, so the extra ${proposed - eligibleCap} kW will not receive subsidy (to be paid from your pocket).`
+        );
+      } else {
+        addNote(
+          "info",
+          `Your proposed system of ${proposed} kW is fully eligible for subsidy rules (up to 3 kW per house and 500 kW per society).`
         );
       }
     }
 
-    // 2) Society sanctioned load lower than proposed
-    if (societySanctioned && proposed && societySanctioned < proposed) {
+    // Extra helper notes
+
+    // A) Per-house above 3 kW
+    if (perHouseSanctioned && perHouseSanctioned > perHouseCap) {
       addNote(
-        "warning",
-        `Your society sanctioned load is ${societySanctioned} kW, but the proposed system is ${proposed} kW. Please upgrade sanctioned load to at least ${proposed} kW to avail full subsidy.`
+        "info",
+        `You entered ${perHouseSanctioned} kW per house, but subsidy is capped at ${perHouseCap} kW per house. Extra capacity per house is not subsidized.`
       );
     }
 
-    // 3) Per-house sanctioned load above state cap
-    if (perHouseSanctioned && perHouseCap && perHouseSanctioned > perHouseCap) {
+    // B) Society sanctioned load lower than proposed
+    if (societySanctioned && proposed && societySanctioned < proposed) {
       addNote(
-        "info",
-        `You entered ${perHouseSanctioned} kW per house, but subsidy is capped at ${perHouseCap} kW per house in ${results?.state}. Extra capacity will not be subsidized.`
+        "warning",
+        `Your society sanctioned load is ${societySanctioned} kW, but the proposed system is ${proposed} kW. Subsidy can only be claimed up to your sanctioned load. Please upgrade sanctioned load to claim subsidy on the full system.`
       );
     }
   } else {
@@ -61,10 +71,13 @@ export default function RightAds({ results }) {
     }
 
     if (results?.roof_needed_sqft) {
-      const roofNeeded = formatNum(results.roof_needed_sqft);
+      const roofNeeded = results.roof_needed_sqft;
+      console.log("entered the if condition", roofNeeded);
       if (results?.roof_area_available && results.roof_area_available > 0) {
-        const roofAvailable = formatNum(results.roof_area_available);
+        const roofAvailable = results.roof_area_available;
+        console.log("entered the second if condition", roofAvailable);
         if (roofAvailable < roofNeeded) {
+          console.log("this is third the rooftop things to be compared", roofAvailable, roofNeeded)
           addNote(
             "warning",
             `You provided ${roofAvailable} ${results.roof_area_unit} rooftop area, but ${roofNeeded} ${results.roof_area_unit} is required for the system.`
@@ -100,9 +113,27 @@ export default function RightAds({ results }) {
 
   return (
     <div className="col-span-2 p-4 space-y-4 sticky top-24 self-start">
+      {/* ✅ Permanent Important Notes from state data */}
+      {results?.importantNotes?.length > 0 && (
+        <div>
+          <h2 className="text-xl font-bold mb-2">📌 State Important Notes</h2>
+          <div className="space-y-3">
+            {results.importantNotes.map((item) => (
+              <div
+                key={item.id}
+                className="flex items-start gap-3 p-3 rounded-lg border border-yellow-500 text-yellow-300 bg-black/40 shadow-sm"
+              >
+                {/* <Info className="w-5 h-5 text-yellow-400 mt-0.5" /> */}
+                <p className="text-sm leading-snug">{item.notes}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       {notes.length > 0 && (
         <div>
-          <h2 className="text-xl font-bold mb-2">🚨 Important Notes</h2>
+          <h2 className="text-xl font-bold mb-2">🚨 Alert</h2>
           <div className="space-y-3">
             {notes.map((note, i) => (
               <div
@@ -111,29 +142,45 @@ export default function RightAds({ results }) {
                   note.type
                 )}`}
               >
-                {getIcon(note.type)}
+                {/* {getIcon(note.type)} */}
                 <p className="text-sm leading-snug">{note.text}</p>
               </div>
             ))}
-
-            {/* ✅ Flashing DISCOM Portal Link Box */}
-            <div className="flex items-start gap-3 p-3 rounded-lg border border-green-500 text-green-300 animate-[pulse-alert-blue_1.5s_infinite]">
-              <Info className="w-5 h-5 text-green-400" />
-              <p className="text-sm leading-snug">
-                Link:{" "}
-                <a
-                  href="https://api.solarrooftop.gov.in/grid_others/discomPortalLink"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="underline hover:text-green-200"
-                >
-                  Official DISCOM Subsidy Portal
-                </a>
-              </p>
-            </div>
           </div>
         </div>
       )}
+
+      {/* ✅ Schedule Call CTA Button */}
+      <div className="text-center">
+        <a
+          href="/contact"
+          className="block w-full bg-gradient-to-r from-green-400 via-green-500 to-green-600 
+                   text-black font-bold py-3 px-4 rounded-xl shadow-lg 
+                   hover:scale-[1.03] hover:shadow-green-500/40 
+                   transition transform duration-300"
+        >
+          🤝 Want to Bargain the Cost?
+          <span className="block text-sm font-normal text-green-100">
+            Schedule a call & crack the best deal
+          </span>
+        </a>
+      </div>
+
+      {/* ✅ Flashing DISCOM Portal Link Box */}
+      <div className="flex items-start gap-3 p-3 rounded-lg border border-green-500 text-green-300 animate-[pulse-alert-blue_1.5s_infinite]">
+        <Info className="w-5 h-5 text-green-400" />
+        <p className="text-sm leading-snug">
+          Link:{" "}
+          <a
+            href="https://api.solarrooftop.gov.in/grid_others/discomPortalLink"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline hover:text-green-200"
+          >
+            Official DISCOM Subsidy Portal
+          </a>
+        </p>
+      </div>
 
       {/* Sponsored Section (always visible) */}
       <h2 className="text-xl font-bold mt-6">Sponsored</h2>
