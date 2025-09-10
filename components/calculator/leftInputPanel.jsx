@@ -6,8 +6,8 @@ import Select from "react-select"
 
 export default function LeftInputPanel({ onResults }) {
   const [states, setStates] = useState([]);
-  const [filteredStates, setFilteredStates] = useState([]);
   const [selectedState, setSelectedState] = useState(null);
+  const [loadingStates, setLoadingStates] = useState(true);
   const [error, setError] = useState("");
 
   const [formData, setFormData] = useState({
@@ -34,6 +34,7 @@ export default function LeftInputPanel({ onResults }) {
   useEffect(() => {
     async function fetchStates() {
       try {
+        setLoadingStates(true);
         const res = await fetch(
           `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/states?pagination[pageSize]=100`,
           { cache: "no-store" }
@@ -47,14 +48,16 @@ export default function LeftInputPanel({ onResults }) {
             id: item.id,
           }))
           : [];
-
         setStates(formatted);
       } catch (err) {
         console.error("Error fetching states:", err);
+      } finally {
+        setLoadingStates(false);
       }
     }
     fetchStates();
   }, []);
+
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -247,6 +250,11 @@ export default function LeftInputPanel({ onResults }) {
             placeholder="Search or select a state..."
             isSearchable
             styles={customStyles}
+            // isLoading={loadingStates}
+            loadingMessage={() => "Loading states..."} // ✅ custom message
+            noOptionsMessage={() =>
+              loadingStates ? "Loading states..." : "No states found"
+            }
           />
         </div>
 
