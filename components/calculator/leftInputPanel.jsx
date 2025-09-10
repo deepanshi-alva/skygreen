@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { Info } from "lucide-react";
+import Select from "react-select"
 
 export default function LeftInputPanel({ onResults }) {
   const [states, setStates] = useState([]);
@@ -40,14 +41,14 @@ export default function LeftInputPanel({ onResults }) {
         const data = await res.json();
         const formatted = Array.isArray(data.data)
           ? data.data.map((item) => ({
-            id: item.id,
-            name: item.attributes.name,
-            rwa_enabled: item.attributes.rwa_enabled,
-          }))
+              value: item.attributes.name,
+              label: item.attributes.name,
+              rwa_enabled: item.attributes.rwa_enabled,
+              id: item.id,
+            }))
           : [];
 
         setStates(formatted);
-        setFilteredStates(formatted); // init
       } catch (err) {
         console.error("Error fetching states:", err);
       }
@@ -68,22 +69,6 @@ export default function LeftInputPanel({ onResults }) {
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleStateSelect = (state) => {
-    setSelectedState(state);
-    setFormData({ ...formData, state: state.name });
-    setDropdownOpen(false);
-  };
-
-  const handleSearch = (e) => {
-    const value = e.target.value;
-    setFormData({ ...formData, state: value });
-    setDropdownOpen(true);
-    const filtered = states.filter((st) =>
-      st.name.toLowerCase().includes(value.toLowerCase())
-    );
-    setFilteredStates(filtered);
   };
 
   const handleSubmit = async (e) => {
@@ -202,36 +187,60 @@ export default function LeftInputPanel({ onResults }) {
     }
   };
 
+  const customStyles = {
+    control: (provided, state) => ({
+      ...provided,
+      backgroundColor: "black",
+      borderColor: state.isFocused ? "#22c55e" : "#22c55e", // Tailwind green-500
+      color: "white",
+      boxShadow: state.isFocused ? "0 0 0 1px #22c55e" : null,
+      "&:hover": { borderColor: "#22c55e" },
+    }),
+    menu: (provided) => ({
+      ...provided,
+      backgroundColor: "#111",
+      border: "1px solid #22c55e",
+      zIndex: 20,
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      backgroundColor: state.isFocused ? "#22c55e" : "#111",
+      color: state.isFocused ? "black" : "white",
+      cursor: "pointer",
+    }),
+    singleValue: (provided) => ({
+      ...provided,
+      color: "white",
+    }),
+    input: (provided) => ({
+      ...provided,
+      color: "white",
+    }),
+    placeholder: (provided) => ({
+      ...provided,
+      color: "#9ca3af", // gray-400
+    }),
+  };
+
   return (
     <div className="col-span-3 p-4 shadow-lg relative sticky top-24 self-start">
       <h2 className="text-xl font-bold mb-4">Your Details</h2>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Searchable State Dropdown */}
-        <div className="relative" ref={dropdownRef}>
+        <div>
           <label className="block mb-1">State</label>
-          <input
-            type="text"
-            name="state"
-            value={formData.state}
-            onChange={handleSearch}
-            onClick={() => setDropdownOpen(!dropdownOpen)}
-            placeholder="Search state..."
-            className="w-full p-2 rounded-lg bg-black border border-green-500"
+          <Select
+            options={states}
+            value={selectedState}
+            onChange={(option) => {
+              setSelectedState(option);
+              setFormData({ ...formData, state: option.value });
+            }}
+            placeholder="Search or select a state..."
+            isSearchable
+            styles={customStyles}
           />
-          {dropdownOpen && filteredStates.length > 0 && (
-            <ul className="absolute z-10 bg-[#111] border border-green-500 rounded-lg mt-1 max-h-40 overflow-y-auto w-full">
-              {filteredStates.map((st) => (
-                <li
-                  key={st.id}
-                  onClick={() => handleStateSelect(st)}
-                  className="p-2 hover:bg-green-600 hover:text-black cursor-pointer"
-                >
-                  {st.name}
-                </li>
-              ))}
-            </ul>
-          )}
         </div>
 
         {/* Radio Button for Residential vs RWA */}
