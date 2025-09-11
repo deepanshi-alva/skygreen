@@ -38,7 +38,17 @@ export default function CenterOutput({ results }) {
 
   return (
     <div className="col-span-7 p-6">
-      <h2 className="text-2xl font-bold mb-4">Your Solar Savings</h2>
+      {/* Header row with title + Contact Us button */}
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-2xl font-bold mb-2">Solar payback, simplified</h2>
+        <a
+          href="/contact"
+          className="px-5 py-2 rounded-lg bg-green-500 text-black font-bold shadow-md hover:bg-green-400 hover:scale-105 transition transform"
+        >
+          ❓ Have a query? Let’s Talk
+        </a>
+      </div>
+
       <div className="grid grid-cols-4 gap-4">
         {/* Recommended System */}
         <div className="bg-[#1a1a1a] p-4 rounded-lg border border-white/10 shadow-md">
@@ -178,12 +188,12 @@ export default function CenterOutput({ results }) {
               With Solar
             </button>
             {/* Show With Grid only if not RWA or plant_size */}
-            {!results?.is_rwa && results?.sizing_method === "plant_size" && (
+            {!results?.is_rwa || results?.sizing_method === "plant_size" && (
               <button
                 onClick={() => setMode("grid")}
                 className={`px-4 py-1 rounded-md font-semibold ${mode === "grid"
-                    ? "bg-green-500 text-black"
-                    : "bg-[#111] text-green-400 border border-green-500"
+                  ? "bg-green-500 text-black"
+                  : "bg-[#111] text-green-400 border border-green-500"
                   }`}
               >
                 With Grid

@@ -65,7 +65,7 @@ export default function RightAds({ results }) {
       if (requiredLoad > userLoad) {
         addNote(
           "warning",
-          `You provided ${userLoad} kW sanctioned load, but the recommended system is ${results.recommended_kw} kW. Please upgrade your sanctioned load to ${requiredLoad} kW.`
+          `You provided ${userLoad} kW sanctioned load, but the recommended system is ${formatNum(results.recommended_kw)} kW. Please upgrade your sanctioned load to ${requiredLoad} kW.`
         );
       }
     }
@@ -112,7 +112,7 @@ export default function RightAds({ results }) {
   };
 
   return (
-    <div className="col-span-2 p-4 mt-8 space-y-4 sticky top-24 self-start">
+    <div className="col-span-2 p-4 mt-2 space-y-4 sticky top-24 self-start">
       {/* ✅ Permanent Important Notes from state data */}
       {results?.importantNotes?.length > 0 && (
         <div>
@@ -150,22 +150,6 @@ export default function RightAds({ results }) {
         </div>
       )}
 
-      {/* ✅ Schedule Call CTA Button */}
-      <div className="text-center">
-        <a
-          href="/contact"
-          className="block w-full bg-gradient-to-r from-green-400 via-green-500 to-green-600 
-                   text-black font-bold py-3 px-4 rounded-xl shadow-lg 
-                   hover:scale-[1.03] hover:shadow-green-500/40 
-                   transition transform duration-300"
-        >
-          🤝 Want to Bargain the Cost?
-          <span className="block text-sm font-normal text-green-100">
-            Schedule a call & crack the best deal
-          </span>
-        </a>
-      </div>
-
       {/* ✅ Flashing DISCOM Portal Link Box */}
       <div className="flex items-start gap-3 p-3 rounded-lg border border-green-500 text-green-300 animate-[pulse-alert-blue_1.5s_infinite]">
         <Info className="w-5 h-5 text-green-400" />
@@ -180,17 +164,6 @@ export default function RightAds({ results }) {
             Official DISCOM Subsidy Portal
           </a>
         </p>
-      </div>
-
-      {/* Sponsored Section (always visible) */}
-      <h2 className="text-xl font-bold mt-6">Sponsored</h2>
-      <div className="bg-black/70 p-4 rounded-xl border border-green-500 hover:shadow-lg transition">
-        <p className="font-bold">SKYGREEN Premium Panels</p>
-        <p className="text-sm">High-efficiency 575W TOPCon. Limited offer.</p>
-      </div>
-      <div className="bg-black/70 p-4 rounded-xl border border-green-500 hover:shadow-lg transition">
-        <p className="font-bold">Referral Program</p>
-        <p className="text-sm">Earn ₹5,000 by referring a friend.</p>
       </div>
     </div>
   );
