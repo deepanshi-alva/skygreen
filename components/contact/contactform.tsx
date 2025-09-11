@@ -7,23 +7,26 @@ import {
   User,
   Phone,
 } from "lucide-react";
-import HeadOfficeInfo from "./headOffice";
+// import HeadOfficeInfo from "./headOffice";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-import TimePicker from "react-time-picker";
 import "react-time-picker/dist/TimePicker.css";
 import "react-clock/dist/Clock.css";
 
-import Select from "react-select";
+import Select, { GroupBase, StylesConfig } from "react-select";
 import { State, City } from "country-state-city";
 
 // Custom dark theme styles for react-select
-const customSelectStyles = {
-  control: (provided: any, state: any) => ({
+const customSelectStyles: StylesConfig<
+  { value: string; label: string },
+  false,
+  GroupBase<{ value: string; label: string }>
+> = {
+  control: (provided, state) => ({
     ...provided,
-    backgroundColor: state.isDisabled ? "#222" : "#111", // darker gray when disabled
+    backgroundColor: state.isDisabled ? "#222" : "#111",
     borderColor: state.isDisabled ? "#333" : "#444",
     borderRadius: "0.75rem",
     padding: "2px",
@@ -32,23 +35,23 @@ const customSelectStyles = {
     cursor: state.isDisabled ? "not-allowed" : "default",
     opacity: state.isDisabled ? 0.5 : 1,
   }),
-  menu: (provided: any) => ({
+  menu: (provided) => ({
     ...provided,
     backgroundColor: "#111",
     borderRadius: "0.75rem",
     color: "white",
   }),
-  option: (provided: any, state: any) => ({
+  option: (provided, state) => ({
     ...provided,
     backgroundColor: state.isFocused ? "#16a34a" : "#111",
     color: state.isFocused ? "#fff" : "#ddd",
     cursor: "pointer",
   }),
-  singleValue: (provided: any) => ({
+  singleValue: (provided) => ({
     ...provided,
     color: "white",
   }),
-  placeholder: (provided: any, state: any) => ({
+  placeholder: (provided, state) => ({
     ...provided,
     color: state.isDisabled ? "#555" : "#666",
   }),
