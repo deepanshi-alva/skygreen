@@ -105,7 +105,7 @@ export default function CenterOutput({ results }) {
 
         {/* Right column → 4 small stat boxes */}
         <div className="grid grid-cols-1 gap-4">
-          {!results?.is_rwa && (
+          {!results?.is_rwa && results?.sizing_method === "plant_size" && (
             <div className="bg-[#1a1a1a] p-4 rounded-lg border border-white/10 shadow-md">
               <p className="text-sm text-gray-400">With grid daily consumption</p>
               <p className="text-xl font-bold text-green-400 break-all">{format(results.daily_unit)}</p>
@@ -178,7 +178,7 @@ export default function CenterOutput({ results }) {
               With Solar
             </button>
             {/* Show With Grid only if not RWA or plant_size */}
-            {!results?.is_rwa && results?.sizing_method !== "plant_size" && (
+            {!results?.is_rwa && results?.sizing_method === "plant_size" && (
               <button
                 onClick={() => setMode("grid")}
                 className={`px-4 py-1 rounded-md font-semibold ${mode === "grid"
