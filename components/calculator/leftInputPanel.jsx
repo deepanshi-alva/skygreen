@@ -23,7 +23,7 @@ export default function LeftInputPanel({ onResults }) {
     tariff: "8",
     societySanctionedLoad: "",
     perHouseSanctionedLoad: "",
-    plant_size_kw:""
+    plant_size_kw: ""
   });
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -37,8 +37,8 @@ export default function LeftInputPanel({ onResults }) {
       try {
         setLoadingStates(true);
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/states?pagination[pageSize]=100`,
-          { cache: "no-store" }
+          `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/states?fields[0]=name&fields[1]=rwa_enabled&pagination[pageSize]=100&sort=name:asc`,
+          { cache: "force-cache", next: { revalidate: 3600 } }
         );
         const data = await res.json();
         const formatted = Array.isArray(data.data)
@@ -533,6 +533,18 @@ export default function LeftInputPanel({ onResults }) {
                 onChange={handleChange}
                 className="w-full p-2 rounded-lg bg-black border border-green-500"
                 placeholder="Enter desired plant size (kW)"
+              />
+            </div>
+
+            <div>
+              <label className="block mb-1">Tariff (₹/kWh)</label>
+              <input
+                type="number"
+                name="tariff"
+                value={formData.tariff}
+                onChange={handleChange}
+                className="w-full p-2 rounded-lg bg-black border border-green-500"
+                placeholder="Default 8"
               />
             </div>
           </>
