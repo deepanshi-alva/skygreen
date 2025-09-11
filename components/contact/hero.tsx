@@ -12,10 +12,8 @@ export default function HeroSection() {
           // gradient bottom border (black → green → black)
           borderImage: 'linear-gradient(to right, #000000, #00ff6a, #000000) 1',
           borderImageSlice: 1,
-
           // extra brightness in the middle bottom, fading to the sides
           background: 'radial-gradient(50% 30px at 50% 100%, rgba(0, 255, 106, 0.6) 0%, rgba(0, 255, 106, 0.15) 60%, rgba(0, 255, 106, 0) 100%)',
-
           backgroundRepeat: 'no-repeat',
         }}
       >
