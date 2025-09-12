@@ -19,6 +19,7 @@ export default function RightAds({ results }) {
     const proposed = results?.recommended_kw || results?.user_proposed_capacity;
     const societySanctioned = results?.user_society_sanctioned_load;
     const perHouseSanctioned = results?.user_per_house_sanctioned_load || 1;
+    const rawPerHouseSanctioned = results?.user_per_house_sanctioned_loader;
     const perHouseCap = results?.rwa_per_house_cap_kw; // e.g., 3 or 10 depending on state
     const overallSubsidyCap = results?.rwa_overall_subsidy_cap;
     // calculate per-house limited capacity
