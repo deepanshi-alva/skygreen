@@ -1,5 +1,6 @@
 "use client";
 
+import { number } from "framer-motion";
 import { AlertTriangle, Info } from "lucide-react";
 
 export default function RightAds({ results }) {
@@ -16,16 +17,17 @@ export default function RightAds({ results }) {
   if (results?.is_rwa) {
     // --- RWA subsidy logic ---
     const numHouses = results?.num_houses || results?.user_num_houses;
-    const proposed = results?.recommended_kw || results?.user_proposed_capacity;
+    const proposed = results?.user_proposed_capacity;
+    const recommended_system =  results?.recommended_kw;
     const societySanctioned = results?.user_society_sanctioned_load;
     const perHouseSanctioned = results?.user_per_house_sanctioned_load || 1;
-    const rawPerHouseSanctioned = results?.user_per_house_sanctioned_loader;
+    const rawPerHouseSanctioned = results?.user_per_house_sanctioned_load || "";
     const perHouseCap = results?.rwa_per_house_cap_kw; // e.g., 3 or 10 depending on state
     const overallSubsidyCap = results?.rwa_overall_subsidy_cap;
     // calculate per-house limited capacity
     const perHouseLimit = numHouses ? numHouses * Math.min(perHouseSanctioned, perHouseCap) : 0;
 
-    if (numHouses && proposed && societySanctioned && proposed > societySanctioned) {
+    if (numHouses && proposed && societySanctioned) {
       console.log("entered 1");
 
       const capByHouses = Math.min(numHouses * 1, overallSubsidyCap);
@@ -33,24 +35,27 @@ export default function RightAds({ results }) {
 
       addNote(
         "warning",
-        `Your proposed system is ${proposed} kW but your subsidy is capped at ${capByHouses} kW.${remaining > 0
-          ? ` Remaining ${remaining} kW will not receive subsidy i.e. you have to pay for that from your pocket.`
-          : ` To avail the full subsidy of ${overallSubsidyCap} kW, consider increasing the per-house sanctioned load (max allowed is ${perHouseCap} kW per house).`
-        }`
+        `Your proposed system is ${proposed} kW, but you are eligible for subsidy only on ${capByHouses} kW (calculated as Number of houses x sanctioned load per house [default = 1 kW]). The remaining capacity must be self - funded.`
       );
     }
     else if (numHouses && societySanctioned) {
       console.log("entered 2");
 
       const capByHouses = Math.min(numHouses * 1, overallSubsidyCap);
-      const remaining = proposed - capByHouses;
+      const remaining = societySanctioned - capByHouses;
 
       addNote(
         "warning",
-        `Your proposed system is ${proposed} kW but your subsidy is capped at ${capByHouses} kW.${remaining > 0
-          ? ` Remaining ${remaining} kW will not receive subsidy i.e. you have to pay for that from your pocket.`
-          : ` To avail the full subsidy of ${overallSubsidyCap} kW, consider increasing the per-house sanctioned load (max allowed is ${perHouseCap} kW per house).`
-        }`
+        `You entered a ${societySanctioned} kW society load, but the subsidy is capped at ${capByHouses} kW. The remaining ${remaining} kW will not get subsidy and must be self-funded.`
+      );
+      // You entered a 5000 kW society load, but the subsidy is capped at 500 kW. The remaining 4500 kW will not get subsidy and must be self-funded
+    }
+    else if (proposed) {
+      console.log("entered 4")
+      const eligibleCap = Math.min(proposed, overallSubsidyCap);
+      addNote(
+        "info",
+        `Proposed system: ${proposed} kW. Eligible subsidy: ${eligibleCap} kW. The remaining ${proposed-overallSubsidyCap} kW must be self-funded.`
       );
     }
     else if (numHouses && perHouseSanctioned) {
@@ -59,27 +64,23 @@ export default function RightAds({ results }) {
       const eligibleCap = Math.min(calculatedSystem, overallSubsidyCap);
       addNote(
         "info",
-        `We calculated your proposed system as ${numHouses} houses × ${perHouseSanctioned} kW = ${calculatedSystem} kW. 
-          Based on current rules, your subsidy is eligible up to ${eligibleCap} kW${eligibleCap < overallSubsidyCap
-          ? `. To avail the full subsidy of ${overallSubsidyCap} kW, consider increasing the per-house sanctioned load (max allowed is ${perHouseCap} kW per house).`
-          : "."
-        }`
+        `Since you haven’t provided the proposed capacity, we calculated it as Number of Houses × Sanctioned Load = ${calculatedSystem} kW. However, your state subsidy is capped at ${eligibleCap} kW, and the remaining capacity will need to be self-funded.`
       );
     }
-    else if (proposed && proposed != overallSubsidyCap) {
-      console.log("entered 3", proposed)
-      addNote(
-        "warning",
-        `Your proposed system is ${proposed} kW and your subsidy is capped at ${overallSubsidyCap} kW.${proposed > overallSubsidyCap
-          ? ` Remaining ${proposed - overallSubsidyCap} kW will not receive subsidy i.e. you have to pay for that from your pocket.`
-          : proposed < overallSubsidyCap
-            ? ` If you want to gain the full subsidy benefit, increase your proposed system size up to ${overallSubsidyCap} kW.`
-            : ""
-        }`
-      );
-    }
-    
-    if (results?.roof_needed_sqft) {
+    // else if (proposed && proposed != overallSubsidyCap) {
+    //   console.log("entered 3", proposed)
+    //   addNote(
+    //     "warning",
+    //     `Your proposed system is ${proposed} kW and your subsidy is capped at ${overallSubsidyCap} kW.${proposed > overallSubsidyCap
+    //       ? ` Remaining ${proposed - overallSubsidyCap} kW will not receive subsidy i.e. you have to pay for that from your pocket.`
+    //       : proposed < overallSubsidyCap
+    //         ? ` If you want to gain the full subsidy benefit, increase your proposed system size up to ${overallSubsidyCap} kW.`
+    //         : ""
+    //     }`
+    //   );
+    // }
+
+    if (results?.roof_needed_sqft && results?.roof_area_available) {
       const roofNeeded = results.roof_needed_sqft;
       if (results?.roof_area_available && results.roof_area_available > 0) {
         const roofAvailable = results.roof_area_available;
@@ -90,20 +91,23 @@ export default function RightAds({ results }) {
           );
         }
       } else {
-        addNote("info", `For this system, approx. ${roofNeeded} sqft rooftop area is required.`);
+        addNote("info", `For this system, approx. ${formatNum(roofNeeded)} sqft rooftop area is required.`);
       }
     }
-    if (perHouseSanctioned <= perHouseCap && numHouses != 1) {
+    if (rawPerHouseSanctioned ==="") {
       addNote(
         "info",
-        `The per-house sanctioned load = ${perHouseSanctioned} kW, therefore subsidy cap per-house = ${numHouses} × ${perHouseSanctioned} = ${perHouseLimit} kW.`
+        `You did not enter the sanctioned load per house. We have taken the default as 1 kW/house, but in ${results.state} the subsidy is capped at ${perHouseCap} kw/house`
+
       );
     }
     // A) Per-house above 3 kW
     if (perHouseSanctioned && perHouseSanctioned > perHouseCap) {
+      console.log("--------------", rawPerHouseSanctioned)
       addNote(
         "info",
         `You entered ${perHouseSanctioned} kW per house, but subsidy is capped at ${perHouseCap} kW per house. Extra capacity per house is not subsidized.`
+
       );
     }
     // B) Society sanctioned load lower than proposed
@@ -187,23 +191,6 @@ export default function RightAds({ results }) {
 
   return (
     <div className="col-span-2 p-4 mt-2 space-y-4 sticky top-24 self-start">
-      {/* ✅ Permanent Important Notes from state data */}
-      {results?.importantNotes?.length > 0 && (
-        <div>
-          <h2 className="text-xl font-bold mb-2">📌 State Important Notes</h2>
-          <div className="space-y-3">
-            {results.importantNotes.map((item) => (
-              <div
-                key={item.id}
-                className="flex items-start gap-3 p-3 rounded-lg border border-yellow-500 text-yellow-300 bg-black/40 shadow-sm"
-              >
-                {/* <Info className="w-5 h-5 text-yellow-400 mt-0.5" /> */}
-                <p className="text-sm leading-snug">{item.notes}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
 
       {notes.length > 0 && (
         <div>
@@ -218,6 +205,24 @@ export default function RightAds({ results }) {
               >
                 {/* {getIcon(note.type)} */}
                 <p className="text-sm leading-snug text-justify">{note.text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* ✅ Permanent Important Notes from state data */}
+      {results?.importantNotes?.length > 0 && (
+        <div>
+          <h2 className="text-xl font-bold mb-2">📌 State Important Notes</h2>
+          <div className="space-y-3">
+            {results.importantNotes.map((item) => (
+              <div
+                key={item.id}
+                className="flex items-start gap-3 p-3 rounded-lg border border-yellow-500 text-yellow-300 bg-black/40 shadow-sm"
+              >
+                {/* <Info className="w-5 h-5 text-yellow-400 mt-0.5" /> */}
+                <p className="text-sm leading-snug">{item.notes}</p>
               </div>
             ))}
           </div>

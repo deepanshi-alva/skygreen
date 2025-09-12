@@ -125,17 +125,17 @@ export default function LeftInputPanel({ onResults }) {
       }
 
       // At least one positive sizing input required
-      const anyPositive =
-        isPositive(proposed) ||
-        isPositive(societyLoad) ||
-        (isPositive(perHouse) && isPositive(houses));
+      // const anyPositive =
+      //   isPositive(proposed) ||
+      //   isPositive(societyLoad) ||
+      //   (isPositive(perHouse) && isPositive(houses));
 
-      if (!anyPositive) {
-        setError(
-          "⚠️ Enter at least one positive RWA sizing input: Proposed Capacity (kW) or Society Sanctioned Load (kW) or Per-house Sanctioned Load (kW) with Number of Houses."
-        );
-        return;
-      }
+      // if (!anyPositive) {
+      //   setError(
+      //     "⚠️ Enter at least one positive RWA sizing input: Proposed Capacity (kW) or Society Sanctioned Load (kW) or Per-house Sanctioned Load (kW) with Number of Houses."
+      //   );
+      //   return;
+      // }
     }
 
     // 👉 Determine sizingMethod
@@ -162,7 +162,7 @@ export default function LeftInputPanel({ onResults }) {
             num_houses: Number(formData.numHouses) || 1,
             proposed_capacity_kw: Number(formData.proposedCapacity) || 0,
             society_sanctioned_load_kw: Number(formData.societySanctionedLoad) || 0,
-            per_house_sanctioned_load_kw: Number(formData.perHouseSanctionedLoad) || 0,
+            per_house_sanctioned_load_kw: Number(formData.perHouseSanctionedLoad) || 1,
             monthly_bill_inr: Number(formData.bill) || 0,
             monthly_units_kwh: Number(formData.units) || 0,
             tariff_inr_per_kwh: Number(formData.tariff) || 8,

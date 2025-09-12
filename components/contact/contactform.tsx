@@ -27,13 +27,17 @@ const customSelectStyles: StylesConfig<
   control: (provided, state) => ({
     ...provided,
     backgroundColor: state.isDisabled ? "#222" : "#111",
-    borderColor: state.isDisabled ? "#333" : "#444",
+    borderColor: state.isFocused ? "#16a34a" : state.isDisabled ? "#333" : "#444", // ✅ green on focus
     borderRadius: "0.75rem",
     padding: "2px",
     minHeight: "48px",
     color: "white",
     cursor: state.isDisabled ? "not-allowed" : "default",
     opacity: state.isDisabled ? 0.5 : 1,
+    boxShadow: state.isFocused ? "0 0 0 1px #16a34a" : "none", // ✅ custom glow instead of blue
+    "&:hover": {
+      borderColor: "#16a34a", // ✅ green on hover
+    },
   }),
   menu: (provided) => ({
     ...provided,
@@ -57,21 +61,29 @@ const customSelectStyles: StylesConfig<
   }),
 };
 
+
 // Generate 15-min time slots between 10:00–18:00
 const generateTimeSlots = () => {
   const slots = [];
   const start = 10 * 60; // 10:00 in minutes
   const end = 18 * 60; // 18:00 in minutes
+
   for (let mins = start; mins < end; mins += 15) {
-    const h1 = String(Math.floor(mins / 60)).padStart(2, "0");
-    const m1 = String(mins % 60).padStart(2, "0");
-    const h2 = String(Math.floor((mins + 15) / 60)).padStart(2, "0");
-    const m2 = String((mins + 15) % 60).padStart(2, "0");
+    const format12 = (minutes: number) => {
+      const h24 = Math.floor(minutes / 60);
+      const m = minutes % 60;
+      const period = h24 >= 12 ? "PM" : "AM";
+      const h12 = h24 % 12 === 0 ? 12 : h24 % 12;
+      return `${h12}:${m.toString().padStart(2, "0")} ${period}`;
+    };
+
+    const label = `${format12(mins)} - ${format12(mins + 15)}`;
     slots.push({
-      value: `${h1}:${m1}-${h2}:${m2}`,
-      label: `${h1}:${m1} - ${h2}:${m2}`,
+      value: label, // store same string
+      label: label,
     });
   }
+
   return slots;
 };
 
@@ -83,6 +95,7 @@ type FormData = {
   phone: string;
   state: string;
   city: string;
+  gender: string;
   capacity: string;
   date: Date | null;
   time: string;
@@ -147,6 +160,7 @@ function ContactForm() {
     phone: "",
     state: "",
     city: "",
+    gender: "",
     capacity: "",
     date: null,
     time: "",
@@ -154,311 +168,243 @@ function ContactForm() {
     agreeToProcessing: false,
   });
 
-  const [error, setError] = useState<string>("");
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
-  // Build state & city options from library
-  const stateOptions = State.getStatesOfCountry("IN").map((s) => ({
-    value: s.isoCode,
-    label: s.name,
-  }));
+  // -------------------- Validation Function --------------------
+  const validateField = (field: string, value: any) => {
+    switch (field) {
+      case "name":
+        if (!value || value.trim().length < 2) return "Name must be at least 2 characters.";
+        if (/^\d+$/.test(value)) return "Name cannot be numbers only.";
+        return "";
+      case "phone":
+        if (!/^\d{10}$/.test(value)) return "Enter a valid 10-digit phone number.";
+        return "";
+      case "state":
+        return value ? "" : "Please select your state.";
+      case "city":
+        return value ? "" : "Please select your city.";
+      case "gender":
+        return value ? "" : "Please select your gender.";
+      case "capacity":
+        if (!value || isNaN(Number(value)) || Number(value) <= 0)
+          return "Enter a valid capacity in kW.";
+        return "";
+      case "date":
+        if (!value) return "Please select a preferred date.";
+        if (value < new Date(new Date().setHours(0, 0, 0, 0)))
+          return "Preferred date cannot be in the past.";
+        return "";
+      case "time":
+        return value ? "" : "Please select a time slot.";
+      case "agreeToProcessing":
+        return value ? "" : "You must agree before submitting.";
+      default:
+        return "";
+    }
+  };
 
-  const cityOptions = formData.state
-    ? City.getCitiesOfState("IN", formData.state).map((c) => ({
-      value: c.name,
-      label: c.name,
-    }))
-    : [];
+  // -------------------- Handle Input Change --------------------
+  const handleChange = (field: string, value: any) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+    setErrors((prev) => ({ ...prev, [field]: validateField(field, value) }));
+  };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  // -------------------- Handle Submit --------------------
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // validations
-    if (!formData.name || formData.name.trim().length < 2) {
-      setError("Please enter your full name (at least 2 characters).");
-      return;
-    }
+    const newErrors: Record<string, string> = {};
+    Object.keys(formData).forEach((field) => {
+      // @ts-ignore
+      newErrors[field] = validateField(field, formData[field]);
+    });
+    setErrors(newErrors);
 
-    if (!formData.phone || !/^\d{10}$/.test(formData.phone)) {
-      setError("Please enter a valid 10-digit phone number.");
-      return;
-    }
+    if (Object.values(newErrors).some((err) => err !== "")) return;
 
-    if (!formData.state) {
-      setError("Please select your state.");
-      return;
-    }
-
-    if (!formData.city) {
-      setError("Please select your city.");
-      return;
-    }
-
-    if (!formData.capacity || isNaN(Number(formData.capacity)) || Number(formData.capacity) <= 0) {
-      setError("Please enter a valid capacity in kW.");
-      return;
-    }
-
-    if (!formData.date) {
-      setError("Please select a preferred date.");
-      return;
-    }
-
-    if (formData.date < new Date(new Date().setHours(0, 0, 0, 0))) {
-      setError("Preferred date cannot be in the past.");
-      return;
-    }
-
-    if (!formData.time) {
-      setError("Please select a preferred time slot.");
-      return;
-    }
-
-    if (!formData.agreeToProcessing) {
-      setError("You must agree to the processing of personal data.");
-      return;
-    }
-
-    setError(""); // clear error if all validations passed
-
-    try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/contact-uses`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          // add Authorization header if needed
-          // Authorization: `Bearer ${process.env.NEXT_PUBLIC_STRAPI_TOKEN}`
-        },
-        body: JSON.stringify({
-          data: {
-            name: formData.name,
-            phone_number: parseInt(formData.phone, 10),
-            state: formData.state,
-            city: formData.city,
-            capacity_required: parseInt(formData.capacity, 10),
-            preferred_date: formData.date.toISOString().split("T")[0],
-            preferred_time_slot: formData.time,
-            message: formData.message
-          },
-        }),
-      });
-
-      if (!res.ok) throw new Error("Failed to submit form");
-
-      const responseData = await res.json();
-      console.log("✅ Data saved to Strapi:", responseData);
-
-      // reset form
-      setFormData({
-        name: "",
-        phone: "",
-        state: "",
-        city: "",
-        capacity: "",
-        date: null,
-        time: "",
-        message: "",
-        agreeToProcessing: false,
-      });
-
-      alert("Your details have been submitted successfully!");
-    } catch (error) {
-      console.error("❌ Error saving data:", error);
-      setError("Something went wrong, please try again.");
-    }
+    console.log("✅ Form submitted:", formData);
+    alert("Form submitted successfully!");
   };
 
   const inputStyle =
     "w-full bg-black/40 border border-gray-700 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:border-green-500 focus:ring-2 focus:ring-green-500/40 focus:outline-none transition-all duration-200";
 
+  // -------------------- UI --------------------
   return (
-    <div className="space-y-8 ">
-      <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold mb-2">
-        Let&apos;s <span className="text-green-500">Connect</span>
-      </h1>
-      <p className="text-gray-400 mb-6">
-        Share your details and our team will get back to you within 24 hours.
-      </p>
+    <form onSubmit={handleSubmit} className="space-y-6">
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Name */}
         <div>
           <label className="block text-sm font-medium mb-2">Full Name</label>
-          <div className="flex items-center gap-2">
-            <User className="text-gray-400 w-5 h-5" />
-            <input
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={(e) =>
-                setFormData((prev) => ({ ...prev, name: e.target.value }))
-              }
-              placeholder="John Doe"
-              className={inputStyle}
-            />
-          </div>
-        </div>
-
-        {/* Phone + State + City */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
-          <div className="w-full">
-            <label className="block text-sm font-medium mb-2">Phone</label>
-            <div className="flex items-center gap-2">
-              <Phone className="text-gray-400 w-5 h-5 mr-1" />
-              <input
-                type="tel"
-                name="phone"
-                value={formData.phone}
-                onChange={(e) =>
-                  setFormData((prev) => ({ ...prev, phone: e.target.value }))
-                }
-                placeholder="+91 9876543210"
-                className={inputStyle}
-              />
-            </div>
-          </div>
-
-          <div className="w-full">
-            <label className="block text-sm font-medium mb-2">State</label>
-            <Select
-              options={stateOptions}
-              styles={customSelectStyles}
-              value={stateOptions.find((s) => s.value === formData.state) || null}
-              onChange={(selected) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  state: selected?.value || "",
-                  city: "",
-                }))
-              }
-              placeholder="Select your state"
-            />
-          </div>
-
-          <div className="w-full">
-            <label className="block text-sm font-medium mb-2">City</label>
-            <Select
-              options={cityOptions}
-              styles={customSelectStyles}
-              value={cityOptions.find((c) => c.value === formData.city) || null}
-              onChange={(selected) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  city: selected?.value || "",
-                }))
-              }
-              placeholder={
-                formData.state ? "Now select your city" : "Select state first"
-              }
-              isDisabled={!formData.state}
-            />
-          </div>
-
-        </div>
-
-        {/* Capacity + Preferred Date + Preferred Time */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
-          <div className="w-full">
-            <label className="block text-sm font-medium mb-2">Capacity (kW)</label>
-            <input
-              type="text"
-              name="capacity"
-              value={formData.capacity}
-              onChange={(e) =>
-                setFormData((prev) => ({ ...prev, capacity: e.target.value }))
-              }
-              placeholder="e.g., 5 kW"
-              className={inputStyle}
-            />
-          </div>
-
-          <div className="w-full">
-            <label className="block text-sm font-medium mb-2">Preferred Date</label>
-            <DatePicker
-              selected={formData.date}
-              onChange={(date) =>
-                setFormData((prev) => ({ ...prev, date: date || null }))
-              }
-              minDate={today}
-              placeholderText="Select a date"
-              className="w-[137%] sm:md:w[90%] md:w-[132%] bg-black/40 border border-gray-700 rounded-xl px-4 py-3 text-white"
-            />
-          </div>
-
-          <div className="w-full">
-            <label className="block text-sm font-medium mb-2">Preferred Time</label>
-            <Select
-              options={timeOptions}
-              styles={customSelectStyles}
-              value={timeOptions.find((t) => t.value === formData.time) || null}
-              onChange={(selected) =>
-                setFormData((prev) => ({ ...prev, time: selected?.value || "" }))
-              }
-              placeholder="Select a time slot"
-            />
-          </div>
-        </div>
-
-        {/* Message */}
-        <div>
-          <label className="block text-lg font-medium mb-2">
-            Message
-          </label>
-          <textarea
-            name="message"
-            value={formData.message}
-            onChange={(e) => {
-              setFormData((prev) => ({ ...prev, message: e.target.value }))
-              // auto-expand logic
-              const el = e.target;
-              el.rows = 1; // reset first
-              const currentRows = Math.min(Math.floor(el.scrollHeight / 24), 4);
-              el.rows = currentRows;
-            }}
-            placeholder="Tell us how we can help..."
-            rows={1}
-            className="w-full bg-transparent border-b-2 border-gray-700 pb-2 text-white placeholder-gray-500 
-               focus:border-green-500 focus:outline-none transition-colors duration-200 resize-none"
+          <input
+            type="text"
+            value={formData.name}
+            onChange={(e) => handleChange("name", e.target.value)}
+            placeholder="John Doe"
+            className={inputStyle}
           />
+          {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
         </div>
 
-        {/* Agreement */}
-        <div className="flex flex-col gap-2">
-          <div className="flex items-start gap-3">
-            <input
-              type="checkbox"
-              name="agreeToProcessing"
-              checked={formData.agreeToProcessing}
-              onChange={(e) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  agreeToProcessing: e.target.checked,
+        {/* Phone */}
+        <div>
+          <label className="block text-sm font-medium mb-2">Phone</label>
+          <input
+            type="tel"
+            value={formData.phone}
+            onChange={(e) => handleChange("phone", e.target.value)}
+            placeholder="+91 9876543210"
+            className={inputStyle}
+          />
+          {errors.phone && <p className="text-red-500 text-sm">{errors.phone}</p>}
+        </div>
+      </div>
+
+      {/* State, City, Gender */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div>
+          <label className="block text-sm font-medium mb-2">State</label>
+          <Select
+            options={State.getStatesOfCountry("IN").map((s) => ({ value: s.isoCode, label: s.name }))}
+            styles={customSelectStyles}
+            value={
+              formData.state
+                ? { value: formData.state, label: State.getStateByCode(formData.state)?.name || "" }
+                : null
+            }
+            onChange={(opt) => handleChange("state", opt?.value || "")}
+            placeholder="Select your state"
+          />
+          {errors.state && <p className="text-red-500 text-sm">{errors.state}</p>}
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium mb-2">City</label>
+          <Select
+            options={
+              formData.state
+                ? City.getCitiesOfState("IN", formData.state).map((c) => ({
+                  value: c.name,
+                  label: c.name,
                 }))
-              }
-              className="mt-1 w-4 h-4 border-gray-600 rounded focus:ring-green-500 focus:ring-2"
-            />
-            <label className="text-sm text-gray-400 leading-relaxed">
-              I agree to the processing of personal data
-            </label>
-          </div>
-
-          {/* error message */}
-          {error && (
-            <p className="text-red-500 text-sm font-medium">{error}</p>
-          )}
+                : []
+            }
+            styles={customSelectStyles}
+            value={formData.city ? { value: formData.city, label: formData.city } : null}
+            onChange={(opt) => handleChange("city", opt?.value || "")}
+            placeholder={formData.state ? "Now select your city" : "Select state first"}
+            isDisabled={!formData.state}
+          />
+          {errors.city && <p className="text-red-500 text-sm">{errors.city}</p>}
         </div>
 
-        {/* Submit */}
-        <div className="pt-4">
-          <button
-            type="submit"
-            className="group flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-black font-semibold px-8 py-3 rounded-full transition-all duration-200 hover:scale-105 shadow-lg"
-          >
-            Send Request
-            <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
-          </button>
+        <div>
+          <label className="block text-sm font-medium mb-2">Gender</label>
+          <Select
+            options={[
+              { value: "male", label: "Male" },
+              { value: "female", label: "Female" },
+              { value: "na", label: "Prefer not to specify" },
+            ]}
+            styles={customSelectStyles}
+            value={
+              formData.gender
+                ? [{ value: "male", label: "Male" }, { value: "female", label: "Female" }, { value: "na", label: "Prefer not to specify" }].find(
+                  (g) => g.value === formData.gender
+                ) || null
+                : null
+            }
+            onChange={(opt) => handleChange("gender", opt?.value || "")}
+            placeholder="Select gender"
+          />
+          {errors.gender && <p className="text-red-500 text-sm">{errors.gender}</p>}
         </div>
-      </form>
-    </div>
+      </div>
+
+      {/* Capacity, Date, Time */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div>
+          <label className="block text-sm font-medium mb-2">Capacity (kW)</label>
+          <input
+            type="text"
+            value={formData.capacity}
+            onChange={(e) => handleChange("capacity", e.target.value)}
+            placeholder="e.g., 5 kW"
+            className={inputStyle}
+          />
+          {errors.capacity && <p className="text-red-500 text-sm">{errors.capacity}</p>}
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium mb-2">Preferred Date</label>
+          <DatePicker
+            selected={formData.date}
+            onChange={(date) => handleChange("date", date || null)}
+            minDate={today}
+            placeholderText="Select a date"
+            popperClassName="datepicker-center"
+            popperPlacement="bottom"
+            className={inputStyle}
+          />
+          {errors.date && <p className="text-red-500 text-sm">{errors.date}</p>}
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium mb-2">Preferred Time</label>
+          <Select
+            options={timeOptions}
+            styles={customSelectStyles}
+            value={timeOptions.find((t) => t.value === formData.time) || null}
+            onChange={(opt) => handleChange("time", opt?.value || "")}
+            placeholder="Select a time slot"
+          />
+          {errors.time && <p className="text-red-500 text-sm">{errors.time}</p>}
+        </div>
+      </div>
+
+      {/* Message */}
+      <div>
+        <label className="block text-lg font-medium mb-2">Message</label>
+        <textarea
+          value={formData.message}
+          onChange={(e) => handleChange("message", e.target.value)}
+          placeholder="Tell us how we can help..."
+          rows={1}
+          className="w-full bg-transparent border-b-2 border-gray-700 pb-2 text-white placeholder-gray-500 focus:border-green-500 focus:outline-none transition-colors duration-200 resize-none"
+        />
+      </div>
+
+      {/* Agreement */}
+      <div className="flex flex-col gap-2">
+        <div className="flex items-start gap-3">
+          <input
+            type="checkbox"
+            checked={formData.agreeToProcessing}
+            onChange={(e) => handleChange("agreeToProcessing", e.target.checked)}
+            className="mt-1 w-4 h-4 border-gray-600 rounded focus:ring-green-500 focus:ring-2"
+          />
+          <label className="text-sm text-gray-400 leading-relaxed">
+            I agree to the processing of personal data
+          </label>
+        </div>
+        {errors.agreeToProcessing && (
+          <p className="text-red-500 text-sm">{errors.agreeToProcessing}</p>
+        )}
+      </div>
+
+      {/* Submit */}
+      <div className="pt-4">
+        <button
+          type="submit"
+          className="group flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-black font-semibold px-8 py-3 rounded-full transition-all duration-200 hover:scale-105 shadow-lg"
+        >
+          Send Request
+          <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
+        </button>
+      </div>
+    </form>
   );
 }
 
