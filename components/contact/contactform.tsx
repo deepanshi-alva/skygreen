@@ -1,14 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import {
-  Download,
-  ChevronRight,
-  User,
-  Phone,
-} from "lucide-react";
-// import HeadOfficeInfo from "./headOffice";
-
+import { Download, ChevronRight } from "lucide-react"; // removed User, Phone (unused)
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -27,16 +20,16 @@ const customSelectStyles: StylesConfig<
   control: (provided, state) => ({
     ...provided,
     backgroundColor: state.isDisabled ? "#222" : "#111",
-    borderColor: state.isFocused ? "#16a34a" : state.isDisabled ? "#333" : "#444", // ✅ green on focus
+    borderColor: state.isFocused ? "#16a34a" : state.isDisabled ? "#333" : "#444",
     borderRadius: "0.75rem",
     padding: "2px",
     minHeight: "48px",
     color: "white",
     cursor: state.isDisabled ? "not-allowed" : "default",
     opacity: state.isDisabled ? 0.5 : 1,
-    boxShadow: state.isFocused ? "0 0 0 1px #16a34a" : "none", // ✅ custom glow instead of blue
+    boxShadow: state.isFocused ? "0 0 0 1px #16a34a" : "none",
     "&:hover": {
-      borderColor: "#16a34a", // ✅ green on hover
+      borderColor: "#16a34a",
     },
   }),
   menu: (provided) => ({
@@ -61,34 +54,28 @@ const customSelectStyles: StylesConfig<
   }),
 };
 
-
 // Generate 15-min time slots between 10:00–18:00
 const generateTimeSlots = () => {
-  const slots = [];
+  const slots: { value: string; label: string }[] = [];
   const start = 10 * 60; // 10:00 in minutes
   const end = 18 * 60; // 18:00 in minutes
 
+  const format12 = (minutes: number) => {
+    const h24 = Math.floor(minutes / 60);
+    const m = minutes % 60;
+    const period = h24 >= 12 ? "PM" : "AM";
+    const h12 = h24 % 12 === 0 ? 12 : h24 % 12;
+    return `${h12}:${m.toString().padStart(2, "0")} ${period}`;
+  };
+
   for (let mins = start; mins < end; mins += 15) {
-    const format12 = (minutes: number) => {
-      const h24 = Math.floor(minutes / 60);
-      const m = minutes % 60;
-      const period = h24 >= 12 ? "PM" : "AM";
-      const h12 = h24 % 12 === 0 ? 12 : h24 % 12;
-      return `${h12}:${m.toString().padStart(2, "0")} ${period}`;
-    };
-
     const label = `${format12(mins)} - ${format12(mins + 15)}`;
-    slots.push({
-      value: label, // store same string
-      label: label,
-    });
+    slots.push({ value: label, label });
   }
-
   return slots;
 };
 
 const timeOptions = generateTimeSlots();
-
 
 type FormData = {
   name: string;
@@ -104,7 +91,6 @@ type FormData = {
 };
 
 /* ----------------------------- Left Components ---------------------------- */
-
 function DownloadCard() {
   return (
     <div className="space-y-8">
@@ -117,15 +103,10 @@ function DownloadCard() {
 
         {/* Company Profile Card */}
         <div className="relative bg-gradient-to-br from-gray-900/80 to-gray-800/80 backdrop-blur-xl rounded-2xl p-6 shadow-lg overflow-hidden">
-          {/* Accent triangle */}
           <div className="absolute top-0 right-0 w-0 h-0 border-l-[120px] border-l-transparent border-t-[120px] border-t-green-500/70" />
-
-          {/* Badge */}
           <div className="absolute top-4 left-4 bg-green-500 text-white px-2 py-1 text-xs font-bold rounded">
             SKYGREEN
           </div>
-
-          {/* Content */}
           <div className="relative z-10 mt-12">
             <h3 className="text-2xl font-bold text-white mb-2 leading-tight">
               COMPANY <br /> PROFILE
@@ -140,8 +121,8 @@ function DownloadCard() {
       {/* Company Description */}
       <div className="space-y-2 text-gray-300">
         <p className="text-center md:text-justify">
-          <span className="text-white font-semibold">An Indian brand</span> in the
-          renewable energy industry, delivering{" "}
+          <span className="text-white font-semibold">An Indian brand</span> in
+          the renewable energy industry, delivering{" "}
           <span className="text-white font-semibold">premium solar solutions</span>{" "}
           to your doorstep.
         </p>
@@ -151,7 +132,6 @@ function DownloadCard() {
 }
 
 /* ---------------------------- Contact Form ---------------------------- */
-
 function ContactForm() {
   const today = new Date();
 
@@ -170,15 +150,20 @@ function ContactForm() {
 
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  // -------------------- Validation Function --------------------
-  const validateField = (field: string, value: any) => {
+  // Validation Function
+  const validateField = (
+    field: keyof FormData,
+    value: string | number | boolean | Date | null
+  ): string => {
     switch (field) {
       case "name":
-        if (!value || value.trim().length < 2) return "Name must be at least 2 characters.";
+        if (typeof value !== "string" || value.trim().length < 2)
+          return "Name must be at least 2 characters.";
         if (/^\d+$/.test(value)) return "Name cannot be numbers only.";
         return "";
       case "phone":
-        if (!/^\d{10}$/.test(value)) return "Enter a valid 10-digit phone number.";
+        if (typeof value !== "string" || !/^\d{10}$/.test(value))
+          return "Enter a valid 10-digit phone number.";
         return "";
       case "state":
         return value ? "" : "Please select your state.";
@@ -191,7 +176,7 @@ function ContactForm() {
           return "Enter a valid capacity in kW.";
         return "";
       case "date":
-        if (!value) return "Please select a preferred date.";
+        if (!(value instanceof Date)) return "Please select a preferred date.";
         if (value < new Date(new Date().setHours(0, 0, 0, 0)))
           return "Preferred date cannot be in the past.";
         return "";
@@ -204,23 +189,23 @@ function ContactForm() {
     }
   };
 
-  // -------------------- Handle Input Change --------------------
-  const handleChange = (field: string, value: any) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
+  const handleChange = (
+    field: keyof FormData,
+    value: string | number | boolean | Date | null
+  ) => {
+    setFormData((prev) => ({ ...prev, [field]: value } as FormData));
     setErrors((prev) => ({ ...prev, [field]: validateField(field, value) }));
   };
 
-  // -------------------- Handle Submit --------------------
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
     const newErrors: Record<string, string> = {};
-    Object.keys(formData).forEach((field) => {
-      // @ts-ignore
+
+    (Object.keys(formData) as (keyof FormData)[]).forEach((field) => {
       newErrors[field] = validateField(field, formData[field]);
     });
-    setErrors(newErrors);
 
+    setErrors(newErrors);
     if (Object.values(newErrors).some((err) => err !== "")) return;
 
     console.log("✅ Form submitted:", formData);
@@ -230,12 +215,10 @@ function ContactForm() {
   const inputStyle =
     "w-full bg-black/40 border border-gray-700 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:border-green-500 focus:ring-2 focus:ring-green-500/40 focus:outline-none transition-all duration-200";
 
-  // -------------------- UI --------------------
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-
+      {/* Name & Phone */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Name */}
         <div>
           <label className="block text-sm font-medium mb-2">Full Name</label>
           <input
@@ -248,7 +231,6 @@ function ContactForm() {
           {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
         </div>
 
-        {/* Phone */}
         <div>
           <label className="block text-sm font-medium mb-2">Phone</label>
           <input
@@ -267,11 +249,17 @@ function ContactForm() {
         <div>
           <label className="block text-sm font-medium mb-2">State</label>
           <Select
-            options={State.getStatesOfCountry("IN").map((s) => ({ value: s.isoCode, label: s.name }))}
+            options={State.getStatesOfCountry("IN").map((s) => ({
+              value: s.isoCode,
+              label: s.name,
+            }))}
             styles={customSelectStyles}
             value={
               formData.state
-                ? { value: formData.state, label: State.getStateByCode(formData.state)?.name || "" }
+                ? {
+                    value: formData.state,
+                    label: State.getStateByCode(formData.state)?.name || "",
+                  }
                 : null
             }
             onChange={(opt) => handleChange("state", opt?.value || "")}
@@ -286,9 +274,9 @@ function ContactForm() {
             options={
               formData.state
                 ? City.getCitiesOfState("IN", formData.state).map((c) => ({
-                  value: c.name,
-                  label: c.name,
-                }))
+                    value: c.name,
+                    label: c.name,
+                  }))
                 : []
             }
             styles={customSelectStyles}
@@ -311,9 +299,9 @@ function ContactForm() {
             styles={customSelectStyles}
             value={
               formData.gender
-                ? [{ value: "male", label: "Male" }, { value: "female", label: "Female" }, { value: "na", label: "Prefer not to specify" }].find(
-                  (g) => g.value === formData.gender
-                ) || null
+                ? ["male", "female", "na"]
+                    .map((g) => ({ value: g, label: g === "na" ? "Prefer not to specify" : g.charAt(0).toUpperCase() + g.slice(1) }))
+                    .find((g) => g.value === formData.gender) || null
                 : null
             }
             onChange={(opt) => handleChange("gender", opt?.value || "")}
@@ -409,21 +397,17 @@ function ContactForm() {
 }
 
 /* ------------------------------- Main Shell ------------------------------- */
-
 export default function ContactUs() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-12 py-12 md:py-16">
         <div className="grid grid-cols-1 lg:grid-cols-[20%_80%] gap-10 lg:gap-12 max-w-7xl mx-auto">
-
-          {/* Left */}
           <aside className="order-2 lg:order-1 lg:sticky lg:top-8 self-start">
             <div className="mx-auto max-w-md lg:max-w-none">
               <DownloadCard />
             </div>
           </aside>
 
-          {/* Right */}
           <main className="order-1 lg:order-2">
             <div className="relative max-w-2xl lg:max-w-full mx-auto">
               <div
@@ -440,21 +424,13 @@ export default function ContactUs() {
                   hover:shadow-[0_25px_50px_rgba(0,0,0,0.85),0_0_40px_rgba(34,197,94,0.35)]
                 "
               >
-                {/* subtle border glow */}
                 <div className="absolute inset-0 rounded-3xl border border-green-500/20 pointer-events-none"></div>
-
                 <ContactForm />
               </div>
             </div>
-
-            {/* Uncomment if you want office info below */}
-            {/* <div className="mt-12">
-              <HeadOfficeInfo />
-            </div> */}
           </main>
         </div>
       </div>
     </div>
   );
 }
-
