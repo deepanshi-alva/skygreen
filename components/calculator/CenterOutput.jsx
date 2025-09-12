@@ -85,7 +85,7 @@ export default function CenterOutput({ results }) {
           <div className="flex items-center justify-center mb-8 mt-2">
             <div>
               <p className="text-sm text-gray-400 text-center text-[1.5rem]">Gross Plant Cost</p>
-              <p className="text-3xl font-bold text-green-400 text-center break-all">₹{format(results.gross_cost_inr)}</p>
+              <p className="text-3xl font-bold text-green-400 text-center whitespace-nowrap text-[clamp(1rem,2vw,2rem)]">₹{format(results.gross_cost_inr)}</p>
             </div>
           </div>
           <hr className="border-white/10 my-2" />
@@ -106,7 +106,7 @@ export default function CenterOutput({ results }) {
             <hr className="border-white/10 my-2" />
             <div className=" flex flex-col mt-8 justify-center items-center text-sm">
               <span className="text-gray-300 text-[1rem] text-center font-semibold">Net Cost (After Subsidy)</span>
-              <span className="font-semibold mt-2 text-center text-4xl text-green-400 break-all">
+              <span className="font-semibold mt-2 text-center text-4xl text-green-400 whitespace-nowrap text-[clamp(1rem,2vw,2rem)]">
                 ₹{format(results.net_cost_inr)}
               </span>
             </div>
