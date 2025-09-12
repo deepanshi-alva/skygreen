@@ -18,30 +18,86 @@ export default function RightAds({ results }) {
     const numHouses = results?.num_houses || results?.user_num_houses;
     const proposed = results?.recommended_kw || results?.user_proposed_capacity;
     const societySanctioned = results?.user_society_sanctioned_load;
-    const perHouseSanctioned = results?.user_per_house_sanctioned_load;
+    const perHouseSanctioned = results?.user_per_house_sanctioned_load || 1;
     const perHouseCap = results?.rwa_per_house_cap_kw; // e.g., 3 or 10 depending on state
     const overallSubsidyCap = results?.rwa_overall_subsidy_cap;
+    // calculate per-house limited capacity
+    const perHouseLimit = numHouses ? numHouses * Math.min(perHouseSanctioned, perHouseCap) : 0;
 
-    if (numHouses && proposed && perHouseSanctioned) {
-      // max subsidy-eligible capacity per rules
-      const perHouseLimit = numHouses * Math.min(perHouseSanctioned || 0, perHouseCap);
-      const eligibleCap = Math.min(proposed, Math.min(overallSubsidyCap, perHouseLimit));
+    if (numHouses && proposed && societySanctioned && proposed > societySanctioned) {
+      console.log("entered 1");
 
-      if (eligibleCap < proposed) {
-        addNote(
-          "warning",
-          `Subsidy is available only up to ${eligibleCap} kW. Your proposed system is ${proposed} kW, so the extra ${proposed - eligibleCap} kW will not receive subsidy (to be paid from your pocket).`
-        );
+      const capByHouses = Math.min(numHouses * 1, overallSubsidyCap);
+      const remaining = proposed - capByHouses;
+
+      addNote(
+        "warning",
+        `Your proposed system is ${proposed} kW but your subsidy is capped at ${capByHouses} kW.${remaining > 0
+          ? ` Remaining ${remaining} kW will not receive subsidy i.e. you have to pay for that from your pocket.`
+          : ` To avail the full subsidy of ${overallSubsidyCap} kW, consider increasing the per-house sanctioned load (max allowed is ${perHouseCap} kW per house).`
+        }`
+      );
+    }
+    else if (numHouses && societySanctioned) {
+      console.log("entered 2");
+
+      const capByHouses = Math.min(numHouses * 1, overallSubsidyCap);
+      const remaining = proposed - capByHouses;
+
+      addNote(
+        "warning",
+        `Your proposed system is ${proposed} kW but your subsidy is capped at ${capByHouses} kW.${remaining > 0
+          ? ` Remaining ${remaining} kW will not receive subsidy i.e. you have to pay for that from your pocket.`
+          : ` To avail the full subsidy of ${overallSubsidyCap} kW, consider increasing the per-house sanctioned load (max allowed is ${perHouseCap} kW per house).`
+        }`
+      );
+    }
+    else if (numHouses && perHouseSanctioned) {
+      console.log("entered 4")
+      const calculatedSystem = numHouses * perHouseSanctioned;
+      const eligibleCap = Math.min(calculatedSystem, overallSubsidyCap);
+      addNote(
+        "info",
+        `We calculated your proposed system as ${numHouses} houses × ${perHouseSanctioned} kW = ${calculatedSystem} kW. 
+          Based on current rules, your subsidy is eligible up to ${eligibleCap} kW${eligibleCap < overallSubsidyCap
+          ? `. To avail the full subsidy of ${overallSubsidyCap} kW, consider increasing the per-house sanctioned load (max allowed is ${perHouseCap} kW per house).`
+          : "."
+        }`
+      );
+    }
+    else if (proposed && proposed != overallSubsidyCap) {
+      console.log("entered 3", proposed)
+      addNote(
+        "warning",
+        `Your proposed system is ${proposed} kW and your subsidy is capped at ${overallSubsidyCap} kW.${proposed > overallSubsidyCap
+          ? ` Remaining ${proposed - overallSubsidyCap} kW will not receive subsidy i.e. you have to pay for that from your pocket.`
+          : proposed < overallSubsidyCap
+            ? ` If you want to gain the full subsidy benefit, increase your proposed system size up to ${overallSubsidyCap} kW.`
+            : ""
+        }`
+      );
+    }
+    
+    if (results?.roof_needed_sqft) {
+      const roofNeeded = results.roof_needed_sqft;
+      if (results?.roof_area_available && results.roof_area_available > 0) {
+        const roofAvailable = results.roof_area_available;
+        if (roofAvailable < roofNeeded) {
+          addNote(
+            "warning",
+            `You provided ${roofAvailable} ${results.roof_area_unit} rooftop area, but ${formatNum(roofNeeded)} ${results.roof_area_unit} is required for the system.`
+          );
+        }
       } else {
-        addNote(
-          "info",
-          `Your proposed system of ${proposed} kW is fully eligible for subsidy rules (up to ${perHouseCap} kW per house and ${overallSubsidyCap} kW per society).`
-        );
+        addNote("info", `For this system, approx. ${roofNeeded} sqft rooftop area is required.`);
       }
     }
-
-    // Extra helper notes
-
+    if (perHouseSanctioned <= perHouseCap && numHouses != 1) {
+      addNote(
+        "info",
+        `The per-house sanctioned load = ${perHouseSanctioned} kW, therefore subsidy cap per-house = ${numHouses} × ${perHouseSanctioned} = ${perHouseLimit} kW.`
+      );
+    }
     // A) Per-house above 3 kW
     if (perHouseSanctioned && perHouseSanctioned > perHouseCap) {
       addNote(
@@ -49,7 +105,6 @@ export default function RightAds({ results }) {
         `You entered ${perHouseSanctioned} kW per house, but subsidy is capped at ${perHouseCap} kW per house. Extra capacity per house is not subsidized.`
       );
     }
-
     // B) Society sanctioned load lower than proposed
     if (societySanctioned && proposed && societySanctioned < proposed) {
       addNote(
@@ -57,6 +112,24 @@ export default function RightAds({ results }) {
         `Your society sanctioned load is ${societySanctioned} kW, but the proposed system is ${proposed} kW. Subsidy can only be claimed up to your sanctioned load. Please upgrade sanctioned load to claim subsidy on the full system.`
       );
     }
+
+    // if (numHouses && proposed && perHouseSanctioned) {
+    //   // max subsidy-eligible capacity per rules
+    //   const perHouseLimit = numHouses * Math.min(perHouseSanctioned || 0, perHouseCap);
+    //   const eligibleCap = Math.min(proposed, Math.min(overallSubsidyCap, perHouseLimit));
+
+    //   if (eligibleCap < proposed) {
+    //     addNote(
+    //       "warning",
+    //       `Subsidy is available only up to ${eligibleCap} kW. Your proposed system is ${proposed} kW, so the extra ${proposed - eligibleCap} kW will not receive subsidy (to be paid from your pocket).`
+    //     );
+    //   } else {
+    //     addNote(
+    //       "info",
+    //       `Your proposed system of ${proposed} kW is fully eligible for subsidy rules (up to ${perHouseCap} kW per house and ${overallSubsidyCap} kW per society).`
+    //     );
+    //   }
+    // }
   } else {
     // --- Residential Notes ---
     if (results?.sanctioned_load_must_be && results?.sanctioned_load_must_be > 0) {
@@ -143,7 +216,7 @@ export default function RightAds({ results }) {
                 )}`}
               >
                 {/* {getIcon(note.type)} */}
-                <p className="text-sm leading-snug">{note.text}</p>
+                <p className="text-sm leading-snug text-justify">{note.text}</p>
               </div>
             ))}
           </div>
