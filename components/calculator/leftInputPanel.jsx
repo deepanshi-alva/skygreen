@@ -66,7 +66,7 @@ export default function LeftInputPanel({ onResults }) {
         setDropdownOpen(false);
       }
     };
-    document.addEventListener("mousedown", handler);
+    document.addEventListener("mousedown", handler); 
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
