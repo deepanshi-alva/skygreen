@@ -24,6 +24,7 @@ export default function LeftInputPanel({ onResults }) {
     societySanctionedLoad: "",
     perHouseSanctionedLoad: "",
     plant_size_kw: "",
+    extraCharges: "200",
   });
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -178,6 +179,7 @@ export default function LeftInputPanel({ onResults }) {
             roof_area_unit: formData.roofUnit,
             sizing_method: sizingMethod,
             plant_size_kw: Number(formData.plant_size_kw) || 0,
+            discom_extra_charges: Number(formData.extraCharges) || 200,
           }),
         }
       );
@@ -459,6 +461,21 @@ export default function LeftInputPanel({ onResults }) {
                 />
               </div>
             </div>
+
+            {/* Extra Charges (Discom) – common to all modes */}
+            <div>
+              <label className="block mb-1">
+                Monthly Extra Charges (₹) (Discom)
+              </label>
+              <input
+                type="number"
+                name="extraCharges"
+                value={formData.extraCharges || ""}
+                onChange={handleChange}
+                className="w-full p-2 rounded-lg bg-black border border-green-500"
+                placeholder="Default 200"
+              />
+            </div>
           </>
         ) : formData.mode === "rwa" ? (
           <>
@@ -544,6 +561,21 @@ export default function LeftInputPanel({ onResults }) {
                 </select>
               </div>
             </div>
+
+            {/* Extra Charges (Discom) – common to all modes */}
+            <div>
+              <label className="block mb-1">
+                Monthly Extra Charges (₹) (Discom)
+              </label>
+              <input
+                type="number"
+                name="extraCharges"
+                value={formData.extraCharges || ""}
+                onChange={handleChange}
+                className="w-full p-2 rounded-lg bg-black border border-green-500"
+                placeholder="Default 200"
+              />
+            </div>
           </>
         ) : formData.mode === "plant_size" ? (
           <>
@@ -569,6 +601,21 @@ export default function LeftInputPanel({ onResults }) {
                 onChange={handleChange}
                 className="w-full p-2 rounded-lg bg-black border border-green-500"
                 placeholder="Default 8"
+              />
+            </div>
+
+            {/* Extra Charges (Discom) – common to all modes */}
+            <div>
+              <label className="block mb-1">
+                Monthly Extra Charges (₹) (Discom)
+              </label>
+              <input
+                type="number"
+                name="extraCharges"
+                value={formData.extraCharges || ""}
+                onChange={handleChange}
+                className="w-full p-2 rounded-lg bg-black border border-green-500"
+                placeholder="Default 200"
               />
             </div>
           </>
