@@ -1,6 +1,13 @@
 "use client";
 import { useState } from "react";
-import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import {
+  PieChart,
+  Pie,
+  Cell,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
 
 export default function CenterOutput({ results }) {
   const [mode, setMode] = useState("solar");
@@ -9,7 +16,9 @@ export default function CenterOutput({ results }) {
     return (
       <div className="col-span-7 p-6 flex items-center justify-center">
         <div className="text-center space-y-4">
-          <p className="text-2xl font-semibold">🌞 Every rooftop can be a power plant!</p>
+          <p className="text-2xl font-semibold">
+            🌞 Every rooftop can be a power plant!
+          </p>
           <p className="text-lg">
             Installing 3kW solar can save up to{" "}
             <span className="text-green-400 font-bold">₹40,000</span> per year.
@@ -22,6 +31,8 @@ export default function CenterOutput({ results }) {
     );
   }
 
+  console.log("this is the sizing method", results.sizing_method);
+
   const format = (value) => {
     if (typeof value !== "number") return value;
     return value.toLocaleString("en-IN", { maximumFractionDigits: 2 });
@@ -32,8 +43,14 @@ export default function CenterOutput({ results }) {
   const gridData = [{ name: "30-Year Grid Bill", value: results.total_spend }];
 
   const solarData = [
-    { name: "Payback Period", value: results.payback_years * results.annual_saving_inr },
-    { name: "Net Saving After 30 Years", value: results.net_gain_after_payback },
+    {
+      name: "Payback Period",
+      value: results.payback_years * results.annual_saving_inr,
+    },
+    {
+      name: "Net Saving After 30 Years",
+      value: results.net_gain_after_payback,
+    },
   ];
 
   return (
@@ -53,19 +70,25 @@ export default function CenterOutput({ results }) {
         {/* Recommended System */}
         <div className="bg-[#1a1a1a] p-4 rounded-lg border border-white/10 shadow-md">
           <p className="text-sm text-gray-400">Recommended System</p>
-          <p className="text-2xl font-bold text-green-400 break-all">{format(results.recommended_kw)} kW</p>
+          <p className="text-2xl font-bold text-green-400 break-all">
+            {format(results.recommended_kw)} kW
+          </p>
         </div>
 
         {/* Monthly Saving */}
         <div className="bg-[#1a1a1a] p-4 rounded-lg border border-white/10 shadow-md">
           <p className="text-sm text-gray-400">Estimated Monthly Saving</p>
-          <p className="text-2xl font-bold text-green-400 break-all">₹{format(results.monthly_saving_inr)}</p>
+          <p className="text-2xl font-bold text-green-400 break-all">
+            ₹{format(results.monthly_saving_inr)}
+          </p>
         </div>
 
         {/* Yearly Saving */}
         <div className="bg-[#1a1a1a] p-4 rounded-lg border border-white/10 shadow-md">
           <p className="text-sm text-gray-400">Estimated Yearly Saving</p>
-          <p className="text-2xl font-bold text-green-400 break-all">₹{format(results.annual_saving_inr)}</p>
+          <p className="text-2xl font-bold text-green-400 break-all">
+            ₹{format(results.annual_saving_inr)}
+          </p>
         </div>
 
         {/* Payback Period */}
@@ -84,8 +107,12 @@ export default function CenterOutput({ results }) {
           {/* <h3 className="text-lg font-bold mb-4">Subsidy Overview</h3> */}
           <div className="flex items-center justify-center mb-8 mt-2">
             <div>
-              <p className="text-sm text-gray-400 text-center text-[1.5rem]">Gross Plant Cost</p>
-              <p className="text-3xl font-bold text-green-400 text-center whitespace-nowrap text-[clamp(1rem,2vw,2rem)]">₹{format(results.gross_cost_inr)}</p>
+              <p className="text-sm text-gray-400 text-center text-[1.5rem]">
+                Gross Plant Cost
+              </p>
+              <p className="text-3xl font-bold text-green-400 text-center whitespace-nowrap text-[clamp(1rem,2vw,2rem)]">
+                ₹{format(results.gross_cost_inr)}
+              </p>
             </div>
           </div>
           <hr className="border-white/10 my-2" />
@@ -97,15 +124,21 @@ export default function CenterOutput({ results }) {
             </div> */}
             <div className="flex justify-between text-sm">
               <span className="text-gray-300">Central Subsidy</span>
-              <span className="font-semibold text-white break-all">- ₹{format(results.central_subsidy_inr)}</span>
+              <span className="font-semibold text-white break-all">
+                - ₹{format(results.central_subsidy_inr)}
+              </span>
             </div>
             <div className="flex justify-between text-sm">
               <span className="text-gray-300">State Subsidy</span>
-              <span className="font-semibold text-white break-all">- ₹{format(results.state_subsidy)}</span>
+              <span className="font-semibold text-white break-all">
+                - ₹{format(results.state_subsidy)}
+              </span>
             </div>
             <hr className="border-white/10 my-2" />
             <div className=" flex flex-col mt-8 justify-center items-center text-sm">
-              <span className="text-gray-300 text-[1rem] text-center font-semibold">Net Cost (After Subsidy)</span>
+              <span className="text-gray-300 text-[1rem] text-center font-semibold">
+                Net Cost (After Subsidy)
+              </span>
               <span className="font-semibold mt-2 text-center text-4xl text-green-400 whitespace-nowrap text-[clamp(1rem,2vw,2rem)]">
                 ₹{format(results.net_cost_inr)}
               </span>
@@ -115,23 +148,35 @@ export default function CenterOutput({ results }) {
 
         {/* Right column → 4 small stat boxes */}
         <div className="grid grid-cols-1 gap-4">
-          {!results?.is_rwa && results?.sizing_method === "plant_size" && (
+          {(results?.sizing_method === "bill" ||
+            results?.sizing_method === "units") && (
             <div className="bg-[#1a1a1a] p-4 rounded-lg border border-white/10 shadow-md">
-              <p className="text-sm text-gray-400">With grid daily consumption</p>
-              <p className="text-xl font-bold text-green-400 break-all">{format(results.daily_unit)}</p>
+              <p className="text-sm text-gray-400">
+                With grid daily consumption
+              </p>
+              <p className="text-xl font-bold text-green-400 break-all">
+                {format(results.daily_unit)}
+              </p>
             </div>
           )}
+
           <div className="bg-[#1a1a1a] p-4 rounded-lg border border-white/10 shadow-md">
             <p className="text-sm text-gray-400">Solar Units Produced</p>
-            <p className="text-xl font-bold text-green-400 break-all">{format(results.daily_gen_kwh)}</p>
+            <p className="text-xl font-bold text-green-400 break-all">
+              {format(results.daily_gen_kwh)}
+            </p>
           </div>
           <div className="bg-[#1a1a1a] p-4 rounded-lg border border-white/10 shadow-md">
             <p className="text-sm text-gray-400">Panels Required</p>
-            <p className="text-xl font-bold text-green-400 break-all">{results.panel_count}</p>
+            <p className="text-xl font-bold text-green-400 break-all">
+              {results.panel_count}
+            </p>
           </div>
           <div className="bg-[#1a1a1a] p-4 rounded-lg border border-white/10 shadow-md">
             <p className="text-sm text-gray-400">Total Area Needed</p>
-            <p className="text-xl font-bold text-green-400 break-all">{format(results.roof_needed_sqft)} {results.roof_area_unit}</p>
+            <p className="text-xl font-bold text-green-400 break-all">
+              {format(results.roof_needed_sqft)} {results.roof_area_unit}
+            </p>
           </div>
         </div>
 
@@ -153,9 +198,14 @@ export default function CenterOutput({ results }) {
                 fontSize={16}
                 fill="white"
               >
-                {(mode === "grid" ? gridData : solarData).map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                ))}
+                {(mode === "grid" ? gridData : solarData).map(
+                  (entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={COLORS[index % COLORS.length]}
+                    />
+                  )
+                )}
               </Pie>
               <Tooltip
                 formatter={(val, name) => [
@@ -173,7 +223,11 @@ export default function CenterOutput({ results }) {
               <Legend
                 wrapperStyle={{ color: "white" }}
                 iconType="rect"
-                formatter={(value) => <span style={{ color: "white", fontSize: "14px" }}>{value}</span>}
+                formatter={(value) => (
+                  <span style={{ color: "white", fontSize: "14px" }}>
+                    {value}
+                  </span>
+                )}
               />
             </PieChart>
           </ResponsiveContainer>
@@ -182,19 +236,24 @@ export default function CenterOutput({ results }) {
           <div className="flex gap-4 mt-4">
             <button
               onClick={() => setMode("solar")}
-              className={`px-4 py-1 rounded-md font-semibold ${mode === "solar" ? "bg-green-500 text-black" : "bg-[#111] text-green-400 border border-green-500"
-                }`}
+              className={`px-4 py-1 rounded-md font-semibold ${
+                mode === "solar"
+                  ? "bg-green-500 text-black"
+                  : "bg-[#111] text-green-400 border border-green-500"
+              }`}
             >
               With Solar
             </button>
             {/* Show With Grid only if not RWA or plant_size */}
-            {!results?.is_rwa || results?.sizing_method === "plant_size" && (
+            {(results?.sizing_method === "bill" ||
+              results?.sizing_method === "units") && (
               <button
                 onClick={() => setMode("grid")}
-                className={`px-4 py-1 rounded-md font-semibold ${mode === "grid"
-                  ? "bg-green-500 text-black"
-                  : "bg-[#111] text-green-400 border border-green-500"
-                  }`}
+                className={`px-4 py-1 rounded-md font-semibold ${
+                  mode === "grid"
+                    ? "bg-green-500 text-black"
+                    : "bg-[#111] text-green-400 border border-green-500"
+                }`}
               >
                 With Grid
               </button>
@@ -215,11 +274,17 @@ export default function CenterOutput({ results }) {
 
                 // Map levels to actual JSX elements
                 const HeadingTag =
-                  level === 1 ? "h1" :
-                    level === 2 ? "h2" :
-                      level === 3 ? "h3" :
-                        level === 4 ? "h4" :
-                          level === 5 ? "h5" : "h6";
+                  level === 1
+                    ? "h1"
+                    : level === 2
+                    ? "h2"
+                    : level === 3
+                    ? "h3"
+                    : level === 4
+                    ? "h4"
+                    : level === 5
+                    ? "h5"
+                    : "h6";
 
                 const headingStyles = {
                   h1: "text-2xl font-bold text-green-400 mt-4",
@@ -237,8 +302,9 @@ export default function CenterOutput({ results }) {
                       return (
                         <span
                           key={cIdx}
-                          className={`${child.bold ? "font-bold" : ""} ${child.underline ? "underline" : ""
-                            }`}
+                          className={`${child.bold ? "font-bold" : ""} ${
+                            child.underline ? "underline" : ""
+                          }`}
                         >
                           {text}
                         </span>
@@ -252,7 +318,8 @@ export default function CenterOutput({ results }) {
               if (block.type === "paragraph") {
                 // Check if all children are empty strings → treat as a line break
                 const isEmpty =
-                  !block.children || block.children.every((c) => !c.text || c.text.trim() === "");
+                  !block.children ||
+                  block.children.every((c) => !c.text || c.text.trim() === "");
 
                 if (isEmpty) {
                   return <br key={idx} />;
@@ -275,8 +342,9 @@ export default function CenterOutput({ results }) {
                       return (
                         <span
                           key={cIdx}
-                          className={`${child.bold ? "font-bold" : ""} ${child.underline ? "underline" : ""
-                            } whitespace-pre-wrap`}   // ✅ Keep indentation visible
+                          className={`${child.bold ? "font-bold" : ""} ${
+                            child.underline ? "underline" : ""
+                          } whitespace-pre-wrap`} // ✅ Keep indentation visible
                         >
                           {text}
                         </span>
@@ -284,7 +352,6 @@ export default function CenterOutput({ results }) {
                     })}
                   </p>
                 );
-
               }
 
               // Render lists
@@ -300,8 +367,9 @@ export default function CenterOutput({ results }) {
                         {li.children.map((child, cIdx) => (
                           <span
                             key={cIdx}
-                            className={`${child.bold ? "font-bold" : ""} ${child.underline ? "underline" : ""
-                              }`}
+                            className={`${child.bold ? "font-bold" : ""} ${
+                              child.underline ? "underline" : ""
+                            }`}
                           >
                             {child.text}
                           </span>
