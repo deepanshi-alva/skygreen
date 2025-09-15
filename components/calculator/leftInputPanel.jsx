@@ -131,7 +131,7 @@ export default function LeftInputPanel({ onResults }) {
       const anyPositive =
         isPositive(proposed) ||
         isPositive(societyLoad) ||
-        isPositive(perHouse) || 
+        isPositive(perHouse) ||
         isPositive(houses);
 
       if (!anyPositive) {
@@ -289,7 +289,7 @@ export default function LeftInputPanel({ onResults }) {
                 Residential
               </label>
 
-              {/* <label>
+              <label>
                 <input
                   type="radio"
                   name="mode"
@@ -299,7 +299,7 @@ export default function LeftInputPanel({ onResults }) {
                   className="mr-2"
                 />
                 Plant Size
-              </label> */}
+              </label>
 
               <label
                 className={

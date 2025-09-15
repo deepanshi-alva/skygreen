@@ -235,6 +235,36 @@ export default function RightAds({ results }) {
         `You entered ${perHouseSanctioned} kW/house, but in ${results.state} the subsidy is capped at ${perHouseLimit} kW/house. Extra capacity per house is not subsidized. Your total eligible subsidy remains capped at ${cappedEligible} kW.`
       );
     }
+  } else if (results.sizing_method === "plant_size") {
+    if (results?.recommended_kw) {
+      addNote(
+        "info",
+        `The recommended system is ${formatNum(results.recommended_kw)} kW.`
+      );
+    }
+    if (results?.roof_needed_sqft) {
+      const roofNeeded = results.roof_needed_sqft;
+      if (results?.roof_area_available && results.roof_area_available > 0) {
+        const roofAvailable = results.roof_area_available;
+        if (roofAvailable < roofNeeded) {
+          addNote(
+            "warning",
+            `You provided ${roofAvailable} ${
+              results.roof_area_unit
+            } rooftop area, but ${formatNum(roofNeeded)} ${
+              results.roof_area_unit
+            } is required for the system.`
+          );
+        }
+      } else {
+        addNote(
+          "info",
+          `For this system, approx. ${formatNum(
+            roofNeeded
+          )} sqft rooftop area is required.`
+        );
+      }
+    }
   } else {
     // --- Residential Notes ---
     if (
@@ -253,7 +283,7 @@ export default function RightAds({ results }) {
       }
     }
 
-    if (results?.roof_needed_sqft) {
+    if (results?.roof_needed_sqft && results?.roof_area_available) {
       const roofNeeded = results.roof_needed_sqft;
       console.log("entered the if condition", roofNeeded);
       if (results?.roof_area_available && results.roof_area_available > 0) {
