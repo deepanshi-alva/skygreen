@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { Info } from "lucide-react";
-import Select from "react-select"
+import Select from "react-select";
 
 export default function LeftInputPanel({ onResults }) {
   const [states, setStates] = useState([]);
@@ -23,13 +23,13 @@ export default function LeftInputPanel({ onResults }) {
     tariff: "8",
     societySanctionedLoad: "",
     perHouseSanctionedLoad: "",
-    plant_size_kw: ""
+    plant_size_kw: "",
   });
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
 
-  console.log("this is the formdata", formData)
+  console.log("this is the formdata", formData);
 
   // Fetch states from Strapi
   useEffect(() => {
@@ -43,11 +43,11 @@ export default function LeftInputPanel({ onResults }) {
         const data = await res.json();
         const formatted = Array.isArray(data.data)
           ? data.data.map((item) => ({
-            value: item.attributes.name,
-            label: item.attributes.name,
-            rwa_enabled: item.attributes.rwa_enabled,
-            id: item.id,
-          }))
+              value: item.attributes.name,
+              label: item.attributes.name,
+              rwa_enabled: item.attributes.rwa_enabled,
+              id: item.id,
+            }))
           : [];
         setStates(formatted);
       } catch (err) {
@@ -58,7 +58,6 @@ export default function LeftInputPanel({ onResults }) {
     }
     fetchStates();
   }, []);
-
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -95,7 +94,9 @@ export default function LeftInputPanel({ onResults }) {
       const units = toNum(formData.units);
 
       if (!isPositive(bill) && !isPositive(units)) {
-        setError("⚠️ Please enter a positive Monthly Bill or Monthly Units to proceed.");
+        setError(
+          "⚠️ Please enter a positive Monthly Bill or Monthly Units to proceed."
+        );
         return;
       }
     }
@@ -109,7 +110,9 @@ export default function LeftInputPanel({ onResults }) {
 
       // If per-house load is provided, number of houses must be > 0
       if (isPositive(perHouse) && !isPositive(houses)) {
-        setError("⚠️ Please enter Number of Houses when Per-house Sanctioned Load is provided.");
+        setError(
+          "⚠️ Please enter Number of Houses when Per-house Sanctioned Load is provided."
+        );
         return;
       }
 
@@ -141,9 +144,11 @@ export default function LeftInputPanel({ onResults }) {
     // 👉 Determine sizingMethod
     let sizingMethod = "";
     if (formData.mode === "residential") {
-      sizingMethod = isPositive(toNum(formData.bill)) ? "bill"
-        : isPositive(toNum(formData.units)) ? "units"
-          : "";
+      sizingMethod = isPositive(toNum(formData.bill))
+        ? "bill"
+        : isPositive(toNum(formData.units))
+        ? "units"
+        : "";
     } else if (formData.mode === "rwa") {
       sizingMethod = "rwa"; // backend handles the RWA sizing logic
     } else if (formData.mode === "plant_size") {
@@ -161,8 +166,10 @@ export default function LeftInputPanel({ onResults }) {
             is_rwa: formData.mode === "rwa",
             num_houses: Number(formData.numHouses) || 1,
             proposed_capacity_kw: Number(formData.proposedCapacity) || 0,
-            society_sanctioned_load_kw: Number(formData.societySanctionedLoad) || 0,
-            per_house_sanctioned_load_kw: Number(formData.perHouseSanctionedLoad) || 1,
+            society_sanctioned_load_kw:
+              Number(formData.societySanctionedLoad) || 0,
+            per_house_sanctioned_load_kw:
+              Number(formData.perHouseSanctionedLoad) || 1,
             monthly_bill_inr: Number(formData.bill) || 0,
             monthly_units_kwh: Number(formData.units) || 0,
             tariff_inr_per_kwh: Number(formData.tariff) || 8,
@@ -179,10 +186,13 @@ export default function LeftInputPanel({ onResults }) {
       data.user_sanctioned_load = Number(formData.sanctionedLoad) || 1;
       data.user_num_houses = Number(formData.numHouses) || 0;
       data.user_proposed_capacity = Number(formData.proposedCapacity) || 0;
-      data.user_society_sanctioned_load = Number(formData.societySanctionedLoad) || 0;
-      data.user_per_house_sanctioned_load = Number(formData.perHouseSanctionedLoad) || 0;
+      data.user_society_sanctioned_load =
+        Number(formData.societySanctionedLoad) || 0;
+      data.user_per_house_sanctioned_load =
+        Number(formData.perHouseSanctionedLoad) || 0;
       data.user_roof_area_value = Number(formData.roofArea) || 0;
       data.user_tariff = Number(formData.tariff) || 8;
+      data.sizing_method = sizingMethod;
 
       console.log("Results:", data);
       console.log("state name is", formData.state);
@@ -234,7 +244,6 @@ export default function LeftInputPanel({ onResults }) {
     // { value: "skygreen_400w", label: "SKYGREEN 400W Mono PERC" },
     // { value: "skygreen_300w", label: "SKYGREEN 300W Polycrystalline" },
   ];
-
 
   return (
     <div className="col-span-3 p-4 shadow-lg relative sticky top-24 self-start">
@@ -293,7 +302,9 @@ export default function LeftInputPanel({ onResults }) {
 
               <label
                 className={
-                  selectedState.rwa_enabled ? "" : "opacity-50 cursor-not-allowed"
+                  selectedState.rwa_enabled
+                    ? ""
+                    : "opacity-50 cursor-not-allowed"
                 }
               >
                 <input
@@ -318,10 +329,15 @@ export default function LeftInputPanel({ onResults }) {
           <label className="block mb-1">Panel Type</label>
           <Select
             options={panelOptions}
-            value={panelOptions.find((opt) => opt.value === formData.panelType) || panelOptions[0]}
-            onChange={(option) => setFormData({ ...formData, panelType: option.value })}
+            value={
+              panelOptions.find((opt) => opt.value === formData.panelType) ||
+              panelOptions[0]
+            }
+            onChange={(option) =>
+              setFormData({ ...formData, panelType: option.value })
+            }
             styles={customStyles} // 🔥 reuse same green/black theme
-            isSearchable={false}  // panels are limited, so no need for search
+            isSearchable={false} // panels are limited, so no need for search
           />
         </div>
 
@@ -336,7 +352,8 @@ export default function LeftInputPanel({ onResults }) {
                   <span className="relative group cursor-pointer">
                     <Info className="w-4 h-4 text-blue-400" />
                     <div className="absolute left-6 top-1/2 transform -translate-y-1/2 hidden group-hover:block bg-black text-white text-xs p-2 rounded-md border border-green-500 w-56 z-10">
-                      Enter the average of your last 12 months' electricity bills (₹).
+                      Enter the average of your last 12 months' electricity
+                      bills (₹).
                     </div>
                   </span>
                 </label>
@@ -347,9 +364,11 @@ export default function LeftInputPanel({ onResults }) {
                   onChange={handleChange}
                   disabled={!!formData.units}
                   className={`w-full p-2 rounded-lg border appearance-none
-      ${formData.units
-                      ? "bg-gray-700 border-gray-500 text-gray-400 cursor-not-allowed"
-                      : "bg-black border-green-500 text-white"}`}
+      ${
+        formData.units
+          ? "bg-gray-700 border-gray-500 text-gray-400 cursor-not-allowed"
+          : "bg-black border-green-500 text-white"
+      }`}
                   placeholder="e.g. 2500"
                 />
               </div>
@@ -362,7 +381,8 @@ export default function LeftInputPanel({ onResults }) {
                   <span className="relative group cursor-pointer">
                     <Info className="w-4 h-4 text-blue-400" />
                     <div className="absolute left-6 top-1/2 transform -translate-y-1/2 hidden group-hover:block bg-black text-white text-xs p-2 rounded-md border border-green-500 w-56 z-10">
-                      Enter the average of your last 12 months' electricity consumption in units (kWh).
+                      Enter the average of your last 12 months' electricity
+                      consumption in units (kWh).
                     </div>
                   </span>
                 </label>
@@ -373,13 +393,14 @@ export default function LeftInputPanel({ onResults }) {
                   onChange={handleChange}
                   disabled={!!formData.bill}
                   className={`w-full p-2 rounded-lg border appearance-none
-      ${formData.bill
-                      ? "bg-gray-700 border-gray-500 text-gray-400 cursor-not-allowed"
-                      : "bg-black border-green-500 text-white"}`}
+      ${
+        formData.bill
+          ? "bg-gray-700 border-gray-500 text-gray-400 cursor-not-allowed"
+          : "bg-black border-green-500 text-white"
+      }`}
                   placeholder="e.g. 350"
                 />
               </div>
-
             </div>
 
             <div className="flex flex-row gap-x-6">
@@ -468,7 +489,9 @@ export default function LeftInputPanel({ onResults }) {
             </div>
 
             <div>
-              <label className="block mb-1">Sanctioned Load Per House (kW)</label>
+              <label className="block mb-1">
+                Sanctioned Load Per House (kW)
+              </label>
               <input
                 type="number"
                 name="perHouseSanctionedLoad"
