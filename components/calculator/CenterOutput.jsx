@@ -31,7 +31,7 @@ export default function CenterOutput({ results }) {
     );
   }
 
-  // console.log("this is the sizing method", results.sizing_method);
+  // console.log("this is the sizing method", results.sizing_method)
 
   const format = (value) => {
     if (typeof value !== "number") return value;
