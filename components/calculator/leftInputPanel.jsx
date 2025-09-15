@@ -66,7 +66,7 @@ export default function LeftInputPanel({ onResults }) {
         setDropdownOpen(false);
       }
     };
-    document.addEventListener("mousedown", handler); 
+    document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
@@ -128,17 +128,18 @@ export default function LeftInputPanel({ onResults }) {
       }
 
       // At least one positive sizing input required
-      // const anyPositive =
-      //   isPositive(proposed) ||
-      //   isPositive(societyLoad) ||
-      //   (isPositive(perHouse) && isPositive(houses));
+      const anyPositive =
+        isPositive(proposed) ||
+        isPositive(societyLoad) ||
+        isPositive(perHouse) || 
+        isPositive(houses);
 
-      // if (!anyPositive) {
-      //   setError(
-      //     "⚠️ Enter at least one positive RWA sizing input: Proposed Capacity (kW) or Society Sanctioned Load (kW) or Per-house Sanctioned Load (kW) with Number of Houses."
-      //   );
-      //   return;
-      // }
+      if (!anyPositive) {
+        setError(
+          "⚠️ Enter at least one positive RWA sizing input: Proposed Capacity (kW) or Society Sanctioned Load (kW) or Per-house Sanctioned Load (kW) with Number of Houses."
+        );
+        return;
+      }
     }
 
     // 👉 Determine sizingMethod
