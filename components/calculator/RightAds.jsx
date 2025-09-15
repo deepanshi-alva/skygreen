@@ -18,27 +18,73 @@ export default function RightAds({ results }) {
     // --- RWA subsidy logic ---
     const numHouses = results?.num_houses || results?.user_num_houses;
     const proposed = results?.user_proposed_capacity;
-    const recommended_system =  results?.recommended_kw;
+    const recommended_system = results?.recommended_kw;
     const societySanctioned = results?.user_society_sanctioned_load;
     const perHouseSanctioned = results?.user_per_house_sanctioned_load || 1;
     const rawPerHouseSanctioned = results?.user_per_house_sanctioned_load || "";
     const perHouseCap = results?.rwa_per_house_cap_kw; // e.g., 3 or 10 depending on state
     const overallSubsidyCap = results?.rwa_overall_subsidy_cap;
-    // calculate per-house limited capacity
-    const perHouseLimit = numHouses ? numHouses * Math.min(perHouseSanctioned, perHouseCap) : 0;
 
     if (numHouses && proposed && societySanctioned) {
       console.log("entered 1");
 
-      const capByHouses = Math.min(numHouses * 1, overallSubsidyCap);
-      const remaining = proposed - capByHouses;
-
-      addNote(
-        "warning",
-        `Your proposed system is ${proposed} kW, but you are eligible for subsidy only on ${capByHouses} kW (calculated as Number of houses x sanctioned load per house [default = 1 kW]). The remaining capacity must be self - funded.`
+      const perHouseCapUsed = perHouseCap ? Number(perHouseCap) : 1; // default 1 kW/house
+      const capByHouses = numHouses * perHouseCapUsed; // e.g., 100 * 3 = 300 kW
+      const eligibleCap = Math.min(
+        capByHouses,
+        overallSubsidyCap,
+        societySanctioned
       );
-    }
-    else if (numHouses && societySanctioned) {
+      const remaining = Math.max(0, proposed - eligibleCap);
+
+      // Helper: explain what limited the cap (for clearer notes)
+      const limitReasons = [];
+      if (eligibleCap === capByHouses)
+        limitReasons.push(
+          `${numHouses} × ${perHouseCapUsed} kW/house = ${capByHouses} kW`
+        );
+      if (eligibleCap === overallSubsidyCap)
+        limitReasons.push(`overall subsidy cap = ${overallSubsidyCap} kW`);
+      if (eligibleCap === societySanctioned)
+        limitReasons.push(`society sanctioned load = ${societySanctioned} kW`);
+
+      const limitSuffix = limitReasons.length
+        ? ` (limited by ${limitReasons.join(", ")})`
+        : "";
+
+      // 1) Proposed exceeds society sanctioned load → invalid proposal
+      if (proposed > societySanctioned) {
+        console.log("entered 1a");
+        addNote(
+          "warning",
+          `Your society’s total sanctioned load is ${societySanctioned} kW, but the proposed system is ${proposed} kW, which exceeds the sanctioned limit. ` +
+            `Maximum subsidy eligibility is ${eligibleCap} kW ${limitSuffix}. ` +
+            `The remaining capacity must be self-funded.`
+        );
+      }
+      // 2) Fully eligible (proposed ≤ eligibleCap)
+      else if (proposed <= eligibleCap) {
+        console.log("entered 1b");
+        addNote(
+          "info",
+          `Your society’s total sanctioned load is ${societySanctioned} kW, ` +
+            `and the maximum subsidy eligibility is ${eligibleCap} kW ` +
+            `${limitSuffix}. ` +
+            `You have proposed ${proposed} kW, which is fully eligible under the subsidy cap.`
+        );
+      }
+      // 3) Partially eligible (proposed > eligibleCap)
+      else {
+        console.log("entered 1c");
+        addNote(
+          "info",
+          `Your society’s total sanctioned load is ${societySanctioned} kW. ` +
+            `Maximum subsidy eligibility is ${eligibleCap} kW ` +
+            `${limitSuffix}. ` +
+            `You have proposed ${proposed} kW. The remaining ${remaining} kW must be self-funded.`
+        );
+      }
+    } else if (numHouses && societySanctioned) {
       console.log("entered 2");
 
       const capByHouses = Math.min(numHouses * 1, overallSubsidyCap);
@@ -49,23 +95,50 @@ export default function RightAds({ results }) {
         `You entered a ${societySanctioned} kW society load, but the subsidy is capped at ${capByHouses} kW. The remaining ${remaining} kW will not get subsidy and must be self-funded.`
       );
       // You entered a 5000 kW society load, but the subsidy is capped at 500 kW. The remaining 4500 kW will not get subsidy and must be self-funded
-    }
-    else if (proposed) {
-      console.log("entered 4")
+    } else if (numHouses && perHouseSanctioned && proposed) {
+      console.log("entered 5");
+      const eligibleCap = Math.min(
+        proposed,
+        overallSubsidyCap,
+        numHouses * perHouseSanctioned
+      );
+      if (proposed > eligibleCap) {
+        const remaining = proposed - eligibleCap;
+        addNote(
+          "info",
+          `Proposed system: ${proposed} kW. Eligible subsidy: ${eligibleCap} kW. The remaining ${remaining} kW must be self-funded.`
+        );
+      } else {
+        addNote(
+          "info",
+          `Proposed system: ${proposed} kW. This is fully eligible for subsidy.`
+        );
+      }
+    } else if (proposed) {
+      console.log("entered 3");
       const eligibleCap = Math.min(proposed, overallSubsidyCap);
       addNote(
         "info",
-        `Proposed system: ${proposed} kW. Eligible subsidy: ${eligibleCap} kW. The remaining ${proposed-overallSubsidyCap} kW must be self-funded.`
+        `Proposed system: ${proposed} kW. Eligible subsidy: ${eligibleCap} kW. The remaining ${
+          proposed - overallSubsidyCap
+        } kW must be self-funded.`
       );
-    }
-    else if (numHouses && perHouseSanctioned) {
-      console.log("entered 4")
+    } else if (numHouses && perHouseSanctioned) {
+      console.log("entered 4");
       const calculatedSystem = numHouses * perHouseSanctioned;
       const eligibleCap = Math.min(calculatedSystem, overallSubsidyCap);
-      addNote(
-        "info",
-        `Since you haven’t provided the proposed capacity, we calculated it as Number of Houses × Sanctioned Load = ${calculatedSystem} kW. However, your state subsidy is capped at ${eligibleCap} kW, and the remaining capacity will need to be self-funded.`
-      );
+
+      if (calculatedSystem === eligibleCap) {
+        addNote(
+          "info",
+          `This is treated as your proposed capacity (${calculatedSystem} kW) and is fully eligible for subsidy.`
+        );
+      } else {
+        addNote(
+          "info",
+          `Since you haven’t provided the proposed capacity, we calculated it as Number of Houses × Sanctioned Load = ${calculatedSystem} kW. However, your state subsidy is capped at ${eligibleCap} kW, and the remaining capacity will need to be self-funded.`
+        );
+      }
     }
     // else if (proposed && proposed != overallSubsidyCap) {
     //   console.log("entered 3", proposed)
@@ -87,63 +160,59 @@ export default function RightAds({ results }) {
         if (roofAvailable < roofNeeded) {
           addNote(
             "warning",
-            `You provided ${roofAvailable} ${results.roof_area_unit} rooftop area, but ${formatNum(roofNeeded)} ${results.roof_area_unit} is required for the system.`
+            `You provided ${roofAvailable} ${
+              results.roof_area_unit
+            } rooftop area, but ${formatNum(roofNeeded)} ${
+              results.roof_area_unit
+            } is required for the system.`
           );
         }
       } else {
-        addNote("info", `For this system, approx. ${formatNum(roofNeeded)} sqft rooftop area is required.`);
+        addNote(
+          "info",
+          `For this system, approx. ${formatNum(
+            roofNeeded
+          )} sqft rooftop area is required.`
+        );
       }
     }
-    if (rawPerHouseSanctioned ==="") {
+
+    if (rawPerHouseSanctioned === "") {
       addNote(
         "info",
-        `You did not enter the sanctioned load per house. We have taken the default as 1 kW/house, but in ${results.state} the subsidy is capped at ${perHouseCap} kw/house`
-
+        `You did not enter the sanctioned load per house. We have taken the default as 1 kW/house, but in ${results.state} the subsidy is capped at ${perHouseCap} kW/house.`
       );
-    }
-    // A) Per-house above 3 kW
-    if (perHouseSanctioned && perHouseSanctioned > perHouseCap) {
-      console.log("--------------", rawPerHouseSanctioned)
+    } else if (perHouseSanctioned < perHouseCap) {
+      const upgradedEligible = numHouses * perHouseCap;
       addNote(
         "info",
-        `You entered ${perHouseSanctioned} kW per house, but subsidy is capped at ${perHouseCap} kW per house. Extra capacity per house is not subsidized.`
-
+        `You entered ${perHouseSanctioned} kW/house as sanctioned load. In ${results.state}, the subsidy allows up to ${perHouseCap} kW/house. If you upgrade to ${perHouseCap} kW/house, your total eligible subsidy could increase to ${upgradedEligible} kW (${numHouses} houses × ${perHouseCap} kW).`
       );
-    }
-    // B) Society sanctioned load lower than proposed
-    if (societySanctioned && proposed && societySanctioned < proposed) {
+    } else if (perHouseSanctioned === perHouseCap) {
       addNote(
-        "warning",
-        `Your society sanctioned load is ${societySanctioned} kW, but the proposed system is ${proposed} kW. Subsidy can only be claimed up to your sanctioned load. Please upgrade sanctioned load to claim subsidy on the full system.`
+        "info",
+        `You entered ${perHouseSanctioned} kW/house as sanctioned load. In ${results.state}, this is the maximum eligible limit per house, so your entry is fully eligible.`
+      );
+    } else {
+      addNote(
+        "info",
+        `You entered ${perHouseSanctioned} kW/house, but in ${results.state} the subsidy is capped at ${perHouseCap} kW/house. Extra capacity per house is not subsidized.`
       );
     }
-
-    // if (numHouses && proposed && perHouseSanctioned) {
-    //   // max subsidy-eligible capacity per rules
-    //   const perHouseLimit = numHouses * Math.min(perHouseSanctioned || 0, perHouseCap);
-    //   const eligibleCap = Math.min(proposed, Math.min(overallSubsidyCap, perHouseLimit));
-
-    //   if (eligibleCap < proposed) {
-    //     addNote(
-    //       "warning",
-    //       `Subsidy is available only up to ${eligibleCap} kW. Your proposed system is ${proposed} kW, so the extra ${proposed - eligibleCap} kW will not receive subsidy (to be paid from your pocket).`
-    //     );
-    //   } else {
-    //     addNote(
-    //       "info",
-    //       `Your proposed system of ${proposed} kW is fully eligible for subsidy rules (up to ${perHouseCap} kW per house and ${overallSubsidyCap} kW per society).`
-    //     );
-    //   }
-    // }
   } else {
     // --- Residential Notes ---
-    if (results?.sanctioned_load_must_be && results?.sanctioned_load_must_be > 0) {
+    if (
+      results?.sanctioned_load_must_be &&
+      results?.sanctioned_load_must_be > 0
+    ) {
       const userLoad = results?.user_sanctioned_load || 1;
       const requiredLoad = results.sanctioned_load_must_be;
       if (requiredLoad > userLoad) {
         addNote(
           "warning",
-          `You provided ${userLoad} kW sanctioned load, but the recommended system is ${formatNum(results.recommended_kw)} kW. Please upgrade your sanctioned load to ${requiredLoad} kW.`
+          `You provided ${userLoad} kW sanctioned load, but the recommended system is ${formatNum(
+            results.recommended_kw
+          )} kW. Please upgrade your sanctioned load to ${requiredLoad} kW.`
         );
       }
     }
@@ -155,14 +224,21 @@ export default function RightAds({ results }) {
         const roofAvailable = results.roof_area_available;
         console.log("entered the second if condition", roofAvailable);
         if (roofAvailable < roofNeeded) {
-          console.log("this is third the rooftop things to be compared", roofAvailable, roofNeeded)
+          console.log(
+            "this is third the rooftop things to be compared",
+            roofAvailable,
+            roofNeeded
+          );
           addNote(
             "warning",
             `You provided ${roofAvailable} ${results.roof_area_unit} rooftop area, but ${roofNeeded} ${results.roof_area_unit} is required for the system.`
           );
         }
       } else {
-        addNote("info", `For this system, approx. ${roofNeeded} sqft rooftop area is required.`);
+        addNote(
+          "info",
+          `For this system, approx. ${roofNeeded} sqft rooftop area is required.`
+        );
       }
     }
   }
@@ -191,7 +267,6 @@ export default function RightAds({ results }) {
 
   return (
     <div className="col-span-2 p-4 mt-2 space-y-4 sticky top-24 self-start">
-
       {notes.length > 0 && (
         <div>
           <h2 className="text-xl font-bold mb-2">🚨 Alert</h2>
