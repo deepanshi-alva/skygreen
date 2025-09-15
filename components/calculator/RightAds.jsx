@@ -16,7 +16,7 @@ export default function RightAds({ results }) {
 
   if (results?.is_rwa) {
     // --- RWA subsidy logic ---
-    const numHouses = results?.num_houses || results?.user_num_houses;
+    const numHouses = results?.user_num_houses;
     const proposed = results?.user_proposed_capacity;
     const recommended_system = results?.recommended_kw;
     const societySanctioned = results?.user_society_sanctioned_load;
@@ -27,7 +27,6 @@ export default function RightAds({ results }) {
 
     if (numHouses && proposed && societySanctioned) {
       console.log("entered 1");
-
       const perHouseCapUsed = perHouseCap ? Number(perHouseCap) : 1; // default 1 kW/house
       const capByHouses = numHouses * perHouseCapUsed; // e.g., 100 * 3 = 300 kW
       const eligibleCap = Math.min(
@@ -114,15 +113,6 @@ export default function RightAds({ results }) {
           `Proposed system: ${proposed} kW. This is fully eligible for subsidy.`
         );
       }
-    } else if (proposed) {
-      console.log("entered 3");
-      const eligibleCap = Math.min(proposed, overallSubsidyCap);
-      addNote(
-        "info",
-        `Proposed system: ${proposed} kW. Eligible subsidy: ${eligibleCap} kW. The remaining ${
-          proposed - overallSubsidyCap
-        } kW must be self-funded.`
-      );
     } else if (numHouses && perHouseSanctioned) {
       console.log("entered 4");
       const calculatedSystem = numHouses * perHouseSanctioned;
@@ -139,7 +129,25 @@ export default function RightAds({ results }) {
           `Since you haven’t provided the proposed capacity, we calculated it as Number of Houses × Sanctioned Load = ${calculatedSystem} kW. However, your state subsidy is capped at ${eligibleCap} kW, and the remaining capacity will need to be self-funded.`
         );
       }
+    } else if (proposed) {
+      console.log("entered 3");
+
+      const eligibleCap = Math.min(proposed, overallSubsidyCap);
+
+      if (proposed <= overallSubsidyCap) {
+        addNote(
+          "info",
+          `Proposed system: ${proposed} kW. This is fully eligible for subsidy.`
+        );
+      } else {
+        const remaining = proposed - overallSubsidyCap;
+        addNote(
+          "info",
+          `Proposed system: ${proposed} kW. Eligible subsidy: ${eligibleCap} kW. The remaining ${remaining} kW must be self-funded.`
+        );
+      }
     }
+
     // else if (proposed && proposed != overallSubsidyCap) {
     //   console.log("entered 3", proposed)
     //   addNote(
@@ -178,25 +186,53 @@ export default function RightAds({ results }) {
     }
 
     if (rawPerHouseSanctioned === "") {
+      console.log("aa");
       addNote(
         "info",
-        `You did not enter the sanctioned load per house. We have taken the default as 1 kW/house, but in ${results.state} the subsidy is capped at ${perHouseCap} kW/house.`
+        `You did not enter the sanctioned load per house. We have taken the default as 1 kW/house, but in ${results.state} the subsidy is capped at ${perHouseCap} kW/house (subject to an overall cap of ${overallSubsidyCap} kW).`
       );
     } else if (perHouseSanctioned < perHouseCap) {
-      const upgradedEligible = numHouses * perHouseCap;
+      console.log("ab");
+
+      const houses = Number(numHouses) || 0;
+      const perHouseLimit = Number(perHouseCap) || 0;
+
+      // Theoretical max if upgraded per house
+      const potentialEligible = houses * perHouseLimit;
+
+      // Apply overall subsidy cap
+      const upgradedEligible = Math.min(potentialEligible, overallSubsidyCap);
+
       addNote(
         "info",
-        `You entered ${perHouseSanctioned} kW/house as sanctioned load. In ${results.state}, the subsidy allows up to ${perHouseCap} kW/house. If you upgrade to ${perHouseCap} kW/house, your total eligible subsidy could increase to ${upgradedEligible} kW (${numHouses} houses × ${perHouseCap} kW).`
+        `You entered ${perHouseSanctioned} kW/house as sanctioned load. In ${results.state}, subsidy allows up to ${perHouseLimit} kW/house. If you upgrade to ${perHouseLimit} kW/house, your total eligible subsidy could increase to ${upgradedEligible} kW (capped by the overall subsidy limit of ${overallSubsidyCap} kW).`
       );
     } else if (perHouseSanctioned === perHouseCap) {
+      console.log("ac");
+
+      const houses = Number(numHouses) || 0;
+      const perHouseLimit = Number(perHouseCap) || 0;
+
+      const eligibleTotal = Math.min(houses * perHouseLimit, overallSubsidyCap);
+
       addNote(
         "info",
-        `You entered ${perHouseSanctioned} kW/house as sanctioned load. In ${results.state}, this is the maximum eligible limit per house, so your entry is fully eligible.`
+        `You entered ${perHouseSanctioned} kW/house as sanctioned load. In ${results.state}, this is the maximum eligible limit per house. Your total eligible subsidy is ${eligibleTotal} kW, which is fully eligible under the cap.`
       );
     } else {
+      console.log("ad");
+
+      const houses = Number(numHouses) || 0;
+      const perHouseLimit = Number(perHouseCap) || 0;
+
+      const cappedEligible = Math.min(
+        houses * perHouseLimit,
+        overallSubsidyCap
+      );
+
       addNote(
         "info",
-        `You entered ${perHouseSanctioned} kW/house, but in ${results.state} the subsidy is capped at ${perHouseCap} kW/house. Extra capacity per house is not subsidized.`
+        `You entered ${perHouseSanctioned} kW/house, but in ${results.state} the subsidy is capped at ${perHouseLimit} kW/house. Extra capacity per house is not subsidized. Your total eligible subsidy remains capped at ${cappedEligible} kW.`
       );
     }
   } else {
@@ -231,7 +267,11 @@ export default function RightAds({ results }) {
           );
           addNote(
             "warning",
-            `You provided ${roofAvailable} ${results.roof_area_unit} rooftop area, but ${roofNeeded} ${results.roof_area_unit} is required for the system.`
+            `You provided ${roofAvailable} ${
+              results.roof_area_unit
+            } rooftop area, but ${formatNum(roofNeeded)} ${
+              results.roof_area_unit
+            } is required for the system.`
           );
         }
       } else {
