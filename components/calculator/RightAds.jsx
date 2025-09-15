@@ -235,7 +235,7 @@ export default function RightAds({ results }) {
         `You entered ${perHouseSanctioned} kW/house, but in ${results.state} the subsidy is capped at ${perHouseLimit} kW/house. Extra capacity per house is not subsidized. Your total eligible subsidy remains capped at ${cappedEligible} kW.`
       );
     }
-  } else if (results.sizing_method === "plant_size") {
+  } else if (results?.sizing_method === "plant_size") {
     if (results?.recommended_kw) {
       addNote(
         "info",
