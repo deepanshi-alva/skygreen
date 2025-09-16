@@ -447,15 +447,26 @@ export default function ContactUs() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-12 py-12 md:py-16">
-        <div className="grid grid-cols-1 lg:grid-cols-[20%_80%] gap-10 lg:gap-12 max-w-7xl mx-auto">
+        <div
+          className="
+            grid 
+            grid-cols-1 
+            lg:grid-cols-[22%_minmax(0,1fr)] 
+            gap-10 lg:gap-12 
+            max-w-7xl 
+            mx-auto
+          "
+        >
+          {/* Sidebar */}
           <aside className="order-2 lg:order-1 lg:sticky lg:top-8 self-start">
             <div className="mx-auto max-w-md lg:max-w-none">
               <DownloadCard />
             </div>
           </aside>
 
+          {/* Form */}
           <main className="order-1 lg:order-2">
-            <div className="relative max-w-2xl lg:max-w-full mx-auto">
+            <div className="relative w-full max-w-full lg:max-w-5xl mx-auto">
               <div
                 className="
                   relative 

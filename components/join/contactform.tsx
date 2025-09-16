@@ -439,15 +439,22 @@ function JoinUsForm() {
 /* ---------------------------- Main ---------------------------- */
 export default function JoinUs() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white">
+    <div className="bg-gradient-to-br from-black via-gray-900 to-black text-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-12 py-12 md:py-16">
-        <div className="grid grid-cols-1 lg:grid-cols-[20%_80%] gap-10 lg:gap-12 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-[22%_minmax(0,1fr)] gap-10 lg:gap-12 max-w-7xl mx-auto">
+          
+          {/* Left Sidebar */}
           <aside className="order-2 lg:order-1 lg:sticky lg:top-8 self-start">
             <DownloadCard />
           </aside>
+
+          {/* Right Form */}
           <main className="order-1 lg:order-2">
-            <div className="relative max-w-2xl lg:max-w-full mx-auto">
-              <div className="relative p-6 sm:p-8 md:p-12 lg:p-16 rounded-3xl bg-gradient-to-br from-gray-900/90 to-black/90 backdrop-blur-xl shadow-[0_20px_40px_rgba(0,0,0,0.8),0_0_30px_rgba(34,197,94,0.25)] hover:shadow-[0_25px_50px_rgba(0,0,0,0.85),0_0_40px_rgba(34,197,94,0.35)]">
+            <div className="relative w-full max-w-full lg:max-w-5xl mx-auto">
+              <div className="relative p-6 sm:p-8 md:p-12 lg:p-16 rounded-3xl 
+                              bg-gradient-to-br from-gray-900/90 to-black/90 
+                              backdrop-blur-xl shadow-[0_20px_40px_rgba(0,0,0,0.8),0_0_30px_rgba(34,197,94,0.25)] 
+                              hover:shadow-[0_25px_50px_rgba(0,0,0,0.85),0_0_40px_rgba(34,197,94,0.35)]">
                 <div className="absolute inset-0 rounded-3xl border border-green-500/20 pointer-events-none"></div>
                 <JoinUsForm />
               </div>
@@ -458,3 +465,4 @@ export default function JoinUs() {
     </div>
   );
 }
+
