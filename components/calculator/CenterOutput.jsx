@@ -71,7 +71,7 @@ export default function CenterOutput({ results }) {
         <div className="bg-[#1a1a1a] p-4 rounded-lg border border-white/10 shadow-md">
           <p className="text-sm text-gray-400">Recommended System</p>
           <p className="text-2xl font-bold text-green-400 break-all">
-            {format(results.recommended_kw)} kW
+            {format(results.final_dc_kw)} kW
           </p>
         </div>
 

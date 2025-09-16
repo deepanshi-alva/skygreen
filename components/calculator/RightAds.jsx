@@ -277,7 +277,7 @@ export default function RightAds({ results }) {
         addNote(
           "warning",
           `You provided ${userLoad} kW sanctioned load, but the recommended system is ${formatNum(
-            results.recommended_kw
+            results.final_dc_kw
           )} kW. Please upgrade your sanctioned load to ${requiredLoad} kW.`
         );
       }
