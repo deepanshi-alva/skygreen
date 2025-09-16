@@ -14,7 +14,7 @@ function DownloadCard() {
       <div className="space-y-4">
         <div className="flex items-center gap-2 text-white">
           <Download className="w-5 h-5 text-green-500" />
-          <h2 className="text-xl font-semibold">Download Presentation</h2>
+          <h2 className="text-xl sm:text-2xl font-semibold">Download Presentation</h2>
         </div>
 
         {/* Company Profile Card */}
@@ -30,12 +30,12 @@ function DownloadCard() {
 
             {/* Content */}
             <div className="relative z-10 mt-16">
-              <h3 className="text-2xl font-bold text-white mb-2">
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-2">
                 COMPANY
                 <br />
                 PROFILE
               </h3>
-              <p className="text-sm text-gray-300">
+              <p className="text-sm sm:text-base text-gray-300">
                 It&apos;s time to save the world.
               </p>
             </div>
@@ -50,7 +50,7 @@ function DownloadCard() {
 
       {/* Company Description */}
       <div className="space-y-2">
-        <p className="text-gray-300">
+        <p className="text-gray-300 text-sm sm:text-base">
           <span className="text-white font-semibold">Indian brand</span> in the
           renewable energy industry, providing high-quality products and
           services to{" "}
@@ -68,62 +68,52 @@ function RightFaqs() {
   const [itemsToShow, setItemsToShow] = useState(15);
   const [openIndexes, setOpenIndexes] = useState<number[]>([]);
 
-  // Normalize search once for question + answer, case-insensitive
   const normalizedQuery = query.trim().toLowerCase();
-
   const filtered = normalizedQuery
-    ? faqData.filter((f) =>
-        (f.question).toLowerCase().includes(normalizedQuery)
-      )
+    ? faqData.filter((f) => f.question.toLowerCase().includes(normalizedQuery))
     : faqData;
 
-  // Decide what to render: paginate only when there is NO search query
   const visibleFAQs =
-    normalizedQuery.length === 0
-      ? filtered.slice(0, itemsToShow)
-      : filtered;
+    normalizedQuery.length === 0 ? filtered.slice(0, itemsToShow) : filtered;
 
   const canShowMore =
     normalizedQuery.length === 0 && itemsToShow < filtered.length;
 
-  const toggleFAQ = (indexInVisible: number) => {
+  const toggleFAQ = (index: number) => {
     setOpenIndexes((prev) =>
-      prev.includes(indexInVisible)
-        ? prev.filter((i) => i !== indexInVisible)
-        : [...prev, indexInVisible]
+      prev.includes(index)
+        ? prev.filter((i) => i !== index)
+        : [...prev, index]
     );
   };
 
-  // When search changes or the visible list changes drastically,
-  // reset the open panels to avoid index mismatches.
   React.useEffect(() => {
     setOpenIndexes([]);
   }, [normalizedQuery, itemsToShow]);
 
   return (
-    <div className="px-6 md:px-12 lg:px-16 py-4 pb-8 bg-[url('/images/testimonials/download_converted.png')] bg-no-repeat bg-cover bg-center rounded-4xl">
+    <div className="px-4 sm:px-6 md:px-8 lg:px-12 py-6 md:py-10 lg:py-12 bg-[url('/images/testimonials/download_converted.png')] bg-no-repeat bg-cover bg-center rounded-2xl sm:rounded-3xl">
       {/* Title */}
-      <div className="flex flex-col mb-6 md:mb-8">
-        <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
+      <div className="flex flex-col mb-6 md:mb-10">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold leading-tight">
           Got a Question?
         </h2>
-        <h3 className="text-2xl md:text-3xl lg:text-4xl mt-2 font-semibold text-green-500">
+        <h3 className="text-lg sm:text-xl md:text-2xl mt-2 font-semibold text-green-500">
           We have solutions
         </h3>
       </div>
 
       {/* Search */}
-      <div className="mb-8">
+      <div className="mb-6 md:mb-10">
         <div className="relative">
           <input
             value={query}
             onChange={(e) => {
               setQuery(e.target.value);
-              // Reset pagination when searching
               if (e.target.value.trim().length > 0) setItemsToShow(15);
             }}
             placeholder="Search questions (e.g., warranty, installation, subsidy)"
-            className="w-full rounded-xl bg-black/40 border border-zinc-700 px-4 py-3 outline-none focus:border-green-500 transition"
+            className="w-full rounded-xl bg-black/40 border border-zinc-700 px-3 py-2 sm:px-4 sm:py-3 outline-none focus:border-green-500 transition text-sm sm:text-base"
             aria-label="Search FAQs"
           />
           {query && (
@@ -132,7 +122,7 @@ function RightFaqs() {
                 setQuery("");
                 setItemsToShow(15);
               }}
-              className="absolute right-2 top-1/2 -translate-y-1/2 text-sm text-zinc-300 hover:text-white"
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-xs sm:text-sm text-zinc-300 hover:text-white"
               aria-label="Clear search"
               type="button"
             >
@@ -141,42 +131,41 @@ function RightFaqs() {
           )}
         </div>
 
-        {/* Result count (optional) */}
-        <p className="mt-4 text-sm text-zinc-400">
+        <p className="mt-3 text-xs sm:text-sm text-zinc-400">
           {filtered.length} result{filtered.length === 1 ? "" : "s"}
-          {normalizedQuery ? " for “" + query + "”" : ""}
+          {normalizedQuery ? ` for “${query}”` : ""}
         </p>
       </div>
 
       {/* FAQs */}
-      <div className="space-y-6 w-full">
+      <div className="space-y-4 sm:space-y-5 md:space-y-6">
         {visibleFAQs.map((faq, i) => {
           const isOpen = openIndexes.includes(i);
           return (
             <div
               key={i}
-              className="border-b border-zinc-700 pb-4 cursor-pointer"
+              className="border-b border-zinc-700 pb-3 sm:pb-4 cursor-pointer"
             >
               <div
                 className="flex justify-between items-center"
                 onClick={() => toggleFAQ(i)}
               >
-                <h4 className="text-lg md:text-2xl lg:text-3xl font-medium text-white">
+                <h4 className="text-sm sm:text-base md:text-lg lg:text-xl font-medium text-white pr-4">
                   {faq.question}
                 </h4>
                 <motion.span
-                  className="text-green-500"
+                  className="text-green-500 flex-shrink-0"
                   initial={false}
                   animate={{ rotate: isOpen ? 180 : 0 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <ChevronDown size={24} />
+                  <ChevronDown size={20} className="sm:w-5 sm:h-5 md:w-6 md:h-6" />
                 </motion.span>
               </div>
 
               {isOpen && (
                 <motion.p
-                  className="mt-2 text-base md:text-lg lg:text-xl text-zinc-300"
+                  className="mt-2 text-xs sm:text-sm md:text-base lg:text-lg text-zinc-300"
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: "auto" }}
                   exit={{ opacity: 0, height: 0 }}
@@ -189,12 +178,12 @@ function RightFaqs() {
           );
         })}
 
-        {/* Show More button (only when not searching and more items remain) */}
+        {/* Show More */}
         {canShowMore && (
           <div className="pt-2">
             <button
               onClick={() => setItemsToShow((n) => n + 15)}
-              className="px-6 py-2 border border-white rounded-full text-white hover:bg-white hover:text-black transition duration-300"
+              className="px-4 sm:px-6 py-2 border border-white rounded-full text-xs sm:text-sm md:text-base text-white hover:bg-white hover:text-black transition duration-300"
               type="button"
             >
               Show more
@@ -206,29 +195,28 @@ function RightFaqs() {
   );
 }
 
-
 /* ------------------------------- Main Shell ------------------------------- */
 
 export default function ContactUs() {
   return (
     <div className="min-h-screen bg-black text-white">
-      <div className="container mx-auto px-6 lg:pr-15 py-16 pb-28">
+      <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-12 sm:py-16 lg:py-20">
         <div
           className="
-            grid 
-            grid-cols-1 
-            lg:grid-cols-[22%_75%] 
-            gap-19 
-            max-w-7xl 
-            ml-28
+            grid
+            grid-cols-1
+            lg:grid-cols-[20%_1fr]
+            gap-10
+            max-w-7xl
+            mx-auto
           "
         >
-          {/* Left: stick with your Download card */}
-          <aside className="lg:sticky lg:top-8 self-start">
+          {/* Left */}
+          <aside className="lg:sticky lg:top-8 self-start mb-10 lg:mb-0">
             <DownloadCard />
           </aside>
 
-          {/* Right: FAQs (replacing the form) */}
+          {/* Right */}
           <main>
             <RightFaqs />
           </main>
