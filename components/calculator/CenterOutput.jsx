@@ -116,9 +116,13 @@ export default function CenterOutput({ results }) {
             </div>
           </div>
 
-          <div className="flex items-center justify-center">
-            <p className="text-md text-gray-300">Eligible Subsidy : <span>{format(results.eligibleKw)}</span> KW</p>
-          </div>
+          {results?.eligibleKw > 0 && (
+            <div className="flex items-center justify-center">
+              <p className="text-md text-gray-300">
+                Eligible Subsidy : <span>{format(results.eligibleKw)}</span> KW
+              </p>
+            </div>
+          )}
 
           <hr className="border-white/10 my-2" />
 
@@ -155,15 +159,15 @@ export default function CenterOutput({ results }) {
         <div className="grid grid-cols-1 gap-4">
           {(results?.sizing_method === "bill" ||
             results?.sizing_method === "units") && (
-            <div className="bg-[#1a1a1a] p-4 rounded-lg border border-white/10 shadow-md">
-              <p className="text-sm text-gray-400">
-                With grid daily consumption
-              </p>
-              <p className="text-xl font-bold text-green-400 break-all">
-                {format(results.daily_unit)}
-              </p>
-            </div>
-          )}
+              <div className="bg-[#1a1a1a] p-4 rounded-lg border border-white/10 shadow-md">
+                <p className="text-sm text-gray-400">
+                  With grid daily consumption
+                </p>
+                <p className="text-xl font-bold text-green-400 break-all">
+                  {format(results.daily_unit)}
+                </p>
+              </div>
+            )}
 
           <div className="bg-[#1a1a1a] p-4 rounded-lg border border-white/10 shadow-md">
             <p className="text-sm text-gray-400">Solar Units Produced</p>
@@ -241,28 +245,26 @@ export default function CenterOutput({ results }) {
           <div className="flex gap-4 mt-4">
             <button
               onClick={() => setMode("solar")}
-              className={`px-4 py-1 rounded-md font-semibold ${
-                mode === "solar"
+              className={`px-4 py-1 rounded-md font-semibold ${mode === "solar"
                   ? "bg-green-500 text-black"
                   : "bg-[#111] text-green-400 border border-green-500"
-              }`}
+                }`}
             >
               With Solar
             </button>
             {/* Show With Grid only if not RWA or plant_size */}
             {(results?.sizing_method === "bill" ||
               results?.sizing_method === "units") && (
-              <button
-                onClick={() => setMode("grid")}
-                className={`px-4 py-1 rounded-md font-semibold ${
-                  mode === "grid"
-                    ? "bg-green-500 text-black"
-                    : "bg-[#111] text-green-400 border border-green-500"
-                }`}
-              >
-                With Grid
-              </button>
-            )}
+                <button
+                  onClick={() => setMode("grid")}
+                  className={`px-4 py-1 rounded-md font-semibold ${mode === "grid"
+                      ? "bg-green-500 text-black"
+                      : "bg-[#111] text-green-400 border border-green-500"
+                    }`}
+                >
+                  With Grid
+                </button>
+              )}
           </div>
         </div>
       </div>
@@ -282,14 +284,14 @@ export default function CenterOutput({ results }) {
                   level === 1
                     ? "h1"
                     : level === 2
-                    ? "h2"
-                    : level === 3
-                    ? "h3"
-                    : level === 4
-                    ? "h4"
-                    : level === 5
-                    ? "h5"
-                    : "h6";
+                      ? "h2"
+                      : level === 3
+                        ? "h3"
+                        : level === 4
+                          ? "h4"
+                          : level === 5
+                            ? "h5"
+                            : "h6";
 
                 const headingStyles = {
                   h1: "text-2xl font-bold text-green-400 mt-4",
@@ -307,9 +309,8 @@ export default function CenterOutput({ results }) {
                       return (
                         <span
                           key={cIdx}
-                          className={`${child.bold ? "font-bold" : ""} ${
-                            child.underline ? "underline" : ""
-                          }`}
+                          className={`${child.bold ? "font-bold" : ""} ${child.underline ? "underline" : ""
+                            }`}
                         >
                           {text}
                         </span>
@@ -347,9 +348,8 @@ export default function CenterOutput({ results }) {
                       return (
                         <span
                           key={cIdx}
-                          className={`${child.bold ? "font-bold" : ""} ${
-                            child.underline ? "underline" : ""
-                          } whitespace-pre-wrap`} // ✅ Keep indentation visible
+                          className={`${child.bold ? "font-bold" : ""} ${child.underline ? "underline" : ""
+                            } whitespace-pre-wrap`} // ✅ Keep indentation visible
                         >
                           {text}
                         </span>
@@ -372,9 +372,8 @@ export default function CenterOutput({ results }) {
                         {li.children.map((child, cIdx) => (
                           <span
                             key={cIdx}
-                            className={`${child.bold ? "font-bold" : ""} ${
-                              child.underline ? "underline" : ""
-                            }`}
+                            className={`${child.bold ? "font-bold" : ""} ${child.underline ? "underline" : ""
+                              }`}
                           >
                             {child.text}
                           </span>
