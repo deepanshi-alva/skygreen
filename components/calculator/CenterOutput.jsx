@@ -115,6 +115,11 @@ export default function CenterOutput({ results }) {
               </p>
             </div>
           </div>
+
+          <div className="flex items-center justify-center">
+            <p className="text-md text-gray-300">Eligible Subsidy : <span>{format(results.eligibleKw)}</span> KW</p>
+          </div>
+
           <hr className="border-white/10 my-2" />
 
           <div className="space-y-2">
