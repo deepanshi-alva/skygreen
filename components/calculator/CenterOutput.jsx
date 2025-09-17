@@ -159,15 +159,15 @@ export default function CenterOutput({ results }) {
         <div className="grid grid-cols-1 gap-4">
           {(results?.sizing_method === "bill" ||
             results?.sizing_method === "units") && (
-              <div className="bg-[#1a1a1a] p-4 rounded-lg border border-white/10 shadow-md">
-                <p className="text-sm text-gray-400">
-                  With grid daily consumption
-                </p>
-                <p className="text-xl font-bold text-green-400 break-all">
-                  {format(results.daily_unit)}
-                </p>
-              </div>
-            )}
+            <div className="bg-[#1a1a1a] p-4 rounded-lg border border-white/10 shadow-md">
+              <p className="text-sm text-gray-400">
+                With grid daily consumption
+              </p>
+              <p className="text-xl font-bold text-green-400 break-all">
+                {format(results.daily_unit)}
+              </p>
+            </div>
+          )}
 
           <div className="bg-[#1a1a1a] p-4 rounded-lg border border-white/10 shadow-md">
             <p className="text-sm text-gray-400">Solar Units Produced</p>
@@ -245,29 +245,229 @@ export default function CenterOutput({ results }) {
           <div className="flex gap-4 mt-4">
             <button
               onClick={() => setMode("solar")}
-              className={`px-4 py-1 rounded-md font-semibold ${mode === "solar"
+              className={`px-4 py-1 rounded-md font-semibold ${
+                mode === "solar"
                   ? "bg-green-500 text-black"
                   : "bg-[#111] text-green-400 border border-green-500"
-                }`}
+              }`}
             >
               With Solar
             </button>
             {/* Show With Grid only if not RWA or plant_size */}
             {(results?.sizing_method === "bill" ||
               results?.sizing_method === "units") && (
-                <button
-                  onClick={() => setMode("grid")}
-                  className={`px-4 py-1 rounded-md font-semibold ${mode === "grid"
-                      ? "bg-green-500 text-black"
-                      : "bg-[#111] text-green-400 border border-green-500"
-                    }`}
-                >
-                  With Grid
-                </button>
-              )}
+              <button
+                onClick={() => setMode("grid")}
+                className={`px-4 py-1 rounded-md font-semibold ${
+                  mode === "grid"
+                    ? "bg-green-500 text-black"
+                    : "bg-[#111] text-green-400 border border-green-500"
+                }`}
+              >
+                With Grid
+              </button>
+            )}
           </div>
         </div>
       </div>
+
+      {/* ---- System Configuration Section ---- */}
+      {(results?.inverter_options?.length > 0 ||
+        results?.string_design ||
+        results?.battery_options?.length > 0) &&
+        results.sizing_method !== "rwa" && (
+          <div className="mt-8 bg-[#1a1a1a] p-6 rounded-xl border border-white/10 shadow-md">
+            <h3 className="text-xl font-bold text-green-400 mb-4">
+              ⚙️ System Configuration
+            </h3>
+
+            {/* Inverter Options */}
+            {results?.inverter_options?.length > 0 && (
+              <div className="mb-6">
+                <h4 className="text-lg font-semibold text-gray-200 mb-2">
+                  Inverter Options
+                </h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {results.inverter_options.map((inv, idx) => (
+                    <div
+                      key={idx}
+                      className="p-4 rounded-lg border border-white/10 bg-[#111]"
+                    >
+                      <p className="text-green-400 font-semibold">
+                        {inv.inverter_size_kw} kW ({inv.phase})
+                      </p>
+                      <p className="text-sm text-gray-400">
+                        DC/AC Ratio: {inv.dc_ac_ratio}
+                      </p>
+                      <p className="text-sm text-gray-400">
+                        Bus Voltage: {inv.bus_voltage} V
+                      </p>
+                      <p className="text-xs text-gray-500 italic">{inv.note}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* SKU Recommendation */}
+            {results?.nearest_sku && (
+              <div className="mb-6">
+                <h4 className="text-lg font-semibold text-gray-200 mb-2">
+                  Recommended SKU
+                </h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="p-4  rounded-lg bg-[#111]">
+                    <p className="text-green-400 font-semibold">Nearest SKU</p>
+                    <p className="text-sm text-gray-400">
+                      {results.nearest_sku.inverter_kw} kW (
+                      {results.nearest_sku.phase})
+                    </p>
+                    <p className="text-sm text-gray-400">
+                      DC/AC Ratio: {results.nearest_sku.dc_ac_ratio}
+                    </p>
+                    <p className="text-sm text-gray-400">
+                      Bus Voltage: {results.nearest_sku.bus_voltage} V
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      {results.nearest_sku.note}
+                    </p>
+                  </div>
+                  {results?.wider_sku && (
+                    <div className="p-4 border border-white/10 rounded-lg bg-[#111]">
+                      <p className="text-yellow-400 font-semibold">Wider SKU</p>
+                      <p className="text-sm text-gray-400">
+                        {results.wider_sku.inverter_kw} kW (
+                        {results.wider_sku.phase})
+                      </p>
+                      <p className="text-sm text-gray-400">
+                        DC/AC Ratio: {results.wider_sku.dc_ac_ratio}
+                      </p>
+                      <p className="text-sm text-gray-400">
+                        Bus Voltage: {results.wider_sku.bus_voltage} V
+                      </p>
+                      <p className="text-xs text-gray-500">
+                        {results.wider_sku.note}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* "string_design": {
+        "single_mppt": {
+            "mppt_mode": "single",
+            "panels_per_string": 7,
+            "strings_used": 1,
+            "panels_connected": 7,
+            "voc_total": "397.6",
+            "vmp_total": "306.7",
+            "isc_total": "13.8",
+            "max_parallel_strings": 2
+        },
+        "dual_mppt": [
+            {
+                "mppt": 1,
+                "panels_per_string": 3,
+                "voc_total": "170.4",
+                "vmp_total": "131.5",
+                "isc_total": "13.8"
+            },
+            {
+                "mppt": 2,
+                "panels_per_string": 4,
+                "voc_total": "227.2",
+                "vmp_total": "175.3",
+                "isc_total": "13.8"
+            }
+        ]
+    }, */}
+
+            {/* String Design */}
+            {results?.string_design && (
+              <div className="mb-6">
+                <h4 className="text-lg font-semibold text-gray-200 mb-2">
+                  String Design
+                </h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* Single MPPT */}
+                  <div className="p-4 rounded-lg border border-white/10 bg-[#111]">
+                    <p className="font-semibold text-green-400">Single MPPT</p>
+                    {results.string_design.single_mppt?.message ? (
+                      <p className="text-sm text-red-400">
+                        {results.string_design.single_mppt.message}
+                      </p>
+                    ) : (
+                      <>
+                        <p className="text-sm text-gray-400">
+                          {results.string_design.single_mppt.panels_per_string}{" "}
+                          panels per string
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          Voc - {results.string_design.single_mppt.voc_total} V,
+                          Vmp - {results.string_design.single_mppt.vmp_total} V,
+                          Isc - {results.string_design.single_mppt.isc_total} A
+                        </p>
+                      </>
+                    )}
+                  </div>
+
+                  {/* Dual MPPT */}
+                  <div className="p-4 rounded-lg border border-white/10 bg-[#111]">
+                    <p className="font-semibold text-green-400">Dual MPPT</p>
+                    {results.string_design.dual_mppt.map((mppt, idx) => (
+                      <p key={idx} className="text-sm text-gray-400">
+                        MPPT {mppt.mppt}: {mppt.panels_per_string} panels → Voc{" "}
+                        {mppt.voc_total} V, Vmp {mppt.vmp_total} V, Isc{" "}
+                        {mppt.isc_total} A
+                      </p>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Battery Options */}
+            {results?.battery_options?.length > 0 && (
+              <div>
+                <h4 className="text-lg font-semibold text-gray-200 mb-2">
+                  Battery Options
+                </h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {results.battery_options.map((bat, idx) => (
+                    <div
+                      key={idx}
+                      className="p-4 rounded-lg border border-white/10 bg-[#111]"
+                    >
+                      <p className="text-green-400 font-semibold">
+                        {bat.type} (Bus: {bat.bus_voltage}V)
+                      </p>
+                      <p className="text-sm text-gray-400">
+                        Recommended Range: {bat.min_recommended.kwh} –{" "}
+                        {bat.max_recommended.kwh} kWh
+                      </p>
+                      {Object.entries(bat.connection).map(
+                        ([key, conn], cIdx) => (
+                          <div key={cIdx} className="mt-2">
+                            <p className="text-xs text-yellow-400">
+                              {conn.note}
+                            </p>
+                            {conn.skus.map((sku, sIdx) => (
+                              <p key={sIdx} className="text-xs text-gray-400">
+                                {sku.type} {sku.ah}Ah → {sku.usable_kwh} kWh
+                                usable
+                              </p>
+                            ))}
+                          </div>
+                        )
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
 
       {/* Disclaimer Section */}
       {Array.isArray(results?.disclaimer) && results.disclaimer.length > 0 && (
@@ -284,14 +484,14 @@ export default function CenterOutput({ results }) {
                   level === 1
                     ? "h1"
                     : level === 2
-                      ? "h2"
-                      : level === 3
-                        ? "h3"
-                        : level === 4
-                          ? "h4"
-                          : level === 5
-                            ? "h5"
-                            : "h6";
+                    ? "h2"
+                    : level === 3
+                    ? "h3"
+                    : level === 4
+                    ? "h4"
+                    : level === 5
+                    ? "h5"
+                    : "h6";
 
                 const headingStyles = {
                   h1: "text-2xl font-bold text-green-400 mt-4",
@@ -309,8 +509,9 @@ export default function CenterOutput({ results }) {
                       return (
                         <span
                           key={cIdx}
-                          className={`${child.bold ? "font-bold" : ""} ${child.underline ? "underline" : ""
-                            }`}
+                          className={`${child.bold ? "font-bold" : ""} ${
+                            child.underline ? "underline" : ""
+                          }`}
                         >
                           {text}
                         </span>
@@ -348,8 +549,9 @@ export default function CenterOutput({ results }) {
                       return (
                         <span
                           key={cIdx}
-                          className={`${child.bold ? "font-bold" : ""} ${child.underline ? "underline" : ""
-                            } whitespace-pre-wrap`} // ✅ Keep indentation visible
+                          className={`${child.bold ? "font-bold" : ""} ${
+                            child.underline ? "underline" : ""
+                          } whitespace-pre-wrap`} // ✅ Keep indentation visible
                         >
                           {text}
                         </span>
@@ -372,8 +574,9 @@ export default function CenterOutput({ results }) {
                         {li.children.map((child, cIdx) => (
                           <span
                             key={cIdx}
-                            className={`${child.bold ? "font-bold" : ""} ${child.underline ? "underline" : ""
-                              }`}
+                            className={`${child.bold ? "font-bold" : ""} ${
+                              child.underline ? "underline" : ""
+                            }`}
                           >
                             {child.text}
                           </span>
