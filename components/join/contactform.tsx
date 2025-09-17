@@ -17,7 +17,11 @@ const customSelectStyles: StylesConfig<
   control: (provided, state) => ({
     ...provided,
     backgroundColor: state.isDisabled ? "#222" : "#111",
-    borderColor: state.isFocused ? "#16a34a" : state.isDisabled ? "#333" : "#444",
+    borderColor: state.isFocused
+      ? "#16a34a"
+      : state.isDisabled
+      ? "#333"
+      : "#444",
     borderRadius: "0.75rem",
     padding: "2px",
     minHeight: "48px",
@@ -118,7 +122,9 @@ function DownloadCard() {
         <p className="text-center md:text-justify">
           <span className="text-white font-semibold">An Indian brand</span> in
           the renewable energy industry, delivering{" "}
-          <span className="text-white font-semibold">premium solar solutions</span>{" "}
+          <span className="text-white font-semibold">
+            premium solar solutions
+          </span>{" "}
           to your doorstep.
         </p>
       </div>
@@ -149,7 +155,8 @@ function JoinUsForm() {
         if (!value || value.trim().length < 2) return "Name is required.";
         return "";
       case "phone":
-        if (!/^\d{10}$/.test(value)) return "Enter a valid 10-digit phone number.";
+        if (!/^\d{10}$/.test(value))
+          return "Enter a valid 10-digit phone number.";
         return "";
       case "state":
         return value ? "" : "Select your state.";
@@ -210,11 +217,14 @@ function JoinUsForm() {
     };
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/join-uses`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ data: payload }), // Strapi requires { data: {...} }
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/join-uses`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ data: payload }), // Strapi requires { data: {...} }
+        }
+      );
 
       if (!res.ok) throw new Error("Failed to submit");
 
@@ -239,7 +249,6 @@ function JoinUsForm() {
       alert("❌ Failed to submit. Try again later.");
     }
   };
-
 
   const inputStyle =
     "w-full bg-black/40 border border-gray-700 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:border-green-500 focus:ring-2 focus:ring-green-500/40 focus:outline-none transition-all duration-200";
@@ -268,7 +277,9 @@ function JoinUsForm() {
             onChange={(e) => handleChange("phone", e.target.value)}
             className={inputStyle}
           />
-          {errors.phone && <p className="text-red-500 text-sm">{errors.phone}</p>}
+          {errors.phone && (
+            <p className="text-red-500 text-sm">{errors.phone}</p>
+          )}
         </div>
       </div>
 
@@ -285,15 +296,17 @@ function JoinUsForm() {
             value={
               formData.state
                 ? {
-                  value: formData.state,
-                  label: State.getStateByCode(formData.state)?.name || "",
-                }
+                    value: formData.state,
+                    label: State.getStateByCode(formData.state)?.name || "",
+                  }
                 : null
             }
             onChange={(opt) => handleChange("state", opt?.value || "")}
             placeholder="Select your state"
           />
-          {errors.state && <p className="text-red-500 text-sm">{errors.state}</p>}
+          {errors.state && (
+            <p className="text-red-500 text-sm">{errors.state}</p>
+          )}
         </div>
         <div>
           <label className="block text-sm font-medium mb-2">City</label>
@@ -301,15 +314,21 @@ function JoinUsForm() {
             options={
               formData.state
                 ? City.getCitiesOfState("IN", formData.state).map((c) => ({
-                  value: c.name,
-                  label: c.name,
-                }))
+                    value: c.name,
+                    label: c.name,
+                  }))
                 : []
             }
             styles={customSelectStyles}
-            value={formData.city ? { value: formData.city, label: formData.city } : null}
+            value={
+              formData.city
+                ? { value: formData.city, label: formData.city }
+                : null
+            }
             onChange={(opt) => handleChange("city", opt?.value || "")}
-            placeholder={formData.state ? "Now select your city" : "Select state first"}
+            placeholder={
+              formData.state ? "Now select your city" : "Select state first"
+            }
             isDisabled={!formData.state}
           />
           {errors.city && <p className="text-red-500 text-sm">{errors.city}</p>}
@@ -326,16 +345,18 @@ function JoinUsForm() {
             value={
               formData.gender
                 ? [
-                  { value: "male", label: "Male" },
-                  { value: "female", label: "Female" },
-                  { value: "na", label: "Prefer not to say" },
-                ].find((g) => g.value === formData.gender) || null
+                    { value: "male", label: "Male" },
+                    { value: "female", label: "Female" },
+                    { value: "na", label: "Prefer not to say" },
+                  ].find((g) => g.value === formData.gender) || null
                 : null
             }
             onChange={(opt) => handleChange("gender", opt?.value || "")}
             placeholder="Select gender"
           />
-          {errors.gender && <p className="text-red-500 text-sm">{errors.gender}</p>}
+          {errors.gender && (
+            <p className="text-red-500 text-sm">{errors.gender}</p>
+          )}
         </div>
       </div>
 
@@ -343,7 +364,9 @@ function JoinUsForm() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {/* Business Type */}
         <div>
-          <label className="block text-sm font-medium mb-2">Business Type</label>
+          <label className="block text-sm font-medium mb-2">
+            Business Type
+          </label>
           <Select
             options={[
               { value: "Distributor", label: "Distributor" },
@@ -359,7 +382,9 @@ function JoinUsForm() {
                 ? { value: formData.businessType, label: formData.businessType }
                 : null
             }
-            onChange={(opt) => handleChange("businessType", opt?.value as BusinessType)}
+            onChange={(opt) =>
+              handleChange("businessType", opt?.value as BusinessType)
+            }
             placeholder="Select business type"
           />
           {formData.businessType === "Other" && (
@@ -367,7 +392,9 @@ function JoinUsForm() {
               type="text"
               placeholder="Please specify"
               value={formData.otherBusinessType}
-              onChange={(e) => handleChange("otherBusinessType", e.target.value)}
+              onChange={(e) =>
+                handleChange("otherBusinessType", e.target.value)
+              }
               className={inputStyle + " mt-2"}
             />
           )}
@@ -379,7 +406,9 @@ function JoinUsForm() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-2">Preferred Date</label>
+          <label className="block text-sm font-medium mb-2">
+            Preferred Date
+          </label>
           <DatePicker
             selected={formData.date}
             onChange={(date) => handleChange("date", date)}
@@ -392,7 +421,9 @@ function JoinUsForm() {
           {errors.date && <p className="text-red-500 text-sm">{errors.date}</p>}
         </div>
         <div>
-          <label className="block text-sm font-medium mb-2">Preferred Time</label>
+          <label className="block text-sm font-medium mb-2">
+            Preferred Time
+          </label>
           <Select
             options={timeOptions}
             styles={customSelectStyles}
@@ -410,11 +441,30 @@ function JoinUsForm() {
           <input
             type="checkbox"
             checked={formData.agreeToProcessing}
-            onChange={(e) => handleChange("agreeToProcessing", e.target.checked)}
+            onChange={(e) =>
+              handleChange("agreeToProcessing", e.target.checked)
+            }
             className="mt-1 w-4 h-4 border-gray-600 rounded focus:ring-green-500 focus:ring-2"
           />
-          <label className="text-sm text-gray-400">
-            I agree to the processing of personal data
+          <label className="text-sm text-gray-400 leading-relaxed">
+            I agree to the{" "}
+            <a
+              href="/images/pdfs/privacy-policy.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-green-400 hover:underline"
+            >
+              Privacy Policy ↗
+            </a>{" "}
+            and{" "}
+            <a
+              href="/images/pdfs/terms-of-service.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-green-400 hover:underline"
+            >
+              Terms of Service ↗
+            </a>
           </label>
         </div>
         {errors.agreeToProcessing && (
@@ -442,7 +492,6 @@ export default function JoinUs() {
     <div className="bg-gradient-to-br from-black via-gray-900 to-black text-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-12 py-12 md:py-16">
         <div className="grid grid-cols-1 lg:grid-cols-[22%_minmax(0,1fr)] gap-10 lg:gap-12 max-w-7xl mx-auto">
-          
           {/* Left Sidebar */}
           <aside className="order-2 lg:order-1 lg:sticky lg:top-8 self-start">
             <DownloadCard />
@@ -451,10 +500,12 @@ export default function JoinUs() {
           {/* Right Form */}
           <main className="order-1 lg:order-2">
             <div className="relative w-full max-w-full lg:max-w-5xl mx-auto">
-              <div className="relative p-6 sm:p-8 md:p-12 lg:p-16 rounded-3xl 
+              <div
+                className="relative p-6 sm:p-8 md:p-12 lg:p-16 rounded-3xl 
                               bg-gradient-to-br from-gray-900/90 to-black/90 
                               backdrop-blur-xl shadow-[0_20px_40px_rgba(0,0,0,0.8),0_0_30px_rgba(34,197,94,0.25)] 
-                              hover:shadow-[0_25px_50px_rgba(0,0,0,0.85),0_0_40px_rgba(34,197,94,0.35)]">
+                              hover:shadow-[0_25px_50px_rgba(0,0,0,0.85),0_0_40px_rgba(34,197,94,0.35)]"
+              >
                 <div className="absolute inset-0 rounded-3xl border border-green-500/20 pointer-events-none"></div>
                 <JoinUsForm />
               </div>
@@ -465,4 +516,3 @@ export default function JoinUs() {
     </div>
   );
 }
-
