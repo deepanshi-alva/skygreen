@@ -20,7 +20,11 @@ const customSelectStyles: StylesConfig<
   control: (provided, state) => ({
     ...provided,
     backgroundColor: state.isDisabled ? "#222" : "#111",
-    borderColor: state.isFocused ? "#16a34a" : state.isDisabled ? "#333" : "#444",
+    borderColor: state.isFocused
+      ? "#16a34a"
+      : state.isDisabled
+      ? "#333"
+      : "#444",
     borderRadius: "0.75rem",
     padding: "2px",
     minHeight: "48px",
@@ -123,7 +127,9 @@ function DownloadCard() {
         <p className="text-center md:text-justify">
           <span className="text-white font-semibold">An Indian brand</span> in
           the renewable energy industry, delivering{" "}
-          <span className="text-white font-semibold">premium solar solutions</span>{" "}
+          <span className="text-white font-semibold">
+            premium solar solutions
+          </span>{" "}
           to your doorstep.
         </p>
       </div>
@@ -223,13 +229,16 @@ function ContactForm() {
     };
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/contact-uses`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ data: payload }), // Strapi needs { data: {...} }
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/contact-uses`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ data: payload }), // Strapi needs { data: {...} }
+        }
+      );
 
       if (!res.ok) {
         throw new Error("Failed to submit");
@@ -286,7 +295,9 @@ function ContactForm() {
             placeholder="+91 9876543210"
             className={inputStyle}
           />
-          {errors.phone && <p className="text-red-500 text-sm">{errors.phone}</p>}
+          {errors.phone && (
+            <p className="text-red-500 text-sm">{errors.phone}</p>
+          )}
         </div>
       </div>
 
@@ -303,15 +314,17 @@ function ContactForm() {
             value={
               formData.state
                 ? {
-                  value: formData.state,
-                  label: State.getStateByCode(formData.state)?.name || "",
-                }
+                    value: formData.state,
+                    label: State.getStateByCode(formData.state)?.name || "",
+                  }
                 : null
             }
             onChange={(opt) => handleChange("state", opt?.value || "")}
             placeholder="Select your state"
           />
-          {errors.state && <p className="text-red-500 text-sm">{errors.state}</p>}
+          {errors.state && (
+            <p className="text-red-500 text-sm">{errors.state}</p>
+          )}
         </div>
 
         <div>
@@ -320,15 +333,21 @@ function ContactForm() {
             options={
               formData.state
                 ? City.getCitiesOfState("IN", formData.state).map((c) => ({
-                  value: c.name,
-                  label: c.name,
-                }))
+                    value: c.name,
+                    label: c.name,
+                  }))
                 : []
             }
             styles={customSelectStyles}
-            value={formData.city ? { value: formData.city, label: formData.city } : null}
+            value={
+              formData.city
+                ? { value: formData.city, label: formData.city }
+                : null
+            }
             onChange={(opt) => handleChange("city", opt?.value || "")}
-            placeholder={formData.state ? "Now select your city" : "Select state first"}
+            placeholder={
+              formData.state ? "Now select your city" : "Select state first"
+            }
             isDisabled={!formData.state}
           />
           {errors.city && <p className="text-red-500 text-sm">{errors.city}</p>}
@@ -346,21 +365,31 @@ function ContactForm() {
             value={
               formData.gender
                 ? ["male", "female", "na"]
-                  .map((g) => ({ value: g, label: g === "na" ? "Prefer not to specify" : g.charAt(0).toUpperCase() + g.slice(1) }))
-                  .find((g) => g.value === formData.gender) || null
+                    .map((g) => ({
+                      value: g,
+                      label:
+                        g === "na"
+                          ? "Prefer not to specify"
+                          : g.charAt(0).toUpperCase() + g.slice(1),
+                    }))
+                    .find((g) => g.value === formData.gender) || null
                 : null
             }
             onChange={(opt) => handleChange("gender", opt?.value || "")}
             placeholder="Select gender"
           />
-          {errors.gender && <p className="text-red-500 text-sm">{errors.gender}</p>}
+          {errors.gender && (
+            <p className="text-red-500 text-sm">{errors.gender}</p>
+          )}
         </div>
       </div>
 
       {/* Capacity, Date, Time */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <div>
-          <label className="block text-sm font-medium mb-2">Capacity (kW)</label>
+          <label className="block text-sm font-medium mb-2">
+            Capacity (kW)
+          </label>
           <input
             type="text"
             value={formData.capacity}
@@ -368,11 +397,15 @@ function ContactForm() {
             placeholder="e.g., 5 kW"
             className={inputStyle}
           />
-          {errors.capacity && <p className="text-red-500 text-sm">{errors.capacity}</p>}
+          {errors.capacity && (
+            <p className="text-red-500 text-sm">{errors.capacity}</p>
+          )}
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-2">Preferred Date</label>
+          <label className="block text-sm font-medium mb-2">
+            Preferred Date
+          </label>
           <DatePicker
             selected={formData.date}
             onChange={(date) => handleChange("date", date || null)}
@@ -386,7 +419,9 @@ function ContactForm() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-2">Preferred Time</label>
+          <label className="block text-sm font-medium mb-2">
+            Preferred Time
+          </label>
           <Select
             options={timeOptions}
             styles={customSelectStyles}
@@ -416,11 +451,30 @@ function ContactForm() {
           <input
             type="checkbox"
             checked={formData.agreeToProcessing}
-            onChange={(e) => handleChange("agreeToProcessing", e.target.checked)}
+            onChange={(e) =>
+              handleChange("agreeToProcessing", e.target.checked)
+            }
             className="mt-1 w-4 h-4 border-gray-600 rounded focus:ring-green-500 focus:ring-2"
           />
           <label className="text-sm text-gray-400 leading-relaxed">
-            I agree to the processing of personal data
+            I agree to the{" "}
+            <a
+              href="/images/pdfs/privacy-policy.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-green-400 hover:underline"
+            >
+              Privacy Policy ↗
+            </a>{" "}
+            and{" "}
+            <a
+              href="/images/pdfs/terms-of-service.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-green-400 hover:underline"
+            >
+              Terms of Service ↗
+            </a>
           </label>
         </div>
         {errors.agreeToProcessing && (
