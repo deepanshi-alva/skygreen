@@ -1,10 +1,74 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useState, useMemo } from "react";
 import { Download, ChevronRight } from "lucide-react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
-/* --------------------------------- Types --------------------------------- */
+import Select, { GroupBase, StylesConfig } from "react-select";
+import { State, City } from "country-state-city";
 
+/* ---------------------------- Select Styles ---------------------------- */
+const customSelectStyles: StylesConfig<
+  { value: string; label: string },
+  false,
+  GroupBase<{ value: string; label: string }>
+> = {
+  control: (provided, state) => ({
+    ...provided,
+    backgroundColor: state.isDisabled ? "#222" : "#111",
+    borderColor: state.isFocused ? "#16a34a" : state.isDisabled ? "#333" : "#444",
+    borderRadius: "0.75rem",
+    padding: "2px",
+    minHeight: "48px",
+    color: "white",
+    cursor: state.isDisabled ? "not-allowed" : "default",
+    opacity: state.isDisabled ? 0.5 : 1,
+    boxShadow: state.isFocused ? "0 0 0 1px #16a34a" : "none",
+    "&:hover": { borderColor: "#16a34a" },
+  }),
+  menu: (provided) => ({
+    ...provided,
+    backgroundColor: "#111",
+    borderRadius: "0.75rem",
+    color: "white",
+  }),
+  option: (provided, state) => ({
+    ...provided,
+    backgroundColor: state.isFocused ? "#16a34a" : "#111",
+    color: state.isFocused ? "#fff" : "#ddd",
+    cursor: "pointer",
+  }),
+  singleValue: (provided) => ({ ...provided, color: "white" }),
+  placeholder: (provided, state) => ({
+    ...provided,
+    color: state.isDisabled ? "#555" : "#666",
+  }),
+};
+
+/* ---------------------------- Time Slots ---------------------------- */
+const generateTimeSlots = () => {
+  const slots: { value: string; label: string }[] = [];
+  const start = 10 * 60;
+  const end = 18 * 60;
+
+  const format12 = (minutes: number) => {
+    const h24 = Math.floor(minutes / 60);
+    const m = minutes % 60;
+    const period = h24 >= 12 ? "PM" : "AM";
+    const h12 = h24 % 12 === 0 ? 12 : h24 % 12;
+    return `${h12}:${m.toString().padStart(2, "0")} ${period}`;
+  };
+
+  for (let mins = start; mins < end; mins += 30) {
+    const label = `${format12(mins)} - ${format12(mins + 30)}`;
+    slots.push({ value: label, label });
+  }
+  return slots;
+};
+const timeOptions = generateTimeSlots();
+
+/* ---------------------------- Types ---------------------------- */
 type BusinessType =
   | "Distributor"
   | "Dealer"
@@ -16,415 +80,384 @@ type BusinessType =
 type FormData = {
   name: string;
   phone: string;
-  email?: string;
+  state: string;
+  city: string;
+  gender: string;
   businessType: BusinessType;
   otherBusinessType?: string;
-  reason: string; // why you want to join us
-  city: string;
-  date: string; // YYYY-MM-DD
-  timeSlot: string; // e.g., "10:00 - 10:30"
+  date: Date | null;
+  time: string;
+  agreeToProcessing: boolean;
 };
 
-type SubmitState = {
-  errors: Partial<Record<keyof FormData, string>>;
-  submitted: boolean;
-};
-
-/* ----------------------------- Left Components ---------------------------- */
-
+/* ---------------------------- Download Card ---------------------------- */
 function DownloadCard() {
   return (
     <div className="space-y-8">
-      {/* Download Presentation */}
       <div className="space-y-4">
-        <div className="flex items-center gap-2 text-white">
+        <div className="flex justify-center items-center gap-2 text-white">
           <Download className="w-5 h-5 text-green-500" />
           <h2 className="text-xl font-semibold">Download Presentation</h2>
         </div>
-
-        {/* Company Profile Card */}
-        <div className="relative bg-gray-900 rounded-lg p-1 overflow-hidden">
-          <div className="relative bg-gradient-to-r from-gray-800 to-gray-700 p-6 rounded-lg">
-            {/* Green accent triangle */}
-            <div className="absolute top-0 right-0 w-0 h-0 border-l-[120px] border-l-transparent border-t-[120px] border-t-green-500" />
-
-            {/* SKYGREEN Badge */}
-            <div className="absolute top-4 left-4 bg-green-500 text-white px-2 py-1 text-xs font-bold rounded">
-              SKYGREEN
-            </div>
-
-            {/* Content */}
-            <div className="relative z-10 mt-16">
-              <h3 className="text-2xl font-bold text-white mb-2 leading-tight">
-                COMPANY
-                <br />
-                PROFILE
-              </h3>
-              <p className="text-sm text-gray-300">It&apos;s time to save the world.</p>
-            </div>
-
-            {/* Background pattern */}
-            <div className="absolute inset-0 opacity-10">
-              <div className="w-full h-full bg-gradient-to-br from-transparent to-gray-600" />
-            </div>
+        <div className="relative bg-gradient-to-br from-gray-900/80 to-gray-800/80 backdrop-blur-xl rounded-2xl p-6 shadow-lg overflow-hidden">
+          <div className="absolute top-0 right-0 w-0 h-0 border-l-[120px] border-l-transparent border-t-[120px] border-t-green-500/70" />
+          <div className="absolute top-4 left-4 bg-green-500 text-white px-2 py-1 text-xs font-bold rounded">
+            SKYGREEN
+          </div>
+          <div className="relative z-10 mt-12">
+            <h3 className="text-2xl font-bold text-white mb-2 leading-tight">
+              COMPANY <br /> PROFILE
+            </h3>
+            <p className="text-sm text-gray-300">
+              It&apos;s time to save the world with clean energy.
+            </p>
           </div>
         </div>
       </div>
-
-      {/* Company Description */}
-      <div className="space-y-2">
-        <p className="text-gray-300">
-          <span className="text-white font-semibold">Indian brand</span> in the
-          renewable energy industry, providing high-quality products and
-          services to <span className="text-white font-semibold">your doorstep.</span>
+      <div className="space-y-2 text-gray-300">
+        <p className="text-center md:text-justify">
+          <span className="text-white font-semibold">An Indian brand</span> in
+          the renewable energy industry, delivering{" "}
+          <span className="text-white font-semibold">premium solar solutions</span>{" "}
+          to your doorstep.
         </p>
       </div>
     </div>
   );
 }
 
-/* ---------------------------- Helper Components --------------------------- */
-
-function FieldError({ msg }: { msg?: string }) {
-  if (!msg) return null;
-  return <p className="mt-1 text-sm text-red-400">{msg}</p>;
-}
-
-/* ---------------------------- Right: Join Form ---------------------------- */
-
+/* ---------------------------- Join Form ---------------------------- */
 function JoinUsForm() {
-  const minDate = useMemo(() => {
-    // Today (IST-safe enough for client) -> YYYY-MM-DD
-    const d = new Date();
-    const iso = new Date(d.getTime() - d.getTimezoneOffset() * 60000)
-      .toISOString()
-      .split("T")[0];
-    return iso;
-  }, []);
-
-  const timeSlots = useMemo(
-    () => [
-      "10:00 - 10:30",
-      "10:30 - 11:00",
-      "11:00 - 11:30",
-      "11:30 - 12:00",
-      "14:00 - 14:30",
-      "14:30 - 15:00",
-      "15:00 - 15:30",
-      "15:30 - 16:00",
-      "16:00 - 16:30",
-      "16:30 - 17:00",
-      "17:00 - 17:30",
-      "17:30 - 18:00",
-    ],
-    []
-  );
-
+  const today = new Date();
   const [formData, setFormData] = useState<FormData>({
     name: "",
     phone: "",
-    email: "",
+    state: "",
+    city: "",
+    gender: "",
     businessType: "Distributor",
     otherBusinessType: "",
-    reason: "",
-    city: "",
-    date: "",
-    timeSlot: "",
+    date: null,
+    time: "",
+    agreeToProcessing: false,
   });
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const [state, setState] = useState<SubmitState>({ errors: {}, submitted: false });
-
-  const setField = (name: keyof FormData, value: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-    setState((s) => ({ ...s, errors: { ...s.errors, [name]: "" } }));
+  const validateField = (field: keyof FormData, value: any): string => {
+    switch (field) {
+      case "name":
+        if (!value || value.trim().length < 2) return "Name is required.";
+        return "";
+      case "phone":
+        if (!/^\d{10}$/.test(value)) return "Enter a valid 10-digit phone number.";
+        return "";
+      case "state":
+        return value ? "" : "Select your state.";
+      case "city":
+        return value ? "" : "Select your city.";
+      case "gender":
+        return value ? "" : "Select gender.";
+      case "businessType":
+        return value ? "" : "Select business type.";
+      case "otherBusinessType":
+        if (formData.businessType === "Other" && !value?.trim())
+          return "Specify your business type.";
+        return "";
+      case "date":
+        if (!value) return "Select a date.";
+        if (value < new Date(new Date().setHours(0, 0, 0, 0)))
+          return "Date cannot be in the past.";
+        return "";
+      case "time":
+        return value ? "" : "Select a time slot.";
+      case "agreeToProcessing":
+        return value ? "" : "You must agree before submitting.";
+      default:
+        return "";
+    }
   };
 
-  const validate = (): boolean => {
-    const errors: SubmitState["errors"] = {};
-    if (!formData.name.trim()) errors.name = "Please enter your name.";
-    if (!formData.phone.trim()) {
-      errors.phone = "Please enter your phone number.";
-    } else if (!/^\d{10}$/.test(formData.phone.trim())) {
-      errors.phone = "Enter a valid 10-digit mobile number.";
-    }
-    // email is optional; basic check if present
-    if (formData.email && !/^\S+@\S+\.\S+$/.test(formData.email)) {
-      errors.email = "Please enter a valid email or leave it blank.";
-    }
-    if (!formData.city.trim()) errors.city = "Please enter your city.";
-    if (!formData.reason.trim()) errors.reason = "Please tell us why you want to join.";
-    if (!formData.businessType) errors.businessType = "Select a business type.";
-    if (formData.businessType === "Other" && !formData.otherBusinessType?.trim()) {
-      errors.otherBusinessType = "Please specify your business type.";
-    }
-    if (!formData.date) errors.date = "Select a date.";
-    if (!formData.timeSlot) errors.timeSlot = "Select a time slot.";
-
-    setState({ errors, submitted: Object.keys(errors).length === 0 });
-    return Object.keys(errors).length === 0;
+  const handleChange = (field: keyof FormData, value: any) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+    setErrors((prev) => ({ ...prev, [field]: validateField(field, value) }));
   };
 
-  const onSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!validate()) return;
 
+    const newErrors: Record<string, string> = {};
+    (Object.keys(formData) as (keyof FormData)[]).forEach((f) => {
+      newErrors[f] = validateField(f, formData[f]);
+    });
+    setErrors(newErrors);
+    if (Object.values(newErrors).some((e) => e)) return;
+
+    // 🔑 Map frontend formData → Strapi schema
     const payload = {
-      ...formData,
-      businessType:
+      name: formData.name,
+      phone_number: Number(formData.phone),
+      state: formData.state,
+      city: formData.city,
+      gender: formData.gender,
+      business_type:
         formData.businessType === "Other"
           ? `Other: ${formData.otherBusinessType}`
           : formData.businessType,
+      preferred_date: formData.date
+        ? formData.date.toISOString().split("T")[0] // convert to YYYY-MM-DD
+        : null,
+      preferred_time_slot: formData.time,
     };
 
-    console.log("Appointment booked:", payload);
-    // You can replace the above with your API call
-    // await fetch('/api/join', { method: 'POST', body: JSON.stringify(payload) })
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/join-uses`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ data: payload }), // Strapi requires { data: {...} }
+      });
 
-    // Optional: clear or show success UI
-    alert("Appointment booked! We’ll contact you shortly.");
-    setFormData({
-      name: "",
-      phone: "",
-      email: "",
-      businessType: "Distributor",
-      otherBusinessType: "",
-      reason: "",
-      city: "",
-      date: "",
-      timeSlot: "",
-    });
-    setState({ errors: {}, submitted: false });
+      if (!res.ok) throw new Error("Failed to submit");
+
+      alert("✅ Join Us form submitted successfully!");
+
+      // 🔥 Reset form after success
+      setFormData({
+        name: "",
+        phone: "",
+        state: "",
+        city: "",
+        gender: "",
+        businessType: "Distributor",
+        otherBusinessType: "",
+        date: null,
+        time: "",
+        agreeToProcessing: false,
+      });
+      setErrors({});
+    } catch (err) {
+      console.error(err);
+      alert("❌ Failed to submit. Try again later.");
+    }
   };
 
-  return (
-    <div className="space-y-8">
-      <h1 className="text-4xl lg:text-5xl font-bold mb-2">
-        Join the <span className="text-green-500">SKYGREEN Network</span>
-      </h1>
-      <p className="text-gray-300">
-        Book a quick appointment and tell us about your business.
-      </p>
 
-      <form onSubmit={onSubmit} className="space-y-8">
-        {/* Name */}
+  const inputStyle =
+    "w-full bg-black/40 border border-gray-700 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:border-green-500 focus:ring-2 focus:ring-green-500/40 focus:outline-none transition-all duration-200";
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-6">
+      {/* Name & Phone */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <label className="block text-lg font-medium mb-2">Name</label>
+          <label className="block text-sm font-medium mb-2">Full Name</label>
           <input
             type="text"
-            name="name"
             value={formData.name}
-            onChange={(e) => setField("name", e.target.value)}
-            placeholder="Your full name"
-            className="w-full bg-transparent border-b-2 border-gray-700 pb-2 text-white placeholder-gray-500 focus:border-green-500 focus:outline-none transition-colors duration-200"
+            onChange={(e) => handleChange("name", e.target.value)}
+            placeholder="John Doe"
+            className={inputStyle}
           />
-          <FieldError msg={state.errors.name} />
+          {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
         </div>
-
-        {/* Phone */}
         <div>
-          <label className="block text-lg font-medium mb-2">Number</label>
-          <div className="flex items-center gap-2">
-            <span className="text-gray-300">+91</span>
-            <input
-              type="tel"
-              name="phone"
-              inputMode="numeric"
-              value={formData.phone}
-              onChange={(e) => setField("phone", e.target.value.replace(/\D/g, ""))}
-              placeholder="10-digit mobile number"
-              className="flex-1 bg-transparent border-b-2 border-gray-700 pb-2 text-white placeholder-gray-500 focus:border-green-500 focus:outline-none transition-colors duration-200"
-            />
-          </div>
-          <FieldError msg={state.errors.phone} />
-        </div>
-
-        {/* Email (optional) */}
-        <div>
-          <label className="block text-lg font-medium mb-2">
-            Email <span className="text-gray-500 text-sm">(optional)</span>
-          </label>
+          <label className="block text-sm font-medium mb-2">Phone</label>
           <input
-            type="email"
-            name="email"
-            value={formData.email || ""}
-            onChange={(e) => setField("email", e.target.value)}
-            placeholder="your@email.com"
-            className="w-full bg-transparent border-b-2 border-gray-700 pb-2 text-white placeholder-gray-500 focus:border-green-500 focus:outline-none transition-colors duration-200"
+            type="tel"
+            value={formData.phone}
+            placeholder="+91 9876543210"
+            onChange={(e) => handleChange("phone", e.target.value)}
+            className={inputStyle}
           />
-          <FieldError msg={state.errors.email} />
+          {errors.phone && <p className="text-red-500 text-sm">{errors.phone}</p>}
         </div>
+      </div>
 
+      {/* State, City, Gender */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div>
+          <label className="block text-sm font-medium mb-2">State</label>
+          <Select
+            options={State.getStatesOfCountry("IN").map((s) => ({
+              value: s.isoCode,
+              label: s.name,
+            }))}
+            styles={customSelectStyles}
+            value={
+              formData.state
+                ? {
+                  value: formData.state,
+                  label: State.getStateByCode(formData.state)?.name || "",
+                }
+                : null
+            }
+            onChange={(opt) => handleChange("state", opt?.value || "")}
+            placeholder="Select your state"
+          />
+          {errors.state && <p className="text-red-500 text-sm">{errors.state}</p>}
+        </div>
+        <div>
+          <label className="block text-sm font-medium mb-2">City</label>
+          <Select
+            options={
+              formData.state
+                ? City.getCitiesOfState("IN", formData.state).map((c) => ({
+                  value: c.name,
+                  label: c.name,
+                }))
+                : []
+            }
+            styles={customSelectStyles}
+            value={formData.city ? { value: formData.city, label: formData.city } : null}
+            onChange={(opt) => handleChange("city", opt?.value || "")}
+            placeholder={formData.state ? "Now select your city" : "Select state first"}
+            isDisabled={!formData.state}
+          />
+          {errors.city && <p className="text-red-500 text-sm">{errors.city}</p>}
+        </div>
+        <div>
+          <label className="block text-sm font-medium mb-2">Gender</label>
+          <Select
+            options={[
+              { value: "male", label: "Male" },
+              { value: "female", label: "Female" },
+              { value: "na", label: "Prefer not to say" },
+            ]}
+            styles={customSelectStyles}
+            value={
+              formData.gender
+                ? [
+                  { value: "male", label: "Male" },
+                  { value: "female", label: "Female" },
+                  { value: "na", label: "Prefer not to say" },
+                ].find((g) => g.value === formData.gender) || null
+                : null
+            }
+            onChange={(opt) => handleChange("gender", opt?.value || "")}
+            placeholder="Select gender"
+          />
+          {errors.gender && <p className="text-red-500 text-sm">{errors.gender}</p>}
+        </div>
+      </div>
+
+      {/* Date & Time & business type*/}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {/* Business Type */}
         <div>
-          <label className="block text-lg font-medium mb-2">Business Type</label>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <select
-              name="businessType"
-              value={formData.businessType}
-              onChange={(e) => setField("businessType", e.target.value as BusinessType)}
-              className="w-full bg-transparent border-b-2 border-gray-700 pb-2 text-white focus:border-green-500 focus:outline-none transition-colors duration-200"
-            >
-              {[
-                "Distributor",
-                "Dealer",
-                "Retailer",
-                "EPC Company",
-                "Installer",
-                "Other",
-              ].map((opt) => (
-                <option key={opt} value={opt} className="bg-black">
-                  {opt}
-                </option>
-              ))}
-            </select>
-
-            {formData.businessType === "Other" && (
-              <input
-                type="text"
-                name="otherBusinessType"
-                value={formData.otherBusinessType || ""}
-                onChange={(e) => setField("otherBusinessType", e.target.value)}
-                placeholder="Please specify"
-                className="w-full bg-transparent border-b-2 border-gray-700 pb-2 text-white placeholder-gray-500 focus:border-green-500 focus:outline-none transition-colors duration-200"
-              />
-            )}
-          </div>
-          <FieldError msg={state.errors.businessType || state.errors.otherBusinessType} />
-        </div>
-
-        {/* Why you want to join us */}
-        {/* Why you want to join us */}
-        <div>
-          <label className="block text-lg font-medium mb-2">
-            Why do you want to join us?
-          </label>
-          <textarea
-            name="reason"
-            value={formData.reason}
-            onChange={(e) => {
-              setField("reason", e.target.value);
-
-              // auto-expand logic
-              const el = e.target;
-              el.rows = 1; // reset first
-              const currentRows = Math.min(Math.floor(el.scrollHeight / 24), 4);
-              el.rows = currentRows;
-            }}
-            placeholder="Tell us a bit about your goals and expectations"
-            rows={1}
-            className="w-full bg-transparent border-b-2 border-gray-700 pb-2 text-white placeholder-gray-500 
-               focus:border-green-500 focus:outline-none transition-colors duration-200 resize-none"
+          <label className="block text-sm font-medium mb-2">Business Type</label>
+          <Select
+            options={[
+              { value: "Distributor", label: "Distributor" },
+              { value: "Dealer", label: "Dealer" },
+              { value: "Retailer", label: "Retailer" },
+              { value: "EPC Company", label: "EPC Company" },
+              { value: "Installer", label: "Installer" },
+              { value: "Other", label: "Other" },
+            ]}
+            styles={customSelectStyles}
+            value={
+              formData.businessType
+                ? { value: formData.businessType, label: formData.businessType }
+                : null
+            }
+            onChange={(opt) => handleChange("businessType", opt?.value as BusinessType)}
+            placeholder="Select business type"
           />
-          <FieldError msg={state.errors.reason} />
-        </div>
-
-
-        {/* City */}
-        <div>
-          <label className="block text-lg font-medium mb-2">City</label>
-          <input
-            type="text"
-            name="city"
-            value={formData.city}
-            onChange={(e) => setField("city", e.target.value)}
-            placeholder="Your city"
-            className="w-full bg-transparent border-b-2 border-gray-700 pb-2 text-white placeholder-gray-500 focus:border-green-500 focus:outline-none transition-colors duration-200"
-          />
-          <FieldError msg={state.errors.city} />
-        </div>
-
-        {/* Date + Time Slot */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Date */}
-          <div>
-            <label className="block text-lg font-medium mb-2">
-              Select date to book the appointment
-            </label>
+          {formData.businessType === "Other" && (
             <input
-              type="date"
-              name="date"
-              value={formData.date}
-              onChange={(e) => {
-                // Reset time slot if date changes
-                setField("date", e.target.value);
-                setField("timeSlot", "");
-              }}
-              min={minDate}
-              className="w-full bg-transparent border-b-2 border-gray-700 pb-2 text-white placeholder-gray-500 focus:border-green-500 focus:outline-none transition-colors duration-200"
+              type="text"
+              placeholder="Please specify"
+              value={formData.otherBusinessType}
+              onChange={(e) => handleChange("otherBusinessType", e.target.value)}
+              className={inputStyle + " mt-2"}
             />
-            <FieldError msg={state.errors.date} />
-          </div>
-
-          {/* Time Slot */}
-          <div>
-            <label className="block text-lg font-medium mb-2">
-              Select the time slot for the selected date
-            </label>
-            <select
-              name="timeSlot"
-              value={formData.timeSlot}
-              onChange={(e) => setField("timeSlot", e.target.value)}
-              disabled={!formData.date}
-              className={`w-full bg-transparent border-b-2 pb-2 text-white focus:border-green-500 focus:outline-none transition-colors duration-200 ${formData.date ? "border-gray-700" : "border-gray-800 text-gray-500"
-                }`}
-            >
-              <option value="" className="bg-black">
-                {formData.date ? "Choose a slot" : "Select date first"}
-              </option>
-              {timeSlots.map((slot) => (
-                <option key={slot} value={slot} className="bg-black">
-                  {slot}
-                </option>
-              ))}
-            </select>
-            <FieldError msg={state.errors.timeSlot} />
-          </div>
+          )}
+          {(errors.businessType || errors.otherBusinessType) && (
+            <p className="text-red-500 text-sm">
+              {errors.businessType || errors.otherBusinessType}
+            </p>
+          )}
         </div>
 
-        {/* Submit */}
-        <div className="pt-2">
-          <button
-            type="submit"
-            className="group flex items-center gap-2 bg-green-600 hover:bg-green-500 text-white px-8 py-3 rounded-full transition-all duration-200 hover:scale-105 disabled:opacity-60 disabled:hover:scale-100"
-            disabled={!formData.name || !formData.phone || !formData.city || !formData.date || !formData.timeSlot || !formData.reason}
-          >
-            Book appointment
-            <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
-          </button>
+        <div>
+          <label className="block text-sm font-medium mb-2">Preferred Date</label>
+          <DatePicker
+            selected={formData.date}
+            onChange={(date) => handleChange("date", date)}
+            minDate={today}
+            className={inputStyle}
+            popperClassName="datepicker-center"
+            popperPlacement="bottom"
+            placeholderText="Select a date"
+          />
+          {errors.date && <p className="text-red-500 text-sm">{errors.date}</p>}
         </div>
-      </form>
-    </div>
+        <div>
+          <label className="block text-sm font-medium mb-2">Preferred Time</label>
+          <Select
+            options={timeOptions}
+            styles={customSelectStyles}
+            value={timeOptions.find((t) => t.value === formData.time) || null}
+            onChange={(opt) => handleChange("time", opt?.value || "")}
+            placeholder="Select a time slot"
+          />
+          {errors.time && <p className="text-red-500 text-sm">{errors.time}</p>}
+        </div>
+      </div>
+
+      {/* Agreement */}
+      <div className="flex flex-col gap-2">
+        <div className="flex items-start gap-3">
+          <input
+            type="checkbox"
+            checked={formData.agreeToProcessing}
+            onChange={(e) => handleChange("agreeToProcessing", e.target.checked)}
+            className="mt-1 w-4 h-4 border-gray-600 rounded focus:ring-green-500 focus:ring-2"
+          />
+          <label className="text-sm text-gray-400">
+            I agree to the processing of personal data
+          </label>
+        </div>
+        {errors.agreeToProcessing && (
+          <p className="text-red-500 text-sm">{errors.agreeToProcessing}</p>
+        )}
+      </div>
+
+      {/* Submit */}
+      <div className="pt-4">
+        <button
+          type="submit"
+          className="group flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-black font-semibold px-8 py-3 rounded-full transition-all duration-200 hover:scale-105 shadow-lg"
+        >
+          Join Network
+          <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
+        </button>
+      </div>
+    </form>
   );
 }
 
-/* ------------------------------- Main Shell ------------------------------- */
-
-export default function ContactUs() {
+/* ---------------------------- Main ---------------------------- */
+export default function JoinUs() {
   return (
-    <div className="min-h-screen bg-black text-white">
-      <div className="container mx-auto px-6 lg:pr-15 pt-16">
-        <div
-          className="
-            grid 
-            grid-cols-1 
-            lg:grid-cols-[22%_75%] 
-            gap-19 
-            max-w-7xl 
-            mx-auto
-          "
-        >
-          {/* Left: 20% width */}
-          <aside className="lg:sticky lg:top-8 self-start">
+    <div className="bg-gradient-to-br from-black via-gray-900 to-black text-white">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-12 py-12 md:py-16">
+        <div className="grid grid-cols-1 lg:grid-cols-[22%_minmax(0,1fr)] gap-10 lg:gap-12 max-w-7xl mx-auto">
+          
+          {/* Left Sidebar */}
+          <aside className="order-2 lg:order-1 lg:sticky lg:top-8 self-start">
             <DownloadCard />
           </aside>
 
-          {/* Right: 75% width */}
-          <main>
-            <div className="p-16 bg-[url('/images/testimonials/download_converted.png')] bg-no-repeat bg-cover bg-center rounded-4xl">
-              <JoinUsForm />
+          {/* Right Form */}
+          <main className="order-1 lg:order-2">
+            <div className="relative w-full max-w-full lg:max-w-5xl mx-auto">
+              <div className="relative p-6 sm:p-8 md:p-12 lg:p-16 rounded-3xl 
+                              bg-gradient-to-br from-gray-900/90 to-black/90 
+                              backdrop-blur-xl shadow-[0_20px_40px_rgba(0,0,0,0.8),0_0_30px_rgba(34,197,94,0.25)] 
+                              hover:shadow-[0_25px_50px_rgba(0,0,0,0.85),0_0_40px_rgba(34,197,94,0.35)]">
+                <div className="absolute inset-0 rounded-3xl border border-green-500/20 pointer-events-none"></div>
+                <JoinUsForm />
+              </div>
             </div>
           </main>
         </div>
@@ -432,3 +465,4 @@ export default function ContactUs() {
     </div>
   );
 }
+

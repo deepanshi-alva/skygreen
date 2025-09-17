@@ -197,19 +197,65 @@ function ContactForm() {
     setErrors((prev) => ({ ...prev, [field]: validateField(field, value) }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const newErrors: Record<string, string> = {};
 
+    const newErrors: Record<string, string> = {};
     (Object.keys(formData) as (keyof FormData)[]).forEach((field) => {
       newErrors[field] = validateField(field, formData[field]);
     });
-
     setErrors(newErrors);
+
     if (Object.values(newErrors).some((err) => err !== "")) return;
 
-    console.log("✅ Form submitted:", formData);
-    alert("Form submitted successfully!");
+    const payload = {
+      name: formData.name,
+      phone_number: Number(formData.phone),
+      state: formData.state,
+      city: formData.city,
+      gender: formData.gender,
+      capacity_required: Number(formData.capacity),
+      preferred_date: formData.date
+        ? formData.date.toISOString().split("T")[0]
+        : null,
+      preferred_time_slot: formData.time,
+      message: formData.message,
+    };
+
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/contact-uses`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ data: payload }), // Strapi needs { data: {...} }
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to submit");
+      }
+
+      alert("✅ Form submitted successfully!");
+
+      // 🔥 Clear form after success
+      setFormData({
+        name: "",
+        phone: "",
+        state: "",
+        city: "",
+        gender: "",
+        capacity: "",
+        date: null,
+        time: "",
+        message: "",
+        agreeToProcessing: false,
+      });
+
+      setErrors({});
+    } catch (err) {
+      console.error(err);
+      alert("❌ Failed to submit. Try again later.");
+    }
   };
 
   const inputStyle =
@@ -257,9 +303,9 @@ function ContactForm() {
             value={
               formData.state
                 ? {
-                    value: formData.state,
-                    label: State.getStateByCode(formData.state)?.name || "",
-                  }
+                  value: formData.state,
+                  label: State.getStateByCode(formData.state)?.name || "",
+                }
                 : null
             }
             onChange={(opt) => handleChange("state", opt?.value || "")}
@@ -274,9 +320,9 @@ function ContactForm() {
             options={
               formData.state
                 ? City.getCitiesOfState("IN", formData.state).map((c) => ({
-                    value: c.name,
-                    label: c.name,
-                  }))
+                  value: c.name,
+                  label: c.name,
+                }))
                 : []
             }
             styles={customSelectStyles}
@@ -300,8 +346,8 @@ function ContactForm() {
             value={
               formData.gender
                 ? ["male", "female", "na"]
-                    .map((g) => ({ value: g, label: g === "na" ? "Prefer not to specify" : g.charAt(0).toUpperCase() + g.slice(1) }))
-                    .find((g) => g.value === formData.gender) || null
+                  .map((g) => ({ value: g, label: g === "na" ? "Prefer not to specify" : g.charAt(0).toUpperCase() + g.slice(1) }))
+                  .find((g) => g.value === formData.gender) || null
                 : null
             }
             onChange={(opt) => handleChange("gender", opt?.value || "")}
@@ -401,15 +447,26 @@ export default function ContactUs() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-12 py-12 md:py-16">
-        <div className="grid grid-cols-1 lg:grid-cols-[20%_80%] gap-10 lg:gap-12 max-w-7xl mx-auto">
+        <div
+          className="
+            grid 
+            grid-cols-1 
+            lg:grid-cols-[22%_minmax(0,1fr)] 
+            gap-10 lg:gap-12 
+            max-w-7xl 
+            mx-auto
+          "
+        >
+          {/* Sidebar */}
           <aside className="order-2 lg:order-1 lg:sticky lg:top-8 self-start">
             <div className="mx-auto max-w-md lg:max-w-none">
               <DownloadCard />
             </div>
           </aside>
 
+          {/* Form */}
           <main className="order-1 lg:order-2">
-            <div className="relative max-w-2xl lg:max-w-full mx-auto">
+            <div className="relative w-full max-w-full lg:max-w-5xl mx-auto">
               <div
                 className="
                   relative 

@@ -23,7 +23,7 @@ export default function HeroSection() {
         <Image
           width={1000}
           height={1000}
-          src="/images/contact/hero.png"
+          src="/images/contact/join.png"
           alt="Contact Hero"
           className="absolute inset-0 h-full w-full object-cover"
           style={{
