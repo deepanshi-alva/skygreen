@@ -218,7 +218,7 @@ export default function ClimateSelector() {
           {/* Right column */}
           <div className="specs-box">
             <div
-              className="mt-5 mr-4 md:mt-6 text-white rounded-none shadow-lg"
+              className="lg:mt-5 lg:mr-4 m-4 md:mt-6 text-white rounded-none shadow-lg"
               style={{
                 borderImage:
                   "linear-gradient(140deg, #3ef838ff, #002f00ac, #002f00ac, #002f00ac, #002f00ac, #3ef838ff) 1",
