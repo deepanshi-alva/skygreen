@@ -72,7 +72,7 @@ export default function CenterOutput({ results }) {
         <div className="bg-[#1a1a1a] p-4 rounded-lg border border-white/10 shadow-md">
           <p className="text-sm text-gray-400">Recommended System</p>
           <p className="text-2xl font-bold text-green-400 break-all">
-            {format(results.final_dc_kw)} kW
+            {format(results?.final_dc_kw)} kW
           </p>
         </div>
 
@@ -120,7 +120,7 @@ export default function CenterOutput({ results }) {
           {results?.eligibleKw > 0 && (
             <div className="flex items-center justify-center">
               <p className="text-md text-gray-300">
-                Eligible Subsidy : <span>{format(results.eligibleKw)}</span> KW
+                Eligible Subsidy : <span>{format(results?.eligibleKw)}</span> KW
               </p>
             </div>
           )}
@@ -378,7 +378,7 @@ export default function CenterOutput({ results }) {
                   <span className="text-green-400 font-semibold">
                     {results.panel_count}
                   </span>{" "}
-                  panels 
+                  panels
                   {" "})
                 </p>
 
@@ -424,43 +424,60 @@ export default function CenterOutput({ results }) {
 
             {/* Battery Options */}
             {results?.battery_options?.length > 0 && (
-              <div>
-                <h4 className="text-lg font-semibold text-gray-200 mb-2">
+              <div className="mt-8">
+                <h4 className="text-lg font-semibold text-green-400 mb-4">
                   Battery Options
                 </h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {results.battery_options.map((bat, idx) => (
-                    <div
-                      key={idx}
-                      className="p-4 rounded-lg border border-white/10 bg-[#111]"
-                    >
-                      <p className="text-green-400 font-semibold">
-                        {bat.type} (Bus: {bat.bus_voltage}V)
-                      </p>
-                      <p className="text-sm text-gray-400">
-                        Recommended Range: {bat.min_recommended.kwh} –{" "}
-                        {bat.max_recommended.kwh} kWh
-                      </p>
-                      {Object.entries(bat.connection).map(
-                        ([key, conn], cIdx) => (
-                          <div key={cIdx} className="mt-2">
-                            <p className="text-xs text-yellow-400">
-                              {conn.note}
-                            </p>
-                            {conn.skus.map((sku, sIdx) => (
-                              <p key={sIdx} className="text-xs text-gray-400">
-                                {sku.type} {sku.ah}Ah → {sku.usable_kwh} kWh
-                                usable
-                              </p>
-                            ))}
-                          </div>
-                        )
-                      )}
-                    </div>
-                  ))}
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead className="bg-[#111] text-gray-300">
+                      <tr>
+                        <th className="px-3 py-2 text-left">Type</th>
+                        <th className="px-3 py-2 text-left">Capacity</th>
+                        <th className="px-3 py-2 text-left">Usable (kWh)</th>
+                        <th className="px-3 py-2 text-left">Backup (Essentials)</th>
+                        <th className="px-3 py-2 text-left">Backup (1 AC)</th>
+                        <th className="px-3 py-2 text-left">Backup (2 ACs)</th>
+                        <th className="px-3 py-2 text-left">Charge Time</th>
+                        <th className="px-3 py-2 text-left">Connection</th>
+                        <th className="px-3 py-2 text-left">Trade-off</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {results.battery_options.map((bat, idx) => (
+                        <tr
+                          key={idx}
+                          className={`border-t border-white/10 ${bat.recommended ? "bg-green-900/20" : "bg-[#1a1a1a]"
+                            }`}
+                        >
+                          <td className="px-3 py-2 font-semibold text-green-400">
+                            {bat.type} {bat.recommended && "⭐"}
+                          </td>
+                          <td className="px-3 py-2 text-gray-300">
+                            {bat.ah}Ah ({bat.nominal} kWh)
+                          </td>
+                          <td className="px-3 py-2 text-gray-300">{bat.usable}</td>
+                          <td className="px-3 py-2 text-gray-300">
+                            {bat.backup.essentials} hrs
+                          </td>
+                          <td className="px-3 py-2 text-gray-300">{bat.backup.one_ac} hrs</td>
+                          <td className="px-3 py-2 text-gray-300">
+                            {bat.backup.two_acs} hrs
+                          </td>
+                          <td className="px-3 py-2 text-gray-300">{bat.charge_time} hrs</td>
+                          <td className="px-3 py-2 text-gray-300">{bat.connection}</td>
+                          <td className="px-3 py-2 text-gray-400 italic">{bat.tradeoff}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
+                <p className="text-xs text-gray-400 mt-2">
+                  ⭐ Highlighted option = SKYGREEN Recommended
+                </p>
               </div>
             )}
+
           </div>
         )}
 
