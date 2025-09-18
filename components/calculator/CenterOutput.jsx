@@ -8,6 +8,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import { Info } from "lucide-react"; // 👈 info icon
 
 export default function CenterOutput({ results }) {
   const [mode, setMode] = useState("solar");
@@ -159,15 +160,15 @@ export default function CenterOutput({ results }) {
         <div className="grid grid-cols-1 gap-4">
           {(results?.sizing_method === "bill" ||
             results?.sizing_method === "units") && (
-            <div className="bg-[#1a1a1a] p-4 rounded-lg border border-white/10 shadow-md">
-              <p className="text-sm text-gray-400">
-                With grid daily consumption
-              </p>
-              <p className="text-xl font-bold text-green-400 break-all">
-                {format(results.daily_unit)}
-              </p>
-            </div>
-          )}
+              <div className="bg-[#1a1a1a] p-4 rounded-lg border border-white/10 shadow-md">
+                <p className="text-sm text-gray-400">
+                  With grid daily consumption
+                </p>
+                <p className="text-xl font-bold text-green-400 break-all">
+                  {format(results.daily_unit)}
+                </p>
+              </div>
+            )}
 
           <div className="bg-[#1a1a1a] p-4 rounded-lg border border-white/10 shadow-md">
             <p className="text-sm text-gray-400">Solar Units Produced</p>
@@ -245,28 +246,26 @@ export default function CenterOutput({ results }) {
           <div className="flex gap-4 mt-4">
             <button
               onClick={() => setMode("solar")}
-              className={`px-4 py-1 rounded-md font-semibold ${
-                mode === "solar"
-                  ? "bg-green-500 text-black"
-                  : "bg-[#111] text-green-400 border border-green-500"
-              }`}
+              className={`px-4 py-1 rounded-md font-semibold ${mode === "solar"
+                ? "bg-green-500 text-black"
+                : "bg-[#111] text-green-400 border border-green-500"
+                }`}
             >
               With Solar
             </button>
             {/* Show With Grid only if not RWA or plant_size */}
             {(results?.sizing_method === "bill" ||
               results?.sizing_method === "units") && (
-              <button
-                onClick={() => setMode("grid")}
-                className={`px-4 py-1 rounded-md font-semibold ${
-                  mode === "grid"
+                <button
+                  onClick={() => setMode("grid")}
+                  className={`px-4 py-1 rounded-md font-semibold ${mode === "grid"
                     ? "bg-green-500 text-black"
                     : "bg-[#111] text-green-400 border border-green-500"
-                }`}
-              >
-                With Grid
-              </button>
-            )}
+                    }`}
+                >
+                  With Grid
+                </button>
+              )}
           </div>
         </div>
       </div>
@@ -310,85 +309,80 @@ export default function CenterOutput({ results }) {
             )}
 
             {/* SKU Recommendation */}
-            {results?.nearest_sku && (
-              <div className="mb-6">
-                <h4 className="text-lg font-semibold text-gray-200 mb-2">
-                  Recommended SKU
-                </h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="p-4  rounded-lg bg-[#111]">
-                    <p className="text-green-400 font-semibold">Nearest SKU</p>
-                    <p className="text-sm text-gray-400">
-                      {results.nearest_sku.inverter_kw} kW (
-                      {results.nearest_sku.phase})
-                    </p>
-                    <p className="text-sm text-gray-400">
-                      DC/AC Ratio: {results.nearest_sku.dc_ac_ratio}
-                    </p>
-                    <p className="text-sm text-gray-400">
-                      Bus Voltage: {results.nearest_sku.bus_voltage} V
-                    </p>
-                    <p className="text-xs text-gray-500">
-                      {results.nearest_sku.note}
-                    </p>
-                  </div>
-                  {results?.wider_sku && (
-                    <div className="p-4 border border-white/10 rounded-lg bg-[#111]">
-                      <p className="text-yellow-400 font-semibold">Wider SKU</p>
-                      <p className="text-sm text-gray-400">
-                        {results.wider_sku.inverter_kw} kW (
-                        {results.wider_sku.phase})
-                      </p>
-                      <p className="text-sm text-gray-400">
-                        DC/AC Ratio: {results.wider_sku.dc_ac_ratio}
-                      </p>
-                      <p className="text-sm text-gray-400">
-                        Bus Voltage: {results.wider_sku.bus_voltage} V
-                      </p>
-                      <p className="text-xs text-gray-500">
-                        {results.wider_sku.note}
-                      </p>
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
+            {results?.inverter_options?.length > 0 && (
+              (() => {
+                // Filter valid inverter options
+                const validSkus = results.inverter_options.filter(
+                  (inv) => inv.dc_ac_ratio <= 1
+                );
 
-            {/* "string_design": {
-        "single_mppt": {
-            "mppt_mode": "single",
-            "panels_per_string": 7,
-            "strings_used": 1,
-            "panels_connected": 7,
-            "voc_total": "397.6",
-            "vmp_total": "306.7",
-            "isc_total": "13.8",
-            "max_parallel_strings": 2
-        },
-        "dual_mppt": [
-            {
-                "mppt": 1,
-                "panels_per_string": 3,
-                "voc_total": "170.4",
-                "vmp_total": "131.5",
-                "isc_total": "13.8"
-            },
-            {
-                "mppt": 2,
-                "panels_per_string": 4,
-                "voc_total": "227.2",
-                "vmp_total": "175.3",
-                "isc_total": "13.8"
-            }
-        ]
-    }, */}
+                if (validSkus.length === 0) return null; // nothing valid → show nothing
+
+                return (
+                  <div className="mb-6">
+                    <h4 className="text-lg font-semibold text-gray-200 mb-2">
+                      Recommended SKU
+                    </h4>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {validSkus.map((inv, idx) => (
+                        <div
+                          key={idx}
+                          className="p-4 rounded-lg border border-white/10 bg-[#111]"
+                        >
+                          <p className="text-green-400 font-semibold">
+                            {inv.inverter_size_kw} kW ({inv.phase})
+                          </p>
+                          <p className="text-sm text-gray-400">
+                            DC/AC Ratio: {inv.dc_ac_ratio}
+                          </p>
+                          <p className="text-sm text-gray-400">
+                            Bus Voltage: {inv.bus_voltage} V
+                          </p>
+                          <p className="text-xs text-gray-500 italic">{inv.note}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })()
+            )}
 
             {/* String Design */}
             {results?.string_design && (
               <div className="mb-6">
-                <h4 className="text-lg font-semibold text-gray-200 mb-2">
-                  String Design
-                </h4>
+                <div className="flex items-center gap-2 mb-2">
+                  <h4 className="text-lg font-semibold text-gray-200">
+                    String Design
+                  </h4>
+
+                  {/* Info button with tooltip */}
+                  <div className="relative group">
+                    <Info className="w-4 h-4 text-blue-400 cursor-pointer mt-1" />
+                    <div className="absolute left-6 top-0 w-72 bg-black text-gray-300 text-justify text-xs rounded-lg shadow-lg p-3 border border-green-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+                      <span className="text-green-400 font-semibold">Important Note :{" "}</span>
+                      String sizing is calculated based on the panel’s open-circuit voltage (Voc),
+                      inverter’s maximum DC input voltage (usually 1000 V for residential/commercial
+                      and 1500 V for utility-scale), and a <span className="font-semibold">20% safety margin</span>
+                      to account for bifacial gain and low-temperature conditions.
+                    </div>
+                  </div>
+                </div>
+
+                {/* ✅ New line with system summary */}
+                <p className="text-sm text-gray-400 mb-3">
+                  ( For a recommended system of{" "}
+                  <span className="text-green-400 font-semibold">
+                    {format(results.final_dc_kw)} kW
+                  </span>{" "}
+                  using{" "}
+                  <span className="text-green-400 font-semibold">
+                    {results.panel_count}
+                  </span>{" "}
+                  panels 
+                  {" "})
+                </p>
+
+                {/* Cards */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {/* Single MPPT */}
                   <div className="p-4 rounded-lg border border-white/10 bg-[#111]">
@@ -400,11 +394,10 @@ export default function CenterOutput({ results }) {
                     ) : (
                       <>
                         <p className="text-sm text-gray-400">
-                          {results.string_design.single_mppt.panels_per_string}{" "}
-                          panels per string
+                          {results.string_design.single_mppt.panels_per_string} panels per string
                         </p>
                         <p className="text-xs text-gray-500">
-                          Voc - {results.string_design.single_mppt.voc_total} V,
+                          Voc_cold - {results.string_design.single_mppt.voc_total} V,
                           Vmp - {results.string_design.single_mppt.vmp_total} V,
                           Isc - {results.string_design.single_mppt.isc_total} A
                         </p>
@@ -413,16 +406,18 @@ export default function CenterOutput({ results }) {
                   </div>
 
                   {/* Dual MPPT */}
-                  <div className="p-4 rounded-lg border border-white/10 bg-[#111]">
-                    <p className="font-semibold text-green-400">Dual MPPT</p>
-                    {results.string_design.dual_mppt.map((mppt, idx) => (
-                      <p key={idx} className="text-sm text-gray-400">
-                        MPPT {mppt.mppt}: {mppt.panels_per_string} panels → Voc{" "}
-                        {mppt.voc_total} V, Vmp {mppt.vmp_total} V, Isc{" "}
-                        {mppt.isc_total} A
-                      </p>
-                    ))}
-                  </div>
+                  {results.panel_count >= 4 && (
+                    <div className="p-4 rounded-lg border border-white/10 bg-[#111]">
+                      <p className="font-semibold text-green-400">Dual MPPT</p>
+                      {results.string_design.dual_mppt.map((mppt, idx) => (
+                        <p key={idx} className="text-sm text-gray-400">
+                          MPPT {mppt.mppt}: {mppt.panels_per_string} panels → Voc_cold -{" "}
+                          {mppt.voc_total} V, Vmp - {mppt.vmp_total} V, Isc -{" "}
+                          {mppt.isc_total} A
+                        </p>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
             )}
@@ -484,14 +479,14 @@ export default function CenterOutput({ results }) {
                   level === 1
                     ? "h1"
                     : level === 2
-                    ? "h2"
-                    : level === 3
-                    ? "h3"
-                    : level === 4
-                    ? "h4"
-                    : level === 5
-                    ? "h5"
-                    : "h6";
+                      ? "h2"
+                      : level === 3
+                        ? "h3"
+                        : level === 4
+                          ? "h4"
+                          : level === 5
+                            ? "h5"
+                            : "h6";
 
                 const headingStyles = {
                   h1: "text-2xl font-bold text-green-400 mt-4",
@@ -509,9 +504,8 @@ export default function CenterOutput({ results }) {
                       return (
                         <span
                           key={cIdx}
-                          className={`${child.bold ? "font-bold" : ""} ${
-                            child.underline ? "underline" : ""
-                          }`}
+                          className={`${child.bold ? "font-bold" : ""} ${child.underline ? "underline" : ""
+                            }`}
                         >
                           {text}
                         </span>
@@ -549,9 +543,8 @@ export default function CenterOutput({ results }) {
                       return (
                         <span
                           key={cIdx}
-                          className={`${child.bold ? "font-bold" : ""} ${
-                            child.underline ? "underline" : ""
-                          } whitespace-pre-wrap`} // ✅ Keep indentation visible
+                          className={`${child.bold ? "font-bold" : ""} ${child.underline ? "underline" : ""
+                            } whitespace-pre-wrap`} // ✅ Keep indentation visible
                         >
                           {text}
                         </span>
@@ -574,9 +567,8 @@ export default function CenterOutput({ results }) {
                         {li.children.map((child, cIdx) => (
                           <span
                             key={cIdx}
-                            className={`${child.bold ? "font-bold" : ""} ${
-                              child.underline ? "underline" : ""
-                            }`}
+                            className={`${child.bold ? "font-bold" : ""} ${child.underline ? "underline" : ""
+                              }`}
                           >
                             {child.text}
                           </span>
