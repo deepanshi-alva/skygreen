@@ -10,3 +10,19 @@ responsiveness = footer
           The next level <span className="text-[#3ef838]">High‑quality solar modules</span>
         </h1>
       </div>
+
+      <section className="relative min-h-screen overflow-hidden pt-15 pb-15">
+      {/* Background video in parent section (full-bleed) */}
+      <video
+        ref={bgRef}
+        className="absolute inset-0 w-full h-full object-cover pointer-events-none z-0"
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        aria-hidden="true"
+        src="/images/climate/climateBG.mp4"
+      >
+        <source src="/images/climate/climateBG.mp4" type="video/mp4" />
+      </video>
