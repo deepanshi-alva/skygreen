@@ -438,6 +438,7 @@ export default function CenterOutput({ results }) {
                         <th className="px-3 py-2 text-left">Backup (Essentials)</th>
                         <th className="px-3 py-2 text-left">Backup (1 AC)</th>
                         <th className="px-3 py-2 text-left">Backup (2 ACs)</th>
+                        <th className="px-3 py-2 text-left">Maximum batteries</th>
                         <th className="px-3 py-2 text-left">Charge Time</th>
                         <th className="px-3 py-2 text-left">Connection</th>
                         <th className="px-3 py-2 text-left">Trade-off</th>
@@ -464,6 +465,9 @@ export default function CenterOutput({ results }) {
                           <td className="px-3 py-2 text-gray-300">
                             {bat.backup.two_acs} hrs
                           </td>
+                           <td className="px-3 py-2 text-gray-300">
+                            {bat.max_batteries_per_day}
+                          </td>
                           <td className="px-3 py-2 text-gray-300">{bat.charge_time} hrs</td>
                           <td className="px-3 py-2 text-gray-300">{bat.connection}</td>
                           <td className="px-3 py-2 text-gray-400 italic">{bat.tradeoff}</td>
@@ -472,9 +476,9 @@ export default function CenterOutput({ results }) {
                     </tbody>
                   </table>
                 </div>
-                <p className="text-xs text-gray-400 mt-2">
+                {/* <p className="text-xs text-gray-400 mt-2">
                   ⭐ Highlighted option = SKYGREEN Recommended
-                </p>
+                </p> */}
               </div>
             )}
 
