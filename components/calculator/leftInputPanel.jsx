@@ -39,7 +39,7 @@ export default function LeftInputPanel({ onResults }) {
         setLoadingStates(true);
         const res = await fetch(
           `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/states?fields[0]=name&fields[1]=rwa_enabled&pagination[pageSize]=100&sort=name:asc`,
-          { cache: "force-cache", next: { revalidate: 3600 } }
+          // { cache: "force-cache", next: { revalidate: 3600 } }
         );
         const data = await res.json();
         const formatted = Array.isArray(data.data)
@@ -59,6 +59,8 @@ export default function LeftInputPanel({ onResults }) {
     }
     fetchStates();
   }, []);
+
+  console.log("these are the states which are being fetched", states)
 
   // Close dropdown on outside click
   useEffect(() => {
