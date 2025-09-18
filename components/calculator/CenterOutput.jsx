@@ -406,7 +406,7 @@ export default function CenterOutput({ results }) {
                   </div>
 
                   {/* Dual MPPT */}
-                  {results.panel_count >= 4 && (
+                  {results.panel_count > 6 && (
                     <div className="p-4 rounded-lg border border-white/10 bg-[#111]">
                       <p className="font-semibold text-green-400">Dual MPPT</p>
                       {results.string_design.dual_mppt.map((mppt, idx) => (
@@ -451,7 +451,7 @@ export default function CenterOutput({ results }) {
                             }`}
                         >
                           <td className="px-3 py-2 font-semibold text-green-400">
-                            {bat.type} {bat.recommended && "⭐"}
+                            {bat.type} {bat.recommended}
                           </td>
                           <td className="px-3 py-2 text-gray-300">
                             {bat.ah}Ah ({bat.nominal} kWh)
