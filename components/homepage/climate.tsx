@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Image from "next/image";
 
 type ClimateKey = "rainy" | "snowy" | "desert" | "hailing" | "windy";
@@ -10,7 +10,7 @@ const CLIMATES: Record<
   {
     label: string;
     sublabel: string;
-    icon: string; // <-- changed from emoji to icon path
+    icon: string;
     colors: [string, string];
     overview: string;
     video: string;
@@ -19,12 +19,11 @@ const CLIMATES: Record<
 > = {
   rainy: {
     label: "Rainy",
-    sublabel:"Monsoon Ready",
+    sublabel: "Monsoon Ready",
     icon: "/images/climate/rain.png",
     colors: ["#3b82f6", "#22d3ee"],
-    overview:
-      "Performance remains stable in heavy rain & monsoon humidity.",
-    video: "images/climate/rain.mp4",
+    overview: "Performance remains stable in heavy rain & monsoon humidity.",
+    video: "/images/climate/rain.mp4",
     specs: [
       { title: "Hydrophobic glass", description: "Water beads, light transmission stays high." },
       { title: "Sealed frame", description: "Prevents moisture ingress." },
@@ -35,12 +34,11 @@ const CLIMATES: Record<
   },
   snowy: {
     label: "Snowy",
-    sublabel:"Cold Climate Performance",
+    sublabel: "Cold Climate Performance",
     icon: "/images/climate/cold.png",
     colors: ["#bfdbfe", "#60a5fa"],
-    overview:
-      "Reliable output in sub-zero, snowy regions.",
-    video: "images/climate/snow.mp4",
+    overview: "Reliable output in sub-zero, snowy regions.",
+    video: "/images/climate/snow.mp4",
     specs: [
       { title: "5400 Pa load", description: "Handles heavy snow pressure." },
       { title: "Drain channels", description: "Meltwater exits quickly." },
@@ -51,12 +49,11 @@ const CLIMATES: Record<
   },
   desert: {
     label: "Desert",
-    sublabel:"Heat & Dust Resistant",
+    sublabel: "Heat & Dust Resistant",
     icon: "/images/climate/hot.png",
     colors: ["#fbbf24", "#f59e0b"],
-    overview:
-      "Engineered for hot, dusty, high-radiation sites.",
-    video: "images/climate/desert.mp4",
+    overview: "Engineered for hot, dusty, high-radiation sites.",
+    video: "/images/climate/desert.mp4",
     specs: [
       { title: "UV-resistant materials", description: "Slower aging under intense sun." },
       { title: "-40°C to +85°C range ", description: "Wide temperature endurance." },
@@ -67,11 +64,10 @@ const CLIMATES: Record<
   },
   hailing: {
     label: "Hailing",
-    sublabel:"Impact Resistant",
+    sublabel: "Impact Resistant",
     icon: "/images/climate/hail.png",
     colors: ["#94a3b8", "#0ea5e9"],
-    overview:
-      "Durable against hailstorms & extreme gusts.",
+    overview: "Durable against hailstorms & extreme gusts.",
     video: "/images/climate/hailStrom.mp4",
     specs: [
       { title: "25 mm @ 23 m/s hail certified", description: "Proven IEC hail test." },
@@ -83,11 +79,10 @@ const CLIMATES: Record<
   },
   windy: {
     label: "Windy",
-    sublabel:"Storm Secured",
-    icon: "/images/climate/windy.png", // you can use the white wind SVG you made
+    sublabel: "Storm Secured",
+    icon: "/images/climate/windy.png",
     colors: ["#1f2937", "#7dd3fc"],
-    overview:
-      "Secure in coastal, cyclone & high-wind regions.",
+    overview: "Secure in coastal, cyclone & high-wind regions.",
     video: "/images/climate/wind.mp4",
     specs: [
       { title: "2400Pa wind rating", description: "Withstands strong winds." },
@@ -101,37 +96,48 @@ const CLIMATES: Record<
 
 export default function ClimateSelector() {
   const [selected, setSelected] = useState<ClimateKey>("rainy");
+  const bgRef = useRef<HTMLVideoElement | null>(null);
 
   return (
-    <section className="relative min-h-screen bg-black overflow-hidden pt-15 pb-15" >
+    <section className="relative min-h-screen overflow-hidden pt-15 pb-15">
+      {/* Background video in parent section (full-bleed) */}
+      <video
+        ref={bgRef}
+        className="absolute inset-0 w-full h-full object-cover pointer-events-none z-0"
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        aria-hidden="true"
+        src="/images/climate/climateBG.mp4"
+      >
+        <source src="/images/climate/climateBG.mp4" type="video/mp4" />
+      </video>
       {/* Heading */}
       <div className="text-center py-5 md:py-4 px-6 md:px-10 mb-5 ">
         <h1
           className="relative py-4 md:py-6 px-4 md:px-6 text-4xl md:text-6xl font-bold text-white inline-block"
           style={{
             borderBottom: "2px solid",
-            borderImage:
-              "linear-gradient(to right, #000000ff, #3ef838, #000000ff) 1",
+            borderImage: "linear-gradient(to right, #000000ff, #3ef838, #000000ff) 1",
           }}
         >
-          Engineered for {" "}
+          Engineered for{" "}
           <span className="text-[#acfe53]">Every Season</span>
         </h1>
       </div>
 
-      {/* Main section with animated background only here */}
       <div className="relative py-12 mx-auto max-w-7xl">
-        <div className="absolute inset-0 bg-black/30" />
+        {/* <div className="absolute inset-0 bg-black/30" /> */}
 
-        {/* Content */}
         <div className="relative grid h-full w-full grid-cols-1 lg:grid-cols-3">
           {/* Left column */}
           <div className="relative mr-10 ml-4 text-white flex flex-col justify-center">
-            {/* Icon + climate label as H1 */}
             <h1 className="inline-flex items-center gap-2 py-1 text-6xl md:text-7xl font-bold leading-none">
               <Image
                 src={CLIMATES[selected].icon}
-                alt="" // decorative; screen readers will read the text next to it
+                alt=""
                 width={24}
                 height={24}
                 className="h-15 w-15 object-contain"
@@ -166,9 +172,10 @@ export default function ClimateSelector() {
                 src={CLIMATES[selected].video}
               />
               <div className="absolute inset-0 bg-black/20" />
+
+              {/* Large-screen overlapping panel (shows on lg and up) */}
               <div
-                key={selected + "-panel"}
-                className="absolute left-[18%] bottom-[-18%] animate-rise"
+                className="hidden lg:block absolute left-[18%] -bottom-[18%] animate-rise"
                 style={{
                   width: "clamp(180px, 18vw, 360px)",
                   height: "clamp(260px, 54vh, 480px)",
@@ -184,6 +191,26 @@ export default function ClimateSelector() {
                     priority={false}
                   />
                 </div>
+              </div>
+            </div>
+
+            {/* For medium & small screens: panel centered below the video */}
+            <div className="lg:hidden w-full flex justify-center absolute -bottom-[3%]">
+              <div
+                className="relative"
+                style={{
+                  width: "clamp(180px, 40vw, 360px)",
+                  height: "clamp(240px, 44vw, 460px)",
+                }}
+              >
+                <Image
+                  src="/images/climate/panel.png"
+                  alt="Solar Panel"
+                  fill
+                  sizes="(max-width: 1024px) 50vw, 46vw"
+                  style={{ objectFit: "contain" }}
+                  priority={false}
+                />
               </div>
             </div>
           </div>
@@ -261,9 +288,7 @@ export default function ClimateSelector() {
                       active ? "brightness-0" : ""
                     }`}
                   />
-                  <span className="hidden sm:inline">
-                    {CLIMATES[key].label}
-                  </span>
+                  <span className="hidden sm:inline">{CLIMATES[key].label}</span>
                 </button>
               );
             })}
