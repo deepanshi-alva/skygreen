@@ -11,6 +11,7 @@ const orbitron = Orbitron({
 
 export default function HeroSection() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const sectionRef = useRef<HTMLElement | null>(null);
   const [reveal, setReveal] = useState(false);
 
   const handleTimeUpdate = () => {
@@ -36,8 +37,45 @@ export default function HeroSection() {
     return () => clearTimeout(timer);
   }, [reveal]);
 
+  // Scroll to the next element after this hero section (accounts for fixed nav)
+  const scrollToNext = () => {
+    const sec = sectionRef.current;
+    if (!sec) {
+      // fallback: simple page-down
+      window.scrollBy({ top: window.innerHeight, behavior: "smooth" });
+      return;
+    }
+
+    const next = sec.nextElementSibling as HTMLElement | null;
+    if (!next) {
+      // no next element — fallback to scrolling down one viewport
+      window.scrollBy({ top: window.innerHeight, behavior: "smooth" });
+      return;
+    }
+
+    // account for fixed header/nav if present
+    const nav = document.querySelector("nav");
+    const navHeight =
+      nav instanceof HTMLElement ? nav.getBoundingClientRect().height : 0;
+
+    const nextTop = next.getBoundingClientRect().top + window.scrollY;
+    const targetScroll = Math.max(0, nextTop - navHeight - 8); // -8px small gap
+
+    window.scrollTo({ top: targetScroll, behavior: "smooth" });
+  };
+
+  const handleIndicatorKey = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      scrollToNext();
+    }
+  };
+
   return (
-    <section className="relative min-h-screen bg-black overflow-hidden flex flex-col items-center justify-center text-white">
+    <section
+      ref={sectionRef}
+      className="relative min-h-screen bg-black overflow-hidden flex flex-col items-center justify-center text-white"
+    >
       {/* Background Video */}
       <video
         ref={videoRef}
@@ -86,11 +124,13 @@ export default function HeroSection() {
           <Button
             variant="outline"
             className="
-    rounded-full border border-green-400/40
-    bg-black/50 backdrop-blur-md
-    text-green-300 font-semibold
-    hover:bg-green-300 hover:text-black
-    shadow-md transition-all duration-300
+    rounded-full border border-green-400/30
+    bg-black/50 backdrop-blur-5xl bg-clip-padding
+    text-green-100 font-semibold
+    hover:bg-black/52 hover:text-white
+    transform transition-all duration-300 hover:-translate-y-0.5
+    hover:shadow-[0_22px_60px_rgba(34,197,94,0.38),0_8px_30px_rgba(34,197,94,0.18)]
+    focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-400/60
     text-[clamp(0.95rem,0.8vw+0.7rem,1.1rem)]
     px-6 py-6
   "
@@ -100,22 +140,32 @@ export default function HeroSection() {
         </div>
       </div>
 
-      {/* Scroll Down Indicator */}
+      {/* Scroll Down Indicator (clickable & keyboard accessible) */}
       <div className="absolute bottom-6 z-10 flex flex-col items-center gap-2">
-        <svg
-          className="w-[clamp(20px,2vw,28px)] h-[clamp(20px,2vw,28px)] text-green-400 animate-bounce"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth={2}
-          viewBox="0 0 24 24"
+        <div
+          role="button"
+          tabIndex={0}
+          aria-label="Scroll to next section"
+          onClick={scrollToNext}
+          onKeyDown={handleIndicatorKey}
+          className="flex flex-col items-center gap-2 cursor-pointer select-none"
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M19 9l-7 7-7-7"
-          />
-        </svg>
-        <span className="text-green-300 text-sm">Step Into Tomorrow</span>
+          <svg
+            className="w-[clamp(20px,2vw,28px)] h-[clamp(20px,2vw,28px)] text-green-400 animate-bounce"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={2}
+            viewBox="0 0 24 24"
+            aria-hidden
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M19 9l-7 7-7-7"
+            />
+          </svg>
+          <span className="text-green-300 text-sm">Step Into Tomorrow</span>
+        </div>
       </div>
 
       {/* Animations */}
