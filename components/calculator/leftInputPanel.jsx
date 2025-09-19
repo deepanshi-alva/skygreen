@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { Info } from "lucide-react";
 import Select from "react-select";
 import { State, Country } from "country-state-city";
+import ManualLoadCalculator from "./manualLoadCalculator";
 
 export default function LeftInputPanel({ onResults }) {
   const [states, setStates] = useState([]);
@@ -167,7 +168,10 @@ export default function LeftInputPanel({ onResults }) {
         : "";
     } else if (formData.mode === "rwa") {
       sizingMethod = "rwa"; // backend handles the RWA sizing logic
-    } else if (formData.mode === "plant_size") {
+    } else if (
+      formData.mode === "plant_size" ||
+      formData.mode === "manual_load"
+    ) {
       sizingMethod = "plant_size"; // backend handles the RWA sizing logic
     }
 
@@ -285,41 +289,63 @@ export default function LeftInputPanel({ onResults }) {
           />
         </div>
 
-        {/* Radio Button for Residential vs RWA */}
+        {/* Mode Selection */}
         <div>
-          <label className="block mb-1">Mode</label>
+          <label className="block mb-2 text-sm font-medium text-gray-300">
+            Mode
+          </label>
           {selectedState ? (
-            <div className="flex gap-4">
-              <label>
+            <div className="grid grid-cols-2 gap-3 md:flex md:gap-4">
+              {/* Residential */}
+              <label
+                className={`flex items-center justify-center px-4 py-2 rounded-lg border cursor-pointer transition
+          ${
+            formData.mode === "residential"
+              ? "bg-green-500 text-black font-semibold border-green-500"
+              : "bg-[#111] text-gray-300 border-gray-600 hover:border-green-400 hover:text-green-400"
+          }`}
+              >
                 <input
                   type="radio"
                   name="mode"
                   value="residential"
                   checked={formData.mode === "residential"}
                   onChange={handleChange}
-                  className="mr-2"
+                  className="hidden"
                 />
                 Residential
               </label>
 
-              <label>
+              {/* Plant Size */}
+              <label
+                className={`flex items-center justify-center px-4 py-2 rounded-lg border cursor-pointer transition
+          ${
+            formData.mode === "plant_size"
+              ? "bg-green-500 text-black font-semibold border-green-500"
+              : "bg-[#111] text-gray-300 border-gray-600 hover:border-green-400 hover:text-green-400"
+          }`}
+              >
                 <input
                   type="radio"
                   name="mode"
                   value="plant_size"
                   checked={formData.mode === "plant_size"}
                   onChange={handleChange}
-                  className="mr-2"
+                  className="hidden"
                 />
                 Plant Size
               </label>
 
+              {/* RWA */}
               <label
-                className={
-                  selectedState.rwa_enabled
-                    ? ""
-                    : "opacity-50 cursor-not-allowed"
-                }
+                className={`flex items-center justify-center px-4 py-2 rounded-lg border cursor-pointer transition
+          ${
+            selectedState.rwa_enabled
+              ? formData.mode === "rwa"
+                ? "bg-green-500 text-black font-semibold border-green-500"
+                : "bg-[#111] text-gray-300 border-gray-600 hover:border-green-400 hover:text-green-400"
+              : "bg-gray-800 text-gray-500 border-gray-700 cursor-not-allowed"
+          }`}
               >
                 <input
                   type="radio"
@@ -328,9 +354,29 @@ export default function LeftInputPanel({ onResults }) {
                   checked={formData.mode === "rwa"}
                   onChange={handleChange}
                   disabled={!selectedState.rwa_enabled}
-                  className="mr-2"
+                  className="hidden"
                 />
                 RWA / GHS
+              </label>
+
+              {/* Manual Load */}
+              <label
+                className={`flex items-center justify-center px-4 py-2 rounded-lg border cursor-pointer transition
+          ${
+            formData.mode === "manual_load"
+              ? "bg-green-500 text-black font-semibold border-green-500"
+              : "bg-[#111] text-gray-300 border-gray-600 hover:border-green-400 hover:text-green-400"
+          }`}
+              >
+                <input
+                  type="radio"
+                  name="mode"
+                  value="manual_load"
+                  checked={formData.mode === "manual_load"}
+                  onChange={handleChange}
+                  className="hidden"
+                />
+                Manual Load
               </label>
             </div>
           ) : (
@@ -631,6 +677,8 @@ export default function LeftInputPanel({ onResults }) {
               />
             </div>
           </>
+        ) : formData.mode === "manual_load" ? (
+          <ManualLoadCalculator formData={formData} setFormData={setFormData} />
         ) : null}
 
         {error && (
