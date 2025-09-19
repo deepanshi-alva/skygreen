@@ -160,15 +160,15 @@ export default function CenterOutput({ results }) {
         <div className="grid grid-cols-1 gap-4">
           {(results?.sizing_method === "bill" ||
             results?.sizing_method === "units") && (
-              <div className="bg-[#1a1a1a] p-4 rounded-lg border border-white/10 shadow-md">
-                <p className="text-sm text-gray-400">
-                  With grid daily consumption
-                </p>
-                <p className="text-xl font-bold text-green-400 break-all">
-                  {format(results.daily_unit)}
-                </p>
-              </div>
-            )}
+            <div className="bg-[#1a1a1a] p-4 rounded-lg border border-white/10 shadow-md">
+              <p className="text-sm text-gray-400">
+                With grid daily consumption
+              </p>
+              <p className="text-xl font-bold text-green-400 break-all">
+                {format(results.daily_unit)}
+              </p>
+            </div>
+          )}
 
           <div className="bg-[#1a1a1a] p-4 rounded-lg border border-white/10 shadow-md">
             <p className="text-sm text-gray-400">Solar Units Produced</p>
@@ -246,26 +246,28 @@ export default function CenterOutput({ results }) {
           <div className="flex gap-4 mt-4">
             <button
               onClick={() => setMode("solar")}
-              className={`px-4 py-1 rounded-md font-semibold ${mode === "solar"
-                ? "bg-green-500 text-black"
-                : "bg-[#111] text-green-400 border border-green-500"
-                }`}
+              className={`px-4 py-1 rounded-md font-semibold ${
+                mode === "solar"
+                  ? "bg-green-500 text-black"
+                  : "bg-[#111] text-green-400 border border-green-500"
+              }`}
             >
               With Solar
             </button>
             {/* Show With Grid only if not RWA or plant_size */}
             {(results?.sizing_method === "bill" ||
               results?.sizing_method === "units") && (
-                <button
-                  onClick={() => setMode("grid")}
-                  className={`px-4 py-1 rounded-md font-semibold ${mode === "grid"
+              <button
+                onClick={() => setMode("grid")}
+                className={`px-4 py-1 rounded-md font-semibold ${
+                  mode === "grid"
                     ? "bg-green-500 text-black"
                     : "bg-[#111] text-green-400 border border-green-500"
-                    }`}
-                >
-                  With Grid
-                </button>
-              )}
+                }`}
+              >
+                With Grid
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -309,7 +311,7 @@ export default function CenterOutput({ results }) {
             )}
 
             {/* SKU Recommendation */}
-            {results?.inverter_options?.length > 0 && (
+            {results?.inverter_options?.length > 0 &&
               (() => {
                 // Filter valid inverter options
                 const validSkus = results.inverter_options.filter(
@@ -338,14 +340,15 @@ export default function CenterOutput({ results }) {
                           <p className="text-sm text-gray-400">
                             Bus Voltage: {inv.bus_voltage} V
                           </p>
-                          <p className="text-xs text-gray-500 italic">{inv.note}</p>
+                          <p className="text-xs text-gray-500 italic">
+                            {inv.note}
+                          </p>
                         </div>
                       ))}
                     </div>
                   </div>
                 );
-              })()
-            )}
+              })()}
 
             {/* String Design */}
             {results?.string_design && (
@@ -359,11 +362,16 @@ export default function CenterOutput({ results }) {
                   <div className="relative group">
                     <Info className="w-4 h-4 text-blue-400 cursor-pointer mt-1" />
                     <div className="absolute left-6 top-0 w-72 bg-black text-gray-300 text-justify text-xs rounded-lg shadow-lg p-3 border border-green-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
-                      <span className="text-green-400 font-semibold">Important Note :{" "}</span>
-                      String sizing is calculated based on the panel’s open-circuit voltage (Voc),
-                      inverter’s maximum DC input voltage (usually 1000 V for residential/commercial
-                      and 1500 V for utility-scale), and a <span className="font-semibold">20% safety margin</span>
-                      to account for bifacial gain and low-temperature conditions.
+                      <span className="text-green-400 font-semibold">
+                        Important Note :{" "}
+                      </span>
+                      String sizing is calculated based on the panel’s
+                      open-circuit voltage (Voc), inverter’s maximum DC input
+                      voltage (usually 1000 V for residential/commercial and
+                      1500 V for utility-scale), and a{" "}
+                      <span className="font-semibold">20% safety margin</span>
+                      to account for bifacial gain and low-temperature
+                      conditions.
                     </div>
                   </div>
                 </div>
@@ -378,8 +386,7 @@ export default function CenterOutput({ results }) {
                   <span className="text-green-400 font-semibold">
                     {results.panel_count}
                   </span>{" "}
-                  panels
-                  {" "})
+                  panels )
                 </p>
 
                 {/* Cards */}
@@ -394,12 +401,14 @@ export default function CenterOutput({ results }) {
                     ) : (
                       <>
                         <p className="text-sm text-gray-400">
-                          {results.string_design.single_mppt.panels_per_string} panels per string
+                          {results.string_design.single_mppt.panels_per_string}{" "}
+                          panels per string
                         </p>
                         <p className="text-xs text-gray-500">
-                          Voc_cold - {results.string_design.single_mppt.voc_total} V,
-                          Vmp - {results.string_design.single_mppt.vmp_total} V,
-                          Isc - {results.string_design.single_mppt.isc_total} A
+                          Voc_cold -{" "}
+                          {results.string_design.single_mppt.voc_total} V, Vmp -{" "}
+                          {results.string_design.single_mppt.vmp_total} V, Isc -{" "}
+                          {results.string_design.single_mppt.isc_total} A
                         </p>
                       </>
                     )}
@@ -411,9 +420,9 @@ export default function CenterOutput({ results }) {
                       <p className="font-semibold text-green-400">Dual MPPT</p>
                       {results.string_design.dual_mppt.map((mppt, idx) => (
                         <p key={idx} className="text-sm text-gray-400">
-                          MPPT {mppt.mppt}: {mppt.panels_per_string} panels → Voc_cold -{" "}
-                          {mppt.voc_total} V, Vmp - {mppt.vmp_total} V, Isc -{" "}
-                          {mppt.isc_total} A
+                          MPPT {mppt.mppt}: {mppt.panels_per_string} panels →
+                          Voc_cold - {mppt.voc_total} V, Vmp - {mppt.vmp_total}{" "}
+                          V, Isc - {mppt.isc_total} A
                         </p>
                       ))}
                     </div>
@@ -435,10 +444,18 @@ export default function CenterOutput({ results }) {
                         <th className="px-3 py-2 text-left">Type</th>
                         <th className="px-3 py-2 text-left">Capacity</th>
                         <th className="px-3 py-2 text-left">Usable (kWh)</th>
-                        <th className="px-3 py-2 text-left">Backup (Essentials)</th>
-                        <th className="px-3 py-2 text-left">Backup (1 AC)</th>
-                        <th className="px-3 py-2 text-left">Backup (2 ACs)</th>
-                        <th className="px-3 py-2 text-left">Maximum batteries</th>
+                        <th className="px-3 py-2 text-left">
+                          Backup (Essentials)
+                        </th>
+                        <th className="px-3 py-2 text-left">
+                          Backup (Ess. + 1 AC)
+                        </th>
+                        <th className="px-3 py-2 text-left">
+                          Backup (Ess. + 2 ACs)
+                        </th>
+                        <th className="px-3 py-2 text-left">
+                          Maximum batteries
+                        </th>
                         <th className="px-3 py-2 text-left">Charge Time</th>
                         <th className="px-3 py-2 text-left">Connection</th>
                         <th className="px-3 py-2 text-left">Trade-off</th>
@@ -448,8 +465,9 @@ export default function CenterOutput({ results }) {
                       {results.battery_options.map((bat, idx) => (
                         <tr
                           key={idx}
-                          className={`border-t border-white/10 ${bat.recommended ? "bg-green-900/20" : "bg-[#1a1a1a]"
-                            }`}
+                          className={`border-t border-white/10 ${
+                            bat.recommended ? "bg-green-900/20" : "bg-[#1a1a1a]"
+                          }`}
                         >
                           <td className="px-3 py-2 font-semibold text-green-400">
                             {bat.type} {bat.recommended}
@@ -457,20 +475,30 @@ export default function CenterOutput({ results }) {
                           <td className="px-3 py-2 text-gray-300">
                             {bat.ah}Ah ({bat.nominal} kWh)
                           </td>
-                          <td className="px-3 py-2 text-gray-300">{bat.usable}</td>
+                          <td className="px-3 py-2 text-gray-300">
+                            {bat.usable}
+                          </td>
                           <td className="px-3 py-2 text-gray-300">
                             {bat.backup.essentials} hrs
                           </td>
-                          <td className="px-3 py-2 text-gray-300">{bat.backup.one_ac} hrs</td>
+                          <td className="px-3 py-2 text-gray-300">
+                            {bat.backup.one_ac} hrs
+                          </td>
                           <td className="px-3 py-2 text-gray-300">
                             {bat.backup.two_acs} hrs
                           </td>
-                           <td className="px-3 py-2 text-gray-300">
+                          <td className="px-3 py-2 text-gray-300">
                             {bat.max_batteries_per_day}
                           </td>
-                          <td className="px-3 py-2 text-gray-300">{bat.charge_time} hrs</td>
-                          <td className="px-3 py-2 text-gray-300">{bat.connection}</td>
-                          <td className="px-3 py-2 text-gray-400 italic">{bat.tradeoff}</td>
+                          <td className="px-3 py-2 text-gray-300">
+                            {bat.charge_time} hrs
+                          </td>
+                          <td className="px-3 py-2 text-gray-300">
+                            {bat.connection}
+                          </td>
+                          <td className="px-3 py-2 text-gray-400 italic">
+                            {bat.tradeoff}
+                          </td>
                         </tr>
                       ))}
                     </tbody>
@@ -481,7 +509,6 @@ export default function CenterOutput({ results }) {
                 </p> */}
               </div>
             )}
-
           </div>
         )}
 
@@ -500,14 +527,14 @@ export default function CenterOutput({ results }) {
                   level === 1
                     ? "h1"
                     : level === 2
-                      ? "h2"
-                      : level === 3
-                        ? "h3"
-                        : level === 4
-                          ? "h4"
-                          : level === 5
-                            ? "h5"
-                            : "h6";
+                    ? "h2"
+                    : level === 3
+                    ? "h3"
+                    : level === 4
+                    ? "h4"
+                    : level === 5
+                    ? "h5"
+                    : "h6";
 
                 const headingStyles = {
                   h1: "text-2xl font-bold text-green-400 mt-4",
@@ -525,8 +552,9 @@ export default function CenterOutput({ results }) {
                       return (
                         <span
                           key={cIdx}
-                          className={`${child.bold ? "font-bold" : ""} ${child.underline ? "underline" : ""
-                            }`}
+                          className={`${child.bold ? "font-bold" : ""} ${
+                            child.underline ? "underline" : ""
+                          }`}
                         >
                           {text}
                         </span>
@@ -564,8 +592,9 @@ export default function CenterOutput({ results }) {
                       return (
                         <span
                           key={cIdx}
-                          className={`${child.bold ? "font-bold" : ""} ${child.underline ? "underline" : ""
-                            } whitespace-pre-wrap`} // ✅ Keep indentation visible
+                          className={`${child.bold ? "font-bold" : ""} ${
+                            child.underline ? "underline" : ""
+                          } whitespace-pre-wrap`} // ✅ Keep indentation visible
                         >
                           {text}
                         </span>
@@ -588,8 +617,9 @@ export default function CenterOutput({ results }) {
                         {li.children.map((child, cIdx) => (
                           <span
                             key={cIdx}
-                            className={`${child.bold ? "font-bold" : ""} ${child.underline ? "underline" : ""
-                              }`}
+                            className={`${child.bold ? "font-bold" : ""} ${
+                              child.underline ? "underline" : ""
+                            }`}
                           >
                             {child.text}
                           </span>
