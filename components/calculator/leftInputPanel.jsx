@@ -48,6 +48,30 @@ export default function LeftInputPanel({ onResults }) {
     setLoadingStates(false);
   }, []);
 
+  const handleStateChange = async (option) => {
+    setSelectedState(option);
+    setFormData({ ...formData, state: option.value });
+
+    try {
+      // fetch metadata only for the chosen state
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/states?filters[name][$eq]=${option.value}`
+      );
+      const data = await res.json();
+
+      if (data?.data?.[0]) {
+        const attrs = data.data[0].attributes;
+        setSelectedState({
+          ...option,
+          rwa_enabled: attrs.rwa_enabled,
+          id: data.data[0].id,
+        });
+      }
+    } catch (err) {
+      console.error("Error fetching state metadata:", err);
+    }
+  };
+
   console.log("these are the states which are being fetched", states);
 
   // Close dropdown on outside click
@@ -249,10 +273,7 @@ export default function LeftInputPanel({ onResults }) {
           <Select
             options={states}
             value={selectedState}
-            onChange={(option) => {
-              setSelectedState(option);
-              setFormData({ ...formData, state: option.value });
-            }}
+            onChange={handleStateChange}
             placeholder="Search or select a state..."
             isSearchable
             styles={customStyles}
