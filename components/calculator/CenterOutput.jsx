@@ -434,9 +434,27 @@ export default function CenterOutput({ results }) {
             {/* Battery Options */}
             {results?.battery_options?.length > 0 && (
               <div className="mt-8">
-                <h4 className="text-lg font-semibold text-green-400 mb-4">
+                <h4 className="text-lg font-semibold text-green-400 mb-2">
                   Battery Options
                 </h4>
+
+                {/* ✅ New line with system summary */}
+                <p className="text-sm text-gray-400 mb-3">
+                  ( For a recommended system of{" "}
+                  <span className="text-green-400 font-semibold">
+                    {format(results.final_dc_kw)} kW
+                  </span>{" "}
+                  using{" "}
+                  <span className="text-green-400 font-semibold">
+                    {results.panel_count}
+                  </span>{" "}
+                  panels — Max battery capacity supported:{" "}
+                  <span className="text-green-400 font-semibold">
+                    {results.battery_options[0].max_battery_ah} Ah
+                  </span>{" "}
+                  )
+                </p>
+
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
                     <thead className="bg-[#111] text-gray-300">
@@ -462,45 +480,49 @@ export default function CenterOutput({ results }) {
                       </tr>
                     </thead>
                     <tbody>
-                      {results.battery_options.map((bat, idx) => (
-                        <tr
-                          key={idx}
-                          className={`border-t border-white/10 ${
-                            bat.recommended ? "bg-green-900/20" : "bg-[#1a1a1a]"
-                          }`}
-                        >
-                          <td className="px-3 py-2 font-semibold text-green-400">
-                            {bat.type} {bat.recommended}
-                          </td>
-                          <td className="px-3 py-2 text-gray-300">
-                            {bat.ah}Ah ({bat.nominal} kWh)
-                          </td>
-                          <td className="px-3 py-2 text-gray-300">
-                            {bat.usable}
-                          </td>
-                          <td className="px-3 py-2 text-gray-300">
-                            {bat.backup.essentials} hrs
-                          </td>
-                          <td className="px-3 py-2 text-gray-300">
-                            {bat.backup.one_ac} hrs
-                          </td>
-                          <td className="px-3 py-2 text-gray-300">
-                            {bat.backup.two_acs} hrs
-                          </td>
-                          <td className="px-3 py-2 text-gray-300">
-                            {bat.max_batteries_per_day}
-                          </td>
-                          <td className="px-3 py-2 text-gray-300">
-                            {bat.charge_time} hrs
-                          </td>
-                          <td className="px-3 py-2 text-gray-300">
-                            {bat.connection}
-                          </td>
-                          <td className="px-3 py-2 text-gray-400 italic">
-                            {bat.tradeoff}
-                          </td>
-                        </tr>
-                      ))}
+                      {results.battery_options
+                        .filter((bat) => bat.max_batteries_per_day > 0) // ✅ only show if > 0
+                        .map((bat, idx) => (
+                          <tr
+                            key={idx}
+                            className={`border-t border-white/10 ${
+                              bat.recommended
+                                ? "bg-green-900/20"
+                                : "bg-[#1a1a1a]"
+                            }`}
+                          >
+                            <td className="px-3 py-2 font-semibold text-green-400">
+                              {bat.type}
+                            </td>
+                            <td className="px-3 py-2 text-gray-300">
+                              {bat.ah}Ah ({bat.nominal} kWh)
+                            </td>
+                            <td className="px-3 py-2 text-gray-300">
+                              {bat.usable}
+                            </td>
+                            <td className="px-3 py-2 text-gray-300">
+                              {bat.backup.essentials} hrs
+                            </td>
+                            <td className="px-3 py-2 text-gray-300">
+                              {bat.backup.one_ac} hrs
+                            </td>
+                            <td className="px-3 py-2 text-gray-300">
+                              {bat.backup.two_acs} hrs
+                            </td>
+                            <td className="px-3 py-2 text-gray-300">
+                              {bat.max_batteries_per_day}
+                            </td>
+                            <td className="px-3 py-2 text-gray-300">
+                              {bat.charge_time} hrs
+                            </td>
+                            <td className="px-3 py-2 text-gray-300">
+                              {bat.connection}
+                            </td>
+                            <td className="px-3 py-2 text-gray-400 italic">
+                              {bat.tradeoff}
+                            </td>
+                          </tr>
+                        ))}
                     </tbody>
                   </table>
                 </div>
