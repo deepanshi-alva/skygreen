@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Info } from "lucide-react";
 import Select from "react-select";
+import { State, Country } from "country-state-city";
 
 export default function LeftInputPanel({ onResults }) {
   const [states, setStates] = useState([]);
@@ -34,33 +35,20 @@ export default function LeftInputPanel({ onResults }) {
 
   // Fetch states from Strapi
   useEffect(() => {
-    async function fetchStates() {
-      try {
-        setLoadingStates(true);
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/states?fields[0]=name&fields[1]=rwa_enabled&pagination[pageSize]=100&sort=name:asc`,
-          // { cache: "force-cache", next: { revalidate: 3600 } }
-        );
-        const data = await res.json();
-        const formatted = Array.isArray(data.data)
-          ? data.data.map((item) => ({
-              value: item.attributes.name,
-              label: item.attributes.name,
-              rwa_enabled: item.attributes.rwa_enabled,
-              id: item.id,
-            }))
-          : [];
-        setStates(formatted);
-      } catch (err) {
-        console.error("Error fetching states:", err);
-      } finally {
-        setLoadingStates(false);
-      }
-    }
-    fetchStates();
+    const india = Country.getCountryByCode("IN"); // India
+    const allStates = State.getStatesOfCountry(india.isoCode);
+
+    const formatted = allStates.map((s) => ({
+      value: s.name,
+      label: s.name,
+      isoCode: s.isoCode,
+    }));
+
+    setStates(formatted);
+    setLoadingStates(false);
   }, []);
 
-  console.log("these are the states which are being fetched", states)
+  console.log("these are the states which are being fetched", states);
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -269,7 +257,7 @@ export default function LeftInputPanel({ onResults }) {
             isSearchable
             styles={customStyles}
             // isLoading={loadingStates}
-            loadingMessage={() => "Loading states..."} // ✅ custom message
+            // loadingMessage={() => "Loading states..."} // ✅ custom message
             noOptionsMessage={() =>
               loadingStates ? "Loading states..." : "No states found"
             }
