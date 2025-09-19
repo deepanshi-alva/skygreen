@@ -362,7 +362,7 @@ export default function LeftInputPanel({ onResults }) {
             <div className="flex flex-row gap-x-2">
               <div>
                 <label className="block mb-1 flex items-center gap-2">
-                  Average Monthly Bill
+                  Avg Monthly Bill
                   <span className="relative group cursor-pointer">
                     <Info className="w-4 h-4 text-blue-400" />
                     <div className="absolute left-6 top-1/2 transform -translate-y-1/2 hidden group-hover:block bg-black text-white text-xs p-2 rounded-md border border-green-500 w-56 z-10">
@@ -379,11 +379,11 @@ export default function LeftInputPanel({ onResults }) {
                   onChange={handleChange}
                   disabled={!!formData.units}
                   className={`w-full p-2 rounded-lg border appearance-none
-      ${
-        formData.units
-          ? "bg-gray-700 border-gray-500 text-gray-400 cursor-not-allowed"
-          : "bg-black border-green-500 text-white"
-      }`}
+                  ${
+                    formData.units
+                      ? "bg-gray-700 border-gray-500 text-gray-400 cursor-not-allowed"
+                      : "bg-black border-green-500 text-white"
+                  }`}
                   placeholder="e.g. 2500"
                 />
               </div>
@@ -392,7 +392,7 @@ export default function LeftInputPanel({ onResults }) {
 
               <div>
                 <label className="block mb-1 flex items-center gap-2">
-                  Average Monthly Units
+                  Avg Monthly Units
                   <span className="relative group cursor-pointer">
                     <Info className="w-4 h-4 text-blue-400" />
                     <div className="absolute left-6 top-1/2 transform -translate-y-1/2 hidden group-hover:block bg-black text-white text-xs p-2 rounded-md border border-green-500 w-56 z-10">
