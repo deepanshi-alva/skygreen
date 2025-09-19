@@ -375,6 +375,7 @@ export default function LeftInputPanel({ onResults }) {
                   type="number"
                   name="bill"
                   value={formData.bill}
+                  min={800}
                   onChange={handleChange}
                   disabled={!!formData.units}
                   className={`w-full p-2 rounded-lg border appearance-none
