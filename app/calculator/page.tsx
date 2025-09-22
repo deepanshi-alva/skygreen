@@ -1,9 +1,12 @@
 "use client";
 import { useState } from "react";
-import LeftRightWrapper from "@/components/calculator/leftRightWrapper";
+import LeftInputPanel from "@/components/calculator/leftInputPanel";
+import CenterOutput from "@/components/calculator/CenterOutput";
+import RightAds from "@/components/calculator/RightAds";
 
 export default function SolarDashboardPage() {
   const [started, setStarted] = useState(false);
+  const [results, setResults] = useState(null);
 
   return (
     <div className="w-full bg-black text-green-400">
@@ -44,7 +47,13 @@ export default function SolarDashboardPage() {
       ) : (
         // --- Actual Calculator (Step 2) ---
         <div className="grid grid-cols-12 gap-4 mt-24 p-4 text-green-400">
-          <LeftRightWrapper />
+          <LeftInputPanel onResults={setResults} />
+          
+                {/* CENTER GRID */}
+                <CenterOutput results={results} />
+          
+                {/* RIGHT GRID */}
+                <RightAds results={results}/>
         </div>
       )}
     </div>

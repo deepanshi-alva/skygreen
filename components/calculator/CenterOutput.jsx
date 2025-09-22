@@ -72,7 +72,7 @@ export default function CenterOutput({ results }) {
         {/* Recommended System */}
         <div className="bg-[#1a1a1a] p-4 rounded-lg border border-white/10 shadow-md relative">
           <div className="flex items-center justify-between">
-            <p className="text-sm text-gray-400 flex items-center gap-2">
+            <div className="text-sm text-gray-400 flex items-center gap-2">
               Recommended System
               {/* Info tooltip */}
               <div className="relative group">
@@ -106,7 +106,7 @@ export default function CenterOutput({ results }) {
                   capacity.
                 </div>
               </div>
-            </p>
+            </div>
           </div>
 
           <p className="text-2xl font-bold text-green-400 break-all mt-2">
