@@ -39,7 +39,8 @@ export default function CenterOutput({ results }) {
     return value.toLocaleString("en-IN", { maximumFractionDigits: 2 });
   };
 
-  const COLORS = ["#e60707ff", "#22c55e"];
+  // const COLORS = ["#e60707ff", "#22c55e"];
+  const COLORS = ["#e9dd72ff", "#22c55e"];
 
   const gridData = [{ name: "30-Year Grid Bill", value: results.total_spend }];
 
@@ -69,12 +70,50 @@ export default function CenterOutput({ results }) {
 
       <div className="grid grid-cols-4 gap-4">
         {/* Recommended System */}
-        <div className="bg-[#1a1a1a] p-4 rounded-lg border border-white/10 shadow-md">
-          <p className="text-sm text-gray-400">Recommended System</p>
-          <p className="text-2xl font-bold text-green-400 break-all">
+        <div className="bg-[#1a1a1a] p-4 rounded-lg border border-white/10 shadow-md relative">
+          <div className="flex items-center justify-between">
+            <p className="text-sm text-gray-400 flex items-center gap-2">
+              Recommended System
+              {/* Info tooltip */}
+              <div className="relative group">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-4 h-4 text-blue-400 cursor-pointer"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                  />
+                </svg>
+
+                {/* Tooltip box */}
+                <div className="absolute left-6 top-0 w-72 bg-black text-gray-300 text-justify text-xs rounded-lg shadow-lg p-3 border border-green-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+                  <span className="text-green-400 font-semibold">Note: </span>
+                  The recommended system size is not set directly by your proposed
+                  capacity. It is calculated by multiplying the number of panels with
+                  their rated wattage (panel_watt_w) to reflect the actual feasible
+                  capacity.
+                </div>
+              </div>
+            </p>
+          </div>
+
+          <p className="text-2xl font-bold text-green-400 break-all mt-2">
             {format(results?.final_dc_kw)} kW
           </p>
         </div>
+
 
         {/* Monthly Saving */}
         <div className="bg-[#1a1a1a] p-4 rounded-lg border border-white/10 shadow-md">
@@ -106,13 +145,16 @@ export default function CenterOutput({ results }) {
         {/* Subsidy Overview card (big) */}
         <div className="bg-[#1a1a1a] p-6 rounded-xl border border-white/10 shadow-md col-span-1">
           {/* <h3 className="text-lg font-bold mb-4">Subsidy Overview</h3> */}
-          <div className="flex items-center justify-center mb-8 mt-2">
+          <div className="flex items-center justify-center mb-8 ">
             <div>
               <p className="text-sm text-gray-400 text-center text-[1.5rem]">
                 Gross Plant Cost
               </p>
               <p className="text-3xl font-bold text-green-400 text-center whitespace-nowrap text-[clamp(1rem,2vw,2rem)]">
                 ₹{format(results.gross_cost_inr)}
+              </p>
+              <p className="text-xs text-gray-500 text-center mt-1">
+                Includes panel cost, inverter, AMC, installation and more.
               </p>
             </div>
           </div>
@@ -160,15 +202,15 @@ export default function CenterOutput({ results }) {
         <div className="grid grid-cols-1 gap-4">
           {(results?.sizing_method === "bill" ||
             results?.sizing_method === "units") && (
-            <div className="bg-[#1a1a1a] p-4 rounded-lg border border-white/10 shadow-md">
-              <p className="text-sm text-gray-400">
-                With grid daily consumption
-              </p>
-              <p className="text-xl font-bold text-green-400 break-all">
-                {format(results.daily_unit)}
-              </p>
-            </div>
-          )}
+              <div className="bg-[#1a1a1a] p-4 rounded-lg border border-white/10 shadow-md">
+                <p className="text-sm text-gray-400">
+                  With grid daily consumption
+                </p>
+                <p className="text-xl font-bold text-green-400 break-all">
+                  {format(results.daily_unit)}
+                </p>
+              </div>
+            )}
 
           <div className="bg-[#1a1a1a] p-4 rounded-lg border border-white/10 shadow-md">
             <p className="text-sm text-gray-400">Solar Units Produced</p>
@@ -217,7 +259,7 @@ export default function CenterOutput({ results }) {
                   )
                 )}
               </Pie>
-              <Tooltip
+              {/* <Tooltip
                 formatter={(val, name) => [
                   `₹${Number(val).toLocaleString("en-IN")}`, // ✅ Adds commas (Indian format)
                   name,
@@ -229,7 +271,37 @@ export default function CenterOutput({ results }) {
                 }}
                 itemStyle={{ color: "white" }}
                 labelStyle={{ color: "white" }}
+              /> */}
+              <Tooltip
+                formatter={(val, name, props) => {
+                  const color = props.payload?.fill || "#22c55e"; // slice color
+                  return [
+                    <div
+                      style={{
+                        display: "inline-block",
+                        backgroundColor: color,
+                        color: "black",
+                        padding: "2px 6px",
+                        borderRadius: "4px",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      ₹{Number(val).toLocaleString("en-IN")}
+                    </div>,
+                    name,
+                  ];
+                }}
+                contentStyle={{
+                  backgroundColor: "#1f2937", // tooltip box background
+                  border: "1px solid #22c55e",
+                  borderRadius: "6px",
+                  color: "white",
+                }}
+                itemStyle={{ color: "white" }}
+                labelStyle={{ color: "white" }}
               />
+
+
               <Legend
                 wrapperStyle={{ color: "white" }}
                 iconType="rect"
@@ -246,28 +318,26 @@ export default function CenterOutput({ results }) {
           <div className="flex gap-4 mt-4">
             <button
               onClick={() => setMode("solar")}
-              className={`px-4 py-1 rounded-md font-semibold ${
-                mode === "solar"
-                  ? "bg-green-500 text-black"
-                  : "bg-[#111] text-green-400 border border-green-500"
-              }`}
+              className={`px-4 py-1 rounded-md font-semibold ${mode === "solar"
+                ? "bg-green-500 text-black"
+                : "bg-[#111] text-green-400 border border-green-500"
+                }`}
             >
               With Solar
             </button>
             {/* Show With Grid only if not RWA or plant_size */}
             {(results?.sizing_method === "bill" ||
               results?.sizing_method === "units") && (
-              <button
-                onClick={() => setMode("grid")}
-                className={`px-4 py-1 rounded-md font-semibold ${
-                  mode === "grid"
+                <button
+                  onClick={() => setMode("grid")}
+                  className={`px-4 py-1 rounded-md font-semibold ${mode === "grid"
                     ? "bg-green-500 text-black"
                     : "bg-[#111] text-green-400 border border-green-500"
-                }`}
-              >
-                With Grid
-              </button>
-            )}
+                    }`}
+                >
+                  With Grid
+                </button>
+              )}
           </div>
         </div>
       </div>
@@ -485,11 +555,10 @@ export default function CenterOutput({ results }) {
                         .map((bat, idx) => (
                           <tr
                             key={idx}
-                            className={`border-t border-white/10 ${
-                              bat.recommended
-                                ? "bg-green-900/20"
-                                : "bg-[#1a1a1a]"
-                            }`}
+                            className={`border-t border-white/10 ${bat.recommended
+                              ? "bg-green-900/20"
+                              : "bg-[#1a1a1a]"
+                              }`}
                           >
                             <td className="px-3 py-2 font-semibold text-green-400">
                               {bat.type}
@@ -549,14 +618,14 @@ export default function CenterOutput({ results }) {
                   level === 1
                     ? "h1"
                     : level === 2
-                    ? "h2"
-                    : level === 3
-                    ? "h3"
-                    : level === 4
-                    ? "h4"
-                    : level === 5
-                    ? "h5"
-                    : "h6";
+                      ? "h2"
+                      : level === 3
+                        ? "h3"
+                        : level === 4
+                          ? "h4"
+                          : level === 5
+                            ? "h5"
+                            : "h6";
 
                 const headingStyles = {
                   h1: "text-2xl font-bold text-green-400 mt-4",
@@ -574,9 +643,8 @@ export default function CenterOutput({ results }) {
                       return (
                         <span
                           key={cIdx}
-                          className={`${child.bold ? "font-bold" : ""} ${
-                            child.underline ? "underline" : ""
-                          }`}
+                          className={`${child.bold ? "font-bold" : ""} ${child.underline ? "underline" : ""
+                            }`}
                         >
                           {text}
                         </span>
@@ -614,9 +682,8 @@ export default function CenterOutput({ results }) {
                       return (
                         <span
                           key={cIdx}
-                          className={`${child.bold ? "font-bold" : ""} ${
-                            child.underline ? "underline" : ""
-                          } whitespace-pre-wrap`} // ✅ Keep indentation visible
+                          className={`${child.bold ? "font-bold" : ""} ${child.underline ? "underline" : ""
+                            } whitespace-pre-wrap`} // ✅ Keep indentation visible
                         >
                           {text}
                         </span>
@@ -639,9 +706,8 @@ export default function CenterOutput({ results }) {
                         {li.children.map((child, cIdx) => (
                           <span
                             key={cIdx}
-                            className={`${child.bold ? "font-bold" : ""} ${
-                              child.underline ? "underline" : ""
-                            }`}
+                            className={`${child.bold ? "font-bold" : ""} ${child.underline ? "underline" : ""
+                              }`}
                           >
                             {child.text}
                           </span>
