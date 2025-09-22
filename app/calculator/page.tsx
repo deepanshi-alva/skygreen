@@ -46,15 +46,18 @@ export default function SolarDashboardPage() {
         </div>
       ) : (
         // --- Actual Calculator (Step 2) ---
-        <div className="grid grid-cols-12 gap-4 mt-24 p-4 text-green-400">
-          <LeftInputPanel onResults={setResults} />
-          
-                {/* CENTER GRID */}
-                <CenterOutput results={results} />
-          
-                {/* RIGHT GRID */}
-                <RightAds results={results}/>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 mt-8 lg:mt-24 p-4">
+          <div className="lg:col-span-3 order-1">
+            <LeftInputPanel onResults={setResults} />
+          </div>
+          <div className="lg:col-span-7 order-2">
+            <CenterOutput results={results} />
+          </div>
+          <div className="lg:col-span-2 order-3">
+            <RightAds results={results} />
+          </div>
         </div>
+
       )}
     </div>
   );

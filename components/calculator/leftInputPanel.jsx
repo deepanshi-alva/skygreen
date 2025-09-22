@@ -12,7 +12,7 @@ export default function LeftInputPanel({ onResults }) {
   const [loadingStates, setLoadingStates] = useState(true);
   const [error, setError] = useState("");
 
-  const [formData, setFormData] = useState({
+  const defaultFormData = {
     state: "",
     mode: "residential",
     bill: "",
@@ -27,10 +27,25 @@ export default function LeftInputPanel({ onResults }) {
     perHouseSanctionedLoad: "",
     plant_size_kw: "",
     extraCharges: "200",
-  });
+  };
+
+
+  const [formData, setFormData] = useState(defaultFormData);
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    // Reset form to defaults but keep current state + mode
+    setFormData((prev) => ({
+      ...defaultFormData,
+      state: prev.state, // preserve selected state
+      mode: prev.mode,   // preserve the new mode
+    }));
+
+    // Clear results in parent
+    onResults(null);
+  }, [formData.mode]);
 
   console.log("this is the formdata", formData);
 
@@ -164,8 +179,8 @@ export default function LeftInputPanel({ onResults }) {
       sizingMethod = isPositive(toNum(formData.bill))
         ? "bill"
         : isPositive(toNum(formData.units))
-        ? "units"
-        : "";
+          ? "units"
+          : "";
     } else if (formData.mode === "rwa") {
       sizingMethod = "rwa"; // backend handles the RWA sizing logic
     } else if (
@@ -299,11 +314,10 @@ export default function LeftInputPanel({ onResults }) {
               {/* Residential */}
               <label
                 className={`flex items-center justify-center px-4 py-2 rounded-lg border cursor-pointer transition
-          ${
-            formData.mode === "residential"
-              ? "bg-green-500 text-black font-semibold border-green-500"
-              : "bg-[#111] text-gray-300 border-gray-600 hover:border-green-400 hover:text-green-400"
-          }`}
+          ${formData.mode === "residential"
+                    ? "bg-green-500 text-black font-semibold border-green-500"
+                    : "bg-[#111] text-gray-300 border-gray-600 hover:border-green-400 hover:text-green-400"
+                  }`}
               >
                 <input
                   type="radio"
@@ -319,11 +333,10 @@ export default function LeftInputPanel({ onResults }) {
               {/* Plant Size */}
               <label
                 className={`flex items-center justify-center px-4 py-2 rounded-lg border cursor-pointer transition
-          ${
-            formData.mode === "plant_size"
-              ? "bg-green-500 text-black font-semibold border-green-500"
-              : "bg-[#111] text-gray-300 border-gray-600 hover:border-green-400 hover:text-green-400"
-          }`}
+          ${formData.mode === "plant_size"
+                    ? "bg-green-500 text-black font-semibold border-green-500"
+                    : "bg-[#111] text-gray-300 border-gray-600 hover:border-green-400 hover:text-green-400"
+                  }`}
               >
                 <input
                   type="radio"
@@ -339,13 +352,12 @@ export default function LeftInputPanel({ onResults }) {
               {/* RWA */}
               <label
                 className={`flex items-center justify-center px-4 py-2 rounded-lg border cursor-pointer transition
-          ${
-            selectedState.rwa_enabled
-              ? formData.mode === "rwa"
-                ? "bg-green-500 text-black font-semibold border-green-500"
-                : "bg-[#111] text-gray-300 border-gray-600 hover:border-green-400 hover:text-green-400"
-              : "bg-gray-800 text-gray-500 border-gray-700 cursor-not-allowed"
-          }`}
+          ${selectedState.rwa_enabled
+                    ? formData.mode === "rwa"
+                      ? "bg-green-500 text-black font-semibold border-green-500"
+                      : "bg-[#111] text-gray-300 border-gray-600 hover:border-green-400 hover:text-green-400"
+                    : "bg-gray-800 text-gray-500 border-gray-700 cursor-not-allowed"
+                  }`}
               >
                 <input
                   type="radio"
@@ -362,11 +374,10 @@ export default function LeftInputPanel({ onResults }) {
               {/* Manual Load */}
               <label
                 className={`flex items-center justify-center px-4 py-2 rounded-lg border cursor-pointer transition
-          ${
-            formData.mode === "manual_load"
-              ? "bg-green-500 text-black font-semibold border-green-500"
-              : "bg-[#111] text-gray-300 border-gray-600 hover:border-green-400 hover:text-green-400"
-          }`}
+          ${formData.mode === "manual_load"
+                    ? "bg-green-500 text-black font-semibold border-green-500"
+                    : "bg-[#111] text-gray-300 border-gray-600 hover:border-green-400 hover:text-green-400"
+                  }`}
               >
                 <input
                   type="radio"
@@ -425,11 +436,10 @@ export default function LeftInputPanel({ onResults }) {
                   onChange={handleChange}
                   disabled={!!formData.units}
                   className={`w-full p-2 rounded-lg border appearance-none
-                  ${
-                    formData.units
+                  ${formData.units
                       ? "bg-gray-700 border-gray-500 text-gray-400 cursor-not-allowed"
                       : "bg-black border-green-500 text-white"
-                  }`}
+                    }`}
                   placeholder="e.g. 2500"
                 />
               </div>
@@ -454,11 +464,10 @@ export default function LeftInputPanel({ onResults }) {
                   onChange={handleChange}
                   disabled={!!formData.bill}
                   className={`w-full p-2 rounded-lg border appearance-none
-      ${
-        formData.bill
-          ? "bg-gray-700 border-gray-500 text-gray-400 cursor-not-allowed"
-          : "bg-black border-green-500 text-white"
-      }`}
+      ${formData.bill
+                      ? "bg-gray-700 border-gray-500 text-gray-400 cursor-not-allowed"
+                      : "bg-black border-green-500 text-white"
+                    }`}
                   placeholder="e.g. 350"
                 />
               </div>
