@@ -288,7 +288,7 @@ export default function LeftInputPanel({ onResults }) {
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Searchable State Dropdown */}
         <div>
-          <label className="block mb-1">State</label>
+          <label className="block mb-1 font-bold">State</label>
           <Select
             options={states}
             value={selectedState}
@@ -306,7 +306,7 @@ export default function LeftInputPanel({ onResults }) {
 
         {/* Mode Selection */}
         <div>
-          <label className="block mb-2 text-sm font-medium text-gray-300">
+          <label className="block mb-2 text-sm font-bold">
             Mode
           </label>
           {selectedState ? (
