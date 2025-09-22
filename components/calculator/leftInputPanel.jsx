@@ -190,6 +190,12 @@ export default function LeftInputPanel({ onResults }) {
       sizingMethod = "plant_size"; // backend handles the RWA sizing logic
     }
 
+    // ✅ Fix: set default 3.105 if manual_load and no edits
+    let finalPlantSize = Number(formData.plant_size_kw) || 0;
+    if (formData.mode === "manual_load" && finalPlantSize <= 0) {
+      finalPlantSize = 3.105;
+    }
+
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/calculator/estimate`,
@@ -211,7 +217,7 @@ export default function LeftInputPanel({ onResults }) {
             roof_area_value: Number(formData.roofArea) || 0,
             roof_area_unit: formData.roofUnit,
             sizing_method: sizingMethod,
-            plant_size_kw: Number(formData.plant_size_kw) || 0,
+            plant_size_kw: finalPlantSize,
             discom_extra_charges: Number(formData.extraCharges) || 200,
           }),
         }
@@ -288,7 +294,7 @@ export default function LeftInputPanel({ onResults }) {
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Searchable State Dropdown */}
         <div>
-          <label className="block mb-1">State</label>
+          <label className="block mb-1 font-bold">State</label>
           <Select
             options={states}
             value={selectedState}
@@ -306,7 +312,7 @@ export default function LeftInputPanel({ onResults }) {
 
         {/* Mode Selection */}
         <div>
-          <label className="block mb-2 text-sm font-medium text-gray-300">
+          <label className="block mb-2 text-sm font-bold">
             Mode
           </label>
           {selectedState ? (
