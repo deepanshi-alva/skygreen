@@ -190,6 +190,12 @@ export default function LeftInputPanel({ onResults }) {
       sizingMethod = "plant_size"; // backend handles the RWA sizing logic
     }
 
+    // ✅ Fix: set default 3.105 if manual_load and no edits
+    let finalPlantSize = Number(formData.plant_size_kw) || 0;
+    if (formData.mode === "manual_load" && finalPlantSize <= 0) {
+      finalPlantSize = 3.105;
+    }
+
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/calculator/estimate`,
@@ -211,7 +217,7 @@ export default function LeftInputPanel({ onResults }) {
             roof_area_value: Number(formData.roofArea) || 0,
             roof_area_unit: formData.roofUnit,
             sizing_method: sizingMethod,
-            plant_size_kw: Number(formData.plant_size_kw) || 0,
+            plant_size_kw: finalPlantSize,
             discom_extra_charges: Number(formData.extraCharges) || 200,
           }),
         }
