@@ -5,6 +5,7 @@ import Footer from "@/components/common/footer";
 import Header from "@/components/common/header";
 import WhatsAppWidget from "@/components/WhatsAppWidget";
 import { AuthProvider } from "@/lib/authContext";
+import CookieConsent from "@/components/CookieConsent";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,6 +35,7 @@ export default function RootLayout({
         <AuthProvider>
           <Header />
           {children}
+          <CookieConsent/>
           <Footer />
           <WhatsAppWidget
             message="Hi SKYGREEN, I'm interested in your imported TOPCon panels (575W). Please contact me."

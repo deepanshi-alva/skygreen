@@ -12,7 +12,7 @@ export default function LeftInputPanel({ onResults }) {
   const [loadingStates, setLoadingStates] = useState(true);
   const [error, setError] = useState("");
 
-  const [formData, setFormData] = useState({
+  const defaultFormData = {
     state: "",
     mode: "residential",
     bill: "",
@@ -27,10 +27,25 @@ export default function LeftInputPanel({ onResults }) {
     perHouseSanctionedLoad: "",
     plant_size_kw: "",
     extraCharges: "200",
-  });
+  };
+
+
+  const [formData, setFormData] = useState(defaultFormData);
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    // Reset form to defaults but keep current state + mode
+    setFormData((prev) => ({
+      ...defaultFormData,
+      state: prev.state, // preserve selected state
+      mode: prev.mode,   // preserve the new mode
+    }));
+
+    // Clear results in parent
+    onResults(null);
+  }, [formData.mode]);
 
   console.log("this is the formdata", formData);
 
@@ -164,8 +179,8 @@ export default function LeftInputPanel({ onResults }) {
       sizingMethod = isPositive(toNum(formData.bill))
         ? "bill"
         : isPositive(toNum(formData.units))
-        ? "units"
-        : "";
+          ? "units"
+          : "";
     } else if (formData.mode === "rwa") {
       sizingMethod = "rwa"; // backend handles the RWA sizing logic
     } else if (
@@ -299,11 +314,10 @@ export default function LeftInputPanel({ onResults }) {
               {/* Residential */}
               <label
                 className={`flex items-center justify-center px-4 py-2 rounded-lg border cursor-pointer transition
-          ${
-            formData.mode === "residential"
-              ? "bg-green-500 text-black font-semibold border-green-500"
-              : "bg-[#111] text-gray-300 border-gray-600 hover:border-green-400 hover:text-green-400"
-          }`}
+          ${formData.mode === "residential"
+                    ? "bg-green-500 text-black font-semibold border-green-500"
+                    : "bg-[#111] text-gray-300 border-gray-600 hover:border-green-400 hover:text-green-400"
+                  }`}
               >
                 <input
                   type="radio"
@@ -319,11 +333,10 @@ export default function LeftInputPanel({ onResults }) {
               {/* Plant Size */}
               <label
                 className={`flex items-center justify-center px-4 py-2 rounded-lg border cursor-pointer transition
-          ${
-            formData.mode === "plant_size"
-              ? "bg-green-500 text-black font-semibold border-green-500"
-              : "bg-[#111] text-gray-300 border-gray-600 hover:border-green-400 hover:text-green-400"
-          }`}
+          ${formData.mode === "plant_size"
+                    ? "bg-green-500 text-black font-semibold border-green-500"
+                    : "bg-[#111] text-gray-300 border-gray-600 hover:border-green-400 hover:text-green-400"
+                  }`}
               >
                 <input
                   type="radio"
@@ -339,13 +352,12 @@ export default function LeftInputPanel({ onResults }) {
               {/* RWA */}
               <label
                 className={`flex items-center justify-center px-4 py-2 rounded-lg border cursor-pointer transition
-          ${
-            selectedState.rwa_enabled
-              ? formData.mode === "rwa"
-                ? "bg-green-500 text-black font-semibold border-green-500"
-                : "bg-[#111] text-gray-300 border-gray-600 hover:border-green-400 hover:text-green-400"
-              : "bg-gray-800 text-gray-500 border-gray-700 cursor-not-allowed"
-          }`}
+          ${selectedState.rwa_enabled
+                    ? formData.mode === "rwa"
+                      ? "bg-green-500 text-black font-semibold border-green-500"
+                      : "bg-[#111] text-gray-300 border-gray-600 hover:border-green-400 hover:text-green-400"
+                    : "bg-gray-800 text-gray-500 border-gray-700 cursor-not-allowed"
+                  }`}
               >
                 <input
                   type="radio"
@@ -362,11 +374,10 @@ export default function LeftInputPanel({ onResults }) {
               {/* Manual Load */}
               <label
                 className={`flex items-center justify-center px-4 py-2 rounded-lg border cursor-pointer transition
-          ${
-            formData.mode === "manual_load"
-              ? "bg-green-500 text-black font-semibold border-green-500"
-              : "bg-[#111] text-gray-300 border-gray-600 hover:border-green-400 hover:text-green-400"
-          }`}
+          ${formData.mode === "manual_load"
+                    ? "bg-green-500 text-black font-semibold border-green-500"
+                    : "bg-[#111] text-gray-300 border-gray-600 hover:border-green-400 hover:text-green-400"
+                  }`}
               >
                 <input
                   type="radio"
@@ -386,7 +397,7 @@ export default function LeftInputPanel({ onResults }) {
 
         {/* Panel Type Dropdown */}
         <div>
-          <label className="block mb-1">Panel Type</label>
+          <label className="block mb-1 font-bold">Panel Type</label>
           <Select
             options={panelOptions}
             value={
@@ -407,11 +418,11 @@ export default function LeftInputPanel({ onResults }) {
             {/* Monthly Bill OR Units */}
             <div className="flex flex-row gap-x-2">
               <div>
-                <label className="block mb-1 flex items-center gap-2">
+                <label className="block mb-1 flex items-center font-bold gap-2">
                   Avg Monthly Bill
                   <span className="relative group cursor-pointer">
                     <Info className="w-4 h-4 text-blue-400" />
-                    <div className="absolute left-6 top-1/2 transform -translate-y-1/2 hidden group-hover:block bg-black text-white text-xs p-2 rounded-md border border-green-500 w-56 z-10">
+                    <div className="absolute font-normal left-6 top-1/2 transform -translate-y-1/2 hidden group-hover:block bg-black text-white text-xs p-2 rounded-md border border-green-500 w-56 z-10">
                       Enter the average of your last 12 months' electricity
                       bills (₹).
                     </div>
@@ -425,11 +436,10 @@ export default function LeftInputPanel({ onResults }) {
                   onChange={handleChange}
                   disabled={!!formData.units}
                   className={`w-full p-2 rounded-lg border appearance-none
-                  ${
-                    formData.units
+                  ${formData.units
                       ? "bg-gray-700 border-gray-500 text-gray-400 cursor-not-allowed"
                       : "bg-black border-green-500 text-white"
-                  }`}
+                    }`}
                   placeholder="e.g. 2500"
                 />
               </div>
@@ -437,11 +447,11 @@ export default function LeftInputPanel({ onResults }) {
               <span className="text-center justify-center mt-9">or</span>
 
               <div>
-                <label className="block mb-1 flex items-center gap-2">
+                <label className="block mb-1 flex items-center font-bold gap-2">
                   Avg Monthly Units
                   <span className="relative group cursor-pointer">
                     <Info className="w-4 h-4 text-blue-400" />
-                    <div className="absolute left-6 top-1/2 transform -translate-y-1/2 hidden group-hover:block bg-black text-white text-xs p-2 rounded-md border border-green-500 w-56 z-10">
+                    <div className="absolute font-normal left-6 top-1/2 transform -translate-y-1/2 hidden group-hover:block bg-black text-white text-xs p-2 rounded-md border border-green-500 w-56 z-10">
                       Enter the average of your last 12 months' electricity
                       consumption in units (kWh).
                     </div>
@@ -454,11 +464,10 @@ export default function LeftInputPanel({ onResults }) {
                   onChange={handleChange}
                   disabled={!!formData.bill}
                   className={`w-full p-2 rounded-lg border appearance-none
-      ${
-        formData.bill
-          ? "bg-gray-700 border-gray-500 text-gray-400 cursor-not-allowed"
-          : "bg-black border-green-500 text-white"
-      }`}
+      ${formData.bill
+                      ? "bg-gray-700 border-gray-500 text-gray-400 cursor-not-allowed"
+                      : "bg-black border-green-500 text-white"
+                    }`}
                   placeholder="e.g. 350"
                 />
               </div>
@@ -466,7 +475,7 @@ export default function LeftInputPanel({ onResults }) {
 
             <div className="flex flex-row gap-x-6">
               <div>
-                <label className="block mb-1">Roof Area</label>
+                <label className="block mb-1 font-bold">Roof Area</label>
                 <input
                   type="number"
                   name="roofArea"
@@ -478,7 +487,7 @@ export default function LeftInputPanel({ onResults }) {
               </div>
 
               <div className="w-[12.5rem]">
-                <label className="block mb-1">Roof Area Unit</label>
+                <label className="block mb-1 font-bold">Roof Area Unit</label>
                 <select
                   name="roofUnit"
                   value={formData.roofUnit}
@@ -496,7 +505,7 @@ export default function LeftInputPanel({ onResults }) {
 
             <div className="flex flex-row gap-x-6">
               <div>
-                <label className="block mb-1">Sanctioned Load (kW)</label>
+                <label className="block mb-1 font-bold">Sanctioned Load (kW)</label>
                 <input
                   type="number"
                   name="sanctionedLoad"
@@ -508,7 +517,7 @@ export default function LeftInputPanel({ onResults }) {
               </div>
 
               <div>
-                <label className="block mb-1">Tariff (₹/kWh)</label>
+                <label className="block mb-1 font-bold">Tariff (₹/kWh)</label>
                 <input
                   type="number"
                   name="tariff"
@@ -522,7 +531,7 @@ export default function LeftInputPanel({ onResults }) {
 
             {/* Extra Charges (Discom) – common to all modes */}
             <div>
-              <label className="block mb-1">
+              <label className="block mb-1 font-bold">
                 Monthly Extra Charges (₹) (Discom)
               </label>
               <input
@@ -539,7 +548,7 @@ export default function LeftInputPanel({ onResults }) {
           <>
             {/* RWA-specific fields */}
             <div>
-              <label className="block mb-1">Number of Houses</label>
+              <label className="block mb-1 font-bold">Number of Houses</label>
               <input
                 type="number"
                 name="numHouses"
@@ -551,7 +560,7 @@ export default function LeftInputPanel({ onResults }) {
             </div>
 
             <div>
-              <label className="block mb-1">
+              <label className="block mb-1 font-bold">
                 Total Sanctioned Load of Society (kW)
               </label>
               <input
@@ -565,7 +574,7 @@ export default function LeftInputPanel({ onResults }) {
             </div>
 
             <div>
-              <label className="block mb-1">
+              <label className="block mb-1 font-bold">
                 Sanctioned Load Per House (kW)
               </label>
               <input
@@ -579,7 +588,7 @@ export default function LeftInputPanel({ onResults }) {
             </div>
 
             <div>
-              <label className="block mb-1">Proposed Capacity (kW)</label>
+              <label className="block mb-1 font-bold">Proposed Capacity (kW)</label>
               <input
                 type="number"
                 name="proposedCapacity"
@@ -592,7 +601,7 @@ export default function LeftInputPanel({ onResults }) {
 
             <div className="flex flex-row gap-x-6">
               <div>
-                <label className="block mb-1">Roof Area</label>
+                <label className="block mb-1 font-bold">Roof Area</label>
                 <input
                   type="number"
                   name="roofArea"
@@ -604,7 +613,7 @@ export default function LeftInputPanel({ onResults }) {
               </div>
 
               <div className="w-[12.5rem]">
-                <label className="block mb-1">Roof Area Unit</label>
+                <label className="block mb-1 font-bold">Roof Area Unit</label>
                 <select
                   name="roofUnit"
                   value={formData.roofUnit}
@@ -622,7 +631,7 @@ export default function LeftInputPanel({ onResults }) {
 
             {/* Extra Charges (Discom) – common to all modes */}
             <div>
-              <label className="block mb-1">
+              <label className="block mb-1 font-bold">
                 Monthly Extra Charges (₹) (Discom)
               </label>
               <input
@@ -639,7 +648,7 @@ export default function LeftInputPanel({ onResults }) {
           <>
             {/* Plant Size Mode Inputs */}
             <div>
-              <label className="block mb-1">Proposed Plant Size (kW)</label>
+              <label className="block mb-1 font-bold">Proposed Plant Size (kW)</label>
               <input
                 type="number"
                 name="plant_size_kw"
@@ -651,7 +660,7 @@ export default function LeftInputPanel({ onResults }) {
             </div>
 
             <div>
-              <label className="block mb-1">Tariff (₹/kWh)</label>
+              <label className="block mb-1 font-bold">Tariff (₹/kWh)</label>
               <input
                 type="number"
                 name="tariff"
@@ -664,7 +673,7 @@ export default function LeftInputPanel({ onResults }) {
 
             {/* Extra Charges (Discom) – common to all modes */}
             <div>
-              <label className="block mb-1">
+              <label className="block mb-1 font-bold">
                 Monthly Extra Charges (₹) (Discom)
               </label>
               <input
