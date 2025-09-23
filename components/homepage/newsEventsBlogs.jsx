@@ -50,7 +50,7 @@ export default function NewsEventsBlogs({
     return sorted;
   }, [data, active]);
 
-  const safeIndex = items.length ? index % items.length : 0;
+  const safeIndex = items.length ? ((index % items.length) + items.length) % items.length : 0;
   const current = items[safeIndex];
 
   useEffect(() => {
@@ -99,7 +99,7 @@ export default function NewsEventsBlogs({
         {/* Section Title */}
         <div className="mb-12 text-center">
           <h2 className="text-4xl text-white md:text-5xl lg:text-6xl font-bold leading-tight">
-            Latest  <span className="text-[#acfe53]">Updates & Insights</span> 
+            Latest <span className="text-[#acfe53]">Updates & Insights</span>
           </h2>
           <p className="mt-3 text-white/60 text-sm md:text-base max-w-2xl mx-auto">
             Stay informed with the newest news, upcoming events, and in-depth blogs from the solar industry.
@@ -236,7 +236,7 @@ export default function NewsEventsBlogs({
 
                     {/* Text — full width when no image */}
                     <div
-                      className={`p-6  flex flex-col ${current?.image ? "justify-between md:p-10" : "justify-center w-full md:p-16"
+                      className={`p-6 flex flex-col text-left ${current?.image ? "justify-between md:p-10" : "justify-center w-full md:p-16"
                         }`}
                     >
                       {/* Badges row (shown here if no image) */}
@@ -262,18 +262,24 @@ export default function NewsEventsBlogs({
 
                       <div>
                         <h3
-                          className={`font-bold leading-tight ${current?.image ? "text-2xl md:text-3xl" : "text-3xl md:text-5xl"
+                          className={`font-bold leading-tight text-left ${current?.image ? "text-2xl md:text-3xl" : "text-3xl md:text-5xl"
                             }`}
                         >
                           {current?.title}
                         </h3>
                         {current?.meta && (
-                          <p className="mt-2 text-sm text-white/60">{current.meta}</p>
+                          <p className="mt-2 text-sm text-white/60 leading-relaxed">
+                            {current.meta}
+                          </p>
                         )}
                         {current?.excerpt && (
                           <p
-                            className={`mt-4 text-white/80 ${current?.image ? "leading-7" : ""
-                              }`}
+                            className="mt-4 text-white/80 leading-relaxed text-justify"
+                            style={{
+                              hyphens: "auto",
+                              WebkitHyphens: "auto",
+                              MozHyphens: "auto",
+                            }}
                           >
                             {current.excerpt}
                           </p>
@@ -301,6 +307,70 @@ export default function NewsEventsBlogs({
           </div>
         </div>
       </div>
+      <style jsx>{`
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
+        .animate-fadeIn {
+          animation: fadeIn 800ms ease forwards;
+        }
+
+        @keyframes textIn {
+          from {
+            opacity: 0;
+            transform: translateY(6px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        .animate-textIn {
+          animation: textIn 350ms ease;
+        }
+
+        @keyframes listIn {
+          from {
+            opacity: 0;
+            transform: translateX(-20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+        .specItem {
+          opacity: 0;
+          animation: listIn 400ms ease forwards;
+        }
+
+        @keyframes riseIn {
+          from {
+            transform: translateY(120px) scale(0.98);
+            opacity: 0;
+            filter: blur(6px);
+          }
+          60% {
+            opacity: 1;
+            filter: blur(0);
+          }
+          to {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+            filter: blur(0);
+          }
+        }
+        .animate-rise,
+        .animate-rise /* fallback name preserved */ {
+          animation: riseIn 900ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+          will-change: transform, opacity, filter;
+        }
+      `}</style>
     </section>
   );
 }
