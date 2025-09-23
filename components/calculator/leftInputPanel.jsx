@@ -288,7 +288,7 @@ export default function LeftInputPanel({ onResults }) {
   ];
 
   return (
-    <div className="p-4 shadow-lg relative md:sticky md:top-24 self-start">
+    <div className="p-4 shadow-lg relative sticky top-24 self-start">
       <h2 className="text-xl font-bold mb-4">Your Details</h2>
 
       <form onSubmit={handleSubmit} className="space-y-4">
