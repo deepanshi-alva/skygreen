@@ -212,66 +212,6 @@ export default function Navbar() {
           </div>
         )}
       </div>
-
-      {/* Scoped styled-jsx for the moving green border (no global CSS) */}
-      <style jsx>{`
-        .moving-border {
-          position: relative;
-          border-radius: 9999px;
-          overflow: hidden;
-        }
-
-        /* animated gradient ring */
-        .moving-border::before {
-          content: "";
-          position: absolute;
-          inset: 0;
-          margin: -8px; /* ring thickness */
-          border-radius: inherit;
-          background: conic-gradient(
-            from 120deg,
-            rgba(0, 0, 0, 0) 20deg,
-            rgba(0, 0, 0, 0) 40deg,
-            rgba(36, 185, 16, 0.95) 130deg,
-            rgba(36, 185, 16, 0.95) 140deg,
-            rgba(36, 185, 16, 0.95) 170deg,
-            rgba(0, 0, 0, 0) 180deg,
-            rgba(0, 0, 0, 0)
-          );
-          filter: blur(6px); /* glow */
-          z-index: 0;
-          pointer-events: none;
-          animation: spin 3.8s linear infinite;
-          transform-origin: 50% 50%;
-        }
-
-        /* center mask so inner area remains usable */
-        .moving-border::after {
-          content: "";
-          position: absolute;
-          inset: 3px; /* same as margin above */
-          border-radius: calc(9999px - 3px);
-          background: rgba(0, 0, 0, 1); /* match your nav bg; tweak if needed */
-          z-index: 1;
-          pointer-events: none;
-          
-        }
-
-        /* ensure children (links) appear above the mask */
-        .moving-border :global(*) {
-          position: relative;
-          z-index: 2;
-        }
-
-        @keyframes spin {
-          from {
-            transform: rotate(0deg);
-          }
-          to {
-            transform: rotate(360deg);
-          }
-        }
-      `}</style>
     </>
   );
 }
