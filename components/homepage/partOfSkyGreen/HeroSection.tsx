@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 export function HeroSection() {
   return (
-    <div className="relative w-full h-full min-h-[560px] md:min-h-[720px] lg:min-h-[825px] rounded-2xl overflow-hidden shadow-lg">
+    <div className="relative w-full h-full min-h-[560px] md:min-h-[720px] lg:min-h-[680px] rounded-2xl overflow-hidden shadow-lg">
       {/* Use Image in fill mode so object-cover works reliably */}
       <Image
         src="/images/refer.png"
