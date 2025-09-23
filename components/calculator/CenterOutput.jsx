@@ -227,33 +227,37 @@ export default function CenterOutput({ results }) {
             30-Year Economics
           </h3>
           <ResponsiveContainer width="100%" height={220}>
-            <PieChart>
-              <Pie
-                data={mode === "grid" ? gridData : solarData}
-                dataKey="value"
-                nameKey="name"
-                cx="50%"
-                cy="50%"
-                innerRadius={40}
-                outerRadius={70}
-                label={({ value }) => `₹${format(value)}`}
-              >
-                {(mode === "grid" ? gridData : solarData).map((entry, index) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={COLORS[index % COLORS.length]}
-                  />
-                ))}
-              </Pie>
-              <Tooltip
-                formatter={(val, name) => [
-                  `₹${Number(val).toLocaleString("en-IN")}`,
-                  name,
-                ]}
-              />
-              <Legend wrapperStyle={{ fontSize: "0.75rem", color: "white" }} />
-            </PieChart>
-          </ResponsiveContainer>
+  <PieChart>
+    <Pie
+      data={mode === "grid" ? gridData : solarData}
+      dataKey="value"
+      nameKey="name"
+      cx="50%"
+      cy="50%"
+      innerRadius={30}
+      outerRadius={70}
+      // ✅ Show labels only on medium+ screens
+      label={window.innerWidth >= 640 ? ({ value }) => `₹${format(value)}` : false}
+    >
+      {(mode === "grid" ? gridData : solarData).map((entry, index) => (
+        <Cell
+          key={`cell-${index}`}
+          fill={COLORS[index % COLORS.length]}
+        />
+      ))}
+    </Pie>
+    <Tooltip
+      formatter={(val, name) => [
+        `₹${Number(val).toLocaleString("en-IN")}`,
+        name,
+      ]}
+    />
+    <Legend
+      wrapperStyle={{ fontSize: "0.75rem", color: "white" }}
+    />
+  </PieChart>
+</ResponsiveContainer>
+
           <div className="flex flex-wrap gap-2 mt-4">
             <button
               onClick={() => setMode("solar")}
