@@ -288,13 +288,13 @@ export default function LeftInputPanel({ onResults }) {
   ];
 
   return (
-    <div className="col-span-3 p-4 shadow-lg relative sticky top-24 self-start">
+    <div className="p-4 shadow-lg relative md:sticky md:top-24 self-start">
       <h2 className="text-xl font-bold mb-4">Your Details</h2>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Searchable State Dropdown */}
         <div>
-          <label className="block mb-1 font-bold">State</label>
+          <label className="block mb-1 font-bold whitespace-nowrap text-xs sm:text-sm md:text-base">State</label>
           <Select
             options={states}
             value={selectedState}
@@ -312,11 +312,11 @@ export default function LeftInputPanel({ onResults }) {
 
         {/* Mode Selection */}
         <div>
-          <label className="block mb-2 text-sm font-bold">
+          <label className="block mb-2 text-sm font-bold whitespace-nowrap text-xs sm:text-sm md:text-base">
             Mode
           </label>
           {selectedState ? (
-            <div className="grid grid-cols-2 gap-3 md:flex md:gap-4">
+            <div className="grid grid-cols-2 gap-3 md:flex md:gap-4 text-[12px]">
               {/* Residential */}
               <label
                 className={`flex items-center justify-center px-4 py-2 rounded-lg border cursor-pointer transition
@@ -403,7 +403,7 @@ export default function LeftInputPanel({ onResults }) {
 
         {/* Panel Type Dropdown */}
         <div>
-          <label className="block mb-1 font-bold">Panel Type</label>
+          <label className="block mb-1 font-bold whitespace-nowrap text-xs sm:text-sm md:text-base">Panel Type</label>
           <Select
             options={panelOptions}
             value={
@@ -424,7 +424,7 @@ export default function LeftInputPanel({ onResults }) {
             {/* Monthly Bill OR Units */}
             <div className="flex flex-row gap-x-2">
               <div>
-                <label className="block mb-1 flex items-center font-bold gap-2">
+                <label className="block mb-1 flex items-center font-bold gap-2 whitespace-nowrap text-xs sm:text-sm md:text-base">
                   Avg Monthly Bill
                   <span className="relative group cursor-pointer">
                     <Info className="w-4 h-4 text-blue-400" />
@@ -453,7 +453,7 @@ export default function LeftInputPanel({ onResults }) {
               <span className="text-center justify-center mt-9">or</span>
 
               <div>
-                <label className="block mb-1 flex items-center font-bold gap-2">
+                <label className="block mb-1 flex items-center font-bold gap-2 whitespace-nowrap text-xs sm:text-sm md:text-base">
                   Avg Monthly Units
                   <span className="relative group cursor-pointer">
                     <Info className="w-4 h-4 text-blue-400" />
@@ -481,7 +481,7 @@ export default function LeftInputPanel({ onResults }) {
 
             <div className="flex flex-row gap-x-6">
               <div>
-                <label className="block mb-1 font-bold">Roof Area</label>
+                <label className="block mb-1 font-bold whitespace-nowrap text-xs sm:text-sm md:text-base">Roof Area</label>
                 <input
                   type="number"
                   name="roofArea"
@@ -493,7 +493,7 @@ export default function LeftInputPanel({ onResults }) {
               </div>
 
               <div className="w-[12.5rem]">
-                <label className="block mb-1 font-bold">Roof Area Unit</label>
+                <label className="block mb-1 font-bold whitespace-nowrap text-xs sm:text-sm md:text-base">Roof Area Unit</label>
                 <select
                   name="roofUnit"
                   value={formData.roofUnit}
@@ -511,7 +511,7 @@ export default function LeftInputPanel({ onResults }) {
 
             <div className="flex flex-row gap-x-6">
               <div>
-                <label className="block mb-1 font-bold">Sanctioned Load (kW)</label>
+                <label className="block mb-1 font-bold whitespace-nowrap text-xs sm:text-sm md:text-base">Sanctioned Load (kW)</label>
                 <input
                   type="number"
                   name="sanctionedLoad"
@@ -523,7 +523,7 @@ export default function LeftInputPanel({ onResults }) {
               </div>
 
               <div>
-                <label className="block mb-1 font-bold">Tariff (₹/kWh)</label>
+                <label className="block mb-1 font-bold whitespace-nowrap text-xs sm:text-sm md:text-base">Tariff (₹/kWh)</label>
                 <input
                   type="number"
                   name="tariff"
@@ -537,7 +537,7 @@ export default function LeftInputPanel({ onResults }) {
 
             {/* Extra Charges (Discom) – common to all modes */}
             <div>
-              <label className="block mb-1 font-bold">
+              <label className="block mb-1 font-bold whitespace-nowrap text-xs sm:text-sm md:text-base">
                 Monthly Extra Charges (₹) (Discom)
               </label>
               <input
@@ -554,7 +554,7 @@ export default function LeftInputPanel({ onResults }) {
           <>
             {/* RWA-specific fields */}
             <div>
-              <label className="block mb-1 font-bold">Number of Houses</label>
+              <label className="block mb-1 font-bold whitespace-nowrap text-xs sm:text-sm md:text-base">Number of Houses</label>
               <input
                 type="number"
                 name="numHouses"
@@ -566,7 +566,7 @@ export default function LeftInputPanel({ onResults }) {
             </div>
 
             <div>
-              <label className="block mb-1 font-bold">
+              <label className="block mb-1 font-bold whitespace-nowrap text-xs sm:text-sm md:text-base">
                 Total Sanctioned Load of Society (kW)
               </label>
               <input
@@ -580,7 +580,7 @@ export default function LeftInputPanel({ onResults }) {
             </div>
 
             <div>
-              <label className="block mb-1 font-bold">
+              <label className="block mb-1 font-bold whitespace-nowrap text-xs sm:text-sm md:text-base">
                 Sanctioned Load Per House (kW)
               </label>
               <input
@@ -594,7 +594,7 @@ export default function LeftInputPanel({ onResults }) {
             </div>
 
             <div>
-              <label className="block mb-1 font-bold">Proposed Capacity (kW)</label>
+              <label className="block mb-1 font-bold whitespace-nowrap text-xs sm:text-sm md:text-base">Proposed Capacity (kW)</label>
               <input
                 type="number"
                 name="proposedCapacity"
@@ -607,7 +607,7 @@ export default function LeftInputPanel({ onResults }) {
 
             <div className="flex flex-row gap-x-6">
               <div>
-                <label className="block mb-1 font-bold">Roof Area</label>
+                <label className="block mb-1 font-bold whitespace-nowrap text-xs sm:text-sm md:text-base">Roof Area</label>
                 <input
                   type="number"
                   name="roofArea"
@@ -619,7 +619,7 @@ export default function LeftInputPanel({ onResults }) {
               </div>
 
               <div className="w-[12.5rem]">
-                <label className="block mb-1 font-bold">Roof Area Unit</label>
+                <label className="block mb-1 font-bold whitespace-nowrap text-xs sm:text-sm md:text-base">Roof Area Unit</label>
                 <select
                   name="roofUnit"
                   value={formData.roofUnit}
@@ -637,7 +637,7 @@ export default function LeftInputPanel({ onResults }) {
 
             {/* Extra Charges (Discom) – common to all modes */}
             <div>
-              <label className="block mb-1 font-bold">
+              <label className="block mb-1 font-bold whitespace-nowrap text-xs sm:text-sm md:text-base">
                 Monthly Extra Charges (₹) (Discom)
               </label>
               <input
@@ -654,7 +654,7 @@ export default function LeftInputPanel({ onResults }) {
           <>
             {/* Plant Size Mode Inputs */}
             <div>
-              <label className="block mb-1 font-bold">Proposed Plant Size (kW)</label>
+              <label className="block mb-1 font-bold whitespace-nowrap text-xs sm:text-sm md:text-base">Proposed Plant Size (kW)</label>
               <input
                 type="number"
                 name="plant_size_kw"
@@ -666,7 +666,7 @@ export default function LeftInputPanel({ onResults }) {
             </div>
 
             <div>
-              <label className="block mb-1 font-bold">Tariff (₹/kWh)</label>
+              <label className="block mb-1 font-bold whitespace-nowrap text-xs sm:text-sm md:text-base">Tariff (₹/kWh)</label>
               <input
                 type="number"
                 name="tariff"
@@ -679,7 +679,7 @@ export default function LeftInputPanel({ onResults }) {
 
             {/* Extra Charges (Discom) – common to all modes */}
             <div>
-              <label className="block mb-1 font-bold">
+              <label className="block mb-1 font-bold whitespace-nowrap text-xs sm:text-sm md:text-base">
                 Monthly Extra Charges (₹) (Discom)
               </label>
               <input

@@ -12,9 +12,9 @@ export default function SolarDashboardPage() {
     <div className="w-full bg-black text-green-400">
       {!started ? (
         // --- Fullscreen Welcome Screen ---
-        <div className="flex flex-col justify-center items-center min-h-screen w-full text-center px-6">
+        <div className="flex flex-col justify-center items-center min-h-screen w-full text-center px-6 mt-4">
           {/* Icon */}
-          <div className="flex flex-row items-center justify-center gap-2 mb-6">
+          <div className="flex flex-row items-center justify-center gap-2 mb-6 sm:mt-10">
             <div className="text-6xl">☀️</div>
             <div className="text-6xl mt-12 -ml-4">₹</div>
           </div>
@@ -46,7 +46,7 @@ export default function SolarDashboardPage() {
         </div>
       ) : (
         // --- Actual Calculator (Step 2) ---
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 mt-8 lg:mt-24 p-4">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 mt-20 lg:mt-24 p-4">
           <div className="lg:col-span-3 order-1">
             <LeftInputPanel onResults={setResults} />
           </div>

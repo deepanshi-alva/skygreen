@@ -15,7 +15,7 @@ export default function CenterOutput({ results }) {
 
   if (!results) {
     return (
-      <div className="col-span-7 p-6 flex items-center justify-center mt-64">
+      <div className="col-span-7 p-6 flex items-center justify-center md:mt-64">
         <div className="text-center space-y-4">
           <p className="text-2xl font-semibold">
             🌞 Every rooftop can be a power plant!

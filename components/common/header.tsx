@@ -29,28 +29,33 @@ export default function Navbar() {
   }, []);
 
   const linkClasses = (path: string) =>
-    `hover:text-green-500 transform hover:scale-110 transition-transform duration-300 ${
-      pathname === path ? "text-green-500 font-semibold" : ""
+    `hover:text-green-500 transform hover:scale-110 transition-transform duration-300 ${pathname === path ? "text-green-500 font-semibold" : ""
     }`;
 
   return (
     <>
       <div
-        className={`fixed top-0 w-full z-50 pb-1 transition-all duration-300 ${
-          isSticky ? "bg-black/10 backdrop-blur-md shadow-lg" : "bg-transparent"
-        }`}
+        className={`fixed top-0 w-full z-50 pb-1 transition-all duration-300 ${isSticky ? "bg-black/10 backdrop-blur-md shadow-lg" : "bg-transparent"
+          }`}
       >
         <nav className="max-w-7xl mx-auto flex items-center justify-between px-4 py-3 text-white">
           {/* Logo */}
-          <Link href={"/"} className="">
-            <Image
-              src="/images/logo/logo-bg-remove.png"
-              alt="Logo"
-              width={160}
-              height={80}
-              priority
-            />
+          <Link href="/" className="flex flex-col items-center">
+            <div className="w-full max-w-[200px] sm:max-w-[260px] text-center">
+              <Image
+                src="/images/logo/logo-bg-remove.png"
+                alt="Logo"
+                width={260}
+                height={80}
+                priority
+                className="w-full h-auto" // ✅ responsive scaling
+              />
+              <p className="text-white text-[10px] sm:text-xs md:text-sm font-medium tracking-wide mt-1">
+                हमारा सूरज हमारी बिजली
+              </p>
+            </div>
           </Link>
+
 
           {/* Desktop Menu (moving green border applied) */}
           <div className="hidden md:flex mt-2 space-x-12 font-medium py-4 px-4 rounded-full border border-white/20 bg-black/50 backdrop-blur-md shadow-md moving-border">
@@ -80,9 +85,8 @@ export default function Navbar() {
               onMouseLeave={() => setSupportOpen(false)}
             >
               <button
-                className={`font-semibold flex mt-2 items-center mr-8 transition-transform duration-300 ${
-                  supportOpen ? "text-green-500 scale-110" : "hover:text-green-400 hover:scale-110"
-                } py-4 px-4 rounded-full border border-white/20 bg-black/60 backdrop-blur-md shadow-md`}
+                className={`font-semibold flex mt-2 items-center mr-8 transition-transform duration-300 ${supportOpen ? "text-green-500 scale-110" : "hover:text-green-400 hover:scale-110"
+                  } py-4 px-4 rounded-full border border-white/20 bg-black/60 backdrop-blur-md shadow-md`}
               >
                 <Headphones size={24} />
               </button>
@@ -167,9 +171,8 @@ export default function Navbar() {
             {/* Mobile Support Dropdown */}
             <div className="mt-3">
               <button
-                className={`font-semibold flex items-center mr-8 transition-transform duration-300 ${
-                  supportOpen ? "text-green-500 scale-110" : "hover:text-green-400 hover:scale-110"
-                }`}
+                className={`font-semibold flex items-center mr-8 transition-transform duration-300 ${supportOpen ? "text-green-500 scale-110" : "hover:text-green-400 hover:scale-110"
+                  }`}
                 onClick={() => setMobileSupportOpen(!mobileSupportOpen)}
               >
                 <Headphones size={18} />
