@@ -188,7 +188,7 @@ export default function CenterOutput({ results }) {
             {/* ✅ Show SGST Subsidy only if available */}
             {results?.sgst_subsidy > 0 && (
               <div className="flex justify-between">
-                <span className="text-gray-300">SGST Reimbursement</span>
+                <span className="text-gray-300">SGST</span>
                 <span className="font-semibold text-white break-words">
                   - ₹{format(results.sgst_subsidy)}
                 </span>
