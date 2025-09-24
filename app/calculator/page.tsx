@@ -46,8 +46,7 @@ export default function SolarDashboardPage() {
 
             {/* Feature List */}
             <ul className="space-y-2 text-xs sm:text-sm md:text-base text-gray-200 mb-8">
-              <li>✔ Free ✔ Accurate</li>
-              <li>✔ State-wise Rules Applied</li>
+              <li>✔ Free ✔ Accurate ✔ State-wise Rules Applied</li>
             </ul>
 
             {/* CTA Button */}
