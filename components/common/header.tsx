@@ -85,55 +85,58 @@ export default function Navbar() {
               onMouseEnter={() => setSupportOpen(true)}
               onMouseLeave={() => setSupportOpen(false)}
             >
+              {/* Button */}
               <button
                 className={`font-semibold flex mt-2 items-center mr-8 transition-transform duration-300 ${
                   supportOpen
                     ? "text-green-500 scale-110"
                     : "hover:text-green-400 hover:scale-110"
-                } py-4 px-4 rounded-full border border-white/20 bg-black/60 backdrop-blur-md shadow-md`}
+                } py-3 px-3 rounded-full border border-white/20 bg-black/60 backdrop-blur-md shadow-md`}
               >
-                <Headphones size={24} />
+                <Headphones size={22} />
               </button>
 
-              {/* Support Popup */}
+              {/* Dropdown */}
               {supportOpen && (
-                <div className="absolute right-0 mt-2 w-80 bg-gray-900/95 text-white rounded-xl shadow-xl p-5 z-50 border border-gray-700">
-                  <p className="font-semibold text-green-400 mb-2">Pre-Sale</p>
-                  <a
-                    href="mailto:sale@skygreen.com"
-                    className="block text-gray-300 hover:text-green-400"
-                  >
-                    sale@skygreen.com
-                  </a>
-
-                  <hr className="my-4 border-gray-700" />
-
-                  <p className="font-semibold text-green-400 mb-2">
-                    After-Sale
+                <div className="absolute right-1/2 translate-x-1/2 mt-3 bg-[#111] text-white rounded-lg shadow-lg px-5 py-4 z-50 border border-white/10 w-max">
+                  {/* General & Sales */}
+                  <p className="font-semibold text-green-400 mb-1">
+                    General & Sales Enquiries
                   </p>
                   <a
-                    href="mailto:service@skygreen.com"
-                    className="block text-gray-300 hover:text-green-400"
+                    href="mailto:contact@skygreenenergies.com"
+                    className="flex items-center gap-2 text-gray-300 hover:text-green-400"
                   >
-                    service@skygreen.com
+                    📧 contact@skygreenenergies.com
                   </a>
-                  <p className="text-sm text-gray-500 mt-1">
-                    Responds within 24 hours
-                  </p>
 
-                  <hr className="my-4 border-gray-700" />
+                  <hr className="my-3 border-gray-700" />
 
-                  <p className="font-semibold text-green-400 mb-2">
-                    Customer Support
+                  {/* Service & Warranty */}
+                  <p className="font-semibold text-green-400 mb-1">
+                    Service & Warranty
                   </p>
                   <a
-                    href="tel:+19085700909"
-                    className="block text-gray-300 hover:text-green-400"
+                    href="mailto:warranty@skygreen.com"
+                    className="flex items-center gap-2 text-gray-300 hover:text-green-400"
                   >
-                    +1 908-570-0909
+                    📧 warranty@skygreen.com
                   </a>
-                  <p className="text-sm text-gray-500">
-                    Mon – Sat, 10:00–18:00 (PDT)
+
+                  <hr className="my-3 border-gray-700" />
+
+                  {/* Customer Support */}
+                  <p className="font-semibold text-green-400 mb-1">
+                    Customer Support (India)
+                  </p>
+                  <a
+                    href="tel:+919891055535"
+                    className="flex items-center gap-2 text-gray-300 hover:text-green-400"
+                  >
+                    📞 +91 98910 55535
+                  </a>
+                  <p className="text-sm text-gray-500 flex items-center gap-2">
+                    🕒 Mon – Sat, 10:00 – 18:00 (IST)
                   </p>
                 </div>
               )}

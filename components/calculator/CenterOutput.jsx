@@ -63,11 +63,11 @@ export default function CenterOutput({ results }) {
           Think Solar. Think SKYGREEN
         </h2>
 
-        <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+        <div className="flex flex-col 2xl:flex-row gap-3 w-full sm:w-auto justify-center sm:justify-end">
           {/* Contact Button */}
           <a
             href="/contact"
-            className="flex-1 sm:flex-none px-4 sm:px-5 py-2 rounded-lg bg-green-500 text-black text-sm sm:text-base font-bold shadow-md hover:bg-green-400 hover:scale-105 transition transform text-center"
+            className="flex-1 sm:flex-none px-4 sm:px-6 py-2 rounded-lg bg-green-500 text-black text-sm sm:text-base font-bold shadow-md hover:bg-green-400 hover:scale-105 transition transform text-center whitespace-nowrap"
           >
             💬 Got Questions? Call Us Now!
           </a>
@@ -77,7 +77,7 @@ export default function CenterOutput({ results }) {
             href="https://wa.me/919667796078?text=Hi%20please%20share%20my%20solar%20report"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-1 sm:flex-none px-4 sm:px-5 py-2 rounded-lg bg-[#25D366] text-black text-sm sm:text-base font-bold shadow-md hover:bg-[#20bd5a] hover:scale-105 transition transform text-center"
+            className="flex-1 sm:flex-none px-4 sm:px-6 py-2 rounded-lg bg-[#25D366] text-black text-sm sm:text-base font-bold shadow-md hover:bg-[#20bd5a] hover:scale-105 transition transform text-center whitespace-nowrap"
           >
             📲 WhatsApp My Report
           </a>
@@ -159,66 +159,72 @@ export default function CenterOutput({ results }) {
       {/* Middle Row */}
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-3 sm:gap-4 mt-6">
         {/* Subsidy Overview card */}
-        <div className="bg-[#1a1a1a] p-4 sm:p-6 rounded-xl border border-white/10 shadow-md">
-          <div className="flex items-center justify-center mb-6 sm:mb-8">
-            <div>
-              <p className="text-xs sm:text-sm md:text-lg text-gray-400 text-center">
-                Gross Plant Cost
-              </p>
-              <p className="text-xl sm:text-2xl md:text-3xl font-bold text-green-400 text-center whitespace-nowrap">
-                ₹{format(results.gross_cost_inr)}
-              </p>
-              <p className="text-xs sm:text-sm text-gray-500 text-center mt-1">
-                Includes panel cost, inverter, AMC, installation and more.
-              </p>
-            </div>
+        <div className="bg-[#1a1a1a] p-4 sm:p-6 rounded-xl border border-white/10 shadow-md w-full">
+          {/* Gross Plant Cost */}
+          <div className="flex flex-col items-center mb-4 sm:mb-6">
+            <p className="text-xs sm:text-sm md:text-base text-gray-400 text-center">
+              Gross Plant Cost
+            </p>
+            <p className="text-xl sm:text-2xl md:text-3xl font-bold text-green-400 text-center whitespace-nowrap">
+              ₹{format(results.gross_cost_inr)}
+            </p>
+            <p className="text-[10px] sm:text-xs md:text-sm text-gray-500 text-center mt-1 leading-snug">
+              Includes panel cost, inverter, AMC, installation and more.
+            </p>
           </div>
 
+          {/* Eligible Subsidy */}
           {results?.eligibleKw > 0 && (
-            <div className="flex items-center justify-center">
+            <div className="flex items-center justify-center mb-2">
               <p className="text-xs sm:text-sm md:text-base text-gray-300">
-                Eligible Subsidy : <span>{format(results?.eligibleKw)}</span> KW
+                Eligible Subsidy :{" "}
+                <span className="font-semibold">
+                  {format(results?.eligibleKw)}
+                </span>{" "}
+                KW
               </p>
             </div>
           )}
 
           <hr className="border-white/10 my-2" />
 
+          {/* Subsidy breakdown */}
           <div className="space-y-2 text-xs sm:text-sm">
-            <div className="flex justify-between">
+            <div className="flex flex-col sm:flex-row justify-between">
               <span className="text-gray-300">Central Subsidy</span>
-              <span className="font-semibold text-white break-words">
+              <span className="font-semibold text-white whitespace-nowrap">
                 - ₹{format(results.central_subsidy_inr)}
               </span>
             </div>
 
-            <div className="flex justify-between">
+            <div className="flex flex-col sm:flex-row justify-between">
               <span className="text-gray-300">State Subsidy</span>
-              <span className="font-semibold text-white break-words">
+              <span className="font-semibold text-white whitespace-nowrap">
                 - ₹{format(results.state_subsidy)}
               </span>
             </div>
 
-            {/* ✅ Show SGST Subsidy only if available */}
+            {/* SGST (if present) */}
             {results?.sgst_subsidy > 0 && (
-              <div className="flex justify-between">
+              <div className="flex flex-col sm:flex-row justify-between">
                 <span className="text-gray-300">SGST</span>
-                <span className="font-semibold text-white break-words">
+                <span className="font-semibold text-white whitespace-nowrap">
                   - ₹{format(results.sgst_subsidy)}
                 </span>
               </div>
             )}
+          </div>
 
-            <hr className="border-white/10 my-2" />
+          <hr className="border-white/10 my-2" />
 
-            <div className="flex flex-col mt-4 sm:mt-6 items-center">
-              <span className="text-sm sm:text-base text-gray-300 font-semibold">
-                Net Cost (After Subsidy)
-              </span>
-              <span className="mt-2 text-2xl sm:text-3xl md:text-4xl font-semibold text-green-400 whitespace-nowrap">
-                ₹{format(results.net_cost_inr)}
-              </span>
-            </div>
+          {/* Net Cost */}
+          <div className="flex flex-col items-center mt-4 sm:mt-6">
+            <span className="text-xs sm:text-sm md:text-base text-gray-300 font-semibold text-center">
+              Net Cost (After Subsidy)
+            </span>
+            <span className="mt-1 text-2xl sm:text-3xl md:text-4xl font-bold text-green-400 whitespace-nowrap">
+              ₹{format(results.net_cost_inr)}
+            </span>
           </div>
         </div>
 

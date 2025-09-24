@@ -308,7 +308,7 @@ export default function LeftInputPanel({ onResults }) {
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Searchable State Dropdown */}
           <div>
-            <label className="block mb-1 font-bold whitespace-nowrap text-xs sm:text-sm md:text-base">
+            <label className="block mb-1 font-bold whitespace-nowrap text-xs sm:text-sm">
               State
             </label>
             <Select
@@ -328,93 +328,48 @@ export default function LeftInputPanel({ onResults }) {
 
           {/* Mode Selection */}
           <div>
-            <label className="block mb-2 text-sm font-bold whitespace-nowrap text-xs sm:text-sm md:text-base">
+            <label className="block mb-2 font-bold text-xs sm:text-sm md:text-base text-green-400">
               Mode
             </label>
             {selectedState ? (
-              <div className="grid grid-cols-2 gap-3 md:flex md:gap-4 text-[12px]">
-                {/* Residential */}
-                <label
-                  className={`flex items-center justify-center px-4 py-2 rounded-lg border cursor-pointer transition
-          ${
-            formData.mode === "residential"
-              ? "bg-green-500 text-black font-semibold border-green-500"
-              : "bg-[#111] text-gray-300 border-gray-600 hover:border-green-400 hover:text-green-400"
-          }`}
-                >
-                  <input
-                    type="radio"
-                    name="mode"
-                    value="residential"
-                    checked={formData.mode === "residential"}
-                    onChange={handleChange}
-                    className="hidden"
-                  />
-                  Residential
-                </label>
-
-                {/* Plant Size */}
-                <label
-                  className={`flex items-center justify-center px-4 py-2 rounded-lg border cursor-pointer transition
-          ${
-            formData.mode === "plant_size"
-              ? "bg-green-500 text-black font-semibold border-green-500"
-              : "bg-[#111] text-gray-300 border-gray-600 hover:border-green-400 hover:text-green-400"
-          }`}
-                >
-                  <input
-                    type="radio"
-                    name="mode"
-                    value="plant_size"
-                    checked={formData.mode === "plant_size"}
-                    onChange={handleChange}
-                    className="hidden"
-                  />
-                  Plant Size
-                </label>
-
-                {/* RWA */}
-                <label
-                  className={`flex items-center justify-center px-4 py-2 rounded-lg border cursor-pointer transition
-          ${
-            selectedState.rwa_enabled
-              ? formData.mode === "rwa"
+              <div className="grid grid-cols-2 2xl:grid-cols-4 gap-3">
+                {[
+                  { value: "residential", label: "Residential" },
+                  { value: "plant_size", label: "Plant Size" },
+                  { value: "rwa", label: "RWA / GHS" },
+                  { value: "manual_load", label: "Manual Load" },
+                ].map((modeOption) => (
+                  <label
+                    key={modeOption.value}
+                    className={`flex items-center justify-center h-12 sm:h-14 px-2 rounded-lg border cursor-pointer text-center text-sm sm:text-base transition
+            ${
+              formData.mode === modeOption.value
                 ? "bg-green-500 text-black font-semibold border-green-500"
                 : "bg-[#111] text-gray-300 border-gray-600 hover:border-green-400 hover:text-green-400"
-              : "bg-gray-800 text-gray-500 border-gray-700 cursor-not-allowed"
-          }`}
-                >
-                  <input
-                    type="radio"
-                    name="mode"
-                    value="rwa"
-                    checked={formData.mode === "rwa"}
-                    onChange={handleChange}
-                    disabled={!selectedState.rwa_enabled}
-                    className="hidden"
-                  />
-                  RWA / GHS
-                </label>
-
-                {/* Manual Load */}
-                <label
-                  className={`flex items-center justify-center px-4 py-2 rounded-lg border cursor-pointer transition
-          ${
-            formData.mode === "manual_load"
-              ? "bg-green-500 text-black font-semibold border-green-500"
-              : "bg-[#111] text-gray-300 border-gray-600 hover:border-green-400 hover:text-green-400"
-          }`}
-                >
-                  <input
-                    type="radio"
-                    name="mode"
-                    value="manual_load"
-                    checked={formData.mode === "manual_load"}
-                    onChange={handleChange}
-                    className="hidden"
-                  />
-                  Manual Load
-                </label>
+            }
+            ${
+              modeOption.value === "rwa" && !selectedState.rwa_enabled
+                ? "bg-gray-800 text-gray-500 border-gray-700 cursor-not-allowed"
+                : ""
+            }
+          `}
+                  >
+                    <input
+                      type="radio"
+                      name="mode"
+                      value={modeOption.value}
+                      checked={formData.mode === modeOption.value}
+                      onChange={handleChange}
+                      disabled={
+                        modeOption.value === "rwa" && !selectedState.rwa_enabled
+                      }
+                      className="hidden"
+                    />
+                    <span className="whitespace-pre-line leading-tight">
+                      {modeOption.label}
+                    </span>
+                  </label>
+                ))}
               </div>
             ) : (
               <p className="text-sm text-red-400">
@@ -425,7 +380,7 @@ export default function LeftInputPanel({ onResults }) {
 
           {/* Panel Type Dropdown */}
           <div>
-            <label className="block mb-1 font-bold whitespace-nowrap text-xs sm:text-sm md:text-base">
+            <label className="block mb-1 font-bold whitespace-nowrap text-xs sm:text-sm">
               Panel Type
             </label>
             <Select
@@ -446,13 +401,13 @@ export default function LeftInputPanel({ onResults }) {
           {formData.mode === "residential" ? (
             <>
               {/* Monthly Bill OR Units */}
-              <div className="flex flex-row gap-x-2">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-end">
                 <div>
-                  <label className="block mb-1 flex items-center font-bold gap-2 whitespace-nowrap text-xs sm:text-sm md:text-base">
+                  <label className="block mb-1 flex items-center font-bold gap-2 text-xs sm:text-sm">
                     Avg Monthly Bill
                     <span className="relative group cursor-pointer">
                       <Info className="w-4 h-4 text-blue-400" />
-                      <div className="absolute font-normal left-6 top-1/2 transform -translate-y-1/2 hidden group-hover:block bg-black text-white text-xs p-2 rounded-md border border-green-500 w-56 z-10">
+                      <div className="absolute font-normal left-6 top-1/2 -translate-y-1/2 hidden group-hover:block bg-black text-white text-xs p-2 rounded-md border border-green-500 w-56 z-10">
                         Enter the average of your last 12 months' electricity
                         bills (₹).
                       </div>
@@ -465,24 +420,22 @@ export default function LeftInputPanel({ onResults }) {
                     min={800}
                     onChange={handleChange}
                     disabled={!!formData.units}
-                    className={`w-full p-2 rounded-lg border appearance-none
-                  ${
-                    formData.units
-                      ? "bg-gray-700 border-gray-500 text-gray-400 cursor-not-allowed"
-                      : "bg-black border-green-500 text-white"
-                  }`}
+                    className={`w-full p-2 rounded-lg border
+        ${
+          formData.units
+            ? "bg-gray-700 border-gray-500 text-gray-400 cursor-not-allowed"
+            : "bg-black border-green-500 text-white"
+        }`}
                     placeholder="e.g. 2500"
                   />
                 </div>
 
-                <span className="text-center justify-center mt-9">or</span>
-
                 <div>
-                  <label className="block mb-1 flex items-center font-bold gap-2 whitespace-nowrap text-xs sm:text-sm md:text-base">
+                  <label className="block mb-1 flex items-center font-bold gap-2 text-xs sm:text-sm">
                     Avg Monthly Units
                     <span className="relative group cursor-pointer">
                       <Info className="w-4 h-4 text-blue-400" />
-                      <div className="absolute font-normal left-6 top-1/2 transform -translate-y-1/2 hidden group-hover:block bg-black text-white text-xs p-2 rounded-md border border-green-500 w-56 z-10">
+                      <div className="absolute font-normal left-6 top-1/2 -translate-y-1/2 hidden group-hover:block bg-black text-white text-xs p-2 rounded-md border border-green-500 w-56 z-10">
                         Enter the average of your last 12 months' electricity
                         consumption in units (kWh).
                       </div>
@@ -494,20 +447,21 @@ export default function LeftInputPanel({ onResults }) {
                     value={formData.units}
                     onChange={handleChange}
                     disabled={!!formData.bill}
-                    className={`w-full p-2 rounded-lg border appearance-none
-      ${
-        formData.bill
-          ? "bg-gray-700 border-gray-500 text-gray-400 cursor-not-allowed"
-          : "bg-black border-green-500 text-white"
-      }`}
+                    className={`w-full p-2 rounded-lg border
+        ${
+          formData.bill
+            ? "bg-gray-700 border-gray-500 text-gray-400 cursor-not-allowed"
+            : "bg-black border-green-500 text-white"
+        }`}
                     placeholder="e.g. 350"
                   />
                 </div>
               </div>
 
-              <div className="flex flex-row gap-x-6">
+              {/* Roof Area + Unit */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block mb-1 font-bold whitespace-nowrap text-xs sm:text-sm md:text-base">
+                  <label className="block mb-1 font-bold text-xs sm:text-sm">
                     Roof Area
                   </label>
                   <input
@@ -519,9 +473,8 @@ export default function LeftInputPanel({ onResults }) {
                     placeholder="Enter rooftop area"
                   />
                 </div>
-
-                <div className="w-[12.5rem]">
-                  <label className="block mb-1 font-bold whitespace-nowrap text-xs sm:text-sm md:text-base">
+                <div>
+                  <label className="block mb-1 font-bold text-xs sm:text-sm">
                     Roof Area Unit
                   </label>
                   <select
@@ -539,9 +492,10 @@ export default function LeftInputPanel({ onResults }) {
                 </div>
               </div>
 
-              <div className="flex flex-row gap-x-6">
+              {/* Sanctioned Load + Tariff */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block mb-1 font-bold whitespace-nowrap text-xs sm:text-sm md:text-base">
+                  <label className="block mb-1 font-bold text-xs sm:text-sm">
                     Sanctioned Load (kW)
                   </label>
                   <input
@@ -553,9 +507,8 @@ export default function LeftInputPanel({ onResults }) {
                     placeholder="Default 1"
                   />
                 </div>
-
                 <div>
-                  <label className="block mb-1 font-bold whitespace-nowrap text-xs sm:text-sm md:text-base">
+                  <label className="block mb-1 font-bold text-xs sm:text-sm">
                     Tariff (₹/kWh)
                   </label>
                   <input
@@ -571,7 +524,7 @@ export default function LeftInputPanel({ onResults }) {
 
               {/* Extra Charges (Discom) – common to all modes */}
               <div>
-                <label className="block mb-1 font-bold whitespace-nowrap text-xs sm:text-sm md:text-base">
+                <label className="block mb-1 font-bold whitespace-nowrap text-xs sm:text-sm">
                   Monthly Extra Charges (₹) (Discom)
                 </label>
                 <input
