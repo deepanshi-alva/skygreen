@@ -100,10 +100,10 @@ export default function CenterOutput({ results }) {
                 </svg>
                 <div className="absolute left-6 top-0 w-64 sm:w-72 bg-black text-gray-300 text-justify text-xs rounded-lg shadow-lg p-2 sm:p-3 border border-green-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
                   <span className="text-green-400 font-semibold">Note: </span>
-                  The recommended system size is not set directly by your proposed
-                  capacity. It is calculated by multiplying the number of panels with
-                  their rated wattage (panel_watt_w) to reflect the actual feasible
-                  capacity.
+                  The recommended system size is not set directly by your
+                  proposed capacity. It is calculated by multiplying the number
+                  of panels with their rated wattage (panel_watt_w) to reflect
+                  the actual feasible capacity.
                 </div>
               </div>
             </div>
@@ -115,7 +115,9 @@ export default function CenterOutput({ results }) {
 
         {/* Monthly Saving */}
         <div className="bg-[#1a1a1a] p-3 sm:p-4 rounded-lg border border-white/10 shadow-md">
-          <p className="text-xs sm:text-sm text-gray-400">Estimated Monthly Saving</p>
+          <p className="text-xs sm:text-sm text-gray-400">
+            Estimated Monthly Saving
+          </p>
           <p className="text-lg sm:text-xl md:text-2xl font-bold text-green-400 break-words">
             ₹{format(results.monthly_saving_inr)}
           </p>
@@ -123,7 +125,9 @@ export default function CenterOutput({ results }) {
 
         {/* Yearly Saving */}
         <div className="bg-[#1a1a1a] p-3 sm:p-4 rounded-lg border border-white/10 shadow-md">
-          <p className="text-xs sm:text-sm text-gray-400">Estimated Yearly Saving</p>
+          <p className="text-xs sm:text-sm text-gray-400">
+            Estimated Yearly Saving
+          </p>
           <p className="text-lg sm:text-xl md:text-2xl font-bold text-green-400 break-words">
             ₹{format(results.annual_saving_inr)}
           </p>
@@ -155,6 +159,7 @@ export default function CenterOutput({ results }) {
               </p>
             </div>
           </div>
+
           {results?.eligibleKw > 0 && (
             <div className="flex items-center justify-center">
               <p className="text-xs sm:text-sm md:text-base text-gray-300">
@@ -162,7 +167,9 @@ export default function CenterOutput({ results }) {
               </p>
             </div>
           )}
+
           <hr className="border-white/10 my-2" />
+
           <div className="space-y-2 text-xs sm:text-sm">
             <div className="flex justify-between">
               <span className="text-gray-300">Central Subsidy</span>
@@ -170,13 +177,26 @@ export default function CenterOutput({ results }) {
                 - ₹{format(results.central_subsidy_inr)}
               </span>
             </div>
+
             <div className="flex justify-between">
               <span className="text-gray-300">State Subsidy</span>
               <span className="font-semibold text-white break-words">
                 - ₹{format(results.state_subsidy)}
               </span>
             </div>
+
+            {/* ✅ Show SGST Subsidy only if available */}
+            {results?.sgst_subsidy > 0 && (
+              <div className="flex justify-between">
+                <span className="text-gray-300">SGST Reimbursement</span>
+                <span className="font-semibold text-white break-words">
+                  - ₹{format(results.sgst_subsidy)}
+                </span>
+              </div>
+            )}
+
             <hr className="border-white/10 my-2" />
+
             <div className="flex flex-col mt-4 sm:mt-6 items-center">
               <span className="text-sm sm:text-base text-gray-300 font-semibold">
                 Net Cost (After Subsidy)
@@ -192,17 +212,19 @@ export default function CenterOutput({ results }) {
         <div className="grid grid-cols-2 lg:grid-cols-1 gap-3 sm:gap-4">
           {(results?.sizing_method === "bill" ||
             results?.sizing_method === "units") && (
-              <div className="bg-[#1a1a1a] p-3 sm:p-4 rounded-lg border border-white/10 shadow-md">
-                <p className="text-xs sm:text-sm text-gray-400">
-                  With grid daily consumption
-                </p>
-                <p className="text-base sm:text-lg md:text-xl font-bold text-green-400">
-                  {format(results.daily_unit)}
-                </p>
-              </div>
-            )}
+            <div className="bg-[#1a1a1a] p-3 sm:p-4 rounded-lg border border-white/10 shadow-md">
+              <p className="text-xs sm:text-sm text-gray-400">
+                With grid daily consumption
+              </p>
+              <p className="text-base sm:text-lg md:text-xl font-bold text-green-400">
+                {format(results.daily_unit)}
+              </p>
+            </div>
+          )}
           <div className="bg-[#1a1a1a] p-3 sm:p-4 rounded-lg border border-white/10">
-            <p className="text-xs sm:text-sm text-gray-400">Solar Units Produced</p>
+            <p className="text-xs sm:text-sm text-gray-400">
+              Solar Units Produced
+            </p>
             <p className="text-base sm:text-lg md:text-xl font-bold text-green-400">
               {format(results.daily_gen_kwh)}
             </p>
@@ -214,7 +236,9 @@ export default function CenterOutput({ results }) {
             </p>
           </div>
           <div className="bg-[#1a1a1a] p-3 sm:p-4 rounded-lg border border-white/10">
-            <p className="text-xs sm:text-sm text-gray-400">Total Area Needed</p>
+            <p className="text-xs sm:text-sm text-gray-400">
+              Total Area Needed
+            </p>
             <p className="text-base sm:text-lg md:text-xl font-bold text-green-400">
               {format(results.roof_needed_sqft)} {results.roof_area_unit}
             </p>
@@ -227,59 +251,65 @@ export default function CenterOutput({ results }) {
             30-Year Economics
           </h3>
           <ResponsiveContainer width="100%" height={220}>
-  <PieChart>
-    <Pie
-      data={mode === "grid" ? gridData : solarData}
-      dataKey="value"
-      nameKey="name"
-      cx="50%"
-      cy="50%"
-      innerRadius={30}
-      outerRadius={70}
-      // ✅ Show labels only on medium+ screens
-      label={window.innerWidth >= 640 ? ({ value }) => `₹${format(value)}` : false}
-    >
-      {(mode === "grid" ? gridData : solarData).map((entry, index) => (
-        <Cell
-          key={`cell-${index}`}
-          fill={COLORS[index % COLORS.length]}
-        />
-      ))}
-    </Pie>
-    <Tooltip
-      formatter={(val, name) => [
-        `₹${Number(val).toLocaleString("en-IN")}`,
-        name,
-      ]}
-    />
-    <Legend
-      wrapperStyle={{ fontSize: "0.75rem", color: "white" }}
-    />
-  </PieChart>
-</ResponsiveContainer>
+            <PieChart>
+              <Pie
+                data={mode === "grid" ? gridData : solarData}
+                dataKey="value"
+                nameKey="name"
+                cx="50%"
+                cy="50%"
+                innerRadius={30}
+                outerRadius={70}
+                // ✅ Show labels only on medium+ screens
+                label={
+                  window.innerWidth >= 640
+                    ? ({ value }) => `₹${format(value)}`
+                    : false
+                }
+              >
+                {(mode === "grid" ? gridData : solarData).map(
+                  (entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={COLORS[index % COLORS.length]}
+                    />
+                  )
+                )}
+              </Pie>
+              <Tooltip
+                formatter={(val, name) => [
+                  `₹${Number(val).toLocaleString("en-IN")}`,
+                  name,
+                ]}
+              />
+              <Legend wrapperStyle={{ fontSize: "0.75rem", color: "white" }} />
+            </PieChart>
+          </ResponsiveContainer>
 
           <div className="flex flex-wrap gap-2 mt-4">
             <button
               onClick={() => setMode("solar")}
-              className={`px-3 py-1 rounded-md text-xs sm:text-sm font-semibold ${mode === "solar"
+              className={`px-3 py-1 rounded-md text-xs sm:text-sm font-semibold ${
+                mode === "solar"
                   ? "bg-green-500 text-black"
                   : "bg-[#111] text-green-400 border border-green-500"
-                }`}
+              }`}
             >
               With Solar
             </button>
             {(results?.sizing_method === "bill" ||
               results?.sizing_method === "units") && (
-                <button
-                  onClick={() => setMode("grid")}
-                  className={`px-3 py-1 rounded-md text-xs sm:text-sm font-semibold ${mode === "grid"
-                      ? "bg-green-500 text-black"
-                      : "bg-[#111] text-green-400 border border-green-500"
-                    }`}
-                >
-                  With Grid
-                </button>
-              )}
+              <button
+                onClick={() => setMode("grid")}
+                className={`px-3 py-1 rounded-md text-xs sm:text-sm font-semibold ${
+                  mode === "grid"
+                    ? "bg-green-500 text-black"
+                    : "bg-[#111] text-green-400 border border-green-500"
+                }`}
+              >
+                With Grid
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -468,16 +498,36 @@ export default function CenterOutput({ results }) {
                   <table className="w-full text-xs sm:text-sm border border-white/10 rounded-lg overflow-hidden">
                     <thead className="bg-[#111] text-gray-300">
                       <tr>
-                        <th className="px-2 sm:px-3 py-1 sm:py-2 text-left">Type</th>
-                        <th className="px-2 sm:px-3 py-1 sm:py-2 text-left">Capacity</th>
-                        <th className="px-2 sm:px-3 py-1 sm:py-2 text-left">Usable (kWh)</th>
-                        <th className="px-2 sm:px-3 py-1 sm:py-2 text-left">Backup (Ess.)</th>
-                        <th className="px-2 sm:px-3 py-1 sm:py-2 text-left">Backup (+1 AC)</th>
-                        <th className="px-2 sm:px-3 py-1 sm:py-2 text-left">Backup (+2 ACs)</th>
-                        <th className="px-2 sm:px-3 py-1 sm:py-2 text-left">Max Batteries</th>
-                        <th className="px-2 sm:px-3 py-1 sm:py-2 text-left">Charge Time</th>
-                        <th className="px-2 sm:px-3 py-1 sm:py-2 text-left">Connection</th>
-                        <th className="px-2 sm:px-3 py-1 sm:py-2 text-left">Trade-off</th>
+                        <th className="px-2 sm:px-3 py-1 sm:py-2 text-left">
+                          Type
+                        </th>
+                        <th className="px-2 sm:px-3 py-1 sm:py-2 text-left">
+                          Capacity
+                        </th>
+                        <th className="px-2 sm:px-3 py-1 sm:py-2 text-left">
+                          Usable (kWh)
+                        </th>
+                        <th className="px-2 sm:px-3 py-1 sm:py-2 text-left">
+                          Backup (Ess.)
+                        </th>
+                        <th className="px-2 sm:px-3 py-1 sm:py-2 text-left">
+                          Backup (+1 AC)
+                        </th>
+                        <th className="px-2 sm:px-3 py-1 sm:py-2 text-left">
+                          Backup (+2 ACs)
+                        </th>
+                        <th className="px-2 sm:px-3 py-1 sm:py-2 text-left">
+                          Max Batteries
+                        </th>
+                        <th className="px-2 sm:px-3 py-1 sm:py-2 text-left">
+                          Charge Time
+                        </th>
+                        <th className="px-2 sm:px-3 py-1 sm:py-2 text-left">
+                          Connection
+                        </th>
+                        <th className="px-2 sm:px-3 py-1 sm:py-2 text-left">
+                          Trade-off
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
@@ -486,8 +536,11 @@ export default function CenterOutput({ results }) {
                         .map((bat, idx) => (
                           <tr
                             key={idx}
-                            className={`border-t border-white/10 ${bat.recommended ? "bg-green-900/20" : "bg-[#1a1a1a]"
-                              }`}
+                            className={`border-t border-white/10 ${
+                              bat.recommended
+                                ? "bg-green-900/20"
+                                : "bg-[#1a1a1a]"
+                            }`}
                           >
                             <td className="px-2 sm:px-3 py-1 sm:py-2 font-semibold text-green-400 whitespace-nowrap">
                               {bat.type}
@@ -526,7 +579,6 @@ export default function CenterOutput({ results }) {
                 </div>
               </div>
             )}
-
           </div>
         )}
 
@@ -545,14 +597,14 @@ export default function CenterOutput({ results }) {
                   level === 1
                     ? "h1"
                     : level === 2
-                      ? "h2"
-                      : level === 3
-                        ? "h3"
-                        : level === 4
-                          ? "h4"
-                          : level === 5
-                            ? "h5"
-                            : "h6";
+                    ? "h2"
+                    : level === 3
+                    ? "h3"
+                    : level === 4
+                    ? "h4"
+                    : level === 5
+                    ? "h5"
+                    : "h6";
 
                 const headingStyles = {
                   h1: "text-2xl font-bold text-green-400 mt-4",
@@ -570,8 +622,9 @@ export default function CenterOutput({ results }) {
                       return (
                         <span
                           key={cIdx}
-                          className={`${child.bold ? "font-bold" : ""} ${child.underline ? "underline" : ""
-                            }`}
+                          className={`${child.bold ? "font-bold" : ""} ${
+                            child.underline ? "underline" : ""
+                          }`}
                         >
                           {text}
                         </span>
@@ -609,8 +662,9 @@ export default function CenterOutput({ results }) {
                       return (
                         <span
                           key={cIdx}
-                          className={`${child.bold ? "font-bold" : ""} ${child.underline ? "underline" : ""
-                            } whitespace-pre-wrap`} // ✅ Keep indentation visible
+                          className={`${child.bold ? "font-bold" : ""} ${
+                            child.underline ? "underline" : ""
+                          } whitespace-pre-wrap`} // ✅ Keep indentation visible
                         >
                           {text}
                         </span>
@@ -633,8 +687,9 @@ export default function CenterOutput({ results }) {
                         {li.children.map((child, cIdx) => (
                           <span
                             key={cIdx}
-                            className={`${child.bold ? "font-bold" : ""} ${child.underline ? "underline" : ""
-                              }`}
+                            className={`${child.bold ? "font-bold" : ""} ${
+                              child.underline ? "underline" : ""
+                            }`}
                           >
                             {child.text}
                           </span>
