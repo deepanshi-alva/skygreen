@@ -29,14 +29,16 @@ export default function Navbar() {
   }, []);
 
   const linkClasses = (path: string) =>
-    `hover:text-green-500 transform hover:scale-110 transition-transform duration-300 ${pathname === path ? "text-green-500 font-semibold" : ""
+    `hover:text-green-500 transform hover:scale-110 transition-transform duration-300 ${
+      pathname === path ? "text-green-500 font-semibold" : ""
     }`;
 
   return (
     <>
       <div
-        className={`fixed top-0 w-full z-50 pb-1 transition-all duration-300 ${isSticky ? "bg-black/10 backdrop-blur-md shadow-lg" : "bg-transparent"
-          }`}
+        className={`fixed top-0 w-full z-50 pb-1 transition-all duration-300 ${
+          isSticky ? "bg-black/10 backdrop-blur-md shadow-lg" : "bg-transparent"
+        }`}
       >
         <nav className="max-w-7xl mx-auto flex items-center justify-between px-4 py-3 text-white">
           {/* Logo */}
@@ -51,11 +53,10 @@ export default function Navbar() {
                 className="w-full h-auto" // ✅ responsive scaling
               />
               <p className="text-white text-[10px] sm:text-xs md:text-sm font-medium tracking-wide mt-1">
-                हमारा सूरज हमारी बिजली
+                हमारा सूरज, हमारी बिजली !!
               </p>
             </div>
           </Link>
-
 
           {/* Desktop Menu (moving green border applied) */}
           <div className="hidden md:flex mt-2 space-x-12 font-medium py-4 px-4 rounded-full border border-white/20 bg-black/50 backdrop-blur-md shadow-md moving-border">
@@ -85,8 +86,11 @@ export default function Navbar() {
               onMouseLeave={() => setSupportOpen(false)}
             >
               <button
-                className={`font-semibold flex mt-2 items-center mr-8 transition-transform duration-300 ${supportOpen ? "text-green-500 scale-110" : "hover:text-green-400 hover:scale-110"
-                  } py-4 px-4 rounded-full border border-white/20 bg-black/60 backdrop-blur-md shadow-md`}
+                className={`font-semibold flex mt-2 items-center mr-8 transition-transform duration-300 ${
+                  supportOpen
+                    ? "text-green-500 scale-110"
+                    : "hover:text-green-400 hover:scale-110"
+                } py-4 px-4 rounded-full border border-white/20 bg-black/60 backdrop-blur-md shadow-md`}
               >
                 <Headphones size={24} />
               </button>
@@ -95,25 +99,42 @@ export default function Navbar() {
               {supportOpen && (
                 <div className="absolute right-0 mt-2 w-80 bg-gray-900/95 text-white rounded-xl shadow-xl p-5 z-50 border border-gray-700">
                   <p className="font-semibold text-green-400 mb-2">Pre-Sale</p>
-                  <a href="mailto:sale@skygreen.com" className="block text-gray-300 hover:text-green-400">
+                  <a
+                    href="mailto:sale@skygreen.com"
+                    className="block text-gray-300 hover:text-green-400"
+                  >
                     sale@skygreen.com
                   </a>
 
                   <hr className="my-4 border-gray-700" />
 
-                  <p className="font-semibold text-green-400 mb-2">After-Sale</p>
-                  <a href="mailto:service@skygreen.com" className="block text-gray-300 hover:text-green-400">
+                  <p className="font-semibold text-green-400 mb-2">
+                    After-Sale
+                  </p>
+                  <a
+                    href="mailto:service@skygreen.com"
+                    className="block text-gray-300 hover:text-green-400"
+                  >
                     service@skygreen.com
                   </a>
-                  <p className="text-sm text-gray-500 mt-1">Responds within 24 hours</p>
+                  <p className="text-sm text-gray-500 mt-1">
+                    Responds within 24 hours
+                  </p>
 
                   <hr className="my-4 border-gray-700" />
 
-                  <p className="font-semibold text-green-400 mb-2">Customer Support</p>
-                  <a href="tel:+19085700909" className="block text-gray-300 hover:text-green-400">
+                  <p className="font-semibold text-green-400 mb-2">
+                    Customer Support
+                  </p>
+                  <a
+                    href="tel:+19085700909"
+                    className="block text-gray-300 hover:text-green-400"
+                  >
                     +1 908-570-0909
                   </a>
-                  <p className="text-sm text-gray-500">Mon – Sat, 10:00–18:00 (PDT)</p>
+                  <p className="text-sm text-gray-500">
+                    Mon – Sat, 10:00–18:00 (PDT)
+                  </p>
                 </div>
               )}
             </div>
@@ -136,7 +157,9 @@ export default function Navbar() {
               onClick={() => router.push("/contact")}
               className="relative group rounded-full px-6 py-3 bg-green-800/20 border border-green-400/40 backdrop-blur-md text-white font-semibold shadow-[0_0_15px_rgba(34,197,94,0.7)] hover:shadow-[0_0_25px_rgba(34,197,94,0.9)] transition-all duration-300 cursor-pointer flex items-center space-x-2 mt-2"
             >
-              <span className="transition-transform duration-300 group-hover:translate-x-1">Contact Us</span>
+              <span className="transition-transform duration-300 group-hover:translate-x-1">
+                Contact Us
+              </span>
               <ArrowRight className="w-5 h-5 transition-all duration-300 group-hover:translate-x-1 group-hover:scale-110" />
             </button>
           </div>
@@ -171,8 +194,11 @@ export default function Navbar() {
             {/* Mobile Support Dropdown */}
             <div className="mt-3">
               <button
-                className={`font-semibold flex items-center mr-8 transition-transform duration-300 ${supportOpen ? "text-green-500 scale-110" : "hover:text-green-400 hover:scale-110"
-                  }`}
+                className={`font-semibold flex items-center mr-8 transition-transform duration-300 ${
+                  supportOpen
+                    ? "text-green-500 scale-110"
+                    : "hover:text-green-400 hover:scale-110"
+                }`}
                 onClick={() => setMobileSupportOpen(!mobileSupportOpen)}
               >
                 <Headphones size={18} />
@@ -186,17 +212,24 @@ export default function Navbar() {
                   </a>
 
                   <p className="font-semibold mt-3 mb-1">After-Sale</p>
-                  <a href="mailto:service@skygreen.com" className="text-blue-600">
+                  <a
+                    href="mailto:service@skygreen.com"
+                    className="text-blue-600"
+                  >
                     service@skygreen.com
                   </a>
-                  <p className="text-sm text-gray-500 mt-1">Respond in 24 hours</p>
+                  <p className="text-sm text-gray-500 mt-1">
+                    Respond in 24 hours
+                  </p>
 
                   <hr className="my-3" />
                   <p className="font-semibold">Customer Support</p>
                   <a href="tel:+19085700909" className="text-blue-600 block">
                     +1 908-570-0909
                   </a>
-                  <p className="text-sm text-gray-500">Monday to Saturday 10:00-18:00 (PDT)</p>
+                  <p className="text-sm text-gray-500">
+                    Monday to Saturday 10:00-18:00 (PDT)
+                  </p>
                 </div>
               )}
             </div>

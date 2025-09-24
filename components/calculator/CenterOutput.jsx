@@ -59,15 +59,29 @@ export default function CenterOutput({ results }) {
     <div className="col-span-7 p-6">
       {/* Header row with title + Contact Us button */}
       <div className="flex flex-col sm:flex-row justify-between items-center mb-4 gap-3">
-        <h2 className="text-lg sm:text-xl md:text-2xl font-bold mb-2 sm:mb-0">
-          Solar payback, simplified
+        <h2 className="text-lg sm:text-xl md:text-2xl font-bold mb-2 sm:mb-0 text-center sm:text-left">
+          Think Solar. Think SKYGREEN
         </h2>
-        <a
-          href="/contact"
-          className="px-4 sm:px-5 py-2 rounded-lg bg-green-500 text-black text-sm sm:text-base font-bold shadow-md hover:bg-green-400 hover:scale-105 transition transform text-center"
-        >
-          ❓ Have a query? Let’s Talk
-        </a>
+
+        <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+          {/* Contact Button */}
+          <a
+            href="/contact"
+            className="flex-1 sm:flex-none px-4 sm:px-5 py-2 rounded-lg bg-green-500 text-black text-sm sm:text-base font-bold shadow-md hover:bg-green-400 hover:scale-105 transition transform text-center"
+          >
+            💬 Got Questions? Call Us Now!
+          </a>
+
+          {/* WhatsApp Button */}
+          <a
+            href="https://wa.me/919667796078?text=Hi%20please%20share%20my%20solar%20report"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex-1 sm:flex-none px-4 sm:px-5 py-2 rounded-lg bg-[#25D366] text-black text-sm sm:text-base font-bold shadow-md hover:bg-[#20bd5a] hover:scale-105 transition transform text-center"
+          >
+            📲 WhatsApp My Report
+          </a>
+        </div>
       </div>
 
       {/* Top Stats */}
@@ -277,11 +291,33 @@ export default function CenterOutput({ results }) {
                 )}
               </Pie>
               <Tooltip
-                formatter={(val, name) => [
-                  `₹${Number(val).toLocaleString("en-IN")}`,
-                  name,
-                ]}
+                content={({ active, payload, label }) => {
+                  if (active && payload && payload.length) {
+                    return (
+                      <div className="bg-[#1a1a1a] border border-green-500 rounded-lg p-2 shadow-md">
+                        <p className="text-green-400 font-semibold text-sm mb-1">
+                          {label}
+                        </p>
+                        {payload.map((entry, index) => (
+                          <div
+                            key={`item-${index}`}
+                            className="flex items-center gap-2"
+                          >
+                            <span className="text-white text-xs">
+                              {entry.name}:
+                            </span>
+                            <span className="bg-green-500 text-black font-bold text-xs px-2 py-0.5 rounded-md">
+                              ₹{Number(entry.value).toLocaleString("en-IN")}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    );
+                  }
+                  return null;
+                }}
               />
+
               <Legend wrapperStyle={{ fontSize: "0.75rem", color: "white" }} />
             </PieChart>
           </ResponsiveContainer>
