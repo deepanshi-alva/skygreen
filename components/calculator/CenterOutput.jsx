@@ -18,7 +18,12 @@ export default function CenterOutput({ results }) {
       <>
         {/* Top Intro Box */}
         <div className="w-full flex justify-center mb-6">
-          <div className="bg-[#0b0b0b] border border-green-500/40 rounded-xl shadow-lg p-4 sm:p-6 text-center">
+          <div
+            className="bg-[#0b0b0b] border border-green-500/40 rounded-xl 
+               shadow-[0_0_25px_4px_rgba(34,197,94,0.5)] 
+               p-4 sm:p-6 text-center transition-shadow duration-300
+               hover:shadow-[0_0_35px_8px_rgba(34,197,94,0.8)]"
+          >
             <p className="text-green-400 font-bold text-sm sm:text-base md:text-lg mb-2">
               India’s No.1 Free Solar Calculator ⚡
             </p>
@@ -33,6 +38,7 @@ export default function CenterOutput({ results }) {
             </p>
           </div>
         </div>
+
         <div className="col-span-7 p-6 flex items-center justify-center md:mt-42">
           <div className="text-center space-y-4">
             <p className="text-2xl font-semibold">
@@ -78,7 +84,12 @@ export default function CenterOutput({ results }) {
     <div className="col-span-7 p-6">
       {/* Top Intro Box */}
       <div className="w-full flex justify-center mb-6">
-        <div className="bg-[#0b0b0b] border border-green-500/40 rounded-xl shadow-lg p-4 sm:p-6 text-center">
+        <div
+          className="bg-[#0b0b0b] border border-green-500/40 rounded-xl 
+               shadow-[0_0_25px_4px_rgba(34,197,94,0.5)] 
+               p-4 sm:p-6 text-center transition-shadow duration-300
+               hover:shadow-[0_0_35px_8px_rgba(34,197,94,0.8)]"
+        >
           <p className="text-green-400 font-bold text-sm sm:text-base md:text-lg mb-2">
             India’s No.1 Free Solar Calculator ⚡
           </p>
