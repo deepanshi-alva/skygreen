@@ -280,7 +280,7 @@ function ContactForm() {
             type="text"
             value={formData.name}
             onChange={(e) => handleChange("name", e.target.value)}
-            placeholder="John Doe"
+            placeholder="Deepanshi Singhal"
             className={inputStyle}
           />
           {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
