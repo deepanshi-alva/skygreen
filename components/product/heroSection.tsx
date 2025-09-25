@@ -105,7 +105,7 @@ export default function HeroSection() {
       </section>
 
       <p className="text-center text-2xl text-green-500 -mt-24 mb-16">
-        Engineered for India's toughest climates. Certified worldwide.
+        Engineered for India&apos;s toughest climates. Certified worldwide.
       </p>
     </>
   );
