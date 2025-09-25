@@ -1,6 +1,5 @@
-// "use client";
+"use client";
 
-// import React from "react";
 import { Zap, BarChart3, ShieldCheck, RefreshCcw } from "lucide-react";
 import Image from "next/image";
 
@@ -8,7 +7,7 @@ export default function HeroSection() {
   return (
     <>
       {/* HERO */}
-      <section className="relative h-[72vh] md:h-[78vh] lg:h-[86vh] ">
+      <section className="relative h-[60vh] sm:h-[70vh] md:h-[80vh] lg:h-[90vh]">
         {/* bg video */}
         <video
           src="/images/products/HeaderFlower.mp4"
@@ -19,28 +18,31 @@ export default function HeroSection() {
         />
 
         {/* content */}
-        <div className="relative z-10 mx-auto flex h-full max-w-7xl items-center justify-between px-4 md:px-6">
+        <div className="relative z-10 mx-auto flex h-full w-full max-w-7xl flex-col md:flex-row items-center justify-between px-4 md:px-6">
           {/* LEFT: heading */}
-          <div className="text-left mb-20">
+          <div className="flex flex-col items-center md:items-start mt-[8rem] sm:mt-[12rem] md:mt-0 mb-0 md:mb-20">
             <Image
               src="/images/logo/logo-bg-remove.png"
               alt="Logo"
-              width={340}
-              height={140}
+              width={260}
+              height={100}
               priority
+              className="w-[160px] sm:w-[220px] md:w-[280px] lg:w-[340px] h-auto"
             />
-            <span className="text-green-500 text-[2.4rem] ml-30 font-bold">
+            <span className="text-green-500 text-lg sm:text-2xl md:text-3xl lg:text-[2.4rem] font-bold mt-2 sm:mt-3">
               MODULES
             </span>
           </div>
 
-          {/* floating download button near lower-left (kept) */}
-          <div className="hidden md:block absolute bottom-32 left-4 md:left-6">
+          {/* floating download button → responsive position */}
+          <div className="md:absolute md:bottom-16 md:left-6">
             <a
               href="/images/pdfs/datasheet.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="glowButton relative z-10 font-medium"
+              className="glowButton relative z-10 font-medium 
+               text-xs sm:text-sm md:text-base 
+               px-3 sm:px-4 py-1.5 sm:py-2"
             >
               ↧ Download Datasheet
               <span className="glowEffect"></span>
@@ -48,63 +50,52 @@ export default function HeroSection() {
           </div>
 
           {/* RIGHT: big headline */}
-          <div className="ml-auto text-right">
-            <p className="text-neutral-200/90 text-2xl md:text-3xl">
+          <div className="text-center md:text-right md:ml-auto max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl mb-12 md:mb-0">
+            <p className="text-neutral-200/90 text-sm sm:text-lg md:text-xl lg:text-2xl">
               High-Efficiency Bifacial N-Type TOPCon
             </p>
-            <h1 className="mt-3 text-lg md:text-xl lg:text-2xl font-extrabold tracking-tight text-white">
+            <h1 className="mt-2 sm:mt-3 text-xs sm:text-sm md:text-xl lg:text-2xl font-extrabold tracking-tight text-white">
               144 Half-Cut Cells | 16BB Multi-Busbar
             </h1>
-            <p className="text-green-600 text-4xl mt-3 font-bold">Class-A</p>
+            <p className="text-green-600 text-lg sm:text-2xl md:text-3xl lg:text-4xl mt-2 sm:mt-3 font-bold">
+              Class-A
+            </p>
           </div>
         </div>
       </section>
 
       {/* SPECS STRIP */}
       <section className="z-20 bg-black">
-        <div className="mx-auto max-w-7xl px-6 pt-8 md:pt-10">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 pt-6 sm:pt-8 md:pt-12">
           <div
-            className="relative top-[-15vh] grid grid-cols-2 gap-4 rounded-xl border border-white/20 
-                 bg-white/10 backdrop-blur-md shadow-lg md:grid-cols-4 md:gap-6 md:p-6 p-4"
+            className="relative -top-12 sm:-top-16 md:-top-20 grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 rounded-xl border border-white/20 
+                       bg-white/10 backdrop-blur-md shadow-lg p-3 sm:p-4 md:p-6"
             style={{ boxShadow: "0 10px 30px rgba(0,0,0,0.25)" }}
           >
-            {/* 1: Module Power */}
-            <Spec
-              number="575"
-              unit="<Wp>"
-              label="Module Power"
-              Icon={Zap}
-              iconLabel="Power"
-            />
-            {/* 2: Efficiency */}
+            <Spec number="575" unit="Wp" label="Module Power" Icon={Zap} />
             <Spec
               number="22.26"
-              unit="<%>"
+              unit="%"
               label="Module Efficiency"
               Icon={BarChart3}
-              iconLabel="Efficiency"
             />
-            {/* 3: Product Warranty */}
             <Spec
               number="15"
-              unit="<Year>"
+              unit="Years"
               label="Product Warranty"
               Icon={ShieldCheck}
-              iconLabel="Product Warranty"
             />
-            {/* 4: Performance Warranty */}
             <Spec
               number="30"
-              unit="<Year>"
+              unit="Years"
               label="Performance Warranty"
               Icon={RefreshCcw}
-              iconLabel="Performance Warranty"
             />
           </div>
         </div>
       </section>
 
-      <p className="text-center text-2xl text-green-500 -mt-24 mb-16">
+      <p className="text-center text-sm sm:text-base md:text-xl lg:text-2xl text-green-500 -mt-6 sm:-mt-10 md:-mt-16 mb-6 sm:mb-10 md:mb-16">
         Engineered for India&apos;s toughest climates. Certified worldwide.
       </p>
     </>
@@ -116,30 +107,30 @@ function Spec({
   unit,
   label,
   Icon,
-  iconLabel,
 }: {
   number: string;
   unit: string;
   label: string;
   Icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
-  iconLabel?: string;
 }) {
   return (
-    <div className="flex items-center md:items-center gap-3 md:gap-4">
+    <div className="flex items-center gap-2 sm:gap-3 md:gap-4">
       {/* Icon */}
-      <div className="grid h-10 w-10 place-items-center" aria-hidden="true">
-        <Icon className="h-8 w-8 text-green-500" aria-label={iconLabel} />
+      <div className="grid h-7 w-7 sm:h-8 sm:w-8 md:h-10 md:w-10 place-items-center">
+        <Icon className="h-5 w-5 sm:h-6 sm:w-6 md:h-8 md:w-8 text-green-500" />
       </div>
 
       {/* Numbers + label */}
       <div className="flex flex-col">
-        <div className="flex items-baseline gap-2">
-          <span className="text-3xl md:text-4xl font-extrabold text-green-500">
+        <div className="flex items-baseline gap-1 sm:gap-2">
+          <span className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold text-green-500">
             {number}
           </span>
-          <span className="text-neutral-400 text-sm md:text-base">{unit}</span>
+          <span className="text-neutral-400 text-xs sm:text-sm md:text-base">
+            {unit}
+          </span>
         </div>
-        <span className="mt-0.5 text-white/90 text-sm md:text-base">
+        <span className="mt-0.5 text-white/90 text-xs sm:text-sm md:text-base">
           {label}
         </span>
       </div>

@@ -88,7 +88,11 @@ export default function ElectricalPerformanceTable() {
                   </td>
                   {/* NOCT Value */}
                   <td className="px-6 py-4 text-sm text-zinc-200 border-t border-green-800/50 text-center">
-                    {models[0].data.noct[r.key as keyof ElectricalBlock["noct"]]}
+                    {
+                      models[0].data.noct[
+                        r.key as keyof ElectricalBlock["noct"]
+                      ]
+                    }
                   </td>
                 </tr>
               ))}
