@@ -287,61 +287,46 @@ export default function LeftInputPanel({ onResults }) {
   ];
 
   return (
-    <>
-      <div className="mb-6 p-4 mt-8 rounded-xl border border-green-500/40 bg-black/70 shadow-[0_0_15px_rgba(34,197,94,0.2)]">
-        <p className="text-sm sm:text-base md:text-lg text-green-400 font-semibold leading-relaxed text-justify">
-          India’s No.1 Free Solar Calculator ⚡ — Trusted by thousands to find
-          the right system size, subsidy eligibility and payback instantly.{" "}
-          <br className="hidden sm:block" />
-          <span className="text-gray-300 font-normal">
-            Just enter your details and discover how much you can save with{" "}
-            <span className="text-green-400 font-bold">
-              SKYGREEN’s premium solar solutions
-            </span>
-            .
-          </span>
-        </p>
-      </div>
-      <div className="p-4 shadow-lg relative sticky top-24 self-start">
-        <h2 className="text-xl font-bold mb-4">Your Details</h2>
+    <div className="p-4 shadow-lg relative sticky top-24 self-start">
+      <h2 className="text-xl font-bold mb-4">Your Details</h2>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Searchable State Dropdown */}
-          <div>
-            <label className="block mb-1 font-bold whitespace-nowrap text-xs sm:text-sm">
-              State
-            </label>
-            <Select
-              options={states}
-              value={selectedState}
-              onChange={handleStateChange}
-              placeholder="Search or select a state..."
-              isSearchable
-              styles={customStyles}
-              // isLoading={loadingStates}
-              // loadingMessage={() => "Loading states..."} // ✅ custom message
-              noOptionsMessage={() =>
-                loadingStates ? "Loading states..." : "No states found"
-              }
-            />
-          </div>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Searchable State Dropdown */}
+        <div>
+          <label className="block mb-1 font-bold whitespace-nowrap text-xs sm:text-sm">
+            State
+          </label>
+          <Select
+            options={states}
+            value={selectedState}
+            onChange={handleStateChange}
+            placeholder="Search or select a state..."
+            isSearchable
+            styles={customStyles}
+            // isLoading={loadingStates}
+            // loadingMessage={() => "Loading states..."} // ✅ custom message
+            noOptionsMessage={() =>
+              loadingStates ? "Loading states..." : "No states found"
+            }
+          />
+        </div>
 
-          {/* Mode Selection */}
-          <div>
-            <label className="block mb-2 font-bold text-xs sm:text-sm md:text-base text-green-400">
-              Mode
-            </label>
-            {selectedState ? (
-              <div className="grid grid-cols-2 2xl:grid-cols-4 gap-3">
-                {[
-                  { value: "residential", label: "Residential" },
-                  { value: "plant_size", label: "Plant Size" },
-                  { value: "rwa", label: "RWA / GHS" },
-                  { value: "manual_load", label: "Manual Load" },
-                ].map((modeOption) => (
-                  <label
-                    key={modeOption.value}
-                    className={`flex items-center justify-center h-12 sm:h-14 px-2 rounded-lg border cursor-pointer text-center text-sm sm:text-base transition
+        {/* Mode Selection */}
+        <div>
+          <label className="block mb-2 font-bold text-xs sm:text-sm md:text-base text-green-400">
+            Mode
+          </label>
+          {selectedState ? (
+            <div className="grid grid-cols-2 2xl:grid-cols-4 gap-3">
+              {[
+                { value: "residential", label: "Residential" },
+                { value: "plant_size", label: "Plant Size" },
+                { value: "rwa", label: "RWA / GHS" },
+                { value: "manual_load", label: "Manual Load" },
+              ].map((modeOption) => (
+                <label
+                  key={modeOption.value}
+                  className={`flex items-center justify-center h-12 sm:h-14 px-2 rounded-lg border cursor-pointer text-center text-sm sm:text-base transition
             ${
               formData.mode === modeOption.value
                 ? "bg-green-500 text-black font-semibold border-green-500"
@@ -353,317 +338,160 @@ export default function LeftInputPanel({ onResults }) {
                 : ""
             }
           `}
-                  >
-                    <input
-                      type="radio"
-                      name="mode"
-                      value={modeOption.value}
-                      checked={formData.mode === modeOption.value}
-                      onChange={handleChange}
-                      disabled={
-                        modeOption.value === "rwa" && !selectedState.rwa_enabled
-                      }
-                      className="hidden"
-                    />
-                    <span className="whitespace-pre-line leading-tight">
-                      {modeOption.label}
-                    </span>
-                  </label>
-                ))}
-              </div>
-            ) : (
-              <p className="text-sm text-red-400">
-                Please select a state first
-              </p>
-            )}
-          </div>
-
-          {/* Panel Type Dropdown */}
-          <div>
-            <label className="block mb-1 font-bold whitespace-nowrap text-xs sm:text-sm">
-              Panel Type
-            </label>
-            <Select
-              options={panelOptions}
-              value={
-                panelOptions.find((opt) => opt.value === formData.panelType) ||
-                panelOptions[0]
-              }
-              onChange={(option) =>
-                setFormData({ ...formData, panelType: option.value })
-              }
-              styles={customStyles} // 🔥 reuse same green/black theme
-              isSearchable={false} // panels are limited, so no need for search
-            />
-          </div>
-
-          {/* Conditional Fields */}
-          {formData.mode === "residential" ? (
-            <>
-              {/* Monthly Bill OR Units */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-end">
-                <div>
-                  <label className="block mb-1 flex items-center font-bold gap-2 text-xs sm:text-sm">
-                    Avg Monthly Bill
-                    <span className="relative group cursor-pointer">
-                      <Info className="w-4 h-4 text-blue-400" />
-                      <div className="absolute font-normal left-6 top-1/2 -translate-y-1/2 hidden group-hover:block bg-black text-white text-xs p-2 rounded-md border border-green-500 w-56 z-10">
-                        Enter the average of your last 12 months' electricity
-                        bills (₹).
-                      </div>
-                    </span>
-                  </label>
+                >
                   <input
-                    type="number"
-                    name="bill"
-                    value={formData.bill}
-                    min={800}
+                    type="radio"
+                    name="mode"
+                    value={modeOption.value}
+                    checked={formData.mode === modeOption.value}
                     onChange={handleChange}
-                    disabled={!!formData.units}
-                    className={`w-full p-2 rounded-lg border
+                    disabled={
+                      modeOption.value === "rwa" && !selectedState.rwa_enabled
+                    }
+                    className="hidden"
+                  />
+                  <span className="whitespace-pre-line leading-tight">
+                    {modeOption.label}
+                  </span>
+                </label>
+              ))}
+            </div>
+          ) : (
+            <p className="text-sm text-red-400">Please select a state first</p>
+          )}
+        </div>
+
+        {/* Panel Type Dropdown */}
+        <div>
+          <label className="block mb-1 font-bold whitespace-nowrap text-xs sm:text-sm">
+            Panel Type
+          </label>
+          <Select
+            options={panelOptions}
+            value={
+              panelOptions.find((opt) => opt.value === formData.panelType) ||
+              panelOptions[0]
+            }
+            onChange={(option) =>
+              setFormData({ ...formData, panelType: option.value })
+            }
+            styles={customStyles} // 🔥 reuse same green/black theme
+            isSearchable={false} // panels are limited, so no need for search
+          />
+        </div>
+
+        {/* Conditional Fields */}
+        {formData.mode === "residential" ? (
+          <>
+            {/* Monthly Bill OR Units */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-end">
+              <div>
+                <label className="block mb-1 flex items-center font-bold gap-2 text-xs sm:text-sm">
+                  Avg Monthly Bill
+                  <span className="relative group cursor-pointer">
+                    <Info className="w-4 h-4 text-blue-400" />
+                    <div className="absolute font-normal left-6 top-1/2 -translate-y-1/2 hidden group-hover:block bg-black text-white text-xs p-2 rounded-md border border-green-500 w-56 z-10">
+                      Enter the average of your last 12 months' electricity
+                      bills (₹).
+                    </div>
+                  </span>
+                </label>
+                <input
+                  type="number"
+                  name="bill"
+                  value={formData.bill}
+                  min={800}
+                  onChange={handleChange}
+                  disabled={!!formData.units}
+                  className={`w-full p-2 rounded-lg border
         ${
           formData.units
             ? "bg-gray-700 border-gray-500 text-gray-400 cursor-not-allowed"
             : "bg-black border-green-500 text-white"
         }`}
-                    placeholder="e.g. 2500"
-                  />
-                </div>
+                  placeholder="e.g. 2500"
+                />
+              </div>
 
-                <div>
-                  <label className="block mb-1 flex items-center font-bold gap-2 text-xs sm:text-sm">
-                    Avg Monthly Units
-                    <span className="relative group cursor-pointer">
-                      <Info className="w-4 h-4 text-blue-400" />
-                      <div className="absolute font-normal left-6 top-1/2 -translate-y-1/2 hidden group-hover:block bg-black text-white text-xs p-2 rounded-md border border-green-500 w-56 z-10">
-                        Enter the average of your last 12 months' electricity
-                        consumption in units (kWh).
-                      </div>
-                    </span>
-                  </label>
-                  <input
-                    type="number"
-                    name="units"
-                    value={formData.units}
-                    onChange={handleChange}
-                    disabled={!!formData.bill}
-                    className={`w-full p-2 rounded-lg border
+              <div>
+                <label className="block mb-1 flex items-center font-bold gap-2 text-xs sm:text-sm">
+                  Avg Monthly Units
+                  <span className="relative group cursor-pointer">
+                    <Info className="w-4 h-4 text-blue-400" />
+                    <div className="absolute font-normal left-6 top-1/2 -translate-y-1/2 hidden group-hover:block bg-black text-white text-xs p-2 rounded-md border border-green-500 w-56 z-10">
+                      Enter the average of your last 12 months' electricity
+                      consumption in units (kWh).
+                    </div>
+                  </span>
+                </label>
+                <input
+                  type="number"
+                  name="units"
+                  value={formData.units}
+                  onChange={handleChange}
+                  disabled={!!formData.bill}
+                  className={`w-full p-2 rounded-lg border
         ${
           formData.bill
             ? "bg-gray-700 border-gray-500 text-gray-400 cursor-not-allowed"
             : "bg-black border-green-500 text-white"
         }`}
-                    placeholder="e.g. 350"
-                  />
-                </div>
-              </div>
-
-              {/* Roof Area + Unit */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block mb-1 font-bold text-xs sm:text-sm">
-                    Roof Area
-                  </label>
-                  <input
-                    type="number"
-                    name="roofArea"
-                    value={formData.roofArea}
-                    onChange={handleChange}
-                    className="w-full p-2 rounded-lg bg-black border border-green-500"
-                    placeholder="Enter rooftop area"
-                  />
-                </div>
-                <div>
-                  <label className="block mb-1 font-bold text-xs sm:text-sm">
-                    Roof Area Unit
-                  </label>
-                  <select
-                    name="roofUnit"
-                    value={formData.roofUnit}
-                    onChange={handleChange}
-                    className="w-full p-2 px-4 rounded-lg bg-black border border-green-500"
-                  >
-                    <option value="sqft">Sqft</option>
-                    <option value="sqm">Sqm</option>
-                    <option value="sqyd/gaj">Sqyd/Gaj</option>
-                    <option value="ground">Ground</option>
-                    <option value="cent">Cent</option>
-                  </select>
-                </div>
-              </div>
-
-              {/* Sanctioned Load + Tariff */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block mb-1 font-bold text-xs sm:text-sm">
-                    Sanctioned Load (kW)
-                  </label>
-                  <input
-                    type="number"
-                    name="sanctionedLoad"
-                    value={formData.sanctionedLoad}
-                    onChange={handleChange}
-                    className="w-full p-2 rounded-lg bg-black border border-green-500"
-                    placeholder="Default 1"
-                  />
-                </div>
-                <div>
-                  <label className="block mb-1 font-bold text-xs sm:text-sm">
-                    Tariff (₹/kWh)
-                  </label>
-                  <input
-                    type="number"
-                    name="tariff"
-                    value={formData.tariff}
-                    onChange={handleChange}
-                    className="w-full p-2 rounded-lg bg-black border border-green-500"
-                    placeholder="Default 8"
-                  />
-                </div>
-              </div>
-
-              {/* Extra Charges (Discom) – common to all modes */}
-              <div>
-                <label className="block mb-1 font-bold whitespace-nowrap text-xs sm:text-sm">
-                  Monthly Extra Charges (₹) (Discom)
-                </label>
-                <input
-                  type="number"
-                  name="extraCharges"
-                  value={formData.extraCharges || ""}
-                  onChange={handleChange}
-                  className="w-full p-2 rounded-lg bg-black border border-green-500"
-                  placeholder="Default 200"
+                  placeholder="e.g. 350"
                 />
               </div>
-            </>
-          ) : formData.mode === "rwa" ? (
-            <>
-              {/* RWA-specific fields */}
+            </div>
+
+            {/* Roof Area + Unit */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block mb-1 font-bold whitespace-nowrap text-xs sm:text-sm md:text-base">
-                  Number of Houses
+                <label className="block mb-1 font-bold text-xs sm:text-sm">
+                  Roof Area
                 </label>
                 <input
                   type="number"
-                  name="numHouses"
-                  value={formData.numHouses}
+                  name="roofArea"
+                  value={formData.roofArea}
                   onChange={handleChange}
                   className="w-full p-2 rounded-lg bg-black border border-green-500"
-                  placeholder="Enter number of houses"
+                  placeholder="Enter rooftop area"
                 />
               </div>
-
               <div>
-                <label className="block mb-1 font-bold whitespace-nowrap text-xs sm:text-sm md:text-base">
-                  Total Sanctioned Load of Society (kW)
+                <label className="block mb-1 font-bold text-xs sm:text-sm">
+                  Roof Area Unit
                 </label>
-                <input
-                  type="number"
-                  name="societySanctionedLoad"
-                  value={formData.societySanctionedLoad || ""}
+                <select
+                  name="roofUnit"
+                  value={formData.roofUnit}
                   onChange={handleChange}
-                  className="w-full p-2 rounded-lg bg-black border border-green-500"
-                  placeholder="Enter total sanctioned load"
-                />
+                  className="w-full p-2 px-4 rounded-lg bg-black border border-green-500"
+                >
+                  <option value="sqft">Sqft</option>
+                  <option value="sqm">Sqm</option>
+                  <option value="sqyd/gaj">Sqyd/Gaj</option>
+                  <option value="ground">Ground</option>
+                  <option value="cent">Cent</option>
+                </select>
               </div>
+            </div>
 
+            {/* Sanctioned Load + Tariff */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block mb-1 font-bold whitespace-nowrap text-xs sm:text-sm md:text-base">
-                  Sanctioned Load Per House (kW)
+                <label className="block mb-1 font-bold text-xs sm:text-sm">
+                  Sanctioned Load (kW)
                 </label>
                 <input
                   type="number"
-                  name="perHouseSanctionedLoad"
-                  value={formData.perHouseSanctionedLoad || ""}
+                  name="sanctionedLoad"
+                  value={formData.sanctionedLoad}
                   onChange={handleChange}
                   className="w-full p-2 rounded-lg bg-black border border-green-500"
                   placeholder="Default 1"
                 />
               </div>
-
               <div>
-                <label className="block mb-1 font-bold whitespace-nowrap text-xs sm:text-sm md:text-base">
-                  Proposed Capacity (kW)
-                </label>
-                <input
-                  type="number"
-                  name="proposedCapacity"
-                  value={formData.proposedCapacity || ""}
-                  onChange={handleChange}
-                  className="w-full p-2 rounded-lg bg-black border border-green-500"
-                  placeholder="Enter proposed capacity"
-                />
-              </div>
-
-              <div className="flex flex-row gap-x-6">
-                <div>
-                  <label className="block mb-1 font-bold whitespace-nowrap text-xs sm:text-sm md:text-base">
-                    Roof Area
-                  </label>
-                  <input
-                    type="number"
-                    name="roofArea"
-                    value={formData.roofArea}
-                    onChange={handleChange}
-                    className="w-full p-2 rounded-lg bg-black border border-green-500"
-                    placeholder="Enter rooftop area"
-                  />
-                </div>
-
-                <div className="w-[12.5rem]">
-                  <label className="block mb-1 font-bold whitespace-nowrap text-xs sm:text-sm md:text-base">
-                    Roof Area Unit
-                  </label>
-                  <select
-                    name="roofUnit"
-                    value={formData.roofUnit}
-                    onChange={handleChange}
-                    className="w-full p-2 px-4 rounded-lg bg-black border border-green-500"
-                  >
-                    <option value="sqft">Sqft</option>
-                    <option value="sqm">Sqm</option>
-                    <option value="sqyd/gaj">Sqyd/Gaj</option>
-                    <option value="ground">Ground</option>
-                    <option value="cent">Cent</option>
-                  </select>
-                </div>
-              </div>
-
-              {/* Extra Charges (Discom) – common to all modes */}
-              <div>
-                <label className="block mb-1 font-bold whitespace-nowrap text-xs sm:text-sm md:text-base">
-                  Monthly Extra Charges (₹) (Discom)
-                </label>
-                <input
-                  type="number"
-                  name="extraCharges"
-                  value={formData.extraCharges || ""}
-                  onChange={handleChange}
-                  className="w-full p-2 rounded-lg bg-black border border-green-500"
-                  placeholder="Default 200"
-                />
-              </div>
-            </>
-          ) : formData.mode === "plant_size" ? (
-            <>
-              {/* Plant Size Mode Inputs */}
-              <div>
-                <label className="block mb-1 font-bold whitespace-nowrap text-xs sm:text-sm md:text-base">
-                  Proposed Plant Size (kW)
-                </label>
-                <input
-                  type="number"
-                  name="plant_size_kw"
-                  value={formData.plant_size_kw || ""}
-                  onChange={handleChange}
-                  className="w-full p-2 rounded-lg bg-black border border-green-500"
-                  placeholder="Enter desired plant size (kW)"
-                />
-              </div>
-
-              <div>
-                <label className="block mb-1 font-bold whitespace-nowrap text-xs sm:text-sm md:text-base">
+                <label className="block mb-1 font-bold text-xs sm:text-sm">
                   Tariff (₹/kWh)
                 </label>
                 <input
@@ -675,43 +503,194 @@ export default function LeftInputPanel({ onResults }) {
                   placeholder="Default 8"
                 />
               </div>
+            </div>
 
-              {/* Extra Charges (Discom) – common to all modes */}
+            {/* Extra Charges (Discom) – common to all modes */}
+            <div>
+              <label className="block mb-1 font-bold whitespace-nowrap text-xs sm:text-sm">
+                Monthly Extra Charges (₹) (Discom)
+              </label>
+              <input
+                type="number"
+                name="extraCharges"
+                value={formData.extraCharges || ""}
+                onChange={handleChange}
+                className="w-full p-2 rounded-lg bg-black border border-green-500"
+                placeholder="Default 200"
+              />
+            </div>
+          </>
+        ) : formData.mode === "rwa" ? (
+          <>
+            {/* RWA-specific fields */}
+            <div>
+              <label className="block mb-1 font-bold whitespace-nowrap text-xs sm:text-sm md:text-base">
+                Number of Houses
+              </label>
+              <input
+                type="number"
+                name="numHouses"
+                value={formData.numHouses}
+                onChange={handleChange}
+                className="w-full p-2 rounded-lg bg-black border border-green-500"
+                placeholder="Enter number of houses"
+              />
+            </div>
+
+            <div>
+              <label className="block mb-1 font-bold whitespace-nowrap text-xs sm:text-sm md:text-base">
+                Total Sanctioned Load of Society (kW)
+              </label>
+              <input
+                type="number"
+                name="societySanctionedLoad"
+                value={formData.societySanctionedLoad || ""}
+                onChange={handleChange}
+                className="w-full p-2 rounded-lg bg-black border border-green-500"
+                placeholder="Enter total sanctioned load"
+              />
+            </div>
+
+            <div>
+              <label className="block mb-1 font-bold whitespace-nowrap text-xs sm:text-sm md:text-base">
+                Sanctioned Load Per House (kW)
+              </label>
+              <input
+                type="number"
+                name="perHouseSanctionedLoad"
+                value={formData.perHouseSanctionedLoad || ""}
+                onChange={handleChange}
+                className="w-full p-2 rounded-lg bg-black border border-green-500"
+                placeholder="Default 1"
+              />
+            </div>
+
+            <div>
+              <label className="block mb-1 font-bold whitespace-nowrap text-xs sm:text-sm md:text-base">
+                Proposed Capacity (kW)
+              </label>
+              <input
+                type="number"
+                name="proposedCapacity"
+                value={formData.proposedCapacity || ""}
+                onChange={handleChange}
+                className="w-full p-2 rounded-lg bg-black border border-green-500"
+                placeholder="Enter proposed capacity"
+              />
+            </div>
+
+            <div className="flex flex-row gap-x-6">
               <div>
                 <label className="block mb-1 font-bold whitespace-nowrap text-xs sm:text-sm md:text-base">
-                  Monthly Extra Charges (₹) (Discom)
+                  Roof Area
                 </label>
                 <input
                   type="number"
-                  name="extraCharges"
-                  value={formData.extraCharges || ""}
+                  name="roofArea"
+                  value={formData.roofArea}
                   onChange={handleChange}
                   className="w-full p-2 rounded-lg bg-black border border-green-500"
-                  placeholder="Default 200"
+                  placeholder="Enter rooftop area"
                 />
               </div>
-            </>
-          ) : formData.mode === "manual_load" ? (
-            <ManualLoadCalculator
-              formData={formData}
-              setFormData={setFormData}
-            />
-          ) : null}
 
-          {error && (
-            <div className="p-2 bg-red-600 text-white rounded-lg text-sm">
-              {error}
+              <div className="w-[12.5rem]">
+                <label className="block mb-1 font-bold whitespace-nowrap text-xs sm:text-sm md:text-base">
+                  Roof Area Unit
+                </label>
+                <select
+                  name="roofUnit"
+                  value={formData.roofUnit}
+                  onChange={handleChange}
+                  className="w-full p-2 px-4 rounded-lg bg-black border border-green-500"
+                >
+                  <option value="sqft">Sqft</option>
+                  <option value="sqm">Sqm</option>
+                  <option value="sqyd/gaj">Sqyd/Gaj</option>
+                  <option value="ground">Ground</option>
+                  <option value="cent">Cent</option>
+                </select>
+              </div>
             </div>
-          )}
 
-          <button
-            type="submit"
-            className="w-full bg-green-500 hover:bg-green-600 text-black font-bold py-2 px-4 rounded-lg transition"
-          >
-            Calculate Savings
-          </button>
-        </form>
-      </div>
-    </>
+            {/* Extra Charges (Discom) – common to all modes */}
+            <div>
+              <label className="block mb-1 font-bold whitespace-nowrap text-xs sm:text-sm md:text-base">
+                Monthly Extra Charges (₹) (Discom)
+              </label>
+              <input
+                type="number"
+                name="extraCharges"
+                value={formData.extraCharges || ""}
+                onChange={handleChange}
+                className="w-full p-2 rounded-lg bg-black border border-green-500"
+                placeholder="Default 200"
+              />
+            </div>
+          </>
+        ) : formData.mode === "plant_size" ? (
+          <>
+            {/* Plant Size Mode Inputs */}
+            <div>
+              <label className="block mb-1 font-bold whitespace-nowrap text-xs sm:text-sm md:text-base">
+                Proposed Plant Size (kW)
+              </label>
+              <input
+                type="number"
+                name="plant_size_kw"
+                value={formData.plant_size_kw || ""}
+                onChange={handleChange}
+                className="w-full p-2 rounded-lg bg-black border border-green-500"
+                placeholder="Enter desired plant size (kW)"
+              />
+            </div>
+
+            <div>
+              <label className="block mb-1 font-bold whitespace-nowrap text-xs sm:text-sm md:text-base">
+                Tariff (₹/kWh)
+              </label>
+              <input
+                type="number"
+                name="tariff"
+                value={formData.tariff}
+                onChange={handleChange}
+                className="w-full p-2 rounded-lg bg-black border border-green-500"
+                placeholder="Default 8"
+              />
+            </div>
+
+            {/* Extra Charges (Discom) – common to all modes */}
+            <div>
+              <label className="block mb-1 font-bold whitespace-nowrap text-xs sm:text-sm md:text-base">
+                Monthly Extra Charges (₹) (Discom)
+              </label>
+              <input
+                type="number"
+                name="extraCharges"
+                value={formData.extraCharges || ""}
+                onChange={handleChange}
+                className="w-full p-2 rounded-lg bg-black border border-green-500"
+                placeholder="Default 200"
+              />
+            </div>
+          </>
+        ) : formData.mode === "manual_load" ? (
+          <ManualLoadCalculator formData={formData} setFormData={setFormData} />
+        ) : null}
+
+        {error && (
+          <div className="p-2 bg-red-600 text-white rounded-lg text-sm">
+            {error}
+          </div>
+        )}
+
+        <button
+          type="submit"
+          className="w-full bg-green-500 hover:bg-green-600 text-black font-bold py-2 px-4 rounded-lg transition"
+        >
+          Calculate Savings
+        </button>
+      </form>
+    </div>
   );
 }

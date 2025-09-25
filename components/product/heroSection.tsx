@@ -75,7 +75,7 @@ export default function HeroSection() {
             />
             {/* 2: Efficiency */}
             <Spec
-              number="22.30"
+              number="22.26"
               unit="<%>"
               label="Module Efficiency"
               Icon={BarChart3}
@@ -83,7 +83,7 @@ export default function HeroSection() {
             />
             {/* 3: Product Warranty */}
             <Spec
-              number="12"
+              number="15"
               unit="<Year>"
               label="Product Warranty"
               Icon={ShieldCheck}
@@ -102,7 +102,7 @@ export default function HeroSection() {
       </section>
 
       <p className="text-center text-2xl text-green-500 -mt-24 mb-16">
-        Engineered for India’s toughest climates. Certified worldwide.
+        Engineered for India's toughest climates. Certified worldwide.
       </p>
     </>
   );
