@@ -7,7 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/lib/authContext"; // ✅ import auth context
-import React from "react";
+import React, { useRef } from "react";
 import AuthDropdown from "./authDropdown";
 
 export default function Navbar() {
@@ -17,6 +17,18 @@ export default function Navbar() {
   const [supportOpen, setSupportOpen] = useState(false);
   const [mobileSupportOpen, setMobileSupportOpen] = useState(false);
   const pathname = usePathname();
+  const closeTimeout = useRef<NodeJS.Timeout | null>(null);
+
+  const handleMouseEnter = () => {
+    if (closeTimeout.current) clearTimeout(closeTimeout.current);
+    setSupportOpen(true);
+  };
+
+  const handleMouseLeave = () => {
+    closeTimeout.current = setTimeout(() => {
+      setSupportOpen(false);
+    }, 2000); // delay 200ms before closing
+  };
 
   const { user, logout } = useAuth(); // ✅ get user & logout
 
@@ -82,8 +94,8 @@ export default function Navbar() {
             {/* Support Dropdown */}
             <div
               className="relative"
-              onMouseEnter={() => setSupportOpen(true)}
-              onMouseLeave={() => setSupportOpen(false)}
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
             >
               {/* Button */}
               <button
@@ -97,49 +109,55 @@ export default function Navbar() {
               </button>
 
               {/* Dropdown */}
-              {supportOpen && (
-                <div className="absolute right-1/2 translate-x-1/2 mt-3 bg-[#111] text-white rounded-lg shadow-lg px-5 py-4 z-50 border border-white/10 w-max">
-                  {/* General & Sales */}
-                  <p className="font-semibold text-green-400 mb-1">
-                    General & Sales Enquiries
-                  </p>
-                  <a
-                    href="mailto:contact@skygreenenergies.com"
-                    className="flex items-center gap-2 text-gray-300 hover:text-green-400"
-                  >
-                    📧 contact@skygreenenergies.com
-                  </a>
+              <div
+                onMouseEnter={() => setSupportOpen(true)}
+                onMouseLeave={() => setSupportOpen(false)}
+                className={`absolute right-1/2 translate-x-1/2 mt-3 bg-[#111] text-white rounded-lg shadow-lg px-5 py-4 z-50 border border-white/10 w-max
+                  transition-all duration-300 origin-top transform
+                  ${
+                    supportOpen
+                      ? "opacity-100 scale-100"
+                      : "opacity-0 scale-95 pointer-events-none"
+                  }
+                `}
+              >
+                <p className="font-semibold text-green-400 mb-1">
+                  General & Sales Enquiries
+                </p>
+                <a
+                  href="mailto:contact@skygreenenergies.com"
+                  className="flex items-center gap-2 text-gray-300 hover:text-green-400"
+                >
+                  📧 contact [at] skygreenenergies [dot] com
+                </a>
 
-                  <hr className="my-3 border-gray-700" />
+                <hr className="my-3 border-gray-700" />
 
-                  {/* Service & Warranty */}
-                  <p className="font-semibold text-green-400 mb-1">
-                    Service & Warranty
-                  </p>
-                  <a
-                    href="mailto:warranty@skygreen.com"
-                    className="flex items-center gap-2 text-gray-300 hover:text-green-400"
-                  >
-                    📧 warranty@skygreen.com
-                  </a>
+                <p className="font-semibold text-green-400 mb-1">
+                  Service & Warranty
+                </p>
+                <a
+                  href="mailto:warranty@skygreen.com"
+                  className="flex items-center gap-2 text-gray-300 hover:text-green-400"
+                >
+                  📧 warranty [at] skygreenenergies [dot] com
+                </a>
 
-                  <hr className="my-3 border-gray-700" />
+                <hr className="my-3 border-gray-700" />
 
-                  {/* Customer Support */}
-                  <p className="font-semibold text-green-400 mb-1">
-                    Customer Support (India)
-                  </p>
-                  <a
-                    href="tel:+919891055535"
-                    className="flex items-center gap-2 text-gray-300 hover:text-green-400"
-                  >
-                    📞 +91 98910 55535
-                  </a>
-                  <p className="text-sm text-gray-500 flex items-center gap-2">
-                    🕒 Mon – Sat, 10:00 – 18:00 (IST)
-                  </p>
-                </div>
-              )}
+                <p className="font-semibold text-green-400 mb-1">
+                  Customer Support (India)
+                </p>
+                <a
+                  href="tel:+919891055535"
+                  className="flex items-center gap-2 text-gray-300 hover:text-green-400"
+                >
+                  📞 +91 98910 • 55535
+                </a>
+                <p className="text-sm text-gray-500 flex items-center gap-2">
+                  🕒 Mon – Sat, 10:00 – 18:00 (IST)
+                </p>
+              </div>
             </div>
 
             {/* ✅ Auth Section (kept commented placeholders) */}

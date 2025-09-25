@@ -36,12 +36,15 @@ export default function HeroSection() {
 
           {/* floating download button near lower-left (kept) */}
           <div className="hidden md:block absolute bottom-32 left-4 md:left-6">
-            <button className="glowButton">
-              <span className="relative z-10 font-medium">
-                ↧ Download Datasheet
-              </span>
+            <a
+              href="/images/pdfs/datasheet.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="glowButton relative z-10 font-medium"
+            >
+              ↧ Download Datasheet
               <span className="glowEffect"></span>
-            </button>
+            </a>
           </div>
 
           {/* RIGHT: big headline */}
@@ -75,7 +78,7 @@ export default function HeroSection() {
             />
             {/* 2: Efficiency */}
             <Spec
-              number="22.30"
+              number="22.26"
               unit="<%>"
               label="Module Efficiency"
               Icon={BarChart3}
@@ -83,7 +86,7 @@ export default function HeroSection() {
             />
             {/* 3: Product Warranty */}
             <Spec
-              number="12"
+              number="15"
               unit="<Year>"
               label="Product Warranty"
               Icon={ShieldCheck}
@@ -102,7 +105,7 @@ export default function HeroSection() {
       </section>
 
       <p className="text-center text-2xl text-green-500 -mt-24 mb-16">
-        Engineered for India’s toughest climates. Certified worldwide.
+        Engineered for India&apos;s toughest climates. Certified worldwide.
       </p>
     </>
   );

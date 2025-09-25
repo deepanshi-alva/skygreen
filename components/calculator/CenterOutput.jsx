@@ -15,20 +15,39 @@ export default function CenterOutput({ results }) {
 
   if (!results) {
     return (
-      <div className="col-span-7 p-6 flex items-center justify-center md:mt-64">
-        <div className="text-center space-y-4">
-          <p className="text-2xl font-semibold">
-            🌞 Every rooftop can be a power plant!
-          </p>
-          <p className="text-lg">
-            Installing 3kW solar can save up to{" "}
-            <span className="text-green-400 font-bold">₹40,000</span> per year.
-          </p>
-          <div className="animate-pulse text-green-500 font-bold">
-            Fill in your details to calculate savings
+      <>
+        {/* Top Intro Box */}
+        <div className="w-full flex justify-center mb-6">
+          <div className="bg-[#0b0b0b] border border-green-500/40 rounded-xl shadow-lg p-4 sm:p-6 w-full text-center">
+            <p className="text-green-400 font-bold text-sm sm:text-base md:text-lg mb-2">
+              India’s No.1 Free Solar Calculator ⚡
+            </p>
+            <p className="text-gray-200 text-xs sm:text-sm md:text-base leading-relaxed">
+              Trusted by thousands to find the right system size, subsidy
+              eligibility and payback instantly.
+              <br />
+              Just enter your details and discover how much you can save with{" "}
+              <span className="text-green-400 font-semibold">
+                SKYGREEN’s premium solar solutions.
+              </span>
+            </p>
           </div>
         </div>
-      </div>
+        <div className="col-span-7 p-6 flex items-center justify-center md:mt-42">
+          <div className="text-center space-y-4">
+            <p className="text-2xl font-semibold">
+              ⚡ Not just a calculator — your solar partner for life.
+            </p>
+            <p className="text-lg">
+              🌱 From savings calculation to free consultation, our experts are
+              just one call away.
+            </p>
+            <div className="text-2xl text-green-500 font-bold">
+              ✅ Your Trusted Partner — SKYGREEN.
+            </div>
+          </div>
+        </div>
+      </>
     );
   }
 
@@ -57,6 +76,24 @@ export default function CenterOutput({ results }) {
 
   return (
     <div className="col-span-7 p-6">
+      {/* Top Intro Box */}
+      <div className="w-full flex justify-center mb-6">
+        <div className="bg-[#0b0b0b] border border-green-500/40 rounded-xl shadow-lg p-4 sm:p-6 w-full text-center">
+          <p className="text-green-400 font-bold text-sm sm:text-base md:text-lg mb-2">
+            India’s No.1 Free Solar Calculator ⚡
+          </p>
+          <p className="text-gray-200 text-xs sm:text-sm md:text-base leading-relaxed">
+            Trusted by thousands to find the right system size, subsidy
+            eligibility and payback instantly.
+            <br />
+            Just enter your details and discover how much you can save with{" "}
+            <span className="text-green-400 font-semibold">
+              SKYGREEN’s premium solar solutions.
+            </span>
+          </p>
+        </div>
+      </div>
+
       {/* Header row with title + Contact Us button */}
       <div className="flex flex-col sm:flex-row justify-between items-center mb-4 gap-3">
         <h2 className="text-lg sm:text-xl md:text-2xl font-bold mb-2 sm:mb-0 text-center sm:text-left">
@@ -73,11 +110,15 @@ export default function CenterOutput({ results }) {
           </a>
 
           {/* WhatsApp Button */}
+          {/* WhatsApp Button (Disabled for now) */}
           <a
-            href="https://wa.me/919667796078?text=Hi%20please%20share%20my%20solar%20report"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex-1 sm:flex-none px-4 sm:px-6 py-2 rounded-lg bg-[#25D366] text-black text-sm sm:text-base font-bold shadow-md hover:bg-[#20bd5a] hover:scale-105 transition transform text-center whitespace-nowrap"
+            href="#"
+            title="Coming Soon"
+            className="flex-1 sm:flex-none px-4 sm:px-6 py-2 rounded-lg 
+             bg-[#25D366] text-black text-sm sm:text-base font-bold 
+             shadow-md opacity-50 cursor-not-allowed 
+             transition transform text-center whitespace-nowrap"
+            onClick={(e) => e.preventDefault()} // prevent navigation
           >
             📲 WhatsApp My Report
           </a>
