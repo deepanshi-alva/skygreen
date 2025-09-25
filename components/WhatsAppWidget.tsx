@@ -5,15 +5,15 @@ import { usePathname } from "next/navigation";
 import { FaWhatsapp } from "react-icons/fa";
 
 type Props = {
-  phone?: string;        // E.164 without + (e.g. "919876543210")
+  phone?: string; // E.164 without + (e.g. "919876543210")
   message?: string;
-  showOn?: string[];     // list of path prefixes where widget should appear
+  showOn?: string[]; // list of path prefixes where widget should appear
   bottom?: number;
   right?: number;
 };
 
 export default function WhatsAppWidget({
-  phone = process.env.NEXT_PUBLIC_WAPP_PHONE || "919999999999",
+  phone = process.env.NEXT_PUBLIC_WAPP_PHONE || "919811223252",
   message = "Hi SKYGREEN, I’m interested in your solar panels. Please help me with details.",
   showOn,
   bottom = 20,
@@ -34,8 +34,13 @@ export default function WhatsAppWidget({
   // determine mobile UA on mount (client-side only)
   useEffect(() => {
     try {
-      const ua = typeof navigator !== "undefined" ? navigator.userAgent || "" : "";
-      setIsMobile(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua));
+      const ua =
+        typeof navigator !== "undefined" ? navigator.userAgent || "" : "";
+      setIsMobile(
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+          ua
+        )
+      );
     } catch {
       setIsMobile(false);
     }
