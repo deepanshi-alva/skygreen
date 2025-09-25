@@ -36,12 +36,15 @@ export default function HeroSection() {
 
           {/* floating download button near lower-left (kept) */}
           <div className="hidden md:block absolute bottom-32 left-4 md:left-6">
-            <button className="glowButton">
-              <span className="relative z-10 font-medium">
-                ↧ Download Datasheet
-              </span>
+            <a
+              href="/images/pdfs/datasheet.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="glowButton relative z-10 font-medium"
+            >
+              ↧ Download Datasheet
               <span className="glowEffect"></span>
-            </button>
+            </a>
           </div>
 
           {/* RIGHT: big headline */}
