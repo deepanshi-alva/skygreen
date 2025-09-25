@@ -18,7 +18,7 @@ export default function CenterOutput({ results }) {
       <>
         {/* Top Intro Box */}
         <div className="w-full flex justify-center mb-6">
-          <div className="bg-[#0b0b0b] border border-green-500/40 rounded-xl shadow-lg p-4 sm:p-6 w-full text-center">
+          <div className="bg-[#0b0b0b] border border-green-500/40 rounded-xl shadow-lg p-4 sm:p-6 text-center">
             <p className="text-green-400 font-bold text-sm sm:text-base md:text-lg mb-2">
               India’s No.1 Free Solar Calculator ⚡
             </p>
@@ -78,7 +78,7 @@ export default function CenterOutput({ results }) {
     <div className="col-span-7 p-6">
       {/* Top Intro Box */}
       <div className="w-full flex justify-center mb-6">
-        <div className="bg-[#0b0b0b] border border-green-500/40 rounded-xl shadow-lg p-4 sm:p-6 w-full text-center">
+        <div className="bg-[#0b0b0b] border border-green-500/40 rounded-xl shadow-lg p-4 sm:p-6 text-center">
           <p className="text-green-400 font-bold text-sm sm:text-base md:text-lg mb-2">
             India’s No.1 Free Solar Calculator ⚡
           </p>

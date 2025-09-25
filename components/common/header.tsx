@@ -121,42 +121,51 @@ export default function Navbar() {
                   }
                 `}
               >
-                <p className="font-semibold text-green-400 mb-1">
-                  General & Sales Enquiries
-                </p>
-                <a
-                  href="mailto:contact@skygreenenergies.com"
-                  className="flex items-center gap-2 text-gray-300 hover:text-green-400"
-                >
-                  📧 contact [at] skygreenenergies [dot] com
-                </a>
+                {/* General & Sales */}
+                <div className="mb-3">
+                  <p className="font-semibold text-green-400 mb-1">
+                    General & Sales Enquiries
+                  </p>
+                  <a
+                    href="mailto:contact@skygreenenergies.com"
+                    className="flex items-center gap-2 text-gray-300 rounded-lg px-3 py-2 transition-colors duration-200 hover:bg-gray-800/80 hover:text-green-400"
+                  >
+                    📧 contact [at] skygreenenergies [dot] com
+                  </a>
+                </div>
 
-                <hr className="my-3 border-gray-700" />
+                <hr className="my-2 border-gray-700" />
 
-                <p className="font-semibold text-green-400 mb-1">
-                  Service & Warranty
-                </p>
-                <a
-                  href="mailto:warranty@skygreen.com"
-                  className="flex items-center gap-2 text-gray-300 hover:text-green-400"
-                >
-                  📧 warranty [at] skygreenenergies [dot] com
-                </a>
+                {/* Service & Warranty */}
+                <div className="mb-3">
+                  <p className="font-semibold text-green-400 mb-1">
+                    Service & Warranty
+                  </p>
+                  <a
+                    href="mailto:warranty@skygreen.com"
+                    className="flex items-center gap-2 text-gray-300 rounded-lg px-3 py-2 transition-colors duration-200 hover:bg-gray-800/80 hover:text-green-400"
+                  >
+                    📧 warranty [at] skygreenenergies [dot] com
+                  </a>
+                </div>
 
-                <hr className="my-3 border-gray-700" />
+                <hr className="my-2 border-gray-700" />
 
-                <p className="font-semibold text-green-400 mb-1">
-                  Customer Support (India)
-                </p>
-                <a
-                  href="tel:+919891055535"
-                  className="flex items-center gap-2 text-gray-300 hover:text-green-400"
-                >
-                  📞 +91 98910 • 55535
-                </a>
-                <p className="text-sm text-gray-500 flex items-center gap-2">
-                  🕒 Mon – Sat, 10:00 – 18:00 (IST)
-                </p>
+                {/* Customer Support */}
+                <div>
+                  <p className="font-semibold text-green-400 mb-1">
+                    Customer Support (India)
+                  </p>
+                  <a
+                    href="tel:+919891055535"
+                    className="flex items-center gap-2 text-gray-300 rounded-lg px-3 py-2 transition-colors duration-200 hover:bg-gray-800/80 hover:text-green-400"
+                  >
+                    📞 +91 98910 • 55535
+                  </a>
+                  <p className="text-xl font-bold text-white-500 mt-1 flex items-center gap-2">
+                    🕒 Mon – Sat, 10:00 – 18:00 (IST)
+                  </p>
+                </div>
               </div>
             </div>
 
