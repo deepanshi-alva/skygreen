@@ -9,19 +9,18 @@ type ImgCfg = { src: string; zoom?: number; objectPosition?: string };
 export default function CoreAdvantages() {
   const images: ImgCfg[] = [
     { src: "/images/products/front-image.png" },
-    // { src: "/images/products/side-image.png", zoom: 1.35, objectPosition: "left center" },
     { src: "/images/products/zoomed-image.png" },
   ];
 
   const [idx, setIdx] = useState(0);
-  const prev = () => setIdx(i => (i - 1 + images.length) % images.length);
-  const next = () => setIdx(i => (i + 1) % images.length);
+  const prev = () => setIdx((i) => (i - 1 + images.length) % images.length);
+  const next = () => setIdx((i) => (i + 1) % images.length);
 
   const leftFeatures: Feature[] = [
     {
       title: "Reliable Upgrade, Strong Warranty",
       description:
-        "Optimized wafers, cells, and packaging ensure linear performance with just ~0.4% annual degradation, backed by 12-year product & 30-year performance warranty.",
+        "Optimized design ensures ~0.4% annual degradation, backed by 12-year product & 30-year performance warranty.",
       icon: <ShieldIcon />,
     },
     {
@@ -48,27 +47,29 @@ export default function CoreAdvantages() {
   ];
 
   return (
-    <section className="bg-black text-white pb-20">
-      <div className="mx-auto max-w-7xl px-6">
-        <h2 className="text-center text-3xl md:text-4xl text-green-500 font-semibold">Core Advantages</h2>
+    <section className="bg-black text-white pb-16 sm:pb-20">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <h2 className="text-center text-2xl sm:text-3xl md:text-4xl text-green-500 font-semibold">
+          Core Advantages
+        </h2>
 
-        {/* 3-column layout */}
+        {/* Responsive Layout */}
         <div
-          className="mt-10 grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] items-center gap-14"
-          style={{ ["--viewer-h" as string]: "clamp(420px, 60vh, 640px)" }}
+          className="mt-10 grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] items-center gap-10 lg:gap-14"
+          style={{ ["--viewer-h" as string]: "clamp(360px, 60vh, 640px)" }}
         >
-          {/* Left list (left-aligned, two rows, centered vertically) */}
-          <div className="min-h-[var(--viewer-h)] grid grid-rows-2 content-center justify-items-start">
+          {/* Left Features */}
+          <div className="order-1 lg:order-none grid grid-rows-2 gap-8 content-center text-center lg:text-left">
             {leftFeatures.map((f, i) => (
-              <FeatureItem key={i} {...f} align="center" />
+              <FeatureItem key={i} {...f} />
             ))}
           </div>
 
-          {/* Center viewer */}
-          <div className="relative mx-auto flex items-center justify-center">
-            <div className="relative aspect-[2/3] h-[var(--viewer-h)] w-auto max-w-[460px] rounded-md overflow-hidden">
+          {/* Image Viewer */}
+          <div className="order-2 lg:order-none relative mx-auto flex items-center justify-center order-first lg:order-none">
+            <div className="relative aspect-[2/3] h-[var(--viewer-h)] w-full max-w-[360px] sm:max-w-[420px] lg:max-w-[460px] rounded-md overflow-hidden">
               <div
-                className="absolute inset-0 transition-transform duration-300 will-change-transform"
+                className="absolute inset-0 transition-transform duration-300"
                 style={{
                   transform: `scale(${images[idx].zoom ?? 1})`,
                   transformOrigin: "center",
@@ -79,7 +80,9 @@ export default function CoreAdvantages() {
                   alt="Solar panel angle"
                   fill
                   className="object-contain"
-                  style={{ objectPosition: images[idx].objectPosition ?? "center" }}
+                  style={{
+                    objectPosition: images[idx].objectPosition ?? "center",
+                  }}
                   priority
                 />
               </div>
@@ -89,32 +92,35 @@ export default function CoreAdvantages() {
             <button
               onClick={prev}
               aria-label="Previous angle"
-              className="group absolute -left-6 top-1/2 -translate-y-1/2 rounded-full bg-white/10 p-3 text-white ring-1 ring-white/25 backdrop-blur transition hover:bg-white/20 hover:ring-rose-500 focus:outline-none focus:ring-2 focus:ring-rose-500"
+              className="group absolute -left-3 sm:-left-6 top-1/2 -translate-y-1/2 rounded-full bg-white/10 p-2 sm:p-3 text-white ring-1 ring-white/25 backdrop-blur transition hover:bg-white/20 hover:ring-green-500 focus:outline-none"
             >
-              <span className="block h-5 w-5 rotate-180">
+              <span className="block h-4 w-4 sm:h-5 sm:w-5 rotate-180">
                 <ArrowIcon />
               </span>
             </button>
             <button
               onClick={next}
               aria-label="Next angle"
-              className="group absolute -right-6 top-1/2 -translate-y-1/2 rounded-full bg-white/10 p-3 text-white ring-1 ring-white/25 backdrop-blur transition hover:bg-white/20 hover:ring-rose-500 focus:outline-none focus:ring-2 focus:ring-rose-500"
+              className="group absolute -right-3 sm:-right-6 top-1/2 -translate-y-1/2 rounded-full bg-white/10 p-2 sm:p-3 text-white ring-1 ring-white/25 backdrop-blur transition hover:bg-white/20 hover:ring-green-500 focus:outline-none"
             >
-              <span className="block h-5 w-5">
+              <span className="block h-4 w-4 sm:h-5 sm:w-5">
                 <ArrowIcon />
               </span>
             </button>
           </div>
 
-          {/* Right list (right-aligned, two rows, centered vertically) */}
-          <div className="min-h-[var(--viewer-h)] grid grid-rows-2 content-center justify-items-end">
+          {/* Right Features */}
+          <div className="order-3 lg:order-none grid grid-rows-2 gap-8 content-center text-center lg:text-right">
             {rightFeatures.map((f, i) => (
-              <FeatureItem key={i} {...f} align="center" />
+              <FeatureItem key={i} {...f} />
             ))}
           </div>
         </div>
 
-        <p className="text-center text-2xl text-green-500">Every unit of extra energy generated today is a step towards a greener India.</p>
+        <p className="text-center text-lg sm:text-xl md:text-2xl text-green-500 mt-12">
+          Every unit of extra energy generated today is a step towards a greener
+          India.
+        </p>
       </div>
     </section>
   );
@@ -128,10 +134,11 @@ function FeatureItem({
 }: Feature & { align?: "center" | "center" }) {
   const isRight = align === "center";
   return (
-    <div >
+    <div>
       <div
         className={
-          "mb-4 flex items-center " + (isRight ? "justify-center" : "justify-center")
+          "mb-4 flex items-center " +
+          (isRight ? "justify-center" : "justify-center")
         }
       >
         <IconBadge>{icon}</IconBadge>
@@ -141,26 +148,20 @@ function FeatureItem({
       </h3>
       <p
         className={
-          "mt-2 text-base leading-relaxed text-neutral-300 text-justify" +
+          "mt-2 text-base leading-relaxed text-neutral-300 text-center md:text-justify" +
           (isRight ? " ml-auto" : "")
         }
-        style={{
-          textAlign: "justify",
-          textJustify: "inter-word",
-        }}
       >
         {description}
       </p>
-
     </div>
   );
 }
 
 /* ---- UI primitives ---- */
 function IconBadge({ children }: { children: React.ReactNode }) {
-  // small circular badge with red accent like the reference
   return (
-    <span className="inline-flex h-11 w-11 items-center justify-center ">
+    <span className="inline-flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center">
       <span className="text-green-500">{children}</span>
     </span>
   );
@@ -169,13 +170,24 @@ function IconBadge({ children }: { children: React.ReactNode }) {
 function ArrowIcon() {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-      <path d="M8 5l8 7-8 7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      <path
+        d="M8 5l8 7-8 7"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }
 function ShieldIcon() {
   return (
-    <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor">
+    <svg
+      viewBox="0 0 24 24"
+      width="32"
+      height="32"
+      fill="none"
+      stroke="currentColor"
+    >
       <path d="M12 3l7 3v6c0 5-3.5 9-7 9s-7-4-7-9V6l7-3z" strokeWidth="1.6" />
       <path d="M9 12l2 2 4-4" strokeWidth="1.6" className="stroke-green-500" />
     </svg>
@@ -183,14 +195,30 @@ function ShieldIcon() {
 }
 function BoltIcon() {
   return (
-    <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor">
-      <path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z" strokeWidth="1.6" className="stroke-green-500" />
+    <svg
+      viewBox="0 0 24 24"
+      width="32"
+      height="32"
+      fill="none"
+      stroke="currentColor"
+    >
+      <path
+        d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"
+        strokeWidth="1.6"
+        className="stroke-green-500"
+      />
     </svg>
   );
 }
 function CoinIcon() {
   return (
-    <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor">
+    <svg
+      viewBox="0 0 24 24"
+      width="32"
+      height="32"
+      fill="none"
+      stroke="currentColor"
+    >
       <circle cx="12" cy="12" r="9" strokeWidth="1.6" />
       <path d="M8 12h8m-4-4v8" strokeWidth="1.6" className="stroke-green-500" />
     </svg>
@@ -198,7 +226,13 @@ function CoinIcon() {
 }
 function GearIcon() {
   return (
-    <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor">
+    <svg
+      viewBox="0 0 24 24"
+      width="32"
+      height="32"
+      fill="none"
+      stroke="currentColor"
+    >
       <path
         d="M12 15.5A3.5 3.5 0 1 0 12 8.5a3.5 3.5 0 0 0 0 7z"
         strokeWidth="1.6"

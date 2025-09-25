@@ -162,7 +162,7 @@ export default function Navbar() {
                   >
                     📞 +91 98910 • 55535
                   </a>
-                  <p className="text-xl font-bold text-white-500 mt-1 flex items-center gap-2">
+                  <p className="text-md font-bold text-white-500 mt-1 flex items-center gap-2">
                     🕒 Mon – Sat, 10:00 – 18:00 (IST)
                   </p>
                 </div>
