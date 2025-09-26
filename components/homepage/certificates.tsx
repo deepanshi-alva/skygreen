@@ -41,7 +41,15 @@ const CertificateCarousel: React.FC = () => {
           </div>
 
           {/* RIGHT: marquee carousel (uses marquee-inner for inset shadow) */}
-          <div className="flex-1 w-full flex items-center justify-center overflow-hidden">
+          <div className="flex-1 w-full flex items-center justify-center overflow-hidden relative">
+              <div
+  className="absolute inset-0 pointer-events-none z-10 transition-all duration-500 ease-in-out group-hover:hidden md:block hidden"
+  style={{
+    background:
+      "linear-gradient(to right, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.75) 15%, rgba(0,0,0,0) 40%, rgba(0,0,0,0) 60%, rgba(0,0,0,0.75) 85%, rgba(0,0,0,0.9) 100%)",
+  }}
+/>
+
             <div className="carousel w-full marquee-inner">
               <div className="flex items-center animate-marquee space-x-20">
                 {[...certificates, ...certificates].map((image, index) => (
