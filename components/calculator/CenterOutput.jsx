@@ -241,24 +241,23 @@ export default function CenterOutput({ results }) {
           <hr className="border-white/10 my-2" />
 
           {/* Subsidy breakdown */}
-          <div className="space-y-2 text-xs sm:text-sm">
-            <div className="flex flex-col sm:flex-row justify-between">
+          <div className="space-y-1 text-xs sm:text-sm">
+            <div className="flex justify-center gap-2 text-[clamp(10px,2.5vw,14px)]">
               <span className="text-gray-300">Central Subsidy</span>
               <span className="font-semibold text-white whitespace-nowrap">
                 - ₹{format(results.central_subsidy_inr)}
               </span>
             </div>
 
-            <div className="flex flex-col sm:flex-row justify-between">
+            <div className="flex justify-center gap-2 text-[clamp(10px,2.5vw,14px)]">
               <span className="text-gray-300">State Subsidy</span>
               <span className="font-semibold text-white whitespace-nowrap">
                 - ₹{format(results.state_subsidy)}
               </span>
             </div>
 
-            {/* SGST (if present) */}
             {results?.sgst_subsidy > 0 && (
-              <div className="flex flex-col sm:flex-row justify-between">
+              <div className="flex justify-center gap-2 text-[clamp(10px,2.5vw,14px)]">
                 <span className="text-gray-300">SGST</span>
                 <span className="font-semibold text-white whitespace-nowrap">
                   - ₹{format(results.sgst_subsidy)}
@@ -284,15 +283,15 @@ export default function CenterOutput({ results }) {
         <div className="grid grid-cols-2 lg:grid-cols-1 gap-3 sm:gap-4">
           {(results?.sizing_method === "bill" ||
             results?.sizing_method === "units") && (
-            <div className="bg-[#1a1a1a] p-3 sm:p-4 rounded-lg border border-white/10 shadow-md">
-              <p className="text-xs sm:text-sm text-gray-400">
-                With grid daily consumption
-              </p>
-              <p className="text-base sm:text-lg md:text-xl font-bold text-green-400">
-                {format(results.daily_unit)}
-              </p>
-            </div>
-          )}
+              <div className="bg-[#1a1a1a] p-3 sm:p-4 rounded-lg border border-white/10 shadow-md">
+                <p className="text-xs sm:text-sm text-gray-400">
+                  With grid daily consumption
+                </p>
+                <p className="text-base sm:text-lg md:text-xl font-bold text-green-400">
+                  {format(results.daily_unit)}
+                </p>
+              </div>
+            )}
           <div className="bg-[#1a1a1a] p-3 sm:p-4 rounded-lg border border-white/10">
             <p className="text-xs sm:text-sm text-gray-400">
               Solar Units Produced
@@ -383,27 +382,25 @@ export default function CenterOutput({ results }) {
           <div className="flex flex-wrap gap-2 mt-4">
             <button
               onClick={() => setMode("solar")}
-              className={`px-3 py-1 rounded-md text-xs sm:text-sm font-semibold ${
-                mode === "solar"
+              className={`px-3 py-1 rounded-md text-xs sm:text-sm font-semibold ${mode === "solar"
                   ? "bg-green-500 text-black"
                   : "bg-[#111] text-green-400 border border-green-500"
-              }`}
+                }`}
             >
               With Solar
             </button>
             {(results?.sizing_method === "bill" ||
               results?.sizing_method === "units") && (
-              <button
-                onClick={() => setMode("grid")}
-                className={`px-3 py-1 rounded-md text-xs sm:text-sm font-semibold ${
-                  mode === "grid"
-                    ? "bg-green-500 text-black"
-                    : "bg-[#111] text-green-400 border border-green-500"
-                }`}
-              >
-                With Grid
-              </button>
-            )}
+                <button
+                  onClick={() => setMode("grid")}
+                  className={`px-3 py-1 rounded-md text-xs sm:text-sm font-semibold ${mode === "grid"
+                      ? "bg-green-500 text-black"
+                      : "bg-[#111] text-green-400 border border-green-500"
+                    }`}
+                >
+                  With Grid
+                </button>
+              )}
           </div>
         </div>
       </div>
@@ -630,11 +627,10 @@ export default function CenterOutput({ results }) {
                         .map((bat, idx) => (
                           <tr
                             key={idx}
-                            className={`border-t border-white/10 ${
-                              bat.recommended
+                            className={`border-t border-white/10 ${bat.recommended
                                 ? "bg-green-900/20"
                                 : "bg-[#1a1a1a]"
-                            }`}
+                              }`}
                           >
                             <td className="px-2 sm:px-3 py-1 sm:py-2 font-semibold text-green-400 whitespace-nowrap">
                               {bat.type}
@@ -691,14 +687,14 @@ export default function CenterOutput({ results }) {
                   level === 1
                     ? "h1"
                     : level === 2
-                    ? "h2"
-                    : level === 3
-                    ? "h3"
-                    : level === 4
-                    ? "h4"
-                    : level === 5
-                    ? "h5"
-                    : "h6";
+                      ? "h2"
+                      : level === 3
+                        ? "h3"
+                        : level === 4
+                          ? "h4"
+                          : level === 5
+                            ? "h5"
+                            : "h6";
 
                 const headingStyles = {
                   h1: "text-2xl font-bold text-green-400 mt-4",
@@ -716,9 +712,8 @@ export default function CenterOutput({ results }) {
                       return (
                         <span
                           key={cIdx}
-                          className={`${child.bold ? "font-bold" : ""} ${
-                            child.underline ? "underline" : ""
-                          }`}
+                          className={`${child.bold ? "font-bold" : ""} ${child.underline ? "underline" : ""
+                            }`}
                         >
                           {text}
                         </span>
@@ -756,9 +751,8 @@ export default function CenterOutput({ results }) {
                       return (
                         <span
                           key={cIdx}
-                          className={`${child.bold ? "font-bold" : ""} ${
-                            child.underline ? "underline" : ""
-                          } whitespace-pre-wrap`} // ✅ Keep indentation visible
+                          className={`${child.bold ? "font-bold" : ""} ${child.underline ? "underline" : ""
+                            } whitespace-pre-wrap`} // ✅ Keep indentation visible
                         >
                           {text}
                         </span>
@@ -781,9 +775,8 @@ export default function CenterOutput({ results }) {
                         {li.children.map((child, cIdx) => (
                           <span
                             key={cIdx}
-                            className={`${child.bold ? "font-bold" : ""} ${
-                              child.underline ? "underline" : ""
-                            }`}
+                            className={`${child.bold ? "font-bold" : ""} ${child.underline ? "underline" : ""
+                              }`}
                           >
                             {child.text}
                           </span>
