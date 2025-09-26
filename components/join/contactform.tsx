@@ -137,7 +137,7 @@ function DownloadCard() {
       <div className="space-y-4 text-gray-300 text-justify sm:text-justify px-4 md:px-0">
         <p className="leading-relaxed">
           <span className="text-white font-semibold">An Indian brand </span>
-          with Skygreen, you don't just do business — you build trust, profits, and a <span className="text-green-400 font-semibold">cleaner future</span>.
+          with Skygreen, you don&apos;t just do business — you build trust, profits, and a <span className="text-green-400 font-semibold">cleaner future</span>.
         </p>
       </div>
     </div>
