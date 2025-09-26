@@ -268,12 +268,6 @@ export default function TestimonialSlider() {
                       {t.position}
                     </div>
                   </div>
-                  <a
-                    href={t.case_study_link}
-                    className="text-lime-300 font-semibold hover:underline text-base inline-flex items-center gap-2 mt-3"
-                  >
-                    Read Case Study <span className="ml-1">→</span>
-                  </a>
                 </motion.div>
               </AnimatePresence>
             </div>
