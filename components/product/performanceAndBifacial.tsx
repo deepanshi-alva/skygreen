@@ -44,22 +44,22 @@ export default function PerformanceAndBifacial() {
               Electrical Performance Parameters
             </h2>
             <p className="mt-2 text-xs sm:text-sm text-gray-400">
-              STC: 1000 W/m², 25°C, AM1.5 | NOCT: 800 W/m², 20°C, 1 m/s wind |
-              Tolerance ±3%
+              STC: 1000 W/m², 25°C, AM1.5 | NOCT: 800 W/m², 20°C, 1 m/s wind | Tolerance ±3%
             </p>
           </div>
 
-          <div className="mx-auto w-full rounded-2xl border border-green-500">
-            <table className="w-full min-w-[500px] border-collapse">
+          {/* Responsive table wrapper */}
+          <div className="mx-auto w-full rounded-2xl border border-green-500 overflow-x-auto">
+            <table className="w-full min-w-full border-collapse">
               <thead className="bg-zinc-900/70">
                 <tr>
-                  <th className="px-4 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm font-semibold text-zinc-200 border-b border-green-800/30 border-r border-green-800/50 text-center">
+                  <th className="px-3 sm:px-4 py-2 sm:py-3 text-[10px] sm:text-xs md:text-sm font-semibold text-zinc-200 border-b border-green-800/30 border-r border-green-800/50 text-center">
                     Parameter
                   </th>
-                  <th className="px-4 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm font-semibold text-zinc-200 border-b border-green-800/30 border-r border-green-800/50 text-center">
+                  <th className="px-3 sm:px-4 py-2 sm:py-3 text-[10px] sm:text-xs md:text-sm font-semibold text-zinc-200 border-b border-green-800/30 border-r border-green-800/50 text-center">
                     Value (STC)
                   </th>
-                  <th className="px-4 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm font-semibold text-zinc-200 border-b border-green-800/30 text-center">
+                  <th className="px-3 sm:px-4 py-2 sm:py-3 text-[10px] sm:text-xs md:text-sm font-semibold text-zinc-200 border-b border-green-800/30 text-center">
                     Value (NOCT)
                   </th>
                 </tr>
@@ -68,40 +68,23 @@ export default function PerformanceAndBifacial() {
                 {rows.map((r, idx) => (
                   <tr
                     key={r.key}
-                    className={`transition-all duration-300 cursor-pointer ${
-                      idx % 2 === 0 ? "bg-zinc-900/40" : "bg-zinc-900/25"
-                    } hover:bg-green-600/20 hover:scale-[1.01]`}
+                    className={`transition-all duration-300 ${idx % 2 === 0 ? "bg-zinc-900/40" : "bg-zinc-900/25"
+                      } hover:bg-green-600/20`}
                   >
-                    <td className="px-4 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm text-zinc-200 border-t border-green-800/50 border-r border-green-800/50 text-center">
-                      {r.label}{" "}
-                      {r.unit && (
-                        <span className="text-zinc-500">({r.unit})</span>
-                      )}
+                    <td className="px-3 sm:px-4 py-2 sm:py-3 text-[10px] sm:text-xs md:text-sm text-zinc-200 border-t border-green-800/50 border-r border-green-800/50 text-center">
+                      {r.label} {r.unit && <span className="text-zinc-500">({r.unit})</span>}
                     </td>
-                    <td className="px-4 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm text-zinc-200 border-t border-green-800/50 border-r border-green-800/50 text-center">
-                      {
-                        models[0].data.stc[
-                          r.key as keyof ElectricalBlock["stc"]
-                        ]
-                      }
+                    <td className="px-3 sm:px-4 py-2 sm:py-3 text-[10px] sm:text-xs md:text-sm text-zinc-200 border-t border-green-800/50 border-r border-green-800/50 text-center">
+                      {models[0].data.stc[r.key as keyof ElectricalBlock["stc"]]}
                     </td>
-                    <td className="px-4 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm text-zinc-200 border-t border-green-800/50 text-center">
-                      {
-                        models[0].data.noct[
-                          r.key as keyof ElectricalBlock["noct"]
-                        ]
-                      }
+                    <td className="px-3 sm:px-4 py-2 sm:py-3 text-[10px] sm:text-xs md:text-sm text-zinc-200 border-t border-green-800/50 text-center">
+                      {models[0].data.noct[r.key as keyof ElectricalBlock["noct"]]}
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
-
-          <p className="mt-4 text-center text-xs text-zinc-500">
-            Specifications are subject to change without notice. For the latest
-            technical details, please contact a SKYGREEN sales representative.
-          </p>
         </div>
 
         {/* ---- Bifacial Power Gain ---- */}
@@ -111,22 +94,22 @@ export default function PerformanceAndBifacial() {
               Backside Power Gain
             </h2>
             <p className="mt-2 text-xs sm:text-sm text-gray-400">
-              Base: 575 Wp front-side, module area ~2.585 m² → ~22.3% efficiency
-              at STC
+              Base: 575 Wp front-side, module area ~2.585 m² → ~22.3% efficiency at STC
             </p>
           </div>
 
-          <div className="mx-auto w-full rounded-2xl border border-green-500">
-            <table className="w-full min-w-[400px] border-collapse">
+          {/* Responsive table wrapper */}
+          <div className="mx-auto w-full rounded-2xl border border-green-500 overflow-x-auto">
+            <table className="w-full min-w-full border-collapse">
               <thead className="bg-zinc-900/70">
                 <tr>
-                  <th className="px-4 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm font-semibold text-zinc-200 border-l border-green-800/30 text-center">
+                  <th className="px-3 sm:px-4 py-2 sm:py-3 text-[10px] sm:text-xs md:text-sm font-semibold text-zinc-200 border-l border-green-800/30 text-center">
                     Rear Side Gain
                   </th>
-                  <th className="px-4 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm font-semibold text-zinc-200 border-l border-green-800/30 text-center">
+                  <th className="px-3 sm:px-4 py-2 sm:py-3 text-[10px] sm:text-xs md:text-sm font-semibold text-zinc-200 border-l border-green-800/30 text-center">
                     Peak Power (Pmax)
                   </th>
-                  <th className="px-4 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm font-semibold text-zinc-200 border-l border-green-800/30 text-center">
+                  <th className="px-3 sm:px-4 py-2 sm:py-3 text-[10px] sm:text-xs md:text-sm font-semibold text-zinc-200 border-l border-green-800/30 text-center">
                     Module Efficiency (%)
                   </th>
                 </tr>
@@ -135,17 +118,16 @@ export default function PerformanceAndBifacial() {
                 {gains.map((g, i) => (
                   <tr
                     key={i}
-                    className={`transition-all duration-300 cursor-pointer ${
-                      i % 2 === 0 ? "bg-zinc-900/40" : "bg-zinc-900/25"
-                    } hover:bg-green-600/20 hover:scale-[1.01]`}
+                    className={`transition-all duration-300 ${i % 2 === 0 ? "bg-zinc-900/40" : "bg-zinc-900/25"
+                      } hover:bg-green-600/20`}
                   >
-                    <td className="px-4 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm text-zinc-200 border-t border-green-800/70 border-l border-green-800/70 text-center">
+                    <td className="px-3 sm:px-4 py-2 sm:py-3 text-[10px] sm:text-xs md:text-sm text-zinc-200 border-t border-green-800/70 border-l border-green-800/70 text-center">
                       {g.rear}
                     </td>
-                    <td className="px-4 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm text-zinc-200 border-t border-green-800/70 border-l border-green-800/70 text-center">
+                    <td className="px-3 sm:px-4 py-2 sm:py-3 text-[10px] sm:text-xs md:text-sm text-zinc-200 border-t border-green-800/70 border-l border-green-800/70 text-center">
                       {g.pmax}
                     </td>
-                    <td className="px-4 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm text-zinc-200 border-t border-green-800/70 border-l border-green-800/70 text-center">
+                    <td className="px-3 sm:px-4 py-2 sm:py-3 text-[10px] sm:text-xs md:text-sm text-zinc-200 border-t border-green-800/70 border-l border-green-800/70 text-center">
                       {g.eff}
                     </td>
                   </tr>
@@ -153,13 +135,8 @@ export default function PerformanceAndBifacial() {
               </tbody>
             </table>
           </div>
-
-          <p className="mt-4 text-center text-xs text-zinc-500">
-            Based on front-side rated power of 575 Wp at STC (1000 W/m², 25°C,
-            AM1.5). Extra power depends on the surface below the panels and
-            installation conditions.
-          </p>
         </div>
+
       </div>
     </section>
   );
