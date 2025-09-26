@@ -35,19 +35,22 @@ export default function HeroSection() {
           </div>
 
           {/* floating download button → responsive position */}
-          <div className="md:absolute md:bottom-16 md:left-6">
+          <div className="fixed bottom-6 left-4 md:absolute md:bottom-16 md:left-6 z-50">
             <a
               href="/images/pdfs/datasheet.pdf"
               target="_blank"
               rel="noopener noreferrer"
               className="glowButton relative z-10 font-medium 
-               text-xs sm:text-sm md:text-base 
-               px-3 sm:px-4 py-1.5 sm:py-2"
+              text-[clamp(0.7rem,1.5vw,1rem)]  /* scales text between 11px and 16px */
+              px-[clamp(0.5rem,2vw,1rem)]      /* scales padding-x */
+              py-[clamp(0.3rem,1.5vw,0.75rem)] /* scales padding-y */
+              rounded-full"
             >
               ↧ Download Datasheet
               <span className="glowEffect"></span>
             </a>
           </div>
+
 
           {/* RIGHT: big headline */}
           <div className="text-center md:text-right md:ml-auto max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl mb-12 md:mb-0">
