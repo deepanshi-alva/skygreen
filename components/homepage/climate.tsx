@@ -336,7 +336,7 @@ export default function ClimateSelector() {
                   className={`group inline-flex items-center gap-2 rounded-2xl px-4 py-2 text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 transition-transform ${
                     active
                       ? "bg-white text-gray-900 shadow-md scale-[1.03]"
-                      : "bg-white/15 text-white hover:bg-white/25 hover:scale-[1.02]"
+                      : "bg-white/6 text-white hover:bg-white/25 hover:scale-[1.02]"
                   }`}
                   title={CLIMATES[key].label}
                 >
@@ -373,7 +373,7 @@ export default function ClimateSelector() {
                     className={`group inline-flex items-center gap-2 rounded-2xl px-4 py-2 text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 transition-transform ${
                       active
                         ? "bg-white text-gray-900 shadow-md scale-[1.03]"
-                        : "bg-white/15 text-white hover:bg-white/25 hover:scale-[1.02]"
+                        : "bg-white/6 text-white hover:bg-white/25 hover:scale-[1.02]"
                     }`}
                     title={CLIMATES[key].label}
                   >
