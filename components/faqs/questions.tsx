@@ -9,52 +9,44 @@ import { faqData } from "@/lib/faqData";
 
 function DownloadCard() {
   return (
-    <div className="space-y-8">
+    <div className="space-y-10">
       {/* Download Presentation */}
       <div className="space-y-4">
-        <div className="flex items-center gap-2 text-white">
-          <Download className="w-5 h-5 text-green-500" />
-          <h2 className="text-xl sm:text-2xl font-semibold">Download Presentation</h2>
+        <div className="flex flex-col justify-center items-center gap-2 text-white">
+          <div className="flex justify-center items-center gap-2 text white">
+            <h2 className="text-lg md:text-xl font-semibold">
+              🌟 Become a Partner
+            </h2>
+          </div>
         </div>
 
         {/* Company Profile Card */}
-        <div className="relative bg-gray-900 rounded-lg p-1 overflow-hidden">
-          <div className="relative bg-gradient-to-r from-gray-800 to-gray-700 p-6 rounded-lg">
-            {/* Green accent triangle */}
-            <div className="absolute top-0 right-0 w-0 h-0 border-l-[120px] border-l-transparent border-t-[120px] border-t-green-500" />
+        <div className="relative bg-gradient-to-br from-gray-900/80 to-gray-800/80 backdrop-blur-xl rounded-2xl p-6 shadow-lg overflow-hidden">
+          {/* Corner Ribbon */}
+          <div className="absolute top-0 right-0 w-0 h-0 border-l-[120px] border-l-transparent border-t-[120px] border-t-green-500/70" />
+          <div className="absolute top-4 left-4 bg-green-500 text-white px-2 py-1 text-xs font-bold rounded">
+            SKYGREEN
+          </div>
 
-            {/* SKYGREEN Badge */}
-            <div className="absolute top-4 left-4 bg-green-500 text-white px-2 py-1 text-xs font-bold rounded">
-              SKYGREEN
-            </div>
-
-            {/* Content */}
-            <div className="relative z-10 mt-16">
-              <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-2">
-                COMPANY
-                <br />
-                PROFILE
-              </h3>
-              <p className="text-sm sm:text-base text-gray-300">
-                It&apos;s time to save the world.
-              </p>
-            </div>
-
-            {/* Background pattern */}
-            <div className="absolute inset-0 opacity-10">
-              <div className="w-full h-full bg-gradient-to-br from-transparent to-gray-600" />
-            </div>
+          {/* Profile Content */}
+          <div className="relative z-10 mt-12">
+            <h3 className="text-lg md:text-xl font-bold text-white mb-2 leading-tight">
+              Grow With Skygreen <br />
+              {/* <span className="text-green-400">Together, We Shine</span> */}
+            </h3>
+            <p className="text-[0.8rem] text-gray-300 leading-relaxed text-justify">
+              It’s time to save the world…
+              At SKYGREEN, we’re not just selling solar — we’re building India’s fastest-growing clean energy network. As a Dealer, Distributor, or EPC Partner, you gain access to premium products, transparent rewards, and nationwide opportunities.
+            </p>
           </div>
         </div>
       </div>
 
       {/* Company Description */}
-      <div className="space-y-2">
-        <p className="text-gray-300 text-sm sm:text-base">
-          <span className="text-white font-semibold">Indian brand</span> in the
-          renewable energy industry, providing high-quality products and
-          services to{" "}
-          <span className="text-white font-semibold">your doorstep.</span>
+      <div className="space-y-4 text-gray-300 text-center sm:text-justify px-4 md:px-0 text-sm">
+        <p className="leading-relaxed">
+          <span className="text-white font-semibold">An Indian brand </span>
+          With Skygreen, you don't just do business — you scale trust, profits, and a <span className="text-green-400 font-semibold">cleaner future. 🌱</span>.
         </p>
       </div>
     </div>

@@ -23,8 +23,8 @@ const customSelectStyles: StylesConfig<
     borderColor: state.isFocused
       ? "#16a34a"
       : state.isDisabled
-      ? "#333"
-      : "#444",
+        ? "#333"
+        : "#444",
     borderRadius: "0.75rem",
     padding: "2px",
     minHeight: "48px",
@@ -80,12 +80,13 @@ const generateTimeSlots = () => {
 };
 
 const timeOptions = generateTimeSlots();
+type OptionType = { value: string; label: string };
 
 type FormData = {
   name: string;
   phone: string;
-  state: string;
-  city: string;
+  state: OptionType | null;
+  city: OptionType | null;
   gender: string;
   capacity: string;
   date: Date | null;
@@ -95,42 +96,48 @@ type FormData = {
 };
 
 /* ----------------------------- Left Components ---------------------------- */
+
 function DownloadCard() {
   return (
-    <div className="space-y-8">
+    <div className="space-y-10">
       {/* Download Presentation */}
       <div className="space-y-4">
-        <div className="flex justify-center items-center gap-2 text-white">
-          <Download className="w-5 h-5 text-green-500" />
-          <h2 className="text-xl font-semibold">Download Presentation</h2>
+        <div className="flex flex-col justify-center items-center gap-2 text-white">
+          <div className="flex justify-center items-center gap-2 text white">
+            <h2 className="text-lg md:text-xl font-semibold">
+              🌟 Join the Family
+            </h2>
+          </div>
         </div>
 
         {/* Company Profile Card */}
         <div className="relative bg-gradient-to-br from-gray-900/80 to-gray-800/80 backdrop-blur-xl rounded-2xl p-6 shadow-lg overflow-hidden">
+          {/* Corner Ribbon */}
           <div className="absolute top-0 right-0 w-0 h-0 border-l-[120px] border-l-transparent border-t-[120px] border-t-green-500/70" />
           <div className="absolute top-4 left-4 bg-green-500 text-white px-2 py-1 text-xs font-bold rounded">
             SKYGREEN
           </div>
+
+          {/* Profile Content */}
           <div className="relative z-10 mt-12">
-            <h3 className="text-2xl font-bold text-white mb-2 leading-tight">
-              COMPANY <br /> PROFILE
+            <h3 className="text-lg md:text-xl font-bold text-white mb-2 leading-tight">
+              Together, We Shine <br />
+              {/* <span className="text-green-400">Together, We Shine</span> */}
             </h3>
-            <p className="text-sm text-gray-300">
-              It&apos;s time to save the world with clean energy.
+            <p className="text-sm md:text-base text-gray-300 leading-relaxed text-justify">
+              It’s time to save the world…
+              At SKYGREEN, joining us means becoming part of something bigger than business.
+              Every referral, every partnership, every connection helps light up homes and brings India closer to a cleaner tomorrow.
             </p>
           </div>
         </div>
       </div>
 
       {/* Company Description */}
-      <div className="space-y-2 text-gray-300">
-        <p className="text-center md:text-justify">
-          <span className="text-white font-semibold">An Indian brand</span> in
-          the renewable energy industry, delivering{" "}
-          <span className="text-white font-semibold">
-            premium solar solutions
-          </span>{" "}
-          to your doorstep.
+      <div className="space-y-4 text-gray-300 text-justify sm:text-justify px-4 md:px-0">
+        <p className="leading-relaxed">
+          <span className="text-white font-semibold">An Indian brand</span> in renewable energy…
+          With us, you don’t just join — <span className="text-green-400 font-semibold">you belong</span>. 🌱✨
         </p>
       </div>
     </div>
@@ -144,8 +151,8 @@ function ContactForm() {
   const [formData, setFormData] = useState<FormData>({
     name: "",
     phone: "",
-    state: "",
-    city: "",
+    state: null,
+    city: null,
     gender: "",
     capacity: "",
     date: null,
@@ -159,7 +166,7 @@ function ContactForm() {
   // Validation Function
   const validateField = (
     field: keyof FormData,
-    value: string | number | boolean | Date | null
+    value: string | number | boolean | Date | null | OptionType
   ): string => {
     switch (field) {
       case "name":
@@ -172,9 +179,8 @@ function ContactForm() {
           return "Enter a valid 10-digit phone number.";
         return "";
       case "state":
-        return value ? "" : "Please select your state.";
       case "city":
-        return value ? "" : "Please select your city.";
+        return value ? "" : `Please select your ${field}.`;
       case "gender":
         return value ? "" : "Please select your gender.";
       case "capacity":
@@ -197,7 +203,7 @@ function ContactForm() {
 
   const handleChange = (
     field: keyof FormData,
-    value: string | number | boolean | Date | null
+    value: string | number | boolean | Date | null | OptionType
   ) => {
     setFormData((prev) => ({ ...prev, [field]: value } as FormData));
     setErrors((prev) => ({ ...prev, [field]: validateField(field, value) }));
@@ -217,8 +223,8 @@ function ContactForm() {
     const payload = {
       name: formData.name,
       phone_number: Number(formData.phone),
-      state: formData.state,
-      city: formData.city,
+      state: formData.state?.label || "", // save state name
+      city: formData.city?.label || "",
       gender: formData.gender,
       capacity_required: Number(formData.capacity),
       preferred_date: formData.date
@@ -250,8 +256,8 @@ function ContactForm() {
       setFormData({
         name: "",
         phone: "",
-        state: "",
-        city: "",
+        state: null,
+        city: null,
         gender: "",
         capacity: "",
         date: null,
@@ -311,15 +317,8 @@ function ContactForm() {
               label: s.name,
             }))}
             styles={customSelectStyles}
-            value={
-              formData.state
-                ? {
-                    value: formData.state,
-                    label: State.getStateByCode(formData.state)?.name || "",
-                  }
-                : null
-            }
-            onChange={(opt) => handleChange("state", opt?.value || "")}
+            value={formData.state}
+            onChange={(opt) => handleChange("state", opt)}
             placeholder="Select your state"
           />
           {errors.state && (
@@ -332,19 +331,15 @@ function ContactForm() {
           <Select
             options={
               formData.state
-                ? City.getCitiesOfState("IN", formData.state).map((c) => ({
-                    value: c.name,
-                    label: c.name,
-                  }))
+                ? City.getCitiesOfState("IN", formData.state.value).map((c) => ({
+                  value: c.name,
+                  label: c.name,
+                }))
                 : []
             }
             styles={customSelectStyles}
-            value={
-              formData.city
-                ? { value: formData.city, label: formData.city }
-                : null
-            }
-            onChange={(opt) => handleChange("city", opt?.value || "")}
+            value={formData.city}
+            onChange={(opt) => handleChange("city", opt)}
             placeholder={
               formData.state ? "Now select your city" : "Select state first"
             }
@@ -365,14 +360,14 @@ function ContactForm() {
             value={
               formData.gender
                 ? ["male", "female", "na"]
-                    .map((g) => ({
-                      value: g,
-                      label:
-                        g === "na"
-                          ? "Prefer not to specify"
-                          : g.charAt(0).toUpperCase() + g.slice(1),
-                    }))
-                    .find((g) => g.value === formData.gender) || null
+                  .map((g) => ({
+                    value: g,
+                    label:
+                      g === "na"
+                        ? "Prefer not to specify"
+                        : g.charAt(0).toUpperCase() + g.slice(1),
+                  }))
+                  .find((g) => g.value === formData.gender) || null
                 : null
             }
             onChange={(opt) => handleChange("gender", opt?.value || "")}
