@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 export function HeroSection() {
   return (
-    <div className="relative w-full h-full min-h-[560px] md:min-h-[720px] lg:min-h-[680px] rounded-2xl overflow-hidden shadow-lg">
+    <div className="relative w-full h-full min-h-[520px] md:min-h-[700px] lg:min-h-[792px] rounded-2xl overflow-hidden shadow-lg">
       {/* Use Image in fill mode so object-cover works reliably */}
       <Image
         src="/images/refer.png"
@@ -18,14 +18,11 @@ export function HeroSection() {
 
       {/* Content overlay */}
       <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
-        <h2 className="text-4xl md:text-5xl font-bold mb-4 leading-tight">
-          Refer a friend
+        <h2 className="text-3xl md:text-4xl font-bold mb-4 leading-tight text-center ">
+          Think Solar? Refer Skygreen.
         </h2>
         <p className="text-base md:text-lg text-gray-100 font-medium text-justify max-w-3xl">
-          At SKYGREEN, we don’t just sell solar panels — we build a community of partners,
-          installers, and customers who believe in a brighter and cleaner future. When you join
-          the Skygreen Family, you’re not just a buyer or seller — you’re a partner in India’s
-          clean energy journey.
+          Your friends, family and colleagues deserve more than advice — they deserve light, savings and a greener tomorrow. Referring them to the Skygreen Family isn't just about rewards, it's about bringing your circle into a movement that matters. Together, we shine. 🌱
         </p>
       </div>
     </div>
