@@ -1,72 +1,80 @@
 import React from 'react';
-import { Clock, CreditCard, Shield, MessageCircle, RefreshCw, Hand } from 'lucide-react';
+import { Shield, IndianRupee, Zap, ShoppingCart, PhoneCall, Truck } from 'lucide-react';
 
 function App() {
   const features = [
     {
-      icon: Clock,
+      icon: IndianRupee,
       title: "Price Guarantee",
-      description: "Transparent pricing — no hidden costs. If you find a lower price for the same certified product, we’ll match it."
+      description: "Transparent pricing — zero hidden costs. If you ever find a lower price for the same certified panel, we'll match it — because trust is priceless."
     },
     {
-      icon: CreditCard,
+      icon: Zap,
       title: "48-Hour Dispatch",
-      description: "Fastest supply chain in India. All confirmed orders are dispatched within 48 hours — or you get a discount."
+      description: "India's fastest solar supply chain. All confirmed orders leave our warehouse within 48 hours — or you get a discount. No waiting, no delays."
     },
     {
       icon: Shield,
       title: "Fast Warranty (48 hrs)",
-      description: "No more waiting weeks for replacements. Genuine warranty cases approved within 48 hours."
+      description: "Replacements without the wait. Forget weeks of chasing — genuine warranty claims are approved within 48 hours. Your peace of mind, protected."
     },
     {
-      icon: MessageCircle,
+      icon: ShoppingCart,
       title: "Buy Now, Pay Later",
-      description: "Flexible payment plans and credit options so dealers and EPCs can scale projects without cash-flow stress."
+      description: "Grow without cash-flow stress. Flexible credit options so dealers & EPCs can scale projects today, without worrying about tomorrow's payments. T&C Applied."
     },
     {
-      icon: RefreshCw,
+      icon: PhoneCall,
       title: "Dedicated Help Center",
-      description: "24/7 WhatsApp, phone and email support for dealers, EPCs and customers. Real people, real help."
+      description: "Real people. Real help. 24/7 WhatsApp, phone, and email support — whether you’re a dealer, EPC, or customer, we’re always just a call away."
     },
-    // {
-    //   icon: Hand,
-    //   title: "Referral & Rewards Program",
-    //   description: "Earn ₹1500 or gift vouchers for every successful installation you refer. Track your rewards live in your dashboard."
-    // },
     {
-      icon: Hand,
+      icon: Truck,
       title: "EPC Rescue Hotline",
-      description: "When competitors fail to deliver, our eamergency hotline ensures panels reach your site same day."
+      description: "When others fail, we deliver. If a competitor leaves you stuck, our emergency hotline ensures panels reach your site the very same day."
     }
   ];
 
   return (
     <div className=" bg-black text-white">
       <div className="container mx-auto px-6 py-16">
-        <h2 className="text-4xl md:text-5xl font-bold text-center mb-16 ">
-          <span className='px-15 pb-2' style={{
-            borderBottom: "2px solid",
-            borderImage:
-              "linear-gradient(to right, #000000ff, #3ef838, #000000ff) 1",
-          }}>Why Shop on <span className='text-[#acfe53]'>Sky Green</span></span>
+        <h2
+          className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-10 sm:mb-12 md:mb-16 leading-snug"
+        >
+          <span
+            className="px-2 sm:px-4 pb-1 sm:pb-2 inline-block"
+            style={{
+              borderBottom: "2px solid",
+              borderImage:
+                "linear-gradient(to right, #000000ff, #3ef838, #000000ff) 1",
+            }}
+          >
+            Why Shop on{" "}
+            <span className="text-[#acfe53]">Sky Green</span>
+          </span>
         </h2>
-        
+
+
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
           {features.map((feature, index) => {
             const IconComponent = feature.icon;
             return (
               <div
                 key={index}
-                className="flex flex-row items-center text-left p-12 w-full min-w-[340px] rounded-lg 
+                className="flex flex-col items-center text-center 
+             p-10 w-full rounded-lg 
              bg-gray-900 hover:bg-gray-800 transition-all duration-300 hover:scale-105 
              hover:shadow-[0_0_24px_4px_#7ffe36]
              bg-[radial-gradient(circle,_#194500_1.2px,_transparent_1.7px)] bg-[size:16px_16px]"
               >
-                <div className="w-16 h-16 bg-green-400 rounded-full flex items-center justify-center mr-6 flex-shrink-0">
+                {/* Icon */}
+                <div className="w-16 h-16 bg-green-400 rounded-full flex items-center justify-center mb-4">
                   <IconComponent className="w-8 h-8 text-black" />
                 </div>
+
+                {/* Text */}
                 <div>
-                  <h3 className="text-xl font-semibold text-white mb-2">
+                  <h3 className="text-lg md:text-xl font-semibold text-white mb-2">
                     {feature.title}
                   </h3>
                   <p className="text-gray-300 text-sm">
@@ -74,6 +82,7 @@ function App() {
                   </p>
                 </div>
               </div>
+
             );
           })}
         </div>

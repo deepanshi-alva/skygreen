@@ -122,11 +122,6 @@ export default function TestimonialSlider() {
   const imageUrl = rawUrl.startsWith("http")
     ? rawUrl
     : `${process.env.NEXT_PUBLIC_STRAPI_URL}${rawUrl}`;
-    
-  // const prev = () =>
-  //   setIndex((prev) => (prev === 0 ? testimonials.length - 1 : prev - 1));
-  // const next = () =>
-  //   setIndex((prev) => (prev === testimonials.length - 1 ? 0 : prev + 1));
 
   return (
     <section className="flex flex-col items-center min-h-screen bg-black w-full pt-30">

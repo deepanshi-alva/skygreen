@@ -29,7 +29,7 @@ export default function CookieConsent() {
     <div className="fixed bottom-4 left-1/2 -translate-x-1/2 w-[95%] md:w-[700px] bg-gray-900 text-white px-6 py-4 rounded-lg shadow-lg border border-green-500/40 flex flex-col md:flex-row items-center justify-between gap-4 z-50">
       <p className="text-sm text-gray-200 leading-relaxed">
         We use cookies to improve your experience. By using our site, you accept our{" "}
-        <a href="/privacy-policy" className="text-green-400 underline hover:text-green-300">
+        <a href="/images/pdfs/privacy-policy.pdf" target="_blank" className="text-green-400 underline hover:text-green-300">
           Privacy Policy
         </a>.
       </p>
