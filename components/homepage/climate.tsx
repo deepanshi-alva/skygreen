@@ -166,11 +166,11 @@ export default function ClimateSelector() {
         <source src="/images/climate/climateBG.mp4" type="video/mp4" />
       </video>
       {/* Heading */}
-      <div className="text-center py-5 md:py-4 px-6 md:px-10 mb-5 ">
+      <div className="text-center py-5 md:py-4  md:px-10 mb-5 ">
         <h1
           className={`
-  relative py-4 md:py-6 px-4 md:px-6
-  text-3xl md:text-6xl font-bold text-white inline-block
+  relative py-4 md:py-6  md:px-6
+  text-5xl md:text-6xl font-bold text-white inline-block
 `}
         >
           Engineered for <span className="text-[#acfe53]">Every Season</span>
