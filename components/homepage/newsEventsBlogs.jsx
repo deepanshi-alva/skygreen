@@ -122,16 +122,16 @@ export default function NewsEventsBlogs({
               const isActive = active === key;
               return (
                 <button
-                  key={key}
-                  onClick={() => setActive(key)}
-                  className={`group relative overflow-hidden rounded-2xl border transition-all duration-200 px-4 py-3 text-left flex-1
-          ${
-            isActive
-              ? "border-green-400/70 bg-green-500/10"
-              : "border-white/10 bg-white/5 hover:bg-white/10"
-          }`}
-                  aria-pressed={isActive}
-                >
+  key={key}
+  onClick={() => setActive(key)}
+  className={`group relative overflow-hidden rounded-2xl border transition-all duration-700 ease-in-out px-4 py-3 text-left flex-1
+    ${
+      isActive
+        ? "border-green-400/70 bg-green-500/8"
+        : "border-white/10 bg-[radial-gradient(circle_at_top_left,_rgba(0,100,81,.5),_rgba(0,128,0,0))] hover:bg-[radial-gradient(circle_at_top_left,_rgba(0,120,81,.2),_rgba(0,128,0,0.05))]"
+    }`}
+  aria-pressed={isActive}
+>
                   <div className="flex items-center justify-between">
                     <span
                       className={`text-base md:text-lg font-semibold ${
