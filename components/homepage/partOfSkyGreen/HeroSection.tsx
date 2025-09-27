@@ -1,5 +1,5 @@
-import React from 'react';
-import Image from 'next/image';
+import React from "react";
+import Image from "next/image";
 
 export function HeroSection() {
   return (
@@ -22,7 +22,11 @@ export function HeroSection() {
           Think Solar? Refer Skygreen.
         </h2>
         <p className="text-base md:text-lg text-gray-100 font-medium text-justify max-w-3xl">
-          Your friends, family and colleagues deserve more than advice — they deserve light, savings and a greener tomorrow. Referring them to the Skygreen Family isn't just about rewards, it's about bringing your circle into a movement that matters. Together, we shine. 🌱
+          Your friends, family and colleagues deserve more than advice — they
+          deserve light, savings and a greener tomorrow. Referring them to the
+          Skygreen Family isn&apos;t just about rewards, it&apos;s about
+          bringing your circle into a movement that matters. Together, we shine.
+          🌱
         </p>
       </div>
     </div>
