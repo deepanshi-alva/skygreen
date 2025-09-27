@@ -25,11 +25,23 @@ const CLIMATES: Record<
     overview: "Performance remains stable in heavy rain & monsoon humidity.",
     video: "/images/climate/rain.mp4",
     specs: [
-      { title: "Hydrophobic glass", description: "Water beads, light transmission stays high." },
+      {
+        title: "Hydrophobic glass",
+        description: "Water beads, light transmission stays high.",
+      },
       { title: "Sealed frame", description: "Prevents moisture ingress." },
-      { title: "IP68 build", description: "Flood-safe, long-term reliability." },
-      { title: "Bypass diodes", description: "Stable output in shaded drizzle." },
-      { title: "100% RH ready", description: "Condensation and humidity resistant." },
+      {
+        title: "IP68 build",
+        description: "Flood-safe, long-term reliability.",
+      },
+      {
+        title: "Bypass diodes",
+        description: "Stable output in shaded drizzle.",
+      },
+      {
+        title: "100% RH ready",
+        description: "Condensation and humidity resistant.",
+      },
     ],
   },
   snowy: {
@@ -42,8 +54,14 @@ const CLIMATES: Record<
     specs: [
       { title: "5400 Pa load", description: "Handles heavy snow pressure." },
       { title: "Drain channels", description: "Meltwater exits quickly." },
-      { title: "Low temp coefficient (-0.34%/°C)", description: "Higher efficiency in cold." },
-      { title: "Black backsheet", description: "Retains heat, helps snow melt." },
+      {
+        title: "Low temp coefficient (-0.34%/°C)",
+        description: "Higher efficiency in cold.",
+      },
+      {
+        title: "Black backsheet",
+        description: "Retains heat, helps snow melt.",
+      },
       { title: "-40 °C cycle tested", description: "Freeze-thaw durable." },
     ],
   },
@@ -55,11 +73,26 @@ const CLIMATES: Record<
     overview: "Engineered for hot, dusty, high-radiation sites.",
     video: "/images/climate/desert.mp4",
     specs: [
-      { title: "UV-resistant materials", description: "Slower aging under intense sun." },
-      { title: "-40°C to +85°C range ", description: "Wide temperature endurance." },
-      { title: "Abrasion-resistant glass", description: "Withstands dust and sandstorms." },
-      { title: "IEC dust ingress test passed", description: "Desert-certified protection." },
-      { title: "Dry-clean compatible", description: "Supports robotic & manual cleaning." },
+      {
+        title: "UV-resistant materials",
+        description: "Slower aging under intense sun.",
+      },
+      {
+        title: "-40°C to +85°C range ",
+        description: "Wide temperature endurance.",
+      },
+      {
+        title: "Abrasion-resistant glass",
+        description: "Withstands dust and sandstorms.",
+      },
+      {
+        title: "IEC dust ingress test passed",
+        description: "Desert-certified protection.",
+      },
+      {
+        title: "Dry-clean compatible",
+        description: "Supports robotic & manual cleaning.",
+      },
     ],
   },
   hailing: {
@@ -70,11 +103,23 @@ const CLIMATES: Record<
     overview: "Durable against hailstorms & extreme gusts.",
     video: "/images/climate/hailStrom.mp4",
     specs: [
-      { title: "25 mm @ 23 m/s hail certified", description: "Proven IEC hail test." },
-      { title: "3.2-3.5 mm tempered glass ", description: "Absorbs high impacts." },
-      { title: "Reinforced frame with corner keys", description: "Distributes shock." },
+      {
+        title: "25 mm @ 23 m/s hail certified",
+        description: "Proven IEC hail test.",
+      },
+      {
+        title: "3.2-3.5 mm tempered glass ",
+        description: "Absorbs high impacts.",
+      },
+      {
+        title: "Reinforced frame with corner keys",
+        description: "Distributes shock.",
+      },
       { title: "2400 Pa wind load", description: "Gust-resistant structure." },
-      { title: "12/30-year warranty cover", description: "Long-term reliability guaranteed." },
+      {
+        title: "12/30-year warranty cover",
+        description: "Long-term reliability guaranteed.",
+      },
     ],
   },
   windy: {
@@ -86,10 +131,16 @@ const CLIMATES: Record<
     video: "/images/climate/wind.mp4",
     specs: [
       { title: "2400Pa wind rating", description: "Withstands strong winds." },
-      { title: "20-25% clamps zones", description: "Reduces structural stress." },
+      {
+        title: "20-25% clamps zones",
+        description: "Reduces structural stress.",
+      },
       { title: "M6 SS fasteners", description: "Corrosion-proof mounting." },
       { title: "Integrated grounding", description: "Stable, safe bonding." },
-      { title: "IEC 61215/61730 certified", description: "Tested to global standards." },
+      {
+        title: "IEC 61215/61730 certified",
+        description: "Tested to global standards.",
+      },
     ],
   },
 };
@@ -115,26 +166,34 @@ export default function ClimateSelector() {
         <source src="/images/climate/climateBG.mp4" type="video/mp4" />
       </video>
       {/* Heading */}
-      <div className="text-center py-5 md:py-4 px-6 md:px-10 mb-5 ">
+      <div className="text-center py-5 md:py-4  md:px-10 mb-5 ">
         <h1
-          className="relative py-4 md:py-6 px-4 md:px-6 text-4xl md:text-6xl font-bold text-white inline-block"
-          style={{
-            borderBottom: "2px solid",
-            borderImage: "linear-gradient(to right, #000000ff, #3ef838, #000000ff) 1",
-          }}
+          className={`
+  relative py-4 md:py-6  md:px-6
+  text-5xl md:text-6xl font-bold text-white inline-block
+`}
         >
-          Engineered for{" "}
-          <span className="text-[#acfe53]">Every Season</span>
+          Engineered for <span className="text-[#acfe53]">Every Season</span>
         </h1>
       </div>
 
-      <div className="relative py-12 mx-auto max-w-7xl">
+      <div className="relative pt:0 py-5 md:pt-12 mx-auto max-w-7xl">
         {/* <div className="absolute inset-0 bg-black/30" /> */}
 
         <div className="relative grid h-full w-full grid-cols-1 lg:grid-cols-3">
           {/* Left column */}
-          <div className="relative mr-10 ml-4 text-white flex flex-col justify-center">
-            <h1 className="inline-flex items-center gap-2 py-1 text-6xl md:text-7xl font-bold leading-none">
+          <div
+            className="relative py-5 md:py-0 mr-4 md:mr-4 ml-4 text-white flex flex-col justify-center md:h-95 md:mt-4"
+            style={{
+              borderImage:
+                "linear-gradient(140deg, #011b00, #001500, #00ff00ac, #00ff00ac, #002f00, #022d00) 1",
+              borderStyle: "solid",
+              borderWidth: "2px",
+              background: "rgba(0, 0, 0, 0.42)",
+              backdropFilter: "blur(10px)",
+            }}
+          >
+            <h1 className="inline-flex items-center gap-2 py-1 text-6xl md:text-7xl font-bold leading-none mx-5">
               <Image
                 src={CLIMATES[selected].icon}
                 alt=""
@@ -147,13 +206,13 @@ export default function ClimateSelector() {
               <span className="tracking-wide">{CLIMATES[selected].label}</span>
             </h1>
 
-            <h3 className="mt-4 text-2xl md:text-3xl text-[#acfe53] font-bold">
+            <h3 className="mt-4 text-2xl md:text-3xl text-[#acfe53] font-bold mx-5">
               {CLIMATES[selected].sublabel}
             </h3>
 
             <p
               key={selected + "-overview"}
-              className="mt-4 text-base md:text-lg leading-relaxed animate-textIn max-w-prose"
+              className="mt-4 text-base md:text-lg leading-relaxed animate-textIn max-w-prose mx-5"
             >
               {CLIMATES[selected].overview}
             </p>
@@ -175,7 +234,8 @@ export default function ClimateSelector() {
 
               {/* Large-screen overlapping panel (shows on lg and up) */}
               <div
-                className="hidden lg:block absolute left-[18%] -bottom-[18%] animate-rise"
+                key={selected}
+                className="hidden lg:block absolute left-[18%] -bottom-[13.5%] animate-rise"
                 style={{
                   width: "clamp(180px, 18vw, 360px)",
                   height: "clamp(260px, 54vh, 480px)",
@@ -195,9 +255,10 @@ export default function ClimateSelector() {
             </div>
 
             {/* For medium & small screens: panel centered below the video */}
-            <div className="lg:hidden w-full flex justify-center absolute -bottom-[3%]">
+            <div className="lg:hidden w-full flex justify-center absolute -bottom-[3%] ">
               <div
-                className="relative"
+                key={selected}
+                className="relative animate-rise"
                 style={{
                   width: "clamp(180px, 40vw, 360px)",
                   height: "clamp(240px, 44vw, 460px)",
@@ -218,7 +279,7 @@ export default function ClimateSelector() {
           {/* Right column */}
           <div className="specs-box">
             <div
-              className="lg:mt-5 lg:mr-4 m-4 md:mt-6 text-white rounded-none shadow-lg"
+              className="lg:mt-5 lg:mr-4 m-4 md:mt-6 text-white rounded-none shadow-lg md:h-95 "
               style={{
                 borderImage:
                   "linear-gradient(140deg, #3ef838ff, #002f00ac, #002f00ac, #002f00ac, #002f00ac, #3ef838ff) 1",
@@ -261,8 +322,8 @@ export default function ClimateSelector() {
           </div>
         </div>
 
-        {/* Buttons below video */}
-        <div className="pointer-events-none absolute bottom-6 inset-x-0 flex justify-center">
+        {/* Buttons for desktop (absolute bottom) */}
+        <div className="hidden lg:flex pointer-events-none absolute bottom-6 inset-x-0 justify-center">
           <div className="pointer-events-auto inline-flex flex-wrap items-center justify-center gap-3 rounded-3xl bg-black/30 p-2 backdrop-blur">
             {(Object.keys(CLIMATES) as ClimateKey[]).map((key) => {
               const active = key === selected;
@@ -275,7 +336,7 @@ export default function ClimateSelector() {
                   className={`group inline-flex items-center gap-2 rounded-2xl px-4 py-2 text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 transition-transform ${
                     active
                       ? "bg-white text-gray-900 shadow-md scale-[1.03]"
-                      : "bg-white/15 text-white hover:bg-white/25 hover:scale-[1.02]"
+                      : "bg-white/6 text-white hover:bg-white/25 hover:scale-[1.02]"
                   }`}
                   title={CLIMATES[key].label}
                 >
@@ -288,10 +349,50 @@ export default function ClimateSelector() {
                       active ? "brightness-0" : ""
                     }`}
                   />
-                  <span className="hidden sm:inline">{CLIMATES[key].label}</span>
+                  <span className="hidden sm:inline">
+                    {CLIMATES[key].label}
+                  </span>
                 </button>
               );
             })}
+          </div>
+        </div>
+
+        {/* Buttons for mobile (directly under video) */}
+        <div className="relative -top-105">
+          <div className="lg:hidden flex justify-center ">
+            <div className="inline-flex flex-wrap items-center justify-center gap-3 rounded-3xl bg-black/30 p-2 backdrop-blur">
+              {(Object.keys(CLIMATES) as ClimateKey[]).map((key) => {
+                const active = key === selected;
+                return (
+                  <button
+                    key={key}
+                    type="button"
+                    aria-pressed={active}
+                    onClick={() => setSelected(key)}
+                    className={`group inline-flex items-center gap-2 rounded-2xl px-4 py-2 text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 transition-transform ${
+                      active
+                        ? "bg-white text-gray-900 shadow-md scale-[1.03]"
+                        : "bg-white/6 text-white hover:bg-white/25 hover:scale-[1.02]"
+                    }`}
+                    title={CLIMATES[key].label}
+                  >
+                    <Image
+                      src={CLIMATES[key].icon}
+                      alt={`${CLIMATES[key].label} icon`}
+                      width={18}
+                      height={18}
+                      className={`h-[18px] w-[18px] object-contain transition-filter duration-200 ${
+                        active ? "brightness-0" : ""
+                      }`}
+                    />
+                    <span className="hidden sm:inline">
+                      {CLIMATES[key].label}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>
@@ -338,6 +439,22 @@ export default function ClimateSelector() {
           animation: listIn 400ms ease forwards;
         }
 
+        @keyframes riseInMobile {
+          from {
+            transform: translateY(25px) scale(1);
+            opacity: 0;
+            filter: blur(5px);
+          }
+          60% {
+            opacity: 1;
+            filter: blur(0);
+          }
+          to {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+          }
+        }
+
         @keyframes riseIn {
           from {
             transform: translateY(48px) scale(0.98);
@@ -358,6 +475,13 @@ export default function ClimateSelector() {
           animation-delay: 0.6s;
           animation-fill-mode: backwards;
           will-change: transform, opacity, filter;
+        }
+
+        @media (max-width: 1024px) {
+          .animate-rise {
+            animation: riseInMobile 2500ms cubic-bezier(0.3, 0.9, 0.2, 1)
+              forwards;
+          }
         }
       `}</style>
     </section>

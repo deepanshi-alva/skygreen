@@ -50,7 +50,9 @@ export default function NewsEventsBlogs({
     return sorted;
   }, [data, active]);
 
-  const safeIndex = items.length ? ((index % items.length) + items.length) % items.length : 0;
+  const safeIndex = items.length
+    ? ((index % items.length) + items.length) % items.length
+    : 0;
   const current = items[safeIndex];
 
   useEffect(() => {
@@ -102,26 +104,40 @@ export default function NewsEventsBlogs({
             Latest <span className="text-[#acfe53]">Updates & Insights</span>
           </h2>
           <p className="mt-3 text-white/60 text-sm md:text-base max-w-2xl mx-auto">
-            Stay informed with the newest news, upcoming events, and in-depth blogs from the solar industry.
+            Stay informed with the newest news, upcoming events, and in-depth
+            blogs from the solar industry.
           </p>
         </div>
         {/* Shared height wrapper → BOTH columns use the same height */}
-        <div className="grid grid-cols-1 md:grid-cols-[200px_minmax(0,1fr)] gap-6 items-stretch h-[460px] md:h-[520px]">
+        <div className="grid grid-cols-1 md:grid-cols-[200px_minmax(0,1fr)] gap-6 items-stretch md:h-[520px] h-auto">
           {/* Vertical rail (left) — full height, evenly distributed buttons */}
-          <aside className="flex flex-row md:flex-col gap-3 md:gap-4 h-full">
+          <aside
+            className={`flex flex-row md:flex-col gap-3 md:gap-4
+    h-30 md:h-full
+    order-last md:order-first
+  `}
+          >
             {["events", "news", "blogs"].map((key) => {
               const label = key[0].toUpperCase() + key.slice(1);
               const isActive = active === key;
               return (
                 <button
-                  key={key}
-                  onClick={() => setActive(key)}
-                  className={`group relative overflow-hidden rounded-2xl border transition-all duration-200 px-4 py-3 text-left flex-1
-                    ${isActive ? "border-green-400/70 bg-green-500/10" : "border-white/10 bg-white/5 hover:bg-white/10"}`}
-                  aria-pressed={isActive}
-                >
+  key={key}
+  onClick={() => setActive(key)}
+  className={`group relative overflow-hidden rounded-2xl border transition-all duration-700 ease-in-out px-4 py-3 text-left flex-1
+    ${
+      isActive
+        ? "border-green-400/70 bg-green-500/8"
+        : "border-white/10 bg-[radial-gradient(circle_at_top_left,_rgba(0,100,81,.5),_rgba(0,128,0,0))] hover:bg-[radial-gradient(circle_at_top_left,_rgba(0,120,81,.2),_rgba(0,128,0,0.05))]"
+    }`}
+  aria-pressed={isActive}
+>
                   <div className="flex items-center justify-between">
-                    <span className={`text-base md:text-lg font-semibold ${isActive ? "text-green-400" : "text-white"}`}>
+                    <span
+                      className={`text-base md:text-lg font-semibold ${
+                        isActive ? "text-green-400" : "text-white"
+                      }`}
+                    >
                       {label}
                     </span>
                     <span className="text-xs text-white/60">
@@ -139,7 +155,11 @@ export default function NewsEventsBlogs({
                       layoutId="activeGlow"
                       className="absolute inset-0 pointer-events-none"
                       initial={false}
-                      transition={{ type: "spring", stiffness: 250, damping: 25 }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 250,
+                        damping: 25,
+                      }}
                     >
                       <div className="absolute -inset-1 rounded-2xl bg-green-400/10 blur-2xl" />
                     </motion.div>
@@ -151,7 +171,7 @@ export default function NewsEventsBlogs({
 
           {/* Carousel — now inherits the same height from the wrapper */}
           <div
-            className="relative rounded-3xl border border-white/10 bg-white/[0.03] overflow-hidden h-full"
+            className="relative rounded-3xl border border-white/10 bg-white/[0.03] overflow-hidden md:h-full h-auto"
             onMouseEnter={() => setIsHover(true)}
             onMouseLeave={() => setIsHover(false)}
             onTouchStart={onTouchStart}
@@ -183,8 +203,12 @@ export default function NewsEventsBlogs({
             {!items.length && (
               <div className="p-10 md:p-16 text-center h-full flex items-center justify-center">
                 <div>
-                  <p className="text-xl text-white/70">No {active} to show yet.</p>
-                  <p className="text-white/50 mt-2">Add items from your CMS or API.</p>
+                  <p className="text-xl text-white/70">
+                    No {active} to show yet.
+                  </p>
+                  <p className="text-white/50 mt-2">
+                    Add items from your CMS or API.
+                  </p>
                 </div>
               </div>
             )}
@@ -195,10 +219,11 @@ export default function NewsEventsBlogs({
                 <AnimatePresence initial={false} mode="wait">
                   <motion.div
                     key={current?.id ?? `idx-${safeIndex}`}
-                    className={`absolute inset-0 ${current?.image
-                      ? "grid md:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]"
-                      : "flex"
-                      }`}
+                    className={`${
+                      current?.image
+                        ? "grid md:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]"
+                        : "flex"
+                    } relative md:absolute inset-0`}
                     initial={{ opacity: 0, x: 40 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -40 }}
@@ -221,12 +246,12 @@ export default function NewsEventsBlogs({
                             </span>
                           )}
                           {current?.tag && (
-                            <span className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs text-white/80">
+                            <span className="rounded-full border border-white/20 bg-black/50 px-3 py-1 text-xs text-white/80">
                               {current.tag}
                             </span>
                           )}
                           {current?.date && (
-                            <span className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs text-white/70">
+                            <span className="rounded-full border border-white/20 bg-black/50 px-3 py-1 text-xs text-white/70">
                               {formatDate(current.date)}
                             </span>
                           )}
@@ -236,8 +261,11 @@ export default function NewsEventsBlogs({
 
                     {/* Text — full width when no image */}
                     <div
-                      className={`p-6 flex flex-col text-left ${current?.image ? "justify-between md:p-10" : "justify-center w-full md:p-16"
-                        }`}
+                      className={`p-6 flex flex-col text-left ${
+                        current?.image
+                          ? "justify-between md:p-10"
+                          : "justify-center w-full md:p-16"
+                      }`}
                     >
                       {/* Badges row (shown here if no image) */}
                       {!current?.image && (
@@ -262,8 +290,11 @@ export default function NewsEventsBlogs({
 
                       <div>
                         <h3
-                          className={`font-bold leading-tight text-left ${current?.image ? "text-2xl md:text-3xl" : "text-3xl md:text-5xl"
-                            }`}
+                          className={`font-bold leading-tight text-left ${
+                            current?.image
+                              ? "text-2xl md:text-3xl"
+                              : "text-3xl md:text-5xl"
+                          }`}
                         >
                           {current?.title}
                         </h3>
@@ -291,10 +322,15 @@ export default function NewsEventsBlogs({
                               target="_blank"
                               rel="noopener noreferrer"
                               className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-medium text-white hover:bg-white/20 transition"
-                              aria-label={`Read more about: ${current?.title ?? "item"}`}
+                              aria-label={`Read more about: ${
+                                current?.title ?? "item"
+                              }`}
                             >
                               Read more
-                              <ChevronRight className="h-4 w-4" aria-hidden="true" />
+                              <ChevronRight
+                                className="h-4 w-4"
+                                aria-hidden="true"
+                              />
                             </a>
                           </div>
                         )}
