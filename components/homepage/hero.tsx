@@ -30,7 +30,7 @@ export default function HeroSection() {
       if (!reveal) {
         try {
           v.pause();
-        } catch {}
+        } catch { }
         setReveal(true);
       }
     }, 3000);
@@ -94,11 +94,25 @@ export default function HeroSection() {
       <div className="absolute inset-0 z-0" />
 
       {/* Main Content */}
+      {/* Main Content */}
       <div
-        className={`relative z-10 text-center px-4 flex-1 flex flex-col items-center justify-center ${
-          reveal ? "animate-fadeInSlow" : "opacity-0"
-        }`}
+        className={`relative z-10 text-center px-4 flex-1 flex flex-col items-center justify-center ${reveal ? "animate-fadeInSlow" : "opacity-0"
+          }`}
       >
+        {/* ✅ Logo above the title */}
+        <div className="mb-12 flex flex-col items-center">
+          <img
+            src="/images/logo/logo-bg-remove.png"
+            alt="Skygreen Logo"
+            className="mx-auto w-[clamp(260px,45vw,560px)] h-auto"
+          />
+          {/* ✅ Tagline below logo */}
+          <p className="mt-3 text-white text-[clamp(0.9rem,1.8vw,2.3rem)] font-medium tracking-wide">
+            हमारा सूरज, हमारी बिजली !!
+          </p>
+        </div>
+
+
         <h2
           className={`${orbitron.className} font-extrabold mb-4 leading-tight tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-green-800 via-green-300 to-green-500 animate-gradient text-[clamp(2rem,5vw+1rem,4.5rem)]`}
         >
@@ -110,35 +124,26 @@ export default function HeroSection() {
           BIS & TÜV Certified panels, built for India’s toughest climates.
         </p>
 
+        {/* Buttons remain the same */}
         <div className="flex items-center justify-center gap-[clamp(0.5rem,1.5vw,1rem)]">
-          <Button
-            className=" glowButton"
-            style={{ padding: "25px 20px", background: "black" }}
-          >
+          <Button className="glowButton" style={{ padding: "25px 20px", background: "black" }}>
             <span className="z-3">GET A QUOTE</span>
-            <span
-              className="glowEffect"
-              style={{ opacity: " 0.8", filter: "blur(35px)" }}
-            ></span>
+            <span className="glowEffect" style={{ opacity: "0.8", filter: "blur(35px)" }}></span>
           </Button>
           <Button
             variant="outline"
-            className="
-    rounded-full border border-green-400/30
-    bg-black/50 backdrop-blur-5xl bg-clip-padding
-    text-green-100 font-semibold
-    hover:bg-black/52 hover:text-white
-    transform transition-all duration-300 hover:-translate-y-0.5
-    hover:shadow-[0_22px_60px_rgba(34,197,94,0.38),0_8px_30px_rgba(34,197,94,0.18)]
-    focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-400/60
-    text-[clamp(0.95rem,0.8vw+0.7rem,1.1rem)]
-    px-6 py-6
-  "
+            className="rounded-full border border-green-400/30 bg-black/50 backdrop-blur-5xl
+        text-green-100 font-semibold hover:bg-black/52 hover:text-white
+        transform transition-all duration-300 hover:-translate-y-0.5
+        hover:shadow-[0_22px_60px_rgba(34,197,94,0.38),0_8px_30px_rgba(34,197,94,0.18)]
+        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-400/60
+        text-[clamp(0.95rem,0.8vw+0.7rem,1.1rem)] px-6 py-6"
           >
             Explore Products
           </Button>
         </div>
       </div>
+
 
       {/* Scroll Down Indicator (clickable & keyboard accessible) */}
       <div className="absolute bottom-6 z-10 flex flex-col items-center gap-2">

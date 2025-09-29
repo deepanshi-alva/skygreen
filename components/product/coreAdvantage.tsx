@@ -8,8 +8,8 @@ type ImgCfg = { src: string; zoom?: number; objectPosition?: string };
 
 export default function CoreAdvantages() {
   const images: ImgCfg[] = [
-    { src: "/images/products/front-image.png" },
     { src: "/images/products/zoomed-image.png" },
+    { src: "/images/products/front-image.png" },
   ];
 
   const [idx, setIdx] = useState(0);

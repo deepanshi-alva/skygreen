@@ -167,7 +167,7 @@ export default function Navbar() {
                     href="tel:+919891055535"
                     className="flex items-center gap-2 text-gray-300 rounded-lg px-3 py-2 transition-colors duration-200 hover:bg-gray-800/80 hover:text-green-400"
                   >
-                    📞 +91 98910 • 55535
+                    📞 +91 98112 • 23252
                   </a>
                   <p className="text-md font-bold text-white-500 mt-1 flex items-center gap-2">
                     🕒 Mon – Sat, 10:00 – 18:00 (IST)
@@ -256,7 +256,7 @@ export default function Navbar() {
                   <div>
                     <p className="font-semibold mb-1 text-green-600">Customer Support (India)</p>
                     <a href="tel:+919891055535" className="block text-blue-600">
-                      +91 98910 55535
+                      +91 98112 • 23252
                     </a>
                     <p className="text-sm text-gray-500">Mon – Sat, 10:00 – 18:00 (IST)</p>
                   </div>

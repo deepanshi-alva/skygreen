@@ -150,7 +150,7 @@ export default function ClimateSelector() {
   const bgRef = useRef<HTMLVideoElement | null>(null);
 
   return (
-    <section className="relative min-h-screen overflow-hidden pt-15 pb-15">
+    <section className="relative overflow-hidden pt-10 pb-15">
       {/* Background video in parent section (full-bleed) */}
       <video
         ref={bgRef}

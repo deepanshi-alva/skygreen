@@ -6,6 +6,8 @@ import Header from "@/components/common/header";
 import WhatsAppWidget from "@/components/WhatsAppWidget";
 import { AuthProvider } from "@/lib/authContext";
 import CookieConsent from "@/components/CookieConsent";
+import GoogleAnalytics from "@/components/common/GoogleAnalytics"; // adjust path
+import GoogleAnalyticsEvents from "@/components/common/GAEvents";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,6 +37,8 @@ export default function RootLayout({
         <AuthProvider>
           <Header />
           {children}
+          <GoogleAnalytics />
+          <GoogleAnalyticsEvents/>
           <CookieConsent/>
           <Footer />
           <WhatsAppWidget
