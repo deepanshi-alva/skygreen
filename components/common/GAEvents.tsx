@@ -2,17 +2,30 @@
 
 import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
+import { Suspense } from "react";
 
-export default function GAEvents() {
+function GAEventsInner() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    const url = pathname + searchParams.toString();
-    window.gtag("config", "G-XXXXXXXXXX", {
-      page_path: url,
-    });
+    if (!pathname) return;
+
+    const url = pathname + (searchParams?.toString() || "");
+    if (typeof window !== "undefined" && typeof window.gtag === "function") {
+      window.gtag("config", "G-SYB1WYYLRK", {
+        page_path: url,
+      });
+    }
   }, [pathname, searchParams]);
 
   return null;
+}
+
+export default function GAEvents() {
+  return (
+    <Suspense fallback={null}>
+      <GAEventsInner />
+    </Suspense>
+  );
 }
