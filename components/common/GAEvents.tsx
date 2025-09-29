@@ -9,7 +9,6 @@ export default function GAEvents() {
 
   useEffect(() => {
     const url = pathname + searchParams.toString();
-    // @ts-expect-error gtag is loaded via GA script
     window.gtag("config", "G-XXXXXXXXXX", {
       page_path: url,
     });
