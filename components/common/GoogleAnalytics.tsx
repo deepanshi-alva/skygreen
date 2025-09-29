@@ -3,7 +3,7 @@
 import Script from "next/script";
 
 const MAIN_ID = "G-SYB1WYYLRK";  // Main property
-const CALC_ID = "G-EWQJ7L4XQQ";  // Calculator property
+const CALC_ID = "G-VKRX7CDDP8";  // Calculator property
 
 export default function GoogleAnalytics() {
   return (
