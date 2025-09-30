@@ -244,7 +244,7 @@ export default function Navbar() {
                   {/* General & Sales */}
                   <div>
                     <p className="font-semibold mb-1 text-green-600">General & Sales</p>
-                    <a href="mailto:contact@skygreenenergies.com" className="block text-blue-600">
+                    <a href="mailto:contact@skygreenenergies.com" className="block text-white">
                       contact [at] skygreenenergies [dot] com
                     </a>
                   </div>
@@ -252,7 +252,7 @@ export default function Navbar() {
                   {/* Service & Warranty */}
                   <div>
                     <p className="font-semibold mb-1 text-green-600">Service & Warranty</p>
-                    <a href="mailto:warranty@skygreen.com" className="block text-blue-600">
+                    <a href="mailto:warranty@skygreen.com" className="block text-white">
                       warranty [at] skygreenenergies [dot] com
                     </a>
                   </div>
@@ -260,7 +260,7 @@ export default function Navbar() {
                   {/* Customer Support */}
                   <div>
                     <p className="font-semibold mb-1 text-green-600">Customer Support (India)</p>
-                    <a href="tel:+919891055535" className="block text-blue-600">
+                    <a href="tel:+919891055535" className="block text-white">
                       +91 98112 • 23252
                     </a>
                     <p className="text-sm text-gray-500">Mon – Sat, 10:00 – 18:00 (IST)</p>
