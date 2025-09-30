@@ -57,8 +57,8 @@ export default function RightAds({ results }) {
         addNote(
           "warning",
           `Your society’s total sanctioned load is ${societySanctioned} kW, but the proposed system is ${proposed} kW, which exceeds the sanctioned limit. ` +
-            `Maximum subsidy eligibility is ${eligibleCap} kW ${limitSuffix}. ` +
-            `The remaining capacity must be self-funded.`
+          `Maximum subsidy eligibility is ${eligibleCap} kW ${limitSuffix}. ` +
+          `The remaining capacity must be self-funded.`
         );
       }
       // 2) Fully eligible (proposed ≤ eligibleCap)
@@ -67,9 +67,9 @@ export default function RightAds({ results }) {
         addNote(
           "info",
           `Your society’s total sanctioned load is ${societySanctioned} kW, ` +
-            `and the maximum subsidy eligibility is ${eligibleCap} kW ` +
-            `${limitSuffix}. ` +
-            `You have proposed ${proposed} kW, which is fully eligible under the subsidy cap.`
+          `and the maximum subsidy eligibility is ${eligibleCap} kW ` +
+          `${limitSuffix}. ` +
+          `You have proposed ${proposed} kW, which is fully eligible under the subsidy cap.`
         );
       }
       // 3) Partially eligible (proposed > eligibleCap)
@@ -78,21 +78,25 @@ export default function RightAds({ results }) {
         addNote(
           "info",
           `Your society’s total sanctioned load is ${societySanctioned} kW. ` +
-            `Maximum subsidy eligibility is ${eligibleCap} kW ` +
-            `${limitSuffix}. ` +
-            `You have proposed ${proposed} kW. The remaining ${remaining} kW must be self-funded.`
+          `Maximum subsidy eligibility is ${eligibleCap} kW ` +
+          `${limitSuffix}. ` +
+          `You have proposed ${proposed} kW. The remaining ${remaining} kW must be self-funded.`
         );
       }
     } else if (numHouses && societySanctioned) {
       console.log("entered 2");
 
-      const capByHouses = Math.min(numHouses * 1, overallSubsidyCap);
+      const capByHouses = Math.min(results?.eligibleKw, overallSubsidyCap);
       const remaining = societySanctioned - capByHouses;
 
       addNote(
         "warning",
-        `You entered a ${societySanctioned} kW society load, but the subsidy is capped at ${capByHouses} kW. The remaining ${remaining} kW will not get subsidy and must be self-funded.`
+        `You entered a ${societySanctioned} kW society load, but the subsidy is capped at ${capByHouses} kW.${remaining > 0
+          ? ` The remaining ${formatNum(remaining)} kW will not get subsidy and must be self-funded.`
+          : ""
+        }`
       );
+
       // You entered a 5000 kW society load, but the subsidy is capped at 500 kW. The remaining 4500 kW will not get subsidy and must be self-funded
     } else if (numHouses && perHouseSanctioned && proposed) {
       console.log("entered 5");
@@ -168,10 +172,8 @@ export default function RightAds({ results }) {
         if (roofAvailable < roofNeeded) {
           addNote(
             "warning",
-            `You provided ${roofAvailable} ${
-              results.roof_area_unit
-            } rooftop area, but ${formatNum(roofNeeded)} ${
-              results.roof_area_unit
+            `You provided ${roofAvailable} ${results.roof_area_unit
+            } rooftop area, but ${formatNum(roofNeeded)} ${results.roof_area_unit
             } is required for the system.`
           );
         }
@@ -249,10 +251,8 @@ export default function RightAds({ results }) {
         if (roofAvailable < roofNeeded) {
           addNote(
             "warning",
-            `You provided ${roofAvailable} ${
-              results.roof_area_unit
-            } rooftop area, but ${formatNum(roofNeeded)} ${
-              results.roof_area_unit
+            `You provided ${roofAvailable} ${results.roof_area_unit
+            } rooftop area, but ${formatNum(roofNeeded)} ${results.roof_area_unit
             } is required for the system.`
           );
         }
@@ -297,10 +297,8 @@ export default function RightAds({ results }) {
           );
           addNote(
             "warning",
-            `You provided ${roofAvailable} ${
-              results.roof_area_unit
-            } rooftop area, but ${formatNum(roofNeeded)} ${
-              results.roof_area_unit
+            `You provided ${roofAvailable} ${results.roof_area_unit
+            } rooftop area, but ${formatNum(roofNeeded)} ${results.roof_area_unit
             } is required for the system.`
           );
         }
