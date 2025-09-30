@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { Download, ChevronRight } from "lucide-react"; // removed User, Phone (unused)
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
 import "react-time-picker/dist/TimePicker.css";
 import "react-clock/dist/Clock.css";
@@ -162,6 +163,7 @@ function ContactForm() {
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const { executeRecaptcha } = useGoogleReCaptcha();
 
   // Validation Function
   const validateField = (
@@ -220,6 +222,14 @@ function ContactForm() {
 
     if (Object.values(newErrors).some((err) => err !== "")) return;
 
+    // ✅ get reCAPTCHA token
+    if (!executeRecaptcha) {
+      alert("reCAPTCHA not ready");
+      return;
+    }
+    const token = await executeRecaptcha("join_us_form");
+    console.log("this is the recaptcha token that is to be send to the backend", token)
+
     const payload = {
       name: formData.name,
       phone_number: Number(formData.phone),
@@ -242,7 +252,7 @@ function ContactForm() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ data: payload }), // Strapi needs { data: {...} }
+          body: JSON.stringify({ data: payload, token }), // Strapi needs { data: {...} }
         }
       );
 

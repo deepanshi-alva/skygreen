@@ -164,14 +164,28 @@ export default function CenterOutput({ results }) {
                     d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
                   />
                 </svg>
-                <div className="absolute left-6 top-0 w-64 sm:w-72 bg-black text-gray-300 text-justify text-xs rounded-lg shadow-lg p-2 sm:p-3 border border-green-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+
+                {/* Tooltip */}
+                <div
+                  className="
+      absolute z-20
+      top-full mt-2
+      left-1/2 -translate-x-1/2
+      w-60 sm:w-72
+      bg-black text-gray-300 text-justify text-xs
+      rounded-lg shadow-lg p-2 sm:p-3 border border-green-500
+      opacity-0 group-hover:opacity-100
+      transition-opacity duration-300
+      pointer-events-none
+    "
+                >
                   <span className="text-green-400 font-semibold">Note: </span>
-                  The recommended system size is not set directly by your
-                  proposed capacity. It is calculated by multiplying the number
-                  of panels with their rated wattage (panel_watt_w) to reflect
-                  the actual feasible capacity.
+                  The recommended system size is not set directly by your proposed capacity.
+                  It is calculated by multiplying the number of panels with their rated
+                  wattage (<code>panel_watt_w</code>) to reflect the actual feasible capacity.
                 </div>
               </div>
+
             </div>
           </div>
           <p className="text-lg sm:text-xl md:text-2xl font-bold text-green-400 break-words mt-1 sm:mt-2">
@@ -383,8 +397,8 @@ export default function CenterOutput({ results }) {
             <button
               onClick={() => setMode("solar")}
               className={`px-3 py-1 rounded-md text-xs sm:text-sm font-semibold ${mode === "solar"
-                  ? "bg-green-500 text-black"
-                  : "bg-[#111] text-green-400 border border-green-500"
+                ? "bg-green-500 text-black"
+                : "bg-[#111] text-green-400 border border-green-500"
                 }`}
             >
               With Solar
@@ -394,8 +408,8 @@ export default function CenterOutput({ results }) {
                 <button
                   onClick={() => setMode("grid")}
                   className={`px-3 py-1 rounded-md text-xs sm:text-sm font-semibold ${mode === "grid"
-                      ? "bg-green-500 text-black"
-                      : "bg-[#111] text-green-400 border border-green-500"
+                    ? "bg-green-500 text-black"
+                    : "bg-[#111] text-green-400 border border-green-500"
                     }`}
                 >
                   With Grid
@@ -494,16 +508,29 @@ export default function CenterOutput({ results }) {
                   {/* Info button with tooltip */}
                   <div className="relative group">
                     <Info className="w-4 h-4 text-blue-400 cursor-pointer mb-1" />
-                    <div className="absolute left-6 top-0 w-72 bg-black text-gray-300 text-justify text-xs rounded-lg shadow-lg p-3 border border-green-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
-                      String sizing is calculated based on the panel’s
-                      open-circuit voltage (Voc), inverter’s maximum DC input
-                      voltage (usually 1000 V for residential/commercial and
-                      1500 V for utility-scale), and a{" "}
-                      <span className="font-semibold">20% safety margin</span>
-                      to account for bifacial gain and low-temperature
-                      conditions.
+
+                    <div
+                      className="
+                      absolute z-20
+                      left-1/2 md:left-6
+                      -translate-x-1/2 md:translate-x-0
+                      top-full mt-2
+                      w-64 md:w-72
+                      bg-black text-gray-300 text-justify text-xs
+                      rounded-lg shadow-lg p-3 border border-green-500
+                      opacity-0 group-hover:opacity-100
+                      transition-opacity duration-300
+                      pointer-events-none
+                    "
+                    >
+                      String sizing is calculated based on the panel’s open-circuit voltage (Voc),
+                      inverter’s maximum DC input voltage (usually 1000 V for residential/commercial
+                      and 1500 V for utility-scale), and a{" "}
+                      <span className="font-semibold">20% safety margin</span> to account for
+                      bifacial gain and low-temperature conditions.
                     </div>
                   </div>
+
                 </div>
 
                 {/* ✅ New line with system summary */}
@@ -628,8 +655,8 @@ export default function CenterOutput({ results }) {
                           <tr
                             key={idx}
                             className={`border-t border-white/10 ${bat.recommended
-                                ? "bg-green-900/20"
-                                : "bg-[#1a1a1a]"
+                              ? "bg-green-900/20"
+                              : "bg-[#1a1a1a]"
                               }`}
                           >
                             <td className="px-2 sm:px-3 py-1 sm:py-2 font-semibold text-green-400 whitespace-nowrap">

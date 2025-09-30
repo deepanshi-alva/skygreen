@@ -53,7 +53,13 @@ export default function ManualLoadCalculator({ formData, setFormData }) {
       </p>
 
       {/* ✅ Column Headings */}
-      <div className="grid grid-cols-[2fr_4rem_4rem_3rem_2rem] sm:grid-cols-[1fr_5rem_6rem_4rem_2rem] gap-2 font-semibold text-green-400 text-center text-xs sm:text-sm">
+      <div
+        className="
+          grid 
+          grid-cols-[2fr_1fr_1fr_1fr_0.5fr] 
+          gap-2 font-semibold text-green-400 text-center text-xs sm:text-sm
+        "
+      >
         <div>Appliance</div>
         <div>Input</div>
         <div>Unit</div>
@@ -63,7 +69,11 @@ export default function ManualLoadCalculator({ formData, setFormData }) {
       {items.map((item, idx) => (
         <div
           key={idx}
-          className="grid grid-cols-[2fr_4rem_4rem_3rem_2rem] sm:grid-cols-[1fr_5rem_6rem_4rem_2rem] gap-2 items-center py-1 sm:py-2 text-xs sm:text-sm"
+          className="
+            grid 
+            grid-cols-[2fr_1fr_1fr_1fr_0.5fr] 
+            gap-2 items-center py-1 sm:py-2 text-xs sm:text-sm
+          "
         >
           {/* Appliance Name */}
           <input

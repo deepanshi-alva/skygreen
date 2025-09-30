@@ -19,6 +19,11 @@ export default function Navbar() {
   const pathname = usePathname();
   const closeTimeout = useRef<NodeJS.Timeout | null>(null);
 
+  useEffect(() => {
+  setMobileMenuOpen(false); // close menu on route change
+}, [pathname]);
+
+
   const handleMouseEnter = () => {
     if (closeTimeout.current) clearTimeout(closeTimeout.current);
     setSupportOpen(true);
@@ -235,27 +240,27 @@ export default function Navbar() {
               </button>
 
               {mobileSupportOpen && (
-                <div className="mt-3 w-full bg-white text-black rounded-lg shadow-lg p-4 space-y-3">
+                <div className="mt-3 w-full bg-[#111] text-black rounded-lg shadow-lg p-4 space-y-3">
                   {/* General & Sales */}
                   <div>
                     <p className="font-semibold mb-1 text-green-600">General & Sales</p>
-                    <a href="mailto:contact@skygreenenergies.com" className="block text-blue-600">
-                      contact@skygreenenergies.com
+                    <a href="mailto:contact@skygreenenergies.com" className="block text-white">
+                      contact [at] skygreenenergies [dot] com
                     </a>
                   </div>
 
                   {/* Service & Warranty */}
                   <div>
                     <p className="font-semibold mb-1 text-green-600">Service & Warranty</p>
-                    <a href="mailto:warranty@skygreen.com" className="block text-blue-600">
-                      warranty@skygreen.com
+                    <a href="mailto:warranty@skygreen.com" className="block text-white">
+                      warranty [at] skygreenenergies [dot] com
                     </a>
                   </div>
 
                   {/* Customer Support */}
                   <div>
                     <p className="font-semibold mb-1 text-green-600">Customer Support (India)</p>
-                    <a href="tel:+919891055535" className="block text-blue-600">
+                    <a href="tel:+919891055535" className="block text-white">
                       +91 98112 • 23252
                     </a>
                     <p className="text-sm text-gray-500">Mon – Sat, 10:00 – 18:00 (IST)</p>

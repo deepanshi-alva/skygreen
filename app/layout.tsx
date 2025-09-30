@@ -4,10 +4,10 @@ import "./globals.css";
 import Footer from "@/components/common/footer";
 import Header from "@/components/common/header";
 import WhatsAppWidget from "@/components/WhatsAppWidget";
-import { AuthProvider } from "@/lib/authContext";
 import CookieConsent from "@/components/CookieConsent";
-import GoogleAnalytics from "@/components/common/GoogleAnalytics"; // adjust path
+import GoogleAnalytics from "@/components/common/GoogleAnalytics";
 import GoogleAnalyticsEvents from "@/components/common/GAEvents";
+import { Providers } from "./provider"; // 👈 new
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,27 +26,27 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground `}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
       >
-        <AuthProvider>
+        <Providers>
           <Header />
           {children}
           <GoogleAnalytics />
-          <GoogleAnalyticsEvents/>
-          <CookieConsent/>
+          <GoogleAnalyticsEvents />
+          <CookieConsent />
           <Footer />
           <WhatsAppWidget
             message="Hi SKYGREEN, I'm interested in your imported TOPCon panels (575W). Please contact me."
             bottom={24}
             right={24}
           />
-        </AuthProvider>
+        </Providers>
       </body>
     </html>
   );
