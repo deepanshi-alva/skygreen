@@ -10,8 +10,10 @@ import { mockData } from "@/lib/mockData";
 import CertificateCarousel from "@/components/homepage/certificates";
 import PartOfSkygreen from "@/components/homepage/partOfSkyGreen/PartOfSkygree";
 import WhySkyGreen from "@/components/homepage/whyShop"
+// import { fetchNewsEventsBlogs } from "@/lib/strapiData";
 
-export default function Home() {
+export default async function Home() {
+  // const data = await fetchNewsEventsBlogs();
   return (
     <div>
       <Hero />
