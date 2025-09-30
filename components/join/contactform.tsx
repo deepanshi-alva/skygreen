@@ -4,6 +4,7 @@ import React, { useState, useMemo } from "react";
 import { Download, ChevronRight } from "lucide-react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
 import Select, { GroupBase, StylesConfig } from "react-select";
 import { State, City } from "country-state-city";
@@ -160,6 +161,7 @@ function JoinUsForm() {
     agreeToProcessing: false,
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
+   const { executeRecaptcha } = useGoogleReCaptcha();
 
   const validateField = (field: keyof FormData, value: any): string => {
     switch (field) {
@@ -211,6 +213,14 @@ function JoinUsForm() {
     setErrors(newErrors);
     if (Object.values(newErrors).some((e) => e)) return;
 
+    // ✅ get reCAPTCHA token
+    if (!executeRecaptcha) {
+      alert("reCAPTCHA not ready");
+      return;
+    }
+    const token = await executeRecaptcha("join_us_form");
+    console.log("this is the recaptcha token that is to be send to the backend", token)
+
     // 🔑 Map frontend formData → Strapi schema
     const payload = {
       name: formData.name,
@@ -234,7 +244,7 @@ function JoinUsForm() {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ data: payload }), // Strapi requires { data: {...} }
+          body: JSON.stringify({ data: payload, token }), // Strapi requires { data: {...} }
         }
       );
 
