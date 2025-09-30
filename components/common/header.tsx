@@ -19,6 +19,11 @@ export default function Navbar() {
   const pathname = usePathname();
   const closeTimeout = useRef<NodeJS.Timeout | null>(null);
 
+  useEffect(() => {
+  setMobileMenuOpen(false); // close menu on route change
+}, [pathname]);
+
+
   const handleMouseEnter = () => {
     if (closeTimeout.current) clearTimeout(closeTimeout.current);
     setSupportOpen(true);
@@ -240,7 +245,7 @@ export default function Navbar() {
                   <div>
                     <p className="font-semibold mb-1 text-green-600">General & Sales</p>
                     <a href="mailto:contact@skygreenenergies.com" className="block text-blue-600">
-                      contact@skygreenenergies.com
+                      contact [at] skygreenenergies [dot] com
                     </a>
                   </div>
 
@@ -248,7 +253,7 @@ export default function Navbar() {
                   <div>
                     <p className="font-semibold mb-1 text-green-600">Service & Warranty</p>
                     <a href="mailto:warranty@skygreen.com" className="block text-blue-600">
-                      warranty@skygreen.com
+                      warranty [at] skygreenenergies [dot] com
                     </a>
                   </div>
 

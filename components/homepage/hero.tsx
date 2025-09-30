@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Orbitron } from "next/font/google";
+import Link from "next/link";
 
 const orbitron = Orbitron({
   subsets: ["latin"],
@@ -124,23 +125,28 @@ export default function HeroSection() {
           BIS & TÜV Certified panels, built for India’s toughest climates.
         </p>
 
-        {/* Buttons remain the same */}
+
         <div className="flex items-center justify-center gap-[clamp(0.5rem,1.5vw,1rem)]">
-          <Button className="glowButton" style={{ padding: "25px 20px", background: "black" }}>
-            <span className="z-3">GET A QUOTE</span>
-            <span className="glowEffect" style={{ opacity: "0.8", filter: "blur(35px)" }}></span>
-          </Button>
-          <Button
-            variant="outline"
-            className="rounded-full border border-green-400/30 bg-black/50 backdrop-blur-5xl
+          <Link href="/calculator">
+            <Button className="glowButton" style={{ padding: "25px 20px", background: "black" }}>
+              <span className="z-3">GET A QUOTE</span>
+              <span className="glowEffect" style={{ opacity: "0.8", filter: "blur(35px)" }}></span>
+            </Button>
+          </Link>
+
+          <Link href="/products">
+            <Button
+              variant="outline"
+              className="rounded-full border border-green-400/30 bg-black/50 backdrop-blur-5xl
         text-green-100 font-semibold hover:bg-black/52 hover:text-white
         transform transition-all duration-300 hover:-translate-y-0.5
         hover:shadow-[0_22px_60px_rgba(34,197,94,0.38),0_8px_30px_rgba(34,197,94,0.18)]
         focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-400/60
         text-[clamp(0.95rem,0.8vw+0.7rem,1.1rem)] px-6 py-6"
-          >
-            Explore Products
-          </Button>
+            >
+              Explore Products
+            </Button>
+          </Link>
         </div>
       </div>
 
