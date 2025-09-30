@@ -240,7 +240,7 @@ export default function Navbar() {
               </button>
 
               {mobileSupportOpen && (
-                <div className="mt-3 w-full bg-white text-black rounded-lg shadow-lg p-4 space-y-3">
+                <div className="mt-3 w-full bg-[#111] text-black rounded-lg shadow-lg p-4 space-y-3">
                   {/* General & Sales */}
                   <div>
                     <p className="font-semibold mb-1 text-green-600">General & Sales</p>
