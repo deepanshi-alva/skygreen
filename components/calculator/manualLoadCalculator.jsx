@@ -63,25 +63,14 @@ export default function ManualLoadCalculator({ formData, setFormData }) {
       {items.map((item, idx) => (
         <div
           key={idx}
-          className="
-            grid 
-            grid-cols-[minmax(100px,1.5fr)_3.5rem_3.5rem_2.5rem_2rem]   /* mobile */
-            sm:grid-cols-[minmax(140px,2fr)_5rem_6rem_4rem_2rem]       /* tablet+ */
-            gap-2 items-center 
-            py-1 sm:py-2 
-            text-xs sm:text-sm
-          "
+          className="grid grid-cols-[2fr_4rem_4rem_3rem_2rem] sm:grid-cols-[1fr_5rem_6rem_4rem_2rem] gap-2 items-center py-1 sm:py-2 text-xs sm:text-sm"
         >
           {/* Appliance Name */}
           <input
             type="text"
             value={item.name}
             onChange={(e) => handleChange(idx, "name", e.target.value)}
-            className="
-              px-1.5 py-1 sm:px-2 sm:py-1.5
-              rounded bg-black border border-green-500 text-white w-full
-              min-w-[100px] truncate
-            "
+            className="px-2 py-1 rounded bg-black border border-green-500 text-white w-full"
             placeholder="Appliance"
           />
 
@@ -90,10 +79,7 @@ export default function ManualLoadCalculator({ formData, setFormData }) {
             type="number"
             value={item.value}
             onChange={(e) => handleChange(idx, "value", Number(e.target.value))}
-            className="
-              px-1.5 py-1 sm:px-2 sm:py-1.5
-              rounded bg-black border border-green-500 text-white w-full
-            "
+            className="px-2 py-1 rounded bg-black border border-green-500 text-white w-full"
             placeholder="Value"
           />
 
@@ -101,10 +87,7 @@ export default function ManualLoadCalculator({ formData, setFormData }) {
           <select
             value={item.unit}
             onChange={(e) => handleChange(idx, "unit", e.target.value)}
-            className="
-              px-1.5 py-1 sm:px-2 sm:py-1.5
-              rounded bg-black border border-green-500 text-white w-full
-            "
+            className="px-2 py-1 rounded bg-black border border-green-500 text-white w-full"
           >
             <option value="W">W</option>
             <option value="kW">kW</option>
@@ -120,10 +103,7 @@ export default function ManualLoadCalculator({ formData, setFormData }) {
             type="number"
             value={item.qty}
             onChange={(e) => handleChange(idx, "qty", Number(e.target.value))}
-            className="
-              px-1.5 py-1 sm:px-2 sm:py-1.5
-              rounded bg-black border border-green-500 text-white w-full
-            "
+            className="px-2 py-1 rounded bg-black border border-green-500 text-white w-full"
             placeholder="Qty"
           />
 
@@ -137,8 +117,6 @@ export default function ManualLoadCalculator({ formData, setFormData }) {
             ✕
           </button>
         </div>
-
-
       ))}
 
       {/* Add row button */}
@@ -146,10 +124,11 @@ export default function ManualLoadCalculator({ formData, setFormData }) {
         type="button"
         onClick={addRow}
         disabled={items.length >= 10}
-        className={`px-3 py-1 rounded text-xs sm:text-sm transition ${items.length >= 10
-          ? "bg-gray-700 text-gray-400 cursor-not-allowed flex items-center gap-2"
-          : "bg-green-600 text-black hover:bg-green-500"
-          }`}
+        className={`px-3 py-1 rounded text-xs sm:text-sm transition ${
+          items.length >= 10
+            ? "bg-gray-700 text-gray-400 cursor-not-allowed flex items-center gap-2"
+            : "bg-green-600 text-black hover:bg-green-500"
+        }`}
       >
         {items.length >= 10 ? (
           <>
