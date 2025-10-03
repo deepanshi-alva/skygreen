@@ -149,11 +149,22 @@ export default function Footer() {
 
             {/* Coming Soon */}
             <div>
-              <h4 className="font-semibold text-green-400 mb-3">Coming Soon</h4>
-              <ul className="space-y-2 text-gray-400 italic">
-                <li>News</li>
-                <li>Blogs</li>
-                <li>Events</li>
+              <h4 className="font-semibold text-green-400 mb-3">Explore</h4>
+              <ul className="space-y-2 text-gray-300">
+                {[
+                  ["News", "/updates"],
+                  ["Blogs", "/updates"],
+                  ["Events", "/updates"],
+                ].map(([name, link]) => (
+                  <li key={name}>
+                    <Link
+                      href={link}
+                      className="hover:text-green-400 transition-all duration-200"
+                    >
+                      {name}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
