@@ -14,24 +14,21 @@ type Props = {
 
 export default function WhatsAppWidget({
   phone = process.env.NEXT_PUBLIC_WAPP_PHONE || "919811223252",
-  message = "Hi SKYGREEN, I’m interested in your solar panels. Please help me with details.",
+  message = "Hi SKYGREEN, I’m interested in your 575W N-Type TOPCon solar panels. Could you please share more details?",
   showOn,
   bottom = 20,
   right = 20,
 }: Props) {
   const pathname = usePathname() ?? "";
 
-  // Mobile detection and href/state are computed only on the client
   const [isMobile, setIsMobile] = useState(false);
   const [waHref, setWaHref] = useState<string>("#");
 
-  // Compute whether widget is enabled for current pathname
   const enabled = useMemo(() => {
     if (!showOn || showOn.length === 0) return true;
     return showOn.some((p) => pathname.startsWith(p));
   }, [pathname, showOn]);
 
-  // determine mobile UA on mount (client-side only)
   useEffect(() => {
     try {
       const ua =
@@ -46,20 +43,13 @@ export default function WhatsAppWidget({
     }
   }, []);
 
-  // build the whatsapp href after mount (so document/window are available)
   useEffect(() => {
-    if (typeof window === "undefined" || typeof document === "undefined") {
-      // still keep a safe fallback
+    if (typeof window === "undefined") {
       setWaHref("#");
       return;
     }
 
-    const pageTitle = document.title || "SKYGREEN";
-    const pageUrl = window.location.href || "";
-    const payload = `${message}\n\nPage: ${pageTitle}\nURL: ${pageUrl}`.trim();
-    const encoded = encodeURIComponent(payload);
-
-    // sanitize phone: remove leading plus if provided
+    const encoded = encodeURIComponent(message);
     const sanitizedPhone = phone?.replace(/^\+/, "") ?? "";
 
     const href = isMobile
@@ -67,7 +57,7 @@ export default function WhatsAppWidget({
       : `https://wa.me/${sanitizedPhone}?text=${encoded}`;
 
     setWaHref(href);
-  }, [phone, message, isMobile, pathname]);
+  }, [phone, message, isMobile]);
 
   if (!enabled) return null;
 
