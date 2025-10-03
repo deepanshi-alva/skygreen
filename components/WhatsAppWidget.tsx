@@ -14,7 +14,7 @@ type Props = {
 
 export default function WhatsAppWidget({
   phone = process.env.NEXT_PUBLIC_WAPP_PHONE || "919811223252",
-  message = "Hi SKYGREEN, I’m interested in your 575W N-Type TOPCon solar panels. Could you please share more details?",
+  message = "Hi SKYGREEN, I'm interested in your 575W N-Type TOPCon solar panels. Could you please share more details?",
   showOn,
   bottom = 20,
   right = 20,
@@ -52,9 +52,8 @@ export default function WhatsAppWidget({
     const encoded = encodeURIComponent(message);
     const sanitizedPhone = phone?.replace(/^\+/, "") ?? "";
 
-    const href = isMobile
-      ? `whatsapp://send?phone=${sanitizedPhone}&text=${encoded}`
-      : `https://wa.me/${sanitizedPhone}?text=${encoded}`;
+    // ✅ always use wa.me instead of whatsapp://send
+    const href = `https://wa.me/${sanitizedPhone}?text=${encoded}`;
 
     setWaHref(href);
   }, [phone, message, isMobile]);
