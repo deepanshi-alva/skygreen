@@ -5,6 +5,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 /**
  * @typedef {Object} Item
@@ -122,21 +123,19 @@ export default function NewsEventsBlogs({
               const isActive = active === key;
               return (
                 <button
-  key={key}
-  onClick={() => setActive(key)}
-  className={`group relative overflow-hidden rounded-2xl border transition-all duration-700 ease-in-out px-4 py-3 text-left flex-1
-    ${
-      isActive
-        ? "border-green-400/70 bg-green-500/8"
-        : "border-white/10 bg-[radial-gradient(circle_at_top_left,_rgba(0,100,81,.5),_rgba(0,128,0,0))] hover:bg-[radial-gradient(circle_at_top_left,_rgba(0,120,81,.2),_rgba(0,128,0,0.05))]"
-    }`}
-  aria-pressed={isActive}
->
+                  key={key}
+                  onClick={() => setActive(key)}
+                  className={`group relative overflow-hidden rounded-2xl border transition-all duration-700 ease-in-out px-4 py-3 text-left flex-1
+    ${isActive
+                      ? "border-green-400/70 bg-green-500/8"
+                      : "border-white/10 bg-[radial-gradient(circle_at_top_left,_rgba(0,100,81,.5),_rgba(0,128,0,0))] hover:bg-[radial-gradient(circle_at_top_left,_rgba(0,120,81,.2),_rgba(0,128,0,0.05))]"
+                    }`}
+                  aria-pressed={isActive}
+                >
                   <div className="flex items-center justify-between">
                     <span
-                      className={`text-base md:text-lg font-semibold ${
-                        isActive ? "text-green-400" : "text-white"
-                      }`}
+                      className={`text-base md:text-lg font-semibold ${isActive ? "text-green-400" : "text-white"
+                        }`}
                     >
                       {label}
                     </span>
@@ -219,11 +218,10 @@ export default function NewsEventsBlogs({
                 <AnimatePresence initial={false} mode="wait">
                   <motion.div
                     key={current?.id ?? `idx-${safeIndex}`}
-                    className={`${
-                      current?.image
+                    className={`${current?.image
                         ? "grid md:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]"
                         : "flex"
-                    } relative md:absolute inset-0`}
+                      } relative md:absolute inset-0`}
                     initial={{ opacity: 0, x: 40 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -40 }}
@@ -261,11 +259,10 @@ export default function NewsEventsBlogs({
 
                     {/* Text — full width when no image */}
                     <div
-                      className={`p-6 flex flex-col text-left ${
-                        current?.image
+                      className={`p-6 flex flex-col text-left ${current?.image
                           ? "justify-between md:p-10"
                           : "justify-center w-full md:p-16"
-                      }`}
+                        }`}
                     >
                       {/* Badges row (shown here if no image) */}
                       {!current?.image && (
@@ -290,11 +287,10 @@ export default function NewsEventsBlogs({
 
                       <div>
                         <h3
-                          className={`font-bold leading-tight text-left ${
-                            current?.image
+                          className={`font-bold leading-tight text-left ${current?.image
                               ? "text-2xl md:text-3xl"
                               : "text-3xl md:text-5xl"
-                          }`}
+                            }`}
                         >
                           {current?.title}
                         </h3>
@@ -317,21 +313,14 @@ export default function NewsEventsBlogs({
                         )}
                         {current?.href && (
                           <div className="mt-4">
-                            <a
-                              href={current.href}
-                              target="_blank"
-                              rel="noopener noreferrer"
+                            <Link
+                              href="/updates" // ✅ always go to Updates page
                               className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-medium text-white hover:bg-white/20 transition"
-                              aria-label={`Read more about: ${
-                                current?.title ?? "item"
-                              }`}
+                              aria-label={`Read more about: ${current?.title ?? "item"}`}
                             >
                               Read more
-                              <ChevronRight
-                                className="h-4 w-4"
-                                aria-hidden="true"
-                              />
-                            </a>
+                              <ChevronRight className="h-4 w-4" aria-hidden="true" />
+                            </Link>
                           </div>
                         )}
                       </div>
