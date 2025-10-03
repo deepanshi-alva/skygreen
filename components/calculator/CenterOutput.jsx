@@ -9,6 +9,55 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { Info } from "lucide-react"; // 👈 info icon
+import { toPng } from "html-to-image";
+import { jsPDF } from "jspdf";
+
+async function generatePDF() {
+  const element = document.getElementById("report-section");
+  const imgData = await toPng(element, { cacheBust: true, backgroundColor: "#0b0b0b" });
+
+  const pdf = new jsPDF("p", "mm", "a4");
+  pdf.addImage(imgData, "PNG", 10, 40, 190, 0);
+  return pdf.output("blob");
+}
+
+async function uploadReport(pdfBlob) {
+  // Step 1: Upload file to Strapi
+  const formData = new FormData();
+  formData.append("files", pdfBlob, "report.pdf");
+
+  const uploadRes = await fetch(
+    `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/upload`,
+    {
+      method: "POST",
+      // headers: {
+      //   // Authorization: `Bearer ${process.env.NEXT_PUBLIC_STRAPI_TOKEN}`, // keep auth
+      // },
+      body: formData,
+    }
+  );
+
+  const uploadedFiles = await uploadRes.json();
+  if (!uploadedFiles || !uploadedFiles[0]) {
+    throw new Error("File upload failed");
+  }
+
+  // Step 2: Create report entry with expiry + token
+  // const createRes = await fetch(
+  //   `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/create-report`,
+  //   {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Authorization: `Bearer ${process.env.NEXT_PUBLIC_STRAPI_TOKEN}`,
+  //     },
+  //     body: JSON.stringify({ pdf_file: uploadedFiles[0].id }),
+  //   }
+  // );
+
+  // const report = await createRes.json();
+  return uploadedFiles; // should be { report_token: "RPT-XXXXX" }
+}
 
 export default function CenterOutput({ results }) {
   const [mode, setMode] = useState("solar");
@@ -81,7 +130,7 @@ export default function CenterOutput({ results }) {
   ];
 
   return (
-    <div className="col-span-7 p-6">
+    <div id="report-section" className="col-span-7 p-6 ">
       {/* Top Intro Box */}
       <div className="w-full flex justify-center mb-6">
         <div
@@ -121,8 +170,7 @@ export default function CenterOutput({ results }) {
           </a>
 
           {/* WhatsApp Button */}
-          {/* WhatsApp Button (Disabled for now) */}
-          <a
+          {/* <a
             href="#"
             title="Coming Soon"
             className="flex-1 sm:flex-none px-4 sm:px-6 py-2 rounded-lg 
@@ -132,7 +180,24 @@ export default function CenterOutput({ results }) {
             onClick={(e) => e.preventDefault()} // prevent navigation
           >
             📲 WhatsApp My Report
-          </a>
+          </a> */}
+          <button
+            onClick={async () => {
+              const pdfBlob = await generatePDF();
+              const { report_token } = await uploadReport(pdfBlob);
+
+              // ✅ Redirect to WhatsApp with unique token
+              const waUrl = `https://wa.me/91XXXXXXXXXX?text=Hey%20I%20want%20to%20download%20my%20solar%20report.%20My%20code%20is%20${report_token}`;
+              window.location.href = waUrl;
+            }}
+            className="flex-1 sm:flex-none px-4 sm:px-6 py-2 rounded-lg 
+   bg-[#25D366] text-black text-sm sm:text-base font-bold 
+   shadow-md hover:bg-green-400 hover:scale-105 
+   transition transform text-center whitespace-nowrap"
+          >
+            📲 WhatsApp My Report
+          </button>
+
         </div>
       </div>
 
