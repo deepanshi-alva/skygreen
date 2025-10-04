@@ -14,7 +14,7 @@ type Props = {
 
 export default function WhatsAppWidget({
   phone = process.env.NEXT_PUBLIC_WAPP_PHONE || "919811223252",
-  message = "Hi SKYGREEN, I'm interested in your 575W N-Type TOPCon solar panels. Could you please share more details?",
+  message = "Hi SKYGREEN Team, I want details about the new 575W N-Type TOPCon Panels availability.",
   showOn,
   bottom = 20,
   right = 20,
