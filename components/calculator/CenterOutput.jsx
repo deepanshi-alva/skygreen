@@ -9,6 +9,55 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { Info } from "lucide-react"; // 👈 info icon
+import { toPng } from "html-to-image";
+import { jsPDF } from "jspdf";
+
+// async function generatePDF() {
+//   const element = document.getElementById("report-section");
+//   const imgData = await toPng(element, { cacheBust: true, backgroundColor: "#0b0b0b" });
+
+//   const pdf = new jsPDF("p", "mm", "a4");
+//   pdf.addImage(imgData, "PNG", 10, 40, 190, 0);
+//   return pdf.output("blob");
+// }
+
+// async function uploadReport(pdfBlob) {
+//   // Step 1: Upload file to Strapi
+//   const formData = new FormData();
+//   formData.append("files", pdfBlob, "report.pdf");
+
+//   const uploadRes = await fetch(
+//     `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/upload`,
+//     {
+//       method: "POST",
+//       // headers: {
+//       //   // Authorization: `Bearer ${process.env.NEXT_PUBLIC_STRAPI_TOKEN}`, // keep auth
+//       // },
+//       body: formData,
+//     }
+//   );
+
+//   const uploadedFiles = await uploadRes.json();
+//   if (!uploadedFiles || !uploadedFiles[0]) {
+//     throw new Error("File upload failed");
+//   }
+
+//   // Step 2: Create report entry with expiry + token
+//   // const createRes = await fetch(
+//   //   `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/create-report`,
+//   //   {
+//   //     method: "POST",
+//   //     headers: {
+//   //       "Content-Type": "application/json",
+//   //       Authorization: `Bearer ${process.env.NEXT_PUBLIC_STRAPI_TOKEN}`,
+//   //     },
+//   //     body: JSON.stringify({ pdf_file: uploadedFiles[0].id }),
+//   //   }
+//   // );
+
+//   // const report = await createRes.json();
+//   return uploadedFiles; // should be { report_token: "RPT-XXXXX" }
+// }
 
 export default function CenterOutput({ results }) {
   const [mode, setMode] = useState("solar");
@@ -81,7 +130,7 @@ export default function CenterOutput({ results }) {
   ];
 
   return (
-    <div className="col-span-7 p-6">
+    <div id="report-section" className="col-span-7 p-6 ">
       {/* Top Intro Box */}
       <div className="w-full flex justify-center mb-6">
         <div
@@ -121,7 +170,6 @@ export default function CenterOutput({ results }) {
           </a>
 
           {/* WhatsApp Button */}
-          {/* WhatsApp Button (Disabled for now) */}
           <a
             href="#"
             title="Coming Soon"
@@ -133,6 +181,22 @@ export default function CenterOutput({ results }) {
           >
             📲 WhatsApp My Report
           </a>
+          {/* <button
+            onClick={async () => {
+              const pdfBlob = await generatePDF();
+              const { report_token } = await uploadReport(pdfBlob);
+
+              // ✅ Redirect to WhatsApp with unique token
+              const waUrl = `https://wa.me/91XXXXXXXXXX?text=Hey%20I%20want%20to%20download%20my%20solar%20report.%20My%20code%20is%20${report_token}`;
+              window.location.href = waUrl;
+            }}
+            className="flex-1 sm:flex-none px-4 sm:px-6 py-2 rounded-lg 
+   bg-[#25D366] text-black text-sm sm:text-base font-bold 
+   shadow-md hover:bg-green-400 hover:scale-105 
+   transition transform text-center whitespace-nowrap"
+          >
+            📲 WhatsApp My Report
+          </button> */}
         </div>
       </div>
 
@@ -180,12 +244,12 @@ export default function CenterOutput({ results }) {
     "
                 >
                   <span className="text-green-400 font-semibold">Note: </span>
-                  The recommended system size is not set directly by your proposed capacity.
-                  It is calculated by multiplying the number of panels with their rated
-                  wattage (<code>panel_watt_w</code>) to reflect the actual feasible capacity.
+                  The recommended system size is not set directly by your
+                  proposed capacity. It is calculated by multiplying the number
+                  of panels with their rated wattage (<code>panel_watt_w</code>)
+                  to reflect the actual feasible capacity.
                 </div>
               </div>
-
             </div>
           </div>
           <p className="text-lg sm:text-xl md:text-2xl font-bold text-green-400 break-words mt-1 sm:mt-2">
@@ -297,15 +361,15 @@ export default function CenterOutput({ results }) {
         <div className="grid grid-cols-2 lg:grid-cols-1 gap-3 sm:gap-4">
           {(results?.sizing_method === "bill" ||
             results?.sizing_method === "units") && (
-              <div className="bg-[#1a1a1a] p-3 sm:p-4 rounded-lg border border-white/10 shadow-md">
-                <p className="text-xs sm:text-sm text-gray-400">
-                  With grid daily consumption
-                </p>
-                <p className="text-base sm:text-lg md:text-xl font-bold text-green-400">
-                  {format(results.daily_unit)}
-                </p>
-              </div>
-            )}
+            <div className="bg-[#1a1a1a] p-3 sm:p-4 rounded-lg border border-white/10 shadow-md">
+              <p className="text-xs sm:text-sm text-gray-400">
+                With grid daily consumption
+              </p>
+              <p className="text-base sm:text-lg md:text-xl font-bold text-green-400">
+                {format(results.daily_unit)}
+              </p>
+            </div>
+          )}
           <div className="bg-[#1a1a1a] p-3 sm:p-4 rounded-lg border border-white/10">
             <p className="text-xs sm:text-sm text-gray-400">
               Solar Units Produced
@@ -396,25 +460,27 @@ export default function CenterOutput({ results }) {
           <div className="flex flex-wrap gap-2 mt-4">
             <button
               onClick={() => setMode("solar")}
-              className={`px-3 py-1 rounded-md text-xs sm:text-sm font-semibold ${mode === "solar"
-                ? "bg-green-500 text-black"
-                : "bg-[#111] text-green-400 border border-green-500"
-                }`}
+              className={`px-3 py-1 rounded-md text-xs sm:text-sm font-semibold ${
+                mode === "solar"
+                  ? "bg-green-500 text-black"
+                  : "bg-[#111] text-green-400 border border-green-500"
+              }`}
             >
               With Solar
             </button>
             {(results?.sizing_method === "bill" ||
               results?.sizing_method === "units") && (
-                <button
-                  onClick={() => setMode("grid")}
-                  className={`px-3 py-1 rounded-md text-xs sm:text-sm font-semibold ${mode === "grid"
+              <button
+                onClick={() => setMode("grid")}
+                className={`px-3 py-1 rounded-md text-xs sm:text-sm font-semibold ${
+                  mode === "grid"
                     ? "bg-green-500 text-black"
                     : "bg-[#111] text-green-400 border border-green-500"
-                    }`}
-                >
-                  With Grid
-                </button>
-              )}
+                }`}
+              >
+                With Grid
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -523,14 +589,15 @@ export default function CenterOutput({ results }) {
                       pointer-events-none
                     "
                     >
-                      String sizing is calculated based on the panel’s open-circuit voltage (Voc),
-                      inverter’s maximum DC input voltage (usually 1000 V for residential/commercial
-                      and 1500 V for utility-scale), and a{" "}
-                      <span className="font-semibold">20% safety margin</span> to account for
-                      bifacial gain and low-temperature conditions.
+                      String sizing is calculated based on the panel’s
+                      open-circuit voltage (Voc), inverter’s maximum DC input
+                      voltage (usually 1000 V for residential/commercial and
+                      1500 V for utility-scale), and a{" "}
+                      <span className="font-semibold">20% safety margin</span>{" "}
+                      to account for bifacial gain and low-temperature
+                      conditions.
                     </div>
                   </div>
-
                 </div>
 
                 {/* ✅ New line with system summary */}
@@ -654,10 +721,11 @@ export default function CenterOutput({ results }) {
                         .map((bat, idx) => (
                           <tr
                             key={idx}
-                            className={`border-t border-white/10 ${bat.recommended
-                              ? "bg-green-900/20"
-                              : "bg-[#1a1a1a]"
-                              }`}
+                            className={`border-t border-white/10 ${
+                              bat.recommended
+                                ? "bg-green-900/20"
+                                : "bg-[#1a1a1a]"
+                            }`}
                           >
                             <td className="px-2 sm:px-3 py-1 sm:py-2 font-semibold text-green-400 whitespace-nowrap">
                               {bat.type}
@@ -714,14 +782,14 @@ export default function CenterOutput({ results }) {
                   level === 1
                     ? "h1"
                     : level === 2
-                      ? "h2"
-                      : level === 3
-                        ? "h3"
-                        : level === 4
-                          ? "h4"
-                          : level === 5
-                            ? "h5"
-                            : "h6";
+                    ? "h2"
+                    : level === 3
+                    ? "h3"
+                    : level === 4
+                    ? "h4"
+                    : level === 5
+                    ? "h5"
+                    : "h6";
 
                 const headingStyles = {
                   h1: "text-2xl font-bold text-green-400 mt-4",
@@ -739,8 +807,9 @@ export default function CenterOutput({ results }) {
                       return (
                         <span
                           key={cIdx}
-                          className={`${child.bold ? "font-bold" : ""} ${child.underline ? "underline" : ""
-                            }`}
+                          className={`${child.bold ? "font-bold" : ""} ${
+                            child.underline ? "underline" : ""
+                          }`}
                         >
                           {text}
                         </span>
@@ -778,8 +847,9 @@ export default function CenterOutput({ results }) {
                       return (
                         <span
                           key={cIdx}
-                          className={`${child.bold ? "font-bold" : ""} ${child.underline ? "underline" : ""
-                            } whitespace-pre-wrap`} // ✅ Keep indentation visible
+                          className={`${child.bold ? "font-bold" : ""} ${
+                            child.underline ? "underline" : ""
+                          } whitespace-pre-wrap`} // ✅ Keep indentation visible
                         >
                           {text}
                         </span>
@@ -802,8 +872,9 @@ export default function CenterOutput({ results }) {
                         {li.children.map((child, cIdx) => (
                           <span
                             key={cIdx}
-                            className={`${child.bold ? "font-bold" : ""} ${child.underline ? "underline" : ""
-                              }`}
+                            className={`${child.bold ? "font-bold" : ""} ${
+                              child.underline ? "underline" : ""
+                            }`}
                           >
                             {child.text}
                           </span>

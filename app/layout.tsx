@@ -21,7 +21,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Sky Green",
-  description: "Created by Deepanshi Singhal for more details contact at deepanshisinghal1523@gmail.com",
+  description:
+    "Created by Deepanshi Singhal for more details contact at deepanshisinghal1523@gmail.com",
 };
 
 export default function RootLayout({
@@ -42,7 +43,7 @@ export default function RootLayout({
           <CookieConsent />
           <Footer />
           <WhatsAppWidget
-            message="Hi SKYGREEN, I'm interested in your imported TOPCon panels (575W). Please contact me."
+            message="Hi SKYGREEN Team, I want details about the new 575W N-Type TOPCon Panels availability."
             bottom={24}
             right={24}
           />
