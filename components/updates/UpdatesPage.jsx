@@ -135,7 +135,7 @@ export default function UpdatesPage({ data }) {
 
           {/* NEWS */}
           <section id="news">
-            <h2 className="text-3xl font-bold text-green-400 mb-6">Latest News</h2>
+            <h2 className="text-3xl font-bold text-green-400 mb-6">News</h2>
             <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
               {applyFilters(data.news).map((n) => (
                 <article

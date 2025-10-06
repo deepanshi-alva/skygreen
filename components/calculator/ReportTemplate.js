@@ -11,41 +11,34 @@ async function loadLogoBase64(url) {
         reader.readAsDataURL(blob);
     });
 }
-
 function cleanText(value) {
-  if (value === null || value === undefined) return "";
+    if (value === null || value === undefined) return "";
 
-  // --- Convert everything to string ---
-  let str = String(value).trim();
+    let str = String(value)
+        .normalize("NFKC") // normalize to plain ASCII form
+        .replace(/[^\x00-\x7F]/g, "") // strip all non-ASCII
+        .replace(/\s+/g, " ") // normalize whitespace
+        .trim();
 
-  // --- Detect and preserve units/symbols like ₹, kW, sqft, %, years ---
-  const prefixMatch = str.match(/^[^\d\-]+/); // things before the number (₹ etc.)
-  const suffixMatch = str.match(/[^\d\.]+$/); // things after number (kW, sqft etc.)
-  const prefix = prefixMatch ? prefixMatch[0].trim() : "";
-  const suffix = suffixMatch ? suffixMatch[0].trim() : "";
+    // Extract currency/unit parts
+    const prefixMatch = str.match(/^[^\d\-]+/);
+    const suffixMatch = str.match(/[^\d\.]+$/);
+    const prefix = prefixMatch ? prefixMatch[0].trim() : "";
+    const suffix = suffixMatch ? suffixMatch[0].trim() : "";
+    const numMatch = str.match(/-?\d+(\.\d+)?/);
+    const num = numMatch ? parseFloat(numMatch[0]) : NaN;
 
-  // --- Extract numeric part ---
-  const numMatch = str.match(/-?\d+(\.\d+)?/);
-  const num = numMatch ? parseFloat(numMatch[0]) : NaN;
+    if (!isNaN(num) && isFinite(num)) {
+        const rounded = Number.isInteger(num)
+            ? num.toLocaleString("en-IN")
+            : num.toLocaleString("en-IN", {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 2,
+            });
+        return `${prefix}${rounded}${suffix ? " " + suffix : ""}`.trim();
+    }
 
-  if (!isNaN(num) && isFinite(num)) {
-    // Round floats to 2 decimals, format with commas for readability
-    const rounded = Number.isInteger(num)
-      ? num.toLocaleString("en-IN")
-      : num.toLocaleString("en-IN", {
-          minimumFractionDigits: 0,
-          maximumFractionDigits: 2,
-        });
-
-    return `${prefix}${rounded}${suffix ? " " + suffix : ""}`.trim();
-  }
-
-  // --- Fallback: just clean hidden unicode if not numeric ---
-  return str
-    .replace(/[^\x20-\x7E]/g, "")
-    .replace(/\u00B9/g, "")
-    .replace(/\u202F/g, " ")
-    .trim();
+    return str;
 }
 
 /* ---------- main generator ---------- */
@@ -63,8 +56,8 @@ export async function generateReportTemplate(results, userInputs = {}) {
     pdf.rect(0, 0, 210, 25, "F");
     pdf.setTextColor(255, 255, 255);
     pdf.setFont("helvetica", "bold");
-    pdf.setFontSize(16);
-    pdf.text("SKYGREEN SOLAR SAVINGS REPORT", 110, 17, { align: "center" });
+    pdf.setFontSize(20);
+    pdf.text("SKYGREEN ENERGIES SOLAR SAVINGS REPORT", 110, 17, { align: "center" });
 
     /* ===== CUSTOMER / INPUT SUMMARY ===== */
     pdf.setTextColor(...dark);
@@ -81,6 +74,14 @@ export async function generateReportTemplate(results, userInputs = {}) {
         // ["Connected Load (kW)", userInputs.load || "—"],
         // ["Roof Type", userInputs.roofType || "—"],
     ];
+    // force-clean all cell text before drawing
+    const originalDrawCell = autoTable.applyStyles;
+    autoTable.applyStyles = function (data) {
+        if (data && data.cell && typeof data.cell.text === "string") {
+            data.cell.text = data.cell.text.replace(/[^\x20-\x7E]/g, "");
+        }
+        return originalDrawCell ? originalDrawCell.apply(this, arguments) : null;
+    };
     autoTable(pdf, {
         startY: 40,
         body: inputsData,
@@ -200,25 +201,67 @@ export async function generateReportTemplate(results, userInputs = {}) {
         });
     }
 
-    /* ===== DISCLAIMERS ===== */
-    if (Array.isArray(results.disclaimer) && results.disclaimer.length) {
-        pdf.addPage();
-        pdf.setFont("helvetica", "bold");
-        pdf.setFontSize(13);
-        pdf.text("Disclaimers & Guidelines", 14, 20);
-        pdf.setFont("helvetica", "normal");
-        pdf.setFontSize(10);
-        pdf.setTextColor(70);
+    // /* ===== DISCLAIMERS ===== */
+    // if (Array.isArray(results.disclaimer) && results.disclaimer.length) {
+    //     // Start just after last table — no extra blank page unless needed
+    //     let yPos = pdf.lastAutoTable ? pdf.lastAutoTable.finalY + 8 : 20;
+    //     if (yPos > 250) { pdf.addPage(); yPos = 20; }
 
-        let yPos = 28;
-        results.disclaimer.forEach((block) => {
-            const text = block.children.map((c) => c.text).join(" ");
-            const lines = pdf.splitTextToSize(text, 180);
-            pdf.text(lines, 15, yPos);
-            yPos += lines.length * 5;
-            if (yPos > 270) { pdf.addPage(); yPos = 20; }
-        });
-    }
+    //     pdf.setFont("helvetica", "bold");
+    //     pdf.setFontSize(13);
+    //     pdf.setTextColor(0, 0, 0);
+    //     pdf.text("Disclaimers & Guidelines", 14, yPos);
+
+    //     yPos += 6;
+    //     pdf.setFont("helvetica", "normal");
+    //     pdf.setFontSize(10);
+    //     pdf.setTextColor(60);
+
+    //     const paragraphs = cleanDisclaimerBlocks(results.disclaimer);
+    //     for (const para of paragraphs) {
+    //         const lines = pdf.splitTextToSize(para, 180);
+    //         pdf.text(lines, 15, yPos);
+    //         yPos += lines.length * 5.2;
+    //         if (yPos > 270) {
+    //             pdf.addPage();
+    //             yPos = 20;
+    //         }
+    //     }
+    // }
+
+    /* ===== FINAL BRAND PAGE ===== */
+
+    // Title
+    pdf.setFont("helvetica", "bold");
+    pdf.setFontSize(26);
+    pdf.setTextColor(34, 197, 94);
+    pdf.text("Powered by SKYGREEN Energies", 105, 130, { align: "center" });
+
+    // Tagline / Mission Statement
+    pdf.setFont("helvetica", "italic");
+    pdf.setFontSize(15);
+    pdf.setTextColor(40);
+    pdf.text(
+        "We don't believe in promises — we believe in concrete results.",
+        105,
+        145,
+        { align: "center" }
+    );
+    pdf.text(
+        "Every panel we deliver stands for performance, trust and truth.",
+        105,
+        155,
+        { align: "center" }
+    );
+
+    // Small closing credit
+    pdf.setFont("helvetica", "normal");
+    pdf.setFontSize(11);
+    pdf.setTextColor(80);
+    pdf.text("Together, we light up a sustainable India.", 105, 215, {
+        align: "center",
+    });
+
 
     /* ===== FOOTER ===== */
     const pageCount = pdf.getNumberOfPages();
