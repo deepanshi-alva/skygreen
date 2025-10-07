@@ -16,6 +16,7 @@ import NewsEventsBlogsSkeleton from "@/components/homepage/newsEventsBlogsSkelet
 
 export default async function Home() {
   const dataPromise = fetchNewsEventsBlogs();
+  console.log("this is the homepage data", dataPromise);
   return (
     <div>
       <Hero />
