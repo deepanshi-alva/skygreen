@@ -152,9 +152,9 @@ export default function Footer() {
               <h4 className="font-semibold text-green-400 mb-3">Explore</h4>
               <ul className="space-y-2 text-gray-300">
                 {[
-                  ["News", "/updates"],
-                  ["Blogs", "/updates"],
-                  ["Events", "/updates"],
+                  ["News", "/updates#news"],
+                  ["Blogs", "/updates#blogs"],
+                  ["Events", "/updates#events"],
                 ].map(([name, link]) => (
                   <li key={name}>
                     <Link

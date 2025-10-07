@@ -314,7 +314,7 @@ export default function NewsEventsBlogs({
                         {current?.href && (
                           <div className="mt-4">
                             <Link
-                              href="/updates" // ✅ always go to Updates page
+                              href={`/updates#${active}`}// ✅ always go to Updates page
                               className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-medium text-white hover:bg-white/20 transition"
                               aria-label={`Read more about: ${current?.title ?? "item"}`}
                             >
