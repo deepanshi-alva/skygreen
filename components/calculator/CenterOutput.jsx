@@ -12,31 +12,38 @@ import { Info } from "lucide-react"; // 👈 info icon
 import { toPng } from "html-to-image";
 import { jsPDF } from "jspdf";
 import { generateReportTemplate } from "./ReportTemplate";
+import ReportDownloadModal from "./ReportDownloadModal";
 
-async function generatePDF(results, userInput) {
-  const pdf = await generateReportTemplate(results, userInput);
-  return pdf.output("blob");
-}
+// async function generatePDF(results, userInput) {
+//   const pdf = await generateReportTemplate(results, userInput);
+//   return pdf.output("blob");
+// }
 
-async function uploadReport(pdfBlob) {
-  const formData = new FormData();
-  formData.append("files", pdfBlob, "report.pdf");
+// function generateReportToken() {
+//   const random = Math.random().toString(36).substring(2, 6).toUpperCase();
+//   const time = Date.now().toString(36).slice(-4).toUpperCase();
+//   return `RPT-${random}${time}`;
+// }
 
-  const uploadRes = await fetch(
-    `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/upload`,
-    {
-      method: "POST",
-      body: formData,
-    }
-  );
+// async function uploadReport(pdfBlob) {
+//   const formData = new FormData();
+//   formData.append("files", pdfBlob, "report.pdf");
 
-  const uploadedFiles = await uploadRes.json();
-  if (!uploadedFiles || !uploadedFiles[0]) {
-    throw new Error("File upload failed");
-  }
+//   const uploadRes = await fetch(
+//     `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/upload`,
+//     {
+//       method: "POST",
+//       body: formData,
+//     }
+//   );
 
-  return uploadedFiles; // returns [ { id, url, name } ]
-}
+//   const uploadedFiles = await uploadRes.json();
+//   if (!uploadedFiles || !uploadedFiles[0]) {
+//     throw new Error("File upload failed");
+//   }
+
+//   return uploadedFiles; // returns [ { id, url, name } ]
+// }
 
 export default function CenterOutput({ results }) {
   const [mode, setMode] = useState("solar");
@@ -145,11 +152,12 @@ export default function CenterOutput({ results }) {
             href="/contact"
             className="flex-1 sm:flex-none px-4 sm:px-6 py-2 rounded-lg bg-green-500 text-black text-sm sm:text-base font-bold shadow-md hover:bg-green-400 hover:scale-105 transition transform text-center whitespace-nowrap"
           >
-            💬 Got Questions? Call Us Now!
+            📞 Talk to Expert
           </a>
+          <ReportDownloadModal results={results} />
 
           {/* WhatsApp Button */}
-          <a
+          {/* <a
             href="#"
             title="Coming Soon"
             className="flex-1 sm:flex-none px-4 sm:px-6 py-2 rounded-lg 
@@ -159,24 +167,39 @@ export default function CenterOutput({ results }) {
             onClick={(e) => e.preventDefault()} // prevent navigation
           >
             📲 WhatsApp My Report
-          </a>
+          </a> */}
           {/* <button
             onClick={async () => {
-              const pdfBlob = await generatePDF(results, {
-                state: results?.state || "Unknown",
-              });
+              const pdfBlob = await generatePDF(results, { state: results?.state || "Unknown" });
               const uploaded = await uploadReport(pdfBlob);
-              const waUrl = `https://wa.me/91XXXXXXXXXX?text=Hey%20I%20want%20to%20download%20my%20solar%20report.%20Here%20is%20my%20report%20link:%20${process.env.NEXT_PUBLIC_STRAPI_URL}${uploaded[0].url}`;
-              window.location.href = waUrl;
+              // const token = generateReportToken();
+
+              // Create Strapi report entry
+              await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/reports`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  data: {
+                    report_token: token,
+                    state: results.state,
+                    pdf_file: uploaded[0].id,
+                    status: "pending",
+                  },
+                }),
+              });
+              const msg = encodeURIComponent(
+                `Hi SKYGREEN! I want my solar report.\nMy Report ID is ${token}.`
+              );
+              window.open(`https://wa.me/9667796078?text=${msg}`, "_blank");
+
             }}
             className="flex-1 sm:flex-none px-4 sm:px-6 py-2 rounded-lg 
             bg-[#25D366] text-black text-sm sm:text-base font-bold 
             shadow-md hover:bg-green-400 hover:scale-105 
             transition transform text-center whitespace-nowrap"
           >
-            📲 WhatsApp My Report
+            📲 Download My Report
           </button> */}
-
         </div>
       </div>
 
@@ -212,16 +235,16 @@ export default function CenterOutput({ results }) {
                 {/* Tooltip */}
                 <div
                   className="
-      absolute z-20
-      top-full mt-2
-      left-1/2 -translate-x-1/2
-      w-60 sm:w-72
-      bg-black text-gray-300 text-justify text-xs
-      rounded-lg shadow-lg p-2 sm:p-3 border border-green-500
-      opacity-0 group-hover:opacity-100
-      transition-opacity duration-300
-      pointer-events-none
-    "
+                  absolute z-20
+                  top-full mt-2
+                  left-1/2 -translate-x-1/2
+                  w-60 sm:w-72
+                  bg-black text-gray-300 text-justify text-xs
+                  rounded-lg shadow-lg p-2 sm:p-3 border border-green-500
+                  opacity-0 group-hover:opacity-100
+                  transition-opacity duration-300
+                  pointer-events-none
+                "
                 >
                   <span className="text-green-400 font-semibold">Note: </span>
                   The recommended system size is not set directly by your
