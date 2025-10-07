@@ -59,6 +59,12 @@ export async function generateReportTemplate(results, userInputs = {}) {
     pdf.setFontSize(20);
     pdf.text("SKYGREEN ENERGIES SOLAR SAVINGS REPORT", 110, 17, { align: "center" });
 
+   // ---- Report ID (below header, above first section) ----
+pdf.setFont("helvetica", "normal");
+pdf.setFontSize(11);
+pdf.setTextColor(90, 90, 90);
+pdf.text(`Report ID: ${userInputs.report_token}`, 14, 4);
+
     /* ===== CUSTOMER / INPUT SUMMARY ===== */
     pdf.setTextColor(...dark);
     pdf.setFont("helvetica", "bold");
