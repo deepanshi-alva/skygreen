@@ -2,18 +2,19 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { fetchBlogById } from "@/lib/strapiData";
 
-type Props = {
+// ✅ Explicitly define params type for Next.js App Router
+interface PageProps {
   params: { slug: string };
-};
+}
 
-// ✅ Extract ID from slug (e.g. "42-solar-batteries-guide" → 42)
+// Extract numeric ID from slug
 function extractId(slug: string) {
   const idPart = slug.split("-")[0];
   return parseInt(idPart, 10);
 }
 
-// ✅ SEO metadata
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+// ✅ SEO metadata generation
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const id = extractId(params.slug);
   const blog = await fetchBlogById(id);
   if (!blog) return { title: "Blog | SKYGREEN" };
@@ -45,12 +46,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function BlogPage({ params }: Props) {
+// ✅ Main blog page component
+export default async function BlogPage({ params }: PageProps) {
   const id = extractId(params.slug);
   const blog = await fetchBlogById(id);
   if (!blog) notFound();
 
-  // ✅ Safe image handling
   const imageSrc = blog.image
     ? blog.image.startsWith("http")
       ? blog.image
@@ -86,16 +87,15 @@ export default async function BlogPage({ params }: Props) {
             </span>
           )}
           {blog.tag && <> • {blog.tag}</>}
-          {/* {blog.id && <> • ID: {blog.id}</>} */}
         </div>
 
-        {/* ✅ Blog Meta (source / credit / author line) */}
+        {/* ✅ Source / Meta */}
         {blog.meta && (
           <p className="text-sm text-white/60 mb-5">Source: {blog.meta}</p>
         )}
 
         {/* ✅ Blog Content */}
-        {(blog.excerpt) ? (
+        {blog.excerpt ? (
           <div
             className="prose prose-invert prose-green max-w-none"
             dangerouslySetInnerHTML={{
