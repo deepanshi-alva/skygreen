@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import Select from "react-select";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
+import Link from "next/link";
+import slugify from "slugify";
 
 export default function UpdatesPage({ data }) {
   const [active, setActive] = useState("news");
@@ -177,9 +179,9 @@ export default function UpdatesPage({ data }) {
                 >
                   {n.image && <img src={n.image} alt={n.title} className="w-full h-44 object-cover" />}
                   <div className="p-5">
-                    <span className="text-xs uppercase tracking-wide text-green-400">{n.tag}</span>
                     <h3 className="text-lg font-semibold text-white mt-1 line-clamp-2">{n.title}</h3>
                     <p className="text-sm text-white/70 mt-2 line-clamp-3">{n.excerpt}</p>
+                    {/* <span className="text-xs uppercase tracking-wide text-green-400">{n.tag}</span> */}
                     {n.meta && <p className="text-xs text-white/50 mt-2">{n.meta}</p>}
                     <button
                       onClick={() => setSelectedItem(n)}
@@ -204,9 +206,9 @@ export default function UpdatesPage({ data }) {
                 >
                   {e.image && <img src={e.image} alt={e.title} className="w-full h-44 object-cover" />}
                   <div className="p-5">
-                    <span className="text-xs uppercase tracking-wide text-green-400">{e.tag}</span>
                     <h3 className="text-lg font-semibold text-white mt-1 line-clamp-2">{e.title}</h3>
                     <p className="text-sm text-white/70 mt-2 line-clamp-3">{e.excerpt}</p>
+                    {/* <span className="text-xs uppercase tracking-wide text-green-400">{e.tag}</span> */}
                     {e.meta && <p className="text-xs text-white/50 mt-2">{e.meta}</p>}
                     <button
                       onClick={() => setSelectedItem(e)}
@@ -234,16 +236,23 @@ export default function UpdatesPage({ data }) {
                   >
                     {b.image && <img src={b.image} alt={b.title} className="w-full h-44 object-cover" />}
                     <div className="p-5">
-                      <span className="text-xs uppercase tracking-wide text-green-400">{b.tag}</span>
                       <h3 className="text-lg font-semibold text-white mt-1 line-clamp-2">{b.title}</h3>
                       <p className="text-sm text-white/70 mt-2 line-clamp-3">{b.excerpt}</p>
+                      {/* <span className="text-xs uppercase tracking-wide text-green-400">{b.tag}</span> */}
                       {b.meta && <p className="text-xs text-white/50 mt-2">{b.meta}</p>}
-                      <button
+                      {/* <button
                         onClick={() => setSelectedItem(b)}
                         className="mt-3 inline-block text-green-400 text-sm hover:underline"
                       >
                         Read More →
-                      </button>
+                      </button> */}
+                      <Link
+                        href={`/updates/blogs/${b.id}-${slugify(b.title || "", { lower: true, strict: true })}`}
+                        className="mt-3 inline-block text-green-400 text-sm hover:underline"
+                      >
+                        Read More →
+                      </Link>
+
                     </div>
                   </article>
                 ))}
@@ -254,96 +263,96 @@ export default function UpdatesPage({ data }) {
       </div>
 
       {/* ✅ POPUP MODAL */}
-<AnimatePresence>
-  {selectedItem && (
-    <motion.div
-      className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      onClick={(e) => {
-        // Close when clicking outside popup
-        if (e.target === e.currentTarget) setSelectedItem(null);
-      }}
-    >
-      <motion.div
-        className="relative bg-black rounded-2xl border border-white/10 w-full max-w-2xl max-h-[90vh] overflow-hidden shadow-lg"
-        initial={{ scale: 0.9, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        exit={{ scale: 0.9, opacity: 0 }}
-        transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-      >
-        {/* ✅ Visible Close Button - inside border, not clipped */}
-        <button
-          onClick={() => setSelectedItem(null)}
-          className="absolute top-3 right-3 z-50 bg-black/70 p-1.5 rounded-full border border-white/30 text-white hover:text-green-400 hover:border-green-400 transition transform hover:scale-110 shadow-[0_0_8px_rgba(0,0,0,0.5)]"
-          aria-label="Close popup"
-        >
-          <X className="w-5 h-5" />
-        </button>
-
-        {/* ✅ Scrollable Inner Content */}
-        <div className="overflow-y-auto max-h-[90vh] p-6">
-          {selectedItem.image && (
-            <img
-              src={selectedItem.image}
-              alt={selectedItem.title}
-              className="w-full h-56 object-cover rounded-lg mb-4"
-            />
-          )}
-
-          <h2 className="text-2xl font-bold text-green-400 mb-2">
-            {selectedItem.title}
-          </h2>
-
-          {selectedItem.tag && (
-            <p className="text-sm text-white/60 uppercase mb-1">
-              {selectedItem.tag}
-            </p>
-          )}
-
-          {selectedItem.date && (
-            <p className="text-xs text-white/50 mb-2">
-              {new Date(selectedItem.date).toLocaleDateString('en-IN', {
-                day: '2-digit',
-                month: 'short',
-                year: 'numeric',
-              })}
-            </p>
-          )}
-
-          {selectedItem.meta && (
-            <p className="text-sm text-white/60 mb-3">{selectedItem.meta}</p>
-          )}
-
-          {selectedItem.excerpt && (
-            <p className="text-white/80 mb-4 leading-relaxed">
-              {selectedItem.excerpt}
-            </p>
-          )}
-
-          {selectedItem.description && (
-            <p className="text-white/80 mb-4 leading-relaxed">
-              {selectedItem.description}
-            </p>
-          )}
-
-          {/* ✅ Only show button if link exists */}
-          {selectedItem.href?.trim() && (
-            <a
-              href={selectedItem.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center px-4 py-2 bg-green-500/20 border border-green-400/40 rounded-full text-green-400 hover:bg-green-500/30 transition"
+      <AnimatePresence>
+        {selectedItem && (
+          <motion.div
+            className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={(e) => {
+              // Close when clicking outside popup
+              if (e.target === e.currentTarget) setSelectedItem(null);
+            }}
+          >
+            <motion.div
+              className="relative bg-black rounded-2xl border border-white/10 w-full max-w-2xl max-h-[90vh] overflow-hidden shadow-lg"
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
             >
-              Visit Source Website ↗
-            </a>
-          )}
-        </div>
-      </motion.div>
-    </motion.div>
-  )}
-</AnimatePresence>
+              {/* ✅ Visible Close Button - inside border, not clipped */}
+              <button
+                onClick={() => setSelectedItem(null)}
+                className="absolute top-3 right-3 z-50 bg-black/70 p-1.5 rounded-full border border-white/30 text-white hover:text-green-400 hover:border-green-400 transition transform hover:scale-110 shadow-[0_0_8px_rgba(0,0,0,0.5)]"
+                aria-label="Close popup"
+              >
+                <X className="w-5 h-5" />
+              </button>
+
+              {/* ✅ Scrollable Inner Content */}
+              <div className="overflow-y-auto max-h-[90vh] p-6">
+                {selectedItem.image && (
+                  <img
+                    src={selectedItem.image}
+                    alt={selectedItem.title}
+                    className="w-full h-56 object-cover rounded-lg mb-4"
+                  />
+                )}
+
+                <h2 className="text-2xl font-bold text-green-400 mb-2">
+                  {selectedItem.title}
+                </h2>
+
+                {selectedItem.tag && (
+                  <p className="text-sm text-white/60 uppercase mb-1">
+                    {selectedItem.tag}
+                  </p>
+                )}
+
+                {selectedItem.date && (
+                  <p className="text-xs text-white/50 mb-2">
+                    {new Date(selectedItem.date).toLocaleDateString('en-IN', {
+                      day: '2-digit',
+                      month: 'short',
+                      year: 'numeric',
+                    })}
+                  </p>
+                )}
+
+                {selectedItem.meta && (
+                  <p className="text-sm text-white/60 mb-3">{selectedItem.meta}</p>
+                )}
+
+                {selectedItem.excerpt && (
+                  <p className="text-white/80 mb-4 leading-relaxed">
+                    {selectedItem.excerpt}
+                  </p>
+                )}
+
+                {selectedItem.description && (
+                  <p className="text-white/80 mb-4 leading-relaxed">
+                    {selectedItem.description}
+                  </p>
+                )}
+
+                {/* ✅ Only show button if link exists */}
+                {selectedItem.href?.trim() && (
+                  <a
+                    href={selectedItem.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center px-4 py-2 bg-green-500/20 border border-green-400/40 rounded-full text-green-400 hover:bg-green-500/30 transition"
+                  >
+                    Visit Source Website ↗
+                  </a>
+                )}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
     </div>
   );

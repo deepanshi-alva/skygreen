@@ -139,9 +139,9 @@ export default function NewsEventsBlogs({
                     >
                       {label}
                     </span>
-                    <span className="text-xs text-white/60">
+                    {/* <span className="text-xs text-white/60">
                       {data?.[key]?.length ?? 0}
-                    </span>
+                    </span> */}
                   </div>
                   <div className="mt-1 text-[11px] md:text-xs text-white/60">
                     {key === "events" && "Conferences, expos, launches"}
@@ -219,8 +219,8 @@ export default function NewsEventsBlogs({
                   <motion.div
                     key={current?.id ?? `idx-${safeIndex}`}
                     className={`${current?.image
-                        ? "grid md:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]"
-                        : "flex"
+                      ? "grid md:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]"
+                      : "flex"
                       } relative md:absolute inset-0`}
                     initial={{ opacity: 0, x: 40 }}
                     animate={{ opacity: 1, x: 0 }}
@@ -260,8 +260,8 @@ export default function NewsEventsBlogs({
                     {/* Text — full width when no image */}
                     <div
                       className={`p-6 flex flex-col text-left ${current?.image
-                          ? "justify-between md:p-10"
-                          : "justify-center w-full md:p-16"
+                        ? "justify-between md:p-10"
+                        : "justify-center w-full md:p-16"
                         }`}
                     >
                       {/* Badges row (shown here if no image) */}
@@ -288,8 +288,8 @@ export default function NewsEventsBlogs({
                       <div>
                         <h3
                           className={`font-bold leading-tight text-left ${current?.image
-                              ? "text-2xl md:text-3xl"
-                              : "text-3xl md:text-5xl"
+                            ? "text-2xl md:text-3xl"
+                            : "text-3xl md:text-5xl"
                             }`}
                         >
                           {current?.title}
@@ -299,7 +299,7 @@ export default function NewsEventsBlogs({
                             {current.meta}
                           </p>
                         )}
-                        {current?.excerpt && (
+                        {/* {current?.excerpt && (
                           <p
                             className="mt-4 text-white/80 leading-relaxed text-justify"
                             style={{
@@ -310,7 +310,25 @@ export default function NewsEventsBlogs({
                           >
                             {current.excerpt}
                           </p>
+                        )} */}
+                        {current?.excerpt && (
+                          <p
+                            className="mt-4 text-white/80 leading-relaxed text-justify line-clamp-4"
+                            style={{
+                              hyphens: "auto",
+                              WebkitHyphens: "auto",
+                              MozHyphens: "auto",
+                              display: "-webkit-box",
+                              WebkitBoxOrient: "vertical",
+                              overflow: "hidden",
+                              WebkitLineClamp: 5, // 👈 limits to 4 lines, truncates with …
+                              textOverflow: "ellipsis",
+                            }}
+                          >
+                            {current.excerpt}
+                          </p>
                         )}
+
                         {current?.href && (
                           <div className="mt-4">
                             <Link

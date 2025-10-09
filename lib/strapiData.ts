@@ -82,3 +82,28 @@ export async function fetchNewsEventsBlogs(): Promise<Data> {
     return { news: [], events: [], blogs: [] };
   }
 }
+
+export async function fetchBlogById(id: number) {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/events/${id}?populate=*`,
+    );
+    const json = await res.json();
+    if (!json.data) return null;
+    const b = json.data.attributes;
+    console.log("these are the attributes", b)
+    return {
+      id: json.data.id,
+      title: b.title,
+      excerpt: b.description,
+      image: b.image?.data?.attributes?.url,
+      tag: b.tag,
+      date: b.publishedAt,
+      metaDescription: b.metaDescription,
+      meta: b.meta,
+    };
+  } catch (e) {
+    console.error("Error fetching blog:", e);
+    return null;
+  }
+}
