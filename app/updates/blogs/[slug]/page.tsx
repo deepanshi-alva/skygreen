@@ -2,30 +2,22 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { fetchBlogById } from "@/lib/strapiData";
 
-// ✅ Define a generic Next.js page prop type (params can be awaited)
-export type PageProps = {
-  params: Promise<{ slug: string }> | { slug: string };
-};
-
-// Extract numeric ID from slug
 function extractId(slug: string) {
   const idPart = slug.split("-")[0];
   return parseInt(idPart, 10);
 }
 
-// ✅ Metadata (safe for both synchronous & Promise params)
-export async function generateMetadata(
-  { params }: Awaited<PageProps>
-): Promise<Metadata> {
+// ✅ No custom PageProps type — let Next handle it
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function generateMetadata({ params }: any): Promise<Metadata> {
   const resolved = await params;
   const id = extractId(resolved.slug);
   const blog = await fetchBlogById(id);
   if (!blog) return { title: "Blog | SKYGREEN" };
 
-  const fullImage =
-    blog.image?.startsWith("http")
-      ? blog.image
-      : `${process.env.NEXT_PUBLIC_STRAPI_URL}${blog.image}`;
+  const fullImage = blog.image?.startsWith("http")
+    ? blog.image
+    : `${process.env.NEXT_PUBLIC_STRAPI_URL}${blog.image}`;
 
   return {
     title: `${blog.title} | SKYGREEN`,
@@ -49,8 +41,8 @@ export async function generateMetadata(
   };
 }
 
-// ✅ Page component
-export default async function BlogPage({ params }: Awaited<PageProps>) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default async function BlogPage({ params }: any) {
   const resolved = await params;
   const id = extractId(resolved.slug);
   const blog = await fetchBlogById(id);
@@ -93,9 +85,7 @@ export default async function BlogPage({ params }: Awaited<PageProps>) {
         {blog.excerpt ? (
           <div
             className="prose prose-invert prose-green max-w-none"
-            dangerouslySetInnerHTML={{
-              __html: String(blog.excerpt),
-            }}
+            dangerouslySetInnerHTML={{ __html: String(blog.excerpt) }}
           />
         ) : (
           <p className="text-white/70 leading-relaxed">
