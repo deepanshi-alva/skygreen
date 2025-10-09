@@ -94,47 +94,62 @@
 import type { Metadata } from "next";
 import SolarDashboardClient from "@/components/calculator/SolarDshboardClient";
 
+const currentYear = new Date().getFullYear();
+
 /* ✅ Server-side Metadata */
 export const metadata: Metadata = {
   title:
-    "Solar Savings Calculator India | Estimate Solar ROI, Subsidy & Payback | SKYGREEN",
+    `Solar Calculator India ${currentYear} | Free ROI, Payback & Subsidy Estimator | SKYGREEN`,
   description:
-    "Instantly calculate how much you can save with solar in India. Get your personalized report including plant size, subsidy eligibility, ROI, and lifetime savings — powered by SKYGREEN’s smart solar calculator.",
+    `Use SKYGREEN's free Solar Calculator to estimate solar plant size, subsidy, ROI, and payback period in seconds. Updated for ${currentYear}, works for all Indian states and DISCOMs.`,
   keywords: [
-    "solar calculator",
-    "solar savings calculator",
-    "solar ROI India",
-    "solar subsidy calculator",
-    "solar panel payback",
-    "solar plant size calculator",
-    "SKYGREEN calculator",
+    "solar calculator India",
+    "solar savings calculator India",
+    "solar ROI calculator",
+    "solar payback calculator",
+    "solar subsidy calculator India",
+    "solar energy savings estimator",
+    "solar rooftop calculator India",
+    "solar panel cost calculator",
+    "solar plant sizing tool",
+    "statewise solar calculator India",
+    "residential solar calculator",
+    "industrial solar calculator",
+    "solar subsidy eligibility India",
+    "solar system ROI analysis",
+    "solar investment calculator",
+    "SKYGREEN solar calculator",
+    "calculate solar savings online",
+    "solar return on investment India",
+    "solar power payback tool",
+    "free solar calculator 2025"
   ],
   openGraph: {
     type: "website",
-    url: "https://skygreen.in/calculator",
+    url: "https://www.skygreenenergies.com/calculator",
     title:
-      "Solar Savings Calculator India | Estimate Solar ROI & Payback | SKYGREEN",
+      `Solar Calculator India ${currentYear} | Free ROI, Payback & Subsidy Estimator | SKYGREEN`,
     description:
-      "Get accurate solar ROI, subsidy, and savings estimation instantly with SKYGREEN’s India-specific solar calculator.",
-    siteName: "SKYGREEN",
+      `Use SKYGREEN's free Solar Calculator to estimate solar plant size, subsidy, ROI, and payback period in seconds. Updated for ${currentYear}, works for all Indian states and DISCOMs.`,
+    siteName: "SKYGREEN ENERGIES",
     images: [
       {
-        url: "https://skygreen.in/og-calculator.jpg",
+        url: "https://www.skygreenenergies.com/og-calculator.jpg",
         width: 1200,
         height: 630,
-        alt: "SKYGREEN Solar Calculator – Estimate Your Solar Savings",
+        alt: "SKYGREEN Solar Calculator - Estimate Your Solar Savings",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Solar Calculator India | Estimate ROI, Payback, Subsidy – SKYGREEN",
+    title: "Solar Calculator India | Estimate ROI, Payback, Subsidy - SKYGREEN",
     description:
-      "Calculate your solar savings in seconds with SKYGREEN’s smart calculator built for Indian states and DISCOMs.",
-    images: ["https://skygreen.in/og-calculator.jpg"],
+      "Calculate your solar savings in seconds with SKYGREEN's smart calculator built for Indian states and DISCOMs.",
+    images: ["https://www.skygreenenergies.com/og-calculator.jpg"],
   },
   alternates: {
-    canonical: "https://skygreen.in/calculator",
+    canonical: "https://www.skygreenenergies.com/calculator",
   },
 };
 
