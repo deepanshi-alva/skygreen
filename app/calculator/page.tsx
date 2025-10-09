@@ -101,7 +101,7 @@ export const metadata: Metadata = {
   title:
     `Solar Calculator India ${currentYear} | Free ROI, Payback & Subsidy Estimator | SKYGREEN`,
   description:
-    `Use SKYGREEN's free Solar Calculator to estimate solar plant size, subsidy, ROI, and payback period in seconds. Updated for ${currentYear}, works for all Indian states and DISCOMs.`,
+    `Use SKYGREEN's free Solar Calculator to estimate solar plant size, subsidy, ROI, and payback period in seconds. Updated for ${currentYear}, works for all Indian states and DISCOMs. Created by Deepanshi Singhal for more details contact at deepanshisinghal1523@gmail.com`,
   keywords: [
     "solar calculator India",
     "solar savings calculator India",
