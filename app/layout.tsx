@@ -29,7 +29,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "SKYGREEN - Best Solar Panels in India | 575W N-Type TOPCon | High Efficiency & BIS Certified",
   description:
-    "Discover SKYGREEN's next-gen 575W N-Type TOPCon bifacial solar panels — engineered for Indian climates with superior efficiency, durability, and BIS certification. Perfect for homes, industries, and EPC projects. Created by Deepanshi Singhal for more details contact at deepanshisinghal1523@gmail.com",
+    "Discover SKYGREEN's next-gen 575W N-Type TOPCon bifacial solar panels — engineered for Indian climates with superior efficiency, durability, and BIS certification. Perfect for homes, industries, and EPC projects.",
   keywords: [
     "solar panels",
     "solar panel installation",
