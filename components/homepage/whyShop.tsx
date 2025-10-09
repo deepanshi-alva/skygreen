@@ -50,7 +50,7 @@ function App() {
             }}
           >
             Why Shop on{" "}
-            <span className="text-[#acfe53]">Sky Green</span>
+            <span className="text-[#acfe53]">SkyGreen</span>
           </span>
         </h2>
 

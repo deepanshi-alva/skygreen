@@ -45,7 +45,7 @@ export const metadata: Metadata = {
       "SKYGREEN - Premium N-Type TOPCon Solar Panels | 575W | BIS Certified",
     description:
       "High-performance 575W N-Type TOPCon bifacial solar panels for India. Superior reliability, durability, and ROI — trusted by EPCs and distributors.",
-    siteName: "SKYGREE ENERGIES",
+    siteName: "SKYGREEN ENERGIES",
     images: [
       {
         url: "https://skygreenenergies.com/og-image.jpg", // ✅ replace with your actual hero image URL
@@ -101,7 +101,7 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "Organization",
-              name: "SKYGREEN",
+              name: "SKYGREEN ENERGIES",
               url: "https://skygreenenergies.com",
               logo: "https://skygreenenergies.com/logo.png",
               sameAs: [
@@ -109,7 +109,7 @@ export default function RootLayout({
                 "https://www.linkedin.com/company/skygreen",
               ],
               description:
-                "SKYGREEN offers premium imported N-Type TOPCon solar panels in India with 575W output, bifacial efficiency, and BIS certification.",
+                "SKYGREEN ENERGIES offers premium imported N-Type TOPCon solar panels in India with 575W output, bifacial efficiency, and BIS certification.",
               contactPoint: {
                 "@type": "ContactPoint",
                 telephone: "+91-9811223252",
