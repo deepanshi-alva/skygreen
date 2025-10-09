@@ -2,10 +2,10 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { fetchBlogById } from "@/lib/strapiData";
 
-// ✅ Explicitly define params type for Next.js App Router
-interface PageProps {
-  params: { slug: string };
-}
+// ✅ Define a generic Next.js page prop type (params can be awaited)
+export type PageProps = {
+  params: Promise<{ slug: string }> | { slug: string };
+};
 
 // Extract numeric ID from slug
 function extractId(slug: string) {
@@ -13,9 +13,12 @@ function extractId(slug: string) {
   return parseInt(idPart, 10);
 }
 
-// ✅ SEO metadata generation
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const id = extractId(params.slug);
+// ✅ Metadata (safe for both synchronous & Promise params)
+export async function generateMetadata(
+  { params }: Awaited<PageProps>
+): Promise<Metadata> {
+  const resolved = await params;
+  const id = extractId(resolved.slug);
   const blog = await fetchBlogById(id);
   if (!blog) return { title: "Blog | SKYGREEN" };
 
@@ -46,9 +49,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-// ✅ Main blog page component
-export default async function BlogPage({ params }: PageProps) {
-  const id = extractId(params.slug);
+// ✅ Page component
+export default async function BlogPage({ params }: Awaited<PageProps>) {
+  const resolved = await params;
+  const id = extractId(resolved.slug);
   const blog = await fetchBlogById(id);
   if (!blog) notFound();
 
@@ -61,7 +65,6 @@ export default async function BlogPage({ params }: PageProps) {
   return (
     <main className="min-h-screen bg-black text-white pt-36 pb-16 px-6 md:px-10">
       <article className="max-w-4xl mx-auto">
-        {/* ✅ Blog image */}
         {imageSrc && (
           <img
             src={imageSrc}
@@ -69,13 +72,9 @@ export default async function BlogPage({ params }: PageProps) {
             className="w-full h-64 md:h-96 object-cover rounded-xl mb-6 shadow-lg"
           />
         )}
-
-        {/* ✅ Blog title */}
         <h1 className="text-3xl md:text-5xl font-bold text-green-400 mb-4">
           {blog.title}
         </h1>
-
-        {/* ✅ Blog Meta Info */}
         <div className="text-sm text-white/60 mb-4">
           {blog.date && (
             <span>
@@ -88,13 +87,9 @@ export default async function BlogPage({ params }: PageProps) {
           )}
           {blog.tag && <> • {blog.tag}</>}
         </div>
-
-        {/* ✅ Source / Meta */}
         {blog.meta && (
           <p className="text-sm text-white/60 mb-5">Source: {blog.meta}</p>
         )}
-
-        {/* ✅ Blog Content */}
         {blog.excerpt ? (
           <div
             className="prose prose-invert prose-green max-w-none"
@@ -107,8 +102,6 @@ export default async function BlogPage({ params }: PageProps) {
             No content available for this article.
           </p>
         )}
-
-        {/* ✅ Back button */}
         <div className="mt-10">
           <a
             href="/updates#blogs"
