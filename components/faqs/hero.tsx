@@ -20,7 +20,7 @@ export default function HeroSection() {
         }}
       >
         {/* background image */}
-        <Image
+        {/* <Image
           width={1000}
           height={1000}
           src="/images/contact/faq.png"
@@ -31,7 +31,24 @@ export default function HeroSection() {
             maskImage:
               'radial-gradient(120% 85% at 50% 10%, black 55%, transparent 100%)',
           }}
+        /> */}
+
+        <Image
+          src="/images/contact/faq.png"
+          alt="FAQ Hero"
+          width={1920}
+          height={1080}
+          priority        // ✅ forces eager loading & prefetch
+          loading="eager" // ✅ disables lazy loading
+          fetchPriority="high" // ✅ browsers load it earlier
+          decoding="sync"      // ✅ don't delay decoding
+          className="absolute inset-0 h-full w-full object-cover"
+          style={{
+            maskImage:
+              'radial-gradient(120% 85% at 50% 10%, black 55%, transparent 100%)',
+          }}
         />
+
 
         {/* content */}
         <div className="absolute bottom-0 left-0 right-0 z-10 max-w-7xl mx-auto px-4 pb-8 md:pb-16">

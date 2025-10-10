@@ -20,7 +20,7 @@ export default function HeroSection() {
         }}
       >
         {/* background image */}
-        <Image
+        {/* <Image
           width={1000}
           height={1000}
           src="/images/contact/join.png"
@@ -28,6 +28,22 @@ export default function HeroSection() {
           className="absolute inset-0 h-full w-full object-cover"
           style={{
             // fades bottom area so the green glow shows through
+            maskImage:
+              'radial-gradient(120% 85% at 50% 10%, black 55%, transparent 100%)',
+          }}
+        /> */}
+
+        <Image
+          src="/images/contact/join.png"
+          alt="JOIN Hero"
+          width={1920}
+          height={1080}
+          priority        // ✅ forces eager loading & prefetch
+          loading="eager" // ✅ disables lazy loading
+          fetchPriority="high" // ✅ browsers load it earlier
+          decoding="sync"      // ✅ don't delay decoding
+          className="absolute inset-0 h-full w-full object-cover"
+          style={{
             maskImage:
               'radial-gradient(120% 85% at 50% 10%, black 55%, transparent 100%)',
           }}
