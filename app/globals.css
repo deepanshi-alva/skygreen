@@ -230,16 +230,3 @@ input[type=number] {
   background: initial !important;
   color: initial !important;
 }
-
-
-
-.image-fade-in {
-  opacity: 0;
-  animation: fadeIn 0.8s ease-in forwards;
-}
-
-@keyframes fadeIn {
-  to {
-    opacity: 1;
-  }
-}
