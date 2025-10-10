@@ -109,6 +109,9 @@ export const metadata: Metadata = {
     "solar warranty and performance ratio",
     "solar calculator India",
     "how to register solar panels with BIS",
+    "SKYGREEN ENERGIES",
+    "SKYGREENENERGIES",
+    "SKYGREEN"
   ],
 
   openGraph: {

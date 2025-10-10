@@ -41,7 +41,16 @@ export const metadata: Metadata = {
     "1500V DC solar module",
     "imported solar panels India",
     "premium solar panels for EPC",
-    "best solar panel brand India"
+    "best solar panel brand India",
+    "SKYGREEN ENERGIES",
+    "SKYGREENENERGIES",
+    "SKYGREEN",
+    "SKYGREEN N-Type TOPCon solar panel",
+    "SKYGREEN ENERGIES N-Type TOPCon solar panel",
+    "SKYGREENENERGIES N-Type TOPCon solar panel",
+    "SKYGREEN TOPCon panel",
+    "SKYGREEN panel",
+    "SKYGREEN solar panel",
   ],
   openGraph: {
     type: "website",
