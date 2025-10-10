@@ -13,13 +13,13 @@
 // app/contact/page.tsx
 import type { Metadata } from "next";
 import Hero from "@/components/contact/hero";
-import Form from "@/components/contact/contactform";
+import Form from "@/components/contact/contacctform";
 
 /* ---------- SEO Metadata ---------- */
 export const metadata: Metadata = {
   title: "Contact SKYGREEN ENERGIES | Talk to Our Solar Experts | Request a Callback",
   description:
-    "Contact SKYGREEN ENERGIES for solar panel inquiries, dealership partnerships, or customer support. Call, message, or fill out our form to connect with India’s premium solar experts today.",
+    "Contact SKYGREEN ENERGIES for solar panel inquiries, dealership partnerships, or customer support. Call, message, or fill out our form to connect with India's premium solar experts today.",
   keywords: [
     "contact SKYGREEN ENERGIES",
     "solar customer service India",
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     title:
       "Contact SKYGREEN ENERGIES | Talk to Our Solar Experts | Request a Callback",
     description:
-      "Reach out to SKYGREEN ENERGIES for any solar product, partnership, or customer support inquiries. We’ll help you find the perfect solar solution.",
+      "Reach out to SKYGREEN ENERGIES for any solar product, partnership, or customer support inquiries. We'll help you find the perfect solar solution.",
     siteName: "SKYGREEN ENERGIES",
     images: [
       {
@@ -97,7 +97,7 @@ export default function ContactPage() {
                   "@type": "ContactPoint",
                   contactType: "customer service",
                   telephone: "+91-9811223252",
-                  email: "support@skygreenenergies.com",
+                  email: "contact@skygreenenergies.com",
                   areaServed: "IN",
                   availableLanguage: ["English", "Hindi"]
                 },
@@ -105,17 +105,17 @@ export default function ContactPage() {
                   "@type": "ContactPoint",
                   contactType: "sales",
                   telephone: "+91-9811223252",
-                  email: "sales@skygreenenergies.com",
+                  email: "contact@skygreenenergies.com",
                   areaServed: "IN",
                   availableLanguage: ["English", "Hindi"]
                 }
               ],
               address: {
                 "@type": "PostalAddress",
-                streetAddress: "Corporate Office, Greater Noida, Uttar Pradesh",
+                streetAddress: " D-247/31, Sector-63, Noida, Uttar Pradesh",
                 addressLocality: "Greater Noida",
                 addressRegion: "UP",
-                postalCode: "201310",
+                postalCode: "201301",
                 addressCountry: "IN"
               }
             }
