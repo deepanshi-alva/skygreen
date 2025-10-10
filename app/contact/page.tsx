@@ -17,45 +17,49 @@ import Form from "@/components/contact/contactform";
 
 /* ---------- SEO Metadata ---------- */
 export const metadata: Metadata = {
-  title: "Contact SKYGREEN | Talk to Our Solar Experts | Request a Callback",
+  title: "Contact SKYGREEN ENERGIES | Talk to Our Solar Experts | Request a Callback",
   description:
-    "Get in touch with SKYGREEN for solar panel inquiries, dealer partnerships, or customer support. Call, message, or fill out the contact form to reach our solar experts today.",
+    "Contact SKYGREEN ENERGIES for solar panel inquiries, dealership partnerships, or customer support. Call, message, or fill out our form to connect with India’s premium solar experts today.",
   keywords: [
-    "contact SKYGREEN",
-    "solar support India",
+    "contact SKYGREEN ENERGIES",
+    "solar customer service India",
     "solar inquiry",
-    "contact solar panel company",
-    "SKYGREEN customer service",
-    "solar dealer inquiry",
+    "solar dealer support",
+    "contact solar company India",
+    "SKYGREEN ENERGIES contact",
     "solar expert consultation",
+    "solar panel customer care",
+    "solar helpline India"
   ],
   openGraph: {
     type: "website",
-    url: "https://skygreen.in/contact",
-    title: "Contact SKYGREEN | Talk to Our Solar Experts | Request a Callback",
+    url: "https://skygreenenergies.com/contact",
+    title:
+      "Contact SKYGREEN ENERGIES | Talk to Our Solar Experts | Request a Callback",
     description:
-      "Reach out to SKYGREEN for any product, partnership, or support inquiries. We're here to help you choose the best solar solution for your needs.",
-    siteName: "SKYGREEN",
+      "Reach out to SKYGREEN ENERGIES for any solar product, partnership, or customer support inquiries. We’ll help you find the perfect solar solution.",
+    siteName: "SKYGREEN ENERGIES",
     images: [
       {
-        url: "https://skygreen.in/og-contact.jpg", // ✅ add in /public
+        url: "https://skygreenenergies.com/og-contact.jpg",
         width: 1200,
         height: 630,
-        alt: "Contact SKYGREEN – Solar Experts in India",
-      },
-    ],
+        alt: "Contact SKYGREEN ENERGIES – Solar Experts in India"
+      }
+    ]
   },
   twitter: {
     card: "summary_large_image",
-    title: "Contact SKYGREEN | India's Premium Solar Brand",
+    title: "Contact SKYGREEN ENERGIES | India's Premium Solar Brand",
     description:
-      "Call or message SKYGREEN for premium solar panels, dealer programs, and support.",
-    images: ["https://skygreen.in/og-contact.jpg"],
+      "Call or message SKYGREEN ENERGIES for solar panels, dealer programs, and customer support across India.",
+    images: ["https://skygreenenergies.com/og-contact.jpg"]
   },
   alternates: {
-    canonical: "https://skygreen.in/contact",
-  },
+    canonical: "https://skygreenenergies.com/contact"
+  }
 };
+
 
 /* ---------- Page Component ---------- */
 export default function ContactPage() {
@@ -71,42 +75,55 @@ export default function ContactPage() {
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "ContactPage",
-            name: "Contact SKYGREEN",
-            url: "https://skygreen.in/contact",
+            "@id": "https://skygreenenergies.com/contact#contact",
+            name: "Contact SKYGREEN ENERGIES",
+            url: "https://skygreenenergies.com/contact",
             description:
-              "Reach SKYGREEN’s team for solar inquiries, partnerships, or support assistance across India.",
+              "Get in touch with SKYGREEN ENERGIES for solar product inquiries, partnerships, or customer support across India.",
             publisher: {
               "@type": "Organization",
-              name: "SKYGREEN",
-              url: "https://skygreen.in",
+              "@id": "https://skygreenenergies.com/#organization",
+              name: "SKYGREEN ENERGIES",
+              url: "https://skygreenenergies.com",
               logo: {
                 "@type": "ImageObject",
-                url: "https://skygreen.in/logo.png",
+                url: "https://skygreenenergies.com/logo.png"
               },
               sameAs: [
                 "https://www.instagram.com/skygreen_solar",
-                "https://www.linkedin.com/company/skygreen",
+                "https://www.linkedin.com/company/skygreen"
               ],
               contactPoint: [
                 {
                   "@type": "ContactPoint",
-                  telephone: "+91-XXXXXXXXXX",
                   contactType: "customer service",
+                  telephone: "+91-9811223252",
+                  email: "support@skygreenenergies.com",
                   areaServed: "IN",
-                  availableLanguage: ["English", "Hindi"],
+                  availableLanguage: ["English", "Hindi"]
                 },
                 {
                   "@type": "ContactPoint",
                   contactType: "sales",
-                  email: "sales@skygreen.in",
+                  telephone: "+91-9811223252",
+                  email: "sales@skygreenenergies.com",
                   areaServed: "IN",
-                  availableLanguage: ["English", "Hindi"],
-                },
+                  availableLanguage: ["English", "Hindi"]
+                }
               ],
-            },
-          }),
+              address: {
+                "@type": "PostalAddress",
+                streetAddress: "Corporate Office, Greater Noida, Uttar Pradesh",
+                addressLocality: "Greater Noida",
+                addressRegion: "UP",
+                postalCode: "201310",
+                addressCountry: "IN"
+              }
+            }
+          })
         }}
       />
+
     </>
   );
 }
