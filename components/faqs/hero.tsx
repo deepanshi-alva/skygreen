@@ -35,20 +35,19 @@ export default function HeroSection() {
 
         <Image
           src="/images/contact/faq.png"
-          alt="FAQ Hero"
+          alt="Contact Hero"
           width={1920}
           height={1080}
-          priority        // ✅ forces eager loading & prefetch
-          loading="eager" // ✅ disables lazy loading
-          fetchPriority="high" // ✅ browsers load it earlier
-          decoding="sync"      // ✅ don't delay decoding
-          className="absolute inset-0 h-full w-full object-cover"
+          priority
+          loading="eager"
+          fetchPriority="high"
+          decoding="sync"
+          className="absolute inset-0 h-full w-full object-cover image-fade-in"
           style={{
             maskImage:
               'radial-gradient(120% 85% at 50% 10%, black 55%, transparent 100%)',
           }}
         />
-
 
         {/* content */}
         <div className="absolute bottom-0 left-0 right-0 z-10 max-w-7xl mx-auto px-4 pb-8 md:pb-16">
