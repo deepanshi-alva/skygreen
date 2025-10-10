@@ -13,50 +13,52 @@ import type { Metadata } from "next";
 import { fetchNewsEventsBlogs } from "@/lib/strapiData";
 import UpdatesPage from "@/components/updates/UpdatesPage";
 
-/* ---------- Static SEO Metadata ---------- */
+/* ---------- SEO Metadata ---------- */
 export const metadata: Metadata = {
-  title:
-    "Solar Industry News, Events & Blogs | India & Global Updates | SKYGREEN",
+  title: "Solar News, Blogs & Events | Latest India & Global Updates | SKYGREEN ENERGIES",
   description:
-    "Stay updated with the latest solar industry news, government policies, events, and technology trends. Read expert blogs and insights powered by SKYGREEN.",
+    "Get the latest solar news, government policies, and technology trends from SKYGREEN ENERGIES. Stay informed with India & global renewable energy updates, blogs, and events.",
   keywords: [
-    "solar news",
+    "solar news India",
     "solar energy updates",
     "renewable energy blogs",
     "solar events India",
-    "solar policy news",
-    "solar technology",
+    "solar policy updates",
+    "solar tenders India",
+    "solar market trends",
+    "solar technology news",
     "SKYGREEN solar blog",
+    "solar industry India",
+    "global solar updates"
   ],
   openGraph: {
     type: "website",
-    url: "https://skygreen.in/updates",
-    title:
-      "Solar Industry News, Events & Blogs | India & Global Updates | SKYGREEN",
+    url: "https://skygreenenergies.com/updates",
+    title: "Solar News, Blogs & Events | India & Global Solar Updates – SKYGREEN ENERGIES",
     description:
-      "Get the latest solar news, events, and expert blogs from SKYGREEN — covering India, global market insights, government notifications, and solar technology trends.",
-    siteName: "SKYGREEN",
+      "Stay updated with SKYGREEN ENERGIES — the latest solar news, events, and blogs from India and worldwide. Covering solar policy, technology, and renewable energy growth.",
+    siteName: "SKYGREEN ENERGIES",
     images: [
       {
-        url: "https://skygreen.in/og-updates.jpg", // ✅ replace with your own OG image
+        url: "https://skygreenenergies.com/og-updates.jpg",
         width: 1200,
         height: 630,
-        alt: "SKYGREEN Solar News and Updates",
-      },
-    ],
+        alt: "SKYGREEN ENERGIES – Solar News and Updates"
+      }
+    ]
   },
   twitter: {
     card: "summary_large_image",
-    title:
-      "Solar News, Events & Blogs | Latest India & Global Updates – SKYGREEN",
+    title: "Solar News, Blogs & Events | India & Global Updates – SKYGREEN ENERGIES",
     description:
-      "Follow SKYGREEN for the latest solar energy news, events, and in-depth blogs about India’s renewable future.",
-    images: ["https://skygreen.in/og-updates.jpg"],
+      "Follow SKYGREEN ENERGIES for the latest solar energy news, policy updates, and technology blogs from India and around the world.",
+    images: ["https://skygreenenergies.com/og-updates.jpg"]
   },
   alternates: {
-    canonical: "https://skygreen.in/updates",
-  },
+    canonical: "https://skygreenenergies.com/updates"
+  }
 };
+
 
 /* ---------- Page Component ---------- */
 export default async function Updates() {
@@ -73,34 +75,54 @@ export default async function Updates() {
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "CollectionPage",
-            name: "SKYGREEN Solar News, Events & Blogs",
-            url: "https://skygreen.in/updates",
+            name: "SKYGREEN ENERGIES - Solar News, Events & Blogs",
+            url: "https://skygreenenergies.com/updates",
             description:
-              "Explore SKYGREEN’s curated collection of solar news, events, and blogs featuring Indian and global renewable energy updates.",
+              "Explore SKYGREEN ENERGIES curated collection of solar news, blogs, and events — covering renewable energy, policy updates, and technology insights from India and across the globe.",
             publisher: {
               "@type": "Organization",
-              name: "SKYGREEN",
+              name: "SKYGREEN ENERGIES",
+              url: "https://skygreenenergies.com",
               logo: {
                 "@type": "ImageObject",
-                url: "https://skygreen.in/logo.png",
+                url: "https://skygreenenergies.com/logo.png"
               },
+              sameAs: [
+                "https://www.instagram.com/skygreen_solar",
+                "https://www.linkedin.com/company/skygreen"
+              ]
             },
             hasPart:
               data?.news?.map((item: any) => ({
                 "@type": "NewsArticle",
                 headline: item.title,
-                datePublished: item.date,
-                url: `https://skygreen.in/updates/${item.slug || ""}`,
-                description: item.description?.slice(0, 160),
+                datePublished: item.date || new Date().toISOString(),
+                dateModified: item.updatedAt || item.date || new Date().toISOString(),
+                url: `https://skygreenenergies.com/updates/${item.slug || ""}`,
+                description:
+                  item.description?.slice(0, 160) ||
+                  "Latest solar energy news, technology insights, and renewable trends from SKYGREEN ENERGIES.",
                 image: item.image?.url
                   ? item.image.url
-                  : "https://skygreen.in/og-updates.jpg",
+                  : "https://skygreenenergies.com/og-updates.jpg",
                 author: {
                   "@type": "Organization",
-                  name: "SKYGREEN",
+                  name: "SKYGREEN ENERGIES"
                 },
-              })) || [],
-          }),
+                publisher: {
+                  "@type": "Organization",
+                  name: "SKYGREEN ENERGIES",
+                  logo: {
+                    "@type": "ImageObject",
+                    url: "https://skygreenenergies.com/logo.png"
+                  }
+                },
+                mainEntityOfPage: {
+                  "@type": "WebPage",
+                  "@id": `https://skygreenenergies.com/updates/${item.slug || ""}`
+                }
+              })) || []
+          })
         }}
       />
     </>

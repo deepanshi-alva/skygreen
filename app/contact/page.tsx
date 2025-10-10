@@ -44,7 +44,7 @@ export const metadata: Metadata = {
         url: "https://skygreenenergies.com/og-contact.jpg",
         width: 1200,
         height: 630,
-        alt: "Contact SKYGREEN ENERGIES – Solar Experts in India"
+        alt: "Contact SKYGREEN ENERGIES - Solar Experts in India"
       }
     ]
   },
@@ -91,7 +91,6 @@ export default function ContactPage() {
               },
               sameAs: [
                 "https://www.instagram.com/skygreen_solar",
-                "https://www.linkedin.com/company/skygreen"
               ],
               contactPoint: [
                 {
