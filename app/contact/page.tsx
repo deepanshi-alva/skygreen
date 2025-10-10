@@ -13,7 +13,7 @@
 // app/contact/page.tsx
 import type { Metadata } from "next";
 import Hero from "@/components/contact/hero";
-import Form from "@/components/contact/contactform";
+import Form from "@/components/contact/contacctform";
 
 /* ---------- SEO Metadata ---------- */
 export const metadata: Metadata = {
