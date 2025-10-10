@@ -42,7 +42,7 @@ export default function HeroSection() {
           loading="eager" // ✅ disables lazy loading
           fetchPriority="high" // ✅ browsers load it earlier
           decoding="sync"      // ✅ don't delay decoding
-          className="absolute inset-0 h-full w-full object-cover"
+          className="absolute inset-0 h-full w-full object-cover image-fade-in"
           style={{
             maskImage:
               'radial-gradient(120% 85% at 50% 10%, black 55%, transparent 100%)',
