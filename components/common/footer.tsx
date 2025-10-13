@@ -4,7 +4,7 @@ import { useRef, useState, useEffect } from "react";
 import { useInView } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { Instagram } from "lucide-react";
+import { Instagram, Linkedin, Youtube } from "lucide-react";
 
 export default function Footer() {
   const ref = useRef(null);
@@ -87,15 +87,41 @@ export default function Footer() {
             <div className="mt-5">
               <p className="text-green-400 font-semibold mb-2">We are social</p>
               <div className="flex justify-center lg:justify-start space-x-6">
+                {/* Instagram */}
                 <Link
                   href="https://www.instagram.com/skygreen_energies/?hl=en"
                   target="_blank"
+                  rel="noopener noreferrer"
                   className="hover:scale-110 hover:text-green-400 transition-transform duration-200"
+                  aria-label="Visit SKYGREEN on Instagram"
                 >
                   <Instagram className="h-5 w-5" />
                 </Link>
+
+                {/* LinkedIn */}
+                <Link
+                  href="https://www.linkedin.com/company/skygreenenergies/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:scale-110 hover:text-green-400 transition-transform duration-200"
+                  aria-label="Visit SKYGREEN on LinkedIn"
+                >
+                  <Linkedin className="h-5 w-5" />
+                </Link>
+
+                {/* YouTube */}
+                <Link
+                  href="https://www.youtube.com/@SkygreenEnergies"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:scale-110 hover:text-green-400 transition-transform duration-200"
+                  aria-label="Visit SKYGREEN on YouTube"
+                >
+                  <Youtube className="h-5 w-5" />
+                </Link>
               </div>
             </div>
+
           </div>
 
           {/* Links Section */}
