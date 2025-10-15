@@ -161,7 +161,7 @@ function JoinUsForm() {
     agreeToProcessing: false,
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
-   const { executeRecaptcha } = useGoogleReCaptcha();
+  const { executeRecaptcha } = useGoogleReCaptcha();
 
   const validateField = (field: keyof FormData, value: any): string => {
     switch (field) {
@@ -226,7 +226,7 @@ function JoinUsForm() {
       name: formData.name,
       phone_number: Number(formData.phone),
       state: formData.state?.label || "",
-  city: formData.city?.label || "",
+      city: formData.city?.label || "",
       gender: formData.gender,
       business_type:
         formData.businessType === "Other"
@@ -249,6 +249,28 @@ function JoinUsForm() {
       );
 
       if (!res.ok) throw new Error("Failed to submit");
+
+      /* -------------------- 2️⃣ Also send to leads -------------------- */
+      const leadPayload = {
+        data: {
+          full_name: formData.name,
+          phone_number: formData.phone,
+          state: formData.state?.label || "Unknown",
+          city: formData.city?.label || "",
+          user_category: "Commercial",
+          customer_type: formData.businessType,
+          lead_source: "join us",
+          inquiry_medium: "organic",
+          submission_time: new Date().toISOString(),
+          problem_objective: `Interested in joining as ${formData.businessType}`,
+        },
+      };
+
+      await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/leads`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(leadPayload),
+      });
 
       alert("✅ Join Us form submitted successfully!");
 
