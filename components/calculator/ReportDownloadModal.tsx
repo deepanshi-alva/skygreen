@@ -89,6 +89,26 @@ export default function ReportDownloadModal({ results }: { results: any }) {
         }),
       });
 
+      // ✅ STEP 2: Save Lead Data from Calculator
+      const leadPayload = {
+        data: {
+          full_name: form.name,
+          phone_number: form.phone,
+          calculator_report_token: token,
+          lead_source: "calculator",
+          state: results?.state || "Unknown",
+          user_category: results?.user_category || (results?.is_rwa ? "RWA" : "Residential"),
+          system_size: results?.final_dc_kw || 0,
+          inquiry_medium: "organic",
+        },
+      };
+
+      await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/leads`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(leadPayload),
+      });
+
       // Open PDF in new tab
       const pdfUrl = uploaded[0].url.startsWith("http")
         ? uploaded[0].url

@@ -260,6 +260,27 @@ function ContactForm() {
         throw new Error("Failed to submit");
       }
 
+      // 🧩 3B. Also send to Leads API
+      const leadPayload = {
+        data: {
+          full_name: formData.name,
+          phone_number: formData.phone,
+          state: formData.state?.label || "Unknown",
+          city: formData.city?.label || "",
+          gender: formData.gender,
+          lead_source: "contact us",
+          inquiry_medium: "organic",
+          problem_objective: formData.message,
+          system_size: Number(formData.capacity) || 0,
+        },
+      };
+
+      await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/leads`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(leadPayload),
+      });
+
       alert("✅ Form submitted successfully!");
 
       // 🔥 Clear form after success
