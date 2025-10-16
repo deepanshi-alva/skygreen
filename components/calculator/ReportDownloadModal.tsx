@@ -100,6 +100,7 @@ export default function ReportDownloadModal({ results }: { results: any }) {
           user_category: results?.user_category || (results?.is_rwa ? "RWA" : "Residential"),
           system_size: results?.final_dc_kw || 0,
           inquiry_medium: "organic",
+          calculator_pdf: uploaded[0].id,
         },
       };
 

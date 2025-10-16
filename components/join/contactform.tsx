@@ -256,6 +256,7 @@ function JoinUsForm() {
           full_name: formData.name,
           phone_number: formData.phone,
           state: formData.state?.label || "Unknown",
+          gender: formData.gender,
           city: formData.city?.label || "",
           user_category: "Commercial",
           customer_type: formData.businessType,
@@ -263,6 +264,10 @@ function JoinUsForm() {
           inquiry_medium: "organic",
           submission_time: new Date().toISOString(),
           problem_objective: `Interested in joining as ${formData.businessType}`,
+          scheduled_date: formData.date
+            ? formData.date.toISOString().split("T")[0] // convert to YYYY-MM-DD
+            : null,
+          scheduled_time: formData.time,
         },
       };
 
@@ -370,17 +375,17 @@ function JoinUsForm() {
           <label className="block text-sm font-medium mb-2">Gender</label>
           <Select
             options={[
-              { value: "male", label: "Male" },
-              { value: "female", label: "Female" },
-              { value: "na", label: "Prefer not to say" },
+              { value: "Male", label: "Male" },
+              { value: "Female", label: "Female" },
+              { value: "Others", label: "Others" },
             ]}
             styles={customSelectStyles}
             value={
               formData.gender
                 ? [
-                  { value: "male", label: "Male" },
-                  { value: "female", label: "Female" },
-                  { value: "na", label: "Prefer not to say" },
+                  { value: "Male", label: "Male" },
+                  { value: "Female", label: "Female" },
+                  { value: "Others", label: "Others" },
                 ].find((g) => g.value === formData.gender) || null
                 : null
             }

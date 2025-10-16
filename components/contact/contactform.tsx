@@ -272,6 +272,10 @@ function ContactForm() {
           inquiry_medium: "organic",
           problem_objective: formData.message,
           system_size: Number(formData.capacity) || 0,
+          scheduled_date: formData.date
+            ? formData.date.toISOString().split("T")[0] // convert to YYYY-MM-DD
+            : null,
+          scheduled_time: formData.time,
         },
       };
 
@@ -383,19 +387,19 @@ function ContactForm() {
           <label className="block text-sm font-medium mb-2">Gender</label>
           <Select
             options={[
-              { value: "male", label: "Male" },
-              { value: "female", label: "Female" },
-              { value: "na", label: "Prefer not to specify" },
+              { value: "Male", label: "Male" },
+              { value: "Female", label: "Female" },
+              { value: "Others", label: "Others" },
             ]}
             styles={customSelectStyles}
             value={
               formData.gender
-                ? ["male", "female", "na"]
+                ? ["Male", "Female", "Others"]
                   .map((g) => ({
                     value: g,
                     label:
-                      g === "na"
-                        ? "Prefer not to specify"
+                      g === "Others"
+                        ? "Others"
                         : g.charAt(0).toUpperCase() + g.slice(1),
                   }))
                   .find((g) => g.value === formData.gender) || null
