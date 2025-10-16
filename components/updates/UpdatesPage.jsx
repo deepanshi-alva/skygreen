@@ -297,7 +297,7 @@ export default function UpdatesPage({ data }) {
                   <img
                     src={selectedItem.image}
                     alt={selectedItem.title}
-                    className="w-full h-78 object-cover rounded-lg mb-4"
+                    className="w-full h-[29rem] object-cover rounded-lg mb-4"
                   />
                 )}
 
