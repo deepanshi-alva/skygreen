@@ -10,6 +10,7 @@ export type Item = {
   href?: string;
   meta?: string;
   document?: string;
+  button_text?: string;
 };
 
 export type Data = {
@@ -74,6 +75,7 @@ export async function fetchNewsEventsBlogs(): Promise<Data> {
         start_date: attrs.start_date,
         date: attrs.start_date || attrs.createdAt,
         document: getMediaUrl(attrs.additional_media?.data?.attributes),
+        button_text: attrs.button_text,
       };
 
       // ✅ Event filtering: only include events whose start_date >= today

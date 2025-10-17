@@ -357,7 +357,7 @@ export default function NewsEventsBlogs({
                               rel="noopener noreferrer"
                               className="inline-flex items-center gap-2 rounded-full border border-green-400/30 bg-green-500/10 px-4 py-2 text-sm font-medium text-green-300 hover:bg-green-500/20 transition"
                             >
-                              View Document
+                              {current.button_text || "View Document"}
                               <ChevronRight className="h-4 w-4" />
                             </a>
                           )}
