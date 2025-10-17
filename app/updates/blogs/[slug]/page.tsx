@@ -80,7 +80,7 @@ export default async function BlogPage({ params }: any) {
           {blog.tag && <> • {blog.tag}</>}
         </div>
         {blog.meta && (
-          <p className="text-sm text-white/60 mb-5">Source: {blog.meta}</p>
+          <p className="text-sm text-white/60 mb-5">{blog.meta}</p>
         )}
         {blog.excerpt ? (
           <div
@@ -92,14 +92,27 @@ export default async function BlogPage({ params }: any) {
             No content available for this article.
           </p>
         )}
-        <div className="mt-10">
+        {/* ✅ Action Buttons (Inline Layout) */}
+        <div className="mt-10 flex flex-row flex-wrap items-center gap-5">
           <a
             href="/updates#blogs"
-            className="inline-flex items-center gap-2 text-green-400 hover:underline"
+            className="inline-flex items-center gap-2 text-green-400 hover:underline text-base font-medium"
           >
             ← Back to Blogs
           </a>
+
+          {blog.document && blog.button_text && (
+            <a
+              href={blog.document}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center px-5 py-2.5 bg-green-500/20 border border-green-400/40 rounded-full text-green-400 hover:bg-green-500/30 transition font-medium"
+            >
+              {blog.button_text}
+            </a>
+          )}
         </div>
+
       </article>
     </main>
   );

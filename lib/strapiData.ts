@@ -135,6 +135,8 @@ export async function fetchBlogById(id: number) {
       date: b.publishedAt,
       metaDescription: b.metaDescription,
       meta: b.meta,
+      document: getMediaUrl(b.additional_media?.data?.attributes),
+        button_text: b.button_text,
     };
   } catch (e) {
     console.error("Error fetching blog:", e);
