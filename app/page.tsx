@@ -12,7 +12,7 @@ import { Suspense } from "react";
 
 export default async function Home() {
   const dataPromise = fetchNewsEventsBlogs();
-  console.log("this is the homepage data", dataPromise);
+  // console.log("this is the homepage data", dataPromise);
   return (
     <div>
       <Hero />

@@ -5,9 +5,11 @@ export type Item = {
   excerpt?: string;
   image?: string;
   date?: string;
+  start_date?: string;
   tag?: string;
   href?: string;
   meta?: string;
+  document?: string;
 };
 
 export type Data = {
@@ -19,30 +21,31 @@ export type Data = {
 // Helper to build image URL from Strapi response
 function getMediaUrl(media: any): string | undefined {
   if (!media) return undefined;
-  if (media?.url) return media.url.startsWith("http")
-    ? media.url
-    : `${process.env.NEXT_PUBLIC_STRAPI_URL}${media.url}`;
+  if (media?.url)
+    return media.url.startsWith("http")
+      ? media.url
+      : `${process.env.NEXT_PUBLIC_STRAPI_URL}${media.url}`;
   return undefined;
 }
 
 export async function fetchNewsEventsBlogs(): Promise<Data> {
   try {
-    const pageSize = 100; // you can tweak this
+    const pageSize = 100;
     let page = 1;
     let totalPages = 1;
 
     const allItems: any[] = [];
 
+    // ✅ Fetch all data (with image + additional_media populated)
     while (page <= totalPages) {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/events?populate=image&pagination[page]=${page}&pagination[pageSize]=${pageSize}`,
+        `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/events?populate[image]=*&populate[additional_media]=*&pagination[page]=${page}&pagination[pageSize]=${pageSize}`,
         { cache: "no-store" }
       );
 
       if (!res.ok) throw new Error("Failed to fetch Strapi data");
 
       const json = await res.json();
-
       allItems.push(...json.data);
       totalPages = json.meta.pagination.pageCount;
       page++;
@@ -52,8 +55,14 @@ export async function fetchNewsEventsBlogs(): Promise<Data> {
     const events: Item[] = [];
     const blogs: Item[] = [];
 
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // ignore time, compare only date
+
     allItems.forEach((entry: any) => {
       const attrs = entry.attributes;
+      const startDate = attrs.start_date ? new Date(attrs.start_date) : null;
+
+      // ✅ Build object
       const item: Item = {
         id: entry.id,
         title: attrs.title,
@@ -62,19 +71,42 @@ export async function fetchNewsEventsBlogs(): Promise<Data> {
         tag: attrs.tag,
         href: attrs.link_of_article,
         meta: attrs.meta,
+        start_date: attrs.start_date,
         date: attrs.start_date || attrs.createdAt,
+        document: getMediaUrl(attrs.additional_media?.data?.attributes),
       };
 
-      if (attrs.type === "News") news.push(item);
-      else if (attrs.type === "Event") events.push(item);
-      else if (attrs.type === "Blog") blogs.push(item);
+      // ✅ Event filtering: only include events whose start_date >= today
+      if (attrs.type === "Event") {
+        if (!startDate || startDate < today) return; // skip expired
+        events.push(item);
+      } else if (attrs.type === "News") {
+        news.push(item);
+      } else if (attrs.type === "Blog") {
+        blogs.push(item);
+      }
     });
 
-    events.sort((a, b) => new Date(a.date ?? 0).getTime() - new Date(b.date ?? 0).getTime());
-    news.sort((a, b) => new Date(b.date ?? 0).getTime() - new Date(a.date ?? 0).getTime());
-    blogs.sort((a, b) => new Date(b.date ?? 0).getTime() - new Date(a.date ?? 0).getTime());
+    // ✅ Sort
+    events.sort(
+      (a, b) =>
+        new Date(a.date ?? 0).getTime() - new Date(b.date ?? 0).getTime()
+    );
+    news.sort(
+      (a, b) =>
+        new Date(b.date ?? 0).getTime() - new Date(a.date ?? 0).getTime()
+    );
+    blogs.sort(
+      (a, b) =>
+        new Date(b.date ?? 0).getTime() - new Date(a.date ?? 0).getTime()
+    );
 
-    console.log("Fetched all News, Events, Blogs:", news.length, events.length, blogs.length);
+    console.log(
+      "Fetched filtered News, Events, Blogs:",
+      news.length,
+      events.length,
+      blogs.length
+    );
 
     return { news, events, blogs };
   } catch (err) {
@@ -86,12 +118,12 @@ export async function fetchNewsEventsBlogs(): Promise<Data> {
 export async function fetchBlogById(id: number) {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/events/${id}?populate=*`,
+      `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/events/${id}?populate=*`
     );
     const json = await res.json();
     if (!json.data) return null;
     const b = json.data.attributes;
-    console.log("these are the attributes", b)
+    console.log("these are the attributes", b);
     return {
       id: json.data.id,
       title: b.title,
