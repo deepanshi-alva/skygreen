@@ -4,7 +4,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 
 /**
@@ -14,6 +13,7 @@ import Link from "next/link";
  * @property {string=} excerpt
  * @property {string=} image
  * @property {string=} date
+ * @property {string=} start_date
  * @property {string=} tag
  * @property {string=} href
  * @property {string=} meta
@@ -26,9 +26,6 @@ import Link from "next/link";
  * @property {Item[]} blogs
  */
 
-/**
- * @param {{ data: Data, initialTab?: 'news'|'events'|'blogs', autoplayMs?: number, className?: string }} props
- */
 export default function NewsEventsBlogs({
   data,
   initialTab = "news",
@@ -41,14 +38,45 @@ export default function NewsEventsBlogs({
   const [dragStartX, setDragStartX] = useState(null);
   const timerRef = useRef(null);
 
+  /** ---------- Data filtering + sorting ---------- */
   const items = useMemo(() => {
     const raw = data?.[active] || [];
-    const sorted = [...raw].sort((a, b) => {
+    const now = new Date();
+    const upcomingLimit = new Date();
+    upcomingLimit.setDate(now.getDate() + 10);
+
+    // ✅ Event logic: only show future (not expired)
+    if (active === "events") {
+      const upcoming = [];
+      const future = [];
+
+      raw.forEach((e) => {
+        if (!e.start_date) return; // skip invalid
+        const eventDate = new Date(e.start_date);
+
+        if (eventDate < now) {
+          // ❌ skip expired
+          return;
+        } else if (eventDate <= upcomingLimit) {
+          upcoming.push(e); // within 10 days
+        } else {
+          future.push(e); // after 10 days
+        }
+      });
+
+      // sort by nearest first
+      upcoming.sort((a, b) => new Date(a.start_date) - new Date(b.start_date));
+      future.sort((a, b) => new Date(a.start_date) - new Date(b.start_date));
+
+      return [...upcoming, ...future];
+    }
+
+    // ✅ Default sorting for news/blogs
+    return [...raw].sort((a, b) => {
       const da = a?.date ? new Date(a.date).getTime() : 0;
       const db = b?.date ? new Date(b.date).getTime() : 0;
       return db - da;
     });
-    return sorted;
   }, [data, active]);
 
   const safeIndex = items.length
@@ -56,24 +84,26 @@ export default function NewsEventsBlogs({
     : 0;
   const current = items[safeIndex];
 
+  /** ---------- Autoplay ---------- */
   useEffect(() => {
     setIndex(0);
   }, [active]);
 
   useEffect(() => {
-    if (!items.length) return;
-    if (isHover) return;
-    if (timerRef.current) clearTimeout(timerRef.current);
+    if (!items.length || isHover) return;
+    clearTimeout(timerRef.current);
     timerRef.current = setTimeout(
       () => setIndex((i) => (i + 1) % items.length),
       autoplayMs
     );
-    return () => timerRef.current && clearTimeout(timerRef.current);
+    return () => clearTimeout(timerRef.current);
   }, [items.length, isHover, safeIndex, autoplayMs]);
 
+  /** ---------- Controls ---------- */
   const goPrev = () =>
     items.length && setIndex((i) => (i - 1 + items.length) % items.length);
-  const goNext = () => items.length && setIndex((i) => (i + 1) % items.length);
+  const goNext = () =>
+    items.length && setIndex((i) => (i + 1) % items.length);
 
   const onTouchStart = (e) => setDragStartX(e.touches[0].clientX);
   const onTouchEnd = (e) => {
@@ -91,6 +121,7 @@ export default function NewsEventsBlogs({
 
   const isLatest = (it, idx) => idx === 0 && !!(it && it.date);
 
+  /** ---------- Render ---------- */
   return (
     <section
       className={`w-full bg-black text-white pt-15 ${className}`}
@@ -99,7 +130,7 @@ export default function NewsEventsBlogs({
       aria-label="News, Events, and Blogs carousel"
     >
       <div className="mx-auto max-w-7xl px-2 md:px-4">
-        {/* Section Title */}
+        {/* ---------- Header ---------- */}
         <div className="mb-12 text-center">
           <h2 className="text-4xl text-white md:text-5xl lg:text-6xl font-bold leading-tight">
             Latest <span className="text-[#acfe53]">Updates & Insights</span>
@@ -109,15 +140,11 @@ export default function NewsEventsBlogs({
             blogs from the solar industry.
           </p>
         </div>
-        {/* Shared height wrapper → BOTH columns use the same height */}
+
+        {/* ---------- Layout ---------- */}
         <div className="grid grid-cols-1 md:grid-cols-[200px_minmax(0,1fr)] gap-6 items-stretch md:h-[520px] h-auto">
-          {/* Vertical rail (left) — full height, evenly distributed buttons */}
-          <aside
-            className={`flex flex-row md:flex-col gap-3 md:gap-4
-    h-30 md:h-full
-    order-last md:order-first
-  `}
-          >
+          {/* Tabs */}
+          <aside className="flex flex-row md:flex-col gap-3 md:gap-4 h-30 md:h-full order-last md:order-first">
             {["events", "news", "blogs"].map((key) => {
               const label = key[0].toUpperCase() + key.slice(1);
               const isActive = active === key;
@@ -125,12 +152,10 @@ export default function NewsEventsBlogs({
                 <button
                   key={key}
                   onClick={() => setActive(key)}
-                  className={`group relative overflow-hidden rounded-2xl border transition-all duration-700 ease-in-out px-4 py-3 text-left flex-1
-    ${isActive
+                  className={`group relative overflow-hidden rounded-2xl border transition-all duration-700 ease-in-out px-4 py-3 text-left flex-1 ${isActive
                       ? "border-green-400/70 bg-green-500/8"
                       : "border-white/10 bg-[radial-gradient(circle_at_top_left,_rgba(0,100,81,.5),_rgba(0,128,0,0))] hover:bg-[radial-gradient(circle_at_top_left,_rgba(0,120,81,.2),_rgba(0,128,0,0.05))]"
                     }`}
-                  aria-pressed={isActive}
                 >
                   <div className="flex items-center justify-between">
                     <span
@@ -139,9 +164,6 @@ export default function NewsEventsBlogs({
                     >
                       {label}
                     </span>
-                    {/* <span className="text-xs text-white/60">
-                      {data?.[key]?.length ?? 0}
-                    </span> */}
                   </div>
                   <div className="mt-1 text-[11px] md:text-xs text-white/60">
                     {key === "events" && "Conferences, expos, launches"}
@@ -168,7 +190,7 @@ export default function NewsEventsBlogs({
             })}
           </aside>
 
-          {/* Carousel — now inherits the same height from the wrapper */}
+          {/* ---------- Carousel ---------- */}
           <div
             className="relative rounded-3xl border border-white/10 bg-white/[0.03] overflow-hidden md:h-full h-auto"
             onMouseEnter={() => setIsHover(true)}
@@ -176,7 +198,7 @@ export default function NewsEventsBlogs({
             onTouchStart={onTouchStart}
             onTouchEnd={onTouchEnd}
           >
-            {/* Fixed arrows (don’t animate out) */}
+            {/* Navigation */}
             <div className="pointer-events-none absolute inset-0 z-20">
               <div className="absolute inset-y-0 left-0 flex items-center pl-3">
                 <button
@@ -198,17 +220,12 @@ export default function NewsEventsBlogs({
               </div>
             </div>
 
-            {/* Empty state */}
+            {/* No items */}
             {!items.length && (
               <div className="p-10 md:p-16 text-center h-full flex items-center justify-center">
-                <div>
-                  <p className="text-xl text-white/70">
-                    No {active} to show yet.
-                  </p>
-                  <p className="text-white/50 mt-2">
-                    Add items from your CMS or API.
-                  </p>
-                </div>
+                <p className="text-xl text-white/70">
+                  No {active} to show yet.
+                </p>
               </div>
             )}
 
@@ -219,15 +236,15 @@ export default function NewsEventsBlogs({
                   <motion.div
                     key={current?.id ?? `idx-${safeIndex}`}
                     className={`${current?.image
-                      ? "grid md:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]"
-                      : "flex"
+                        ? "grid md:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]"
+                        : "flex"
                       } relative md:absolute inset-0`}
                     initial={{ opacity: 0, x: 40 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -40 }}
                     transition={{ duration: 0.35 }}
                   >
-                    {/* Image — only if present */}
+                    {/* Image */}
                     {current?.image && (
                       <div className="relative overflow-hidden">
                         <img
@@ -237,6 +254,34 @@ export default function NewsEventsBlogs({
                           loading="lazy"
                         />
                         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+
+                        {/* ✅ Upcoming / Happening Today */}
+                        {active === "events" &&
+                          current?.start_date &&
+                          (() => {
+                            const eventDate = new Date(current.start_date);
+                            const now = new Date();
+                            const diffDays = Math.ceil(
+                              (eventDate - now) / (1000 * 60 * 60 * 24)
+                            );
+
+                            if (diffDays === 0) {
+                              return (
+                                <div className="absolute top-4 left-4 rounded-full border border-yellow-400/50 bg-yellow-500/15 px-3 py-1 text-xs font-semibold text-yellow-300 shadow-md z-20">
+                                  Happening Today
+                                </div>
+                              );
+                            } else if (diffDays > 0 && diffDays <= 10) {
+                              return (
+                                <div className="absolute top-4 left-4 rounded-full border border-green-400/50 bg-green-500/15 px-3 py-1 text-xs font-semibold text-green-300 shadow-md z-20">
+                                  Upcoming — {diffDays} days left
+                                </div>
+                              );
+                            }
+                            return null;
+                          })()}
+
+                        {/* Bottom badges */}
                         <div className="absolute bottom-4 left-4 flex flex-wrap items-center gap-2">
                           {isLatest(items[0], safeIndex) && (
                             <span className="rounded-full border border-green-400/50 bg-green-500/15 px-3 py-1 text-xs font-semibold text-green-300">
@@ -257,91 +302,68 @@ export default function NewsEventsBlogs({
                       </div>
                     )}
 
-                    {/* Text — full width when no image */}
+                    {/* Text */}
                     <div
                       className={`p-6 flex flex-col text-left ${current?.image
-                        ? "justify-between md:p-10"
-                        : "justify-center w-full md:p-16"
+                          ? "justify-between md:p-10"
+                          : "justify-center w-full md:p-16"
                         }`}
                     >
-                      {/* Badges row (shown here if no image) */}
-                      {!current?.image && (
-                        <div className="mb-4 flex flex-wrap items-center gap-2">
-                          {isLatest(items[0], safeIndex) && (
-                            <span className="rounded-full border border-green-400/50 bg-green-500/15 px-3 py-1 text-xs font-semibold text-green-300">
-                              Latest
-                            </span>
+                      <h3
+                        className={`font-bold leading-tight text-left ${current?.image
+                            ? "text-2xl md:text-3xl"
+                            : "text-3xl md:text-5xl"
+                          }`}
+                      >
+                        {current?.title}
+                      </h3>
+                      {current?.meta && (
+                        <p className="mt-2 text-sm text-white/60 leading-relaxed">
+                          {current.meta}
+                        </p>
+                      )}
+                      {current?.excerpt && (
+                        <p
+                          className="mt-4 text-white/80 leading-relaxed text-justify line-clamp-4"
+                          style={{
+                            display: "-webkit-box",
+                            WebkitBoxOrient: "vertical",
+                            overflow: "hidden",
+                            WebkitLineClamp: 5,
+                            textOverflow: "ellipsis",
+                          }}
+                        >
+                          {current.excerpt}
+                        </p>
+                      )}
+                      {/* Action Buttons */}
+                      {(current?.href || current?.document) && (
+                        <div className="mt-4 flex flex-wrap items-center gap-3">
+                          {current?.href && (
+                            <Link
+                              href={`/updates#${active}`}
+                              className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-medium text-white hover:bg-white/20 transition"
+                            >
+                              Read more
+                              <ChevronRight className="h-4 w-4" />
+                            </Link>
                           )}
-                          {current?.tag && (
-                            <span className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs text-white/80">
-                              {current.tag}
-                            </span>
-                          )}
-                          {current?.date && (
-                            <span className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs text-white/70">
-                              {formatDate(current.date)}
-                            </span>
+
+                          {/* ✅ Document button appears only if media exists */}
+                          {current?.document && (
+                            <a
+                              href={current.document}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-2 rounded-full border border-green-400/30 bg-green-500/10 px-4 py-2 text-sm font-medium text-green-300 hover:bg-green-500/20 transition"
+                            >
+                              View Document
+                              <ChevronRight className="h-4 w-4" />
+                            </a>
                           )}
                         </div>
                       )}
 
-                      <div>
-                        <h3
-                          className={`font-bold leading-tight text-left ${current?.image
-                            ? "text-2xl md:text-3xl"
-                            : "text-3xl md:text-5xl"
-                            }`}
-                        >
-                          {current?.title}
-                        </h3>
-                        {current?.meta && (
-                          <p className="mt-2 text-sm text-white/60 leading-relaxed">
-                            {current.meta}
-                          </p>
-                        )}
-                        {/* {current?.excerpt && (
-                          <p
-                            className="mt-4 text-white/80 leading-relaxed text-justify"
-                            style={{
-                              hyphens: "auto",
-                              WebkitHyphens: "auto",
-                              MozHyphens: "auto",
-                            }}
-                          >
-                            {current.excerpt}
-                          </p>
-                        )} */}
-                        {current?.excerpt && (
-                          <p
-                            className="mt-4 text-white/80 leading-relaxed text-justify line-clamp-4"
-                            style={{
-                              hyphens: "auto",
-                              WebkitHyphens: "auto",
-                              MozHyphens: "auto",
-                              display: "-webkit-box",
-                              WebkitBoxOrient: "vertical",
-                              overflow: "hidden",
-                              WebkitLineClamp: 5, // 👈 limits to 4 lines, truncates with …
-                              textOverflow: "ellipsis",
-                            }}
-                          >
-                            {current.excerpt}
-                          </p>
-                        )}
-
-                        {current?.href && (
-                          <div className="mt-4">
-                            <Link
-                              href={`/updates#${active}`}// ✅ always go to Updates page
-                              className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-medium text-white hover:bg-white/20 transition"
-                              aria-label={`Read more about: ${current?.title ?? "item"}`}
-                            >
-                              Read more
-                              <ChevronRight className="h-4 w-4" aria-hidden="true" />
-                            </Link>
-                          </div>
-                        )}
-                      </div>
                     </div>
                   </motion.div>
                 </AnimatePresence>
@@ -350,70 +372,6 @@ export default function NewsEventsBlogs({
           </div>
         </div>
       </div>
-      <style jsx>{`
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-          }
-          to {
-            opacity: 1;
-          }
-        }
-        .animate-fadeIn {
-          animation: fadeIn 800ms ease forwards;
-        }
-
-        @keyframes textIn {
-          from {
-            opacity: 0;
-            transform: translateY(6px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        .animate-textIn {
-          animation: textIn 350ms ease;
-        }
-
-        @keyframes listIn {
-          from {
-            opacity: 0;
-            transform: translateX(-20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateX(0);
-          }
-        }
-        .specItem {
-          opacity: 0;
-          animation: listIn 400ms ease forwards;
-        }
-
-        @keyframes riseIn {
-          from {
-            transform: translateY(120px) scale(0.98);
-            opacity: 0;
-            filter: blur(6px);
-          }
-          60% {
-            opacity: 1;
-            filter: blur(0);
-          }
-          to {
-            transform: translateY(0) scale(1);
-            opacity: 1;
-            filter: blur(0);
-          }
-        }
-        .animate-rise,
-        .animate-rise /* fallback name preserved */ {
-          animation: riseIn 900ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
-          will-change: transform, opacity, filter;
-        }
-      `}</style>
     </section>
   );
 }
