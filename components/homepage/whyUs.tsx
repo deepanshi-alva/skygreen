@@ -66,7 +66,7 @@ export default function WhyUs() {
 
   return (
     <section
-      className="min-h-screen w-full flex flex-col items-center justify-center p-2 sm:p-6 md:p-12 bg-[black] text-white"
+      className="w-full flex flex-col items-center justify-center p-2 sm:p-6 md:p-12 bg-[black] text-white"
       style={{
         boxSizing: "border-box",
         backgroundImage: "url('/images/whyUs/solarSystem.svg')",

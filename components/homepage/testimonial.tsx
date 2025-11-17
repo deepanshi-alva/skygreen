@@ -87,7 +87,7 @@ export default function TestimonialSlider() {
     : `${process.env.NEXT_PUBLIC_STRAPI_URL}${rawUrl}`;
 
   return (
-    <section className="flex flex-col items-center min-h-screen bg-black w-full py-12 sm:py-16 lg:py-20">
+    <section className="flex flex-col items-center bg-black w-full py-12 sm:py-16 lg:py-20">
       {/* Heading */}
       <div className="mb-8 sm:mb-12 text-center px-4">
         <h2

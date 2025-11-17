@@ -46,33 +46,76 @@ export default function UpdatesPage({ data }) {
   }, []);
 
   // Scroll to section accurately
+  // const scrollToSection = (id) => {
+  //   const section = sectionRefs[id]?.current;
+  //   if (section) {
+  //     const yOffset = -130;
+  //     const y = section.getBoundingClientRect().top + window.scrollY + yOffset;
+  //     window.scrollTo({ top: y, behavior: "smooth" });
+  //   }
+  // };
   const scrollToSection = (id) => {
     const section = sectionRefs[id]?.current;
     if (section) {
       const yOffset = -130;
-      const y = section.getBoundingClientRect().top + window.scrollY + yOffset;
+      const y =
+        section.getBoundingClientRect().top + window.scrollY + yOffset;
+
+      // smooth scroll
       window.scrollTo({ top: y, behavior: "smooth" });
+
+      // ⭐ Update the URL hash
+      window.history.replaceState(null, "", `#${id}`);
     }
   };
 
+
   // Scroll on hash
+  // useEffect(() => {
+  //   if (typeof window === "undefined") return;
+  //   const scrollToHash = () => {
+  //     const hash = window.location.hash;
+  //     if (!hash) return;
+  //     const id = hash.replace("#", "");
+  //     const section = document.getElementById(id);
+  //     if (section) {
+  //       const yOffset = -130;
+  //       const y = section.getBoundingClientRect().top + window.scrollY + yOffset;
+  //       window.scrollTo({ top: y, behavior: "smooth" });
+  //     }
+  //   };
+  //   scrollToHash();
+  //   window.addEventListener("hashchange", scrollToHash);
+  //   return () => window.removeEventListener("hashchange", scrollToHash);
+  // }, []);
+
   useEffect(() => {
-    if (typeof window === "undefined") return;
     const scrollToHash = () => {
       const hash = window.location.hash;
+
+      console.log("this  is the window hash", hash)
       if (!hash) return;
+
       const id = hash.replace("#", "");
+      console.log("this is the id which is to be replaced", id);
+      setActive(id); // ⭐ update active tab
+
       const section = document.getElementById(id);
+      console.log("this is the section which is to be replaced", section);
       if (section) {
         const yOffset = -130;
-        const y = section.getBoundingClientRect().top + window.scrollY + yOffset;
+        const y =
+          section.getBoundingClientRect().top + window.scrollY + yOffset;
         window.scrollTo({ top: y, behavior: "smooth" });
       }
     };
+
     scrollToHash();
     window.addEventListener("hashchange", scrollToHash);
+    console.log("this is the event listener which is to be replaced");
     return () => window.removeEventListener("hashchange", scrollToHash);
   }, []);
+
 
   // Filtering
   const applyFilters = (items) => {
@@ -106,7 +149,7 @@ export default function UpdatesPage({ data }) {
   return (
     <div className="w-full">
       {/* Navbar Tabs */}
-      <div className="fixed top-[64px] md:top-[120px] w-full z-30 bg-black/90 backdrop-blur-md border-b border-white/10">
+      <div className="fixed top-[64px] md:top-[120px] w-full z-30  transition-all duration-300 bg-black/10 backdrop-blur-md border-b border-white/10">
         <div className="max-w-6xl mx-auto flex justify-center gap-6 px-4 py-3">
           {navItems.map((item) => (
             <button
@@ -294,11 +337,11 @@ export default function UpdatesPage({ data }) {
                       </Link> */}
                       <div className="mt-3 flex flex-wrap items-center justify-between">
                         <Link
-                        href={`/updates/blogs/${b.id}-${slugify(b.title || "", { lower: true, strict: true })}`}
-                        className="mt-3 inline-block text-green-400 text-sm hover:underline"
-                      >
-                        Read More →
-                      </Link>
+                          href={`/updates/blogs/${b.id}-${slugify(b.title || "", { lower: true, strict: true })}`}
+                          className="mt-3 inline-block text-green-400 text-sm hover:underline"
+                        >
+                          Read More →
+                        </Link>
 
                         {b.document && b.button_text && (
                           <a
@@ -334,7 +377,7 @@ export default function UpdatesPage({ data }) {
             }}
           >
             <motion.div
-              className="relative bg-black rounded-2xl border border-white/10 w-full max-w-2xl max-h-[90vh] overflow-hidden shadow-lg"
+              className="relative bg-black rounded-2xl border border-white/10 w-full max-w-7xl max-h-[90vh] overflow-hidden shadow-lg"
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
