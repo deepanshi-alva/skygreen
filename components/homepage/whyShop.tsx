@@ -37,7 +37,7 @@ function App() {
 
   return (
     <div className=" bg-black text-white">
-      <div className="container mx-auto px-6 py-16">
+      <div className="container mx-auto px-6 pb-16">
         <h2
           className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-10 sm:mb-12 md:mb-16 leading-snug"
         >
