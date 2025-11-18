@@ -27,6 +27,8 @@ export default function LeftInputPanel({ onResults }) {
     perHouseSanctionedLoad: "",
     plant_size_kw: "",
     extraCharges: "200",
+    psh: "5.5",
+
   };
 
   const [formData, setFormData] = useState(defaultFormData);
@@ -178,8 +180,8 @@ export default function LeftInputPanel({ onResults }) {
       sizingMethod = isPositive(toNum(formData.bill))
         ? "bill"
         : isPositive(toNum(formData.units))
-        ? "units"
-        : "";
+          ? "units"
+          : "";
     } else if (formData.mode === "rwa") {
       sizingMethod = "rwa"; // backend handles the RWA sizing logic
     } else if (
@@ -218,6 +220,7 @@ export default function LeftInputPanel({ onResults }) {
             sizing_method: sizingMethod,
             plant_size_kw: finalPlantSize,
             discom_extra_charges: Number(formData.extraCharges) || 200,
+            psh: Number(formData.psh) || 5.5,
           }),
         }
       );
@@ -327,16 +330,14 @@ export default function LeftInputPanel({ onResults }) {
                 <label
                   key={modeOption.value}
                   className={`flex items-center justify-center h-12 sm:h-14 px-2 rounded-lg border cursor-pointer text-center text-sm sm:text-base transition
-            ${
-              formData.mode === modeOption.value
-                ? "bg-green-500 text-black font-semibold border-green-500"
-                : "bg-[#111] text-gray-300 border-gray-600 hover:border-green-400 hover:text-green-400"
-            }
-            ${
-              modeOption.value === "rwa" && !selectedState.rwa_enabled
-                ? "bg-gray-800 text-gray-500 border-gray-700 cursor-not-allowed"
-                : ""
-            }
+            ${formData.mode === modeOption.value
+                      ? "bg-green-500 text-black font-semibold border-green-500"
+                      : "bg-[#111] text-gray-300 border-gray-600 hover:border-green-400 hover:text-green-400"
+                    }
+            ${modeOption.value === "rwa" && !selectedState.rwa_enabled
+                      ? "bg-gray-800 text-gray-500 border-gray-700 cursor-not-allowed"
+                      : ""
+                    }
           `}
                 >
                   <input
@@ -380,6 +381,25 @@ export default function LeftInputPanel({ onResults }) {
           />
         </div>
 
+        {/* User-controlled PSH */}
+        <div>
+          <label className="block mb-1 font-bold text-xs sm:text-sm">
+            Peak Sun Hours (PSH)
+          </label>
+          <input
+            type="number"
+            step="0.1"
+            min="1"
+            max="10"
+            name="psh"
+            value={formData.psh || 5.5}
+            onChange={handleChange}
+            className="w-full p-2 rounded-lg bg-black border border-green-500 text-white"
+            placeholder="Default 5"
+          />
+        </div>
+
+
         {/* Conditional Fields */}
         {formData.mode === "residential" ? (
           <>
@@ -404,11 +424,10 @@ export default function LeftInputPanel({ onResults }) {
                   onChange={handleChange}
                   disabled={!!formData.units}
                   className={`w-full p-2 rounded-lg border
-        ${
-          formData.units
-            ? "bg-gray-700 border-gray-500 text-gray-400 cursor-not-allowed"
-            : "bg-black border-green-500 text-white"
-        }`}
+        ${formData.units
+                      ? "bg-gray-700 border-gray-500 text-gray-400 cursor-not-allowed"
+                      : "bg-black border-green-500 text-white"
+                    }`}
                   placeholder="e.g. 2500"
                 />
               </div>
@@ -431,11 +450,10 @@ export default function LeftInputPanel({ onResults }) {
                   onChange={handleChange}
                   disabled={!!formData.bill}
                   className={`w-full p-2 rounded-lg border
-        ${
-          formData.bill
-            ? "bg-gray-700 border-gray-500 text-gray-400 cursor-not-allowed"
-            : "bg-black border-green-500 text-white"
-        }`}
+        ${formData.bill
+                      ? "bg-gray-700 border-gray-500 text-gray-400 cursor-not-allowed"
+                      : "bg-black border-green-500 text-white"
+                    }`}
                   placeholder="e.g. 350"
                 />
               </div>
