@@ -26,7 +26,8 @@ export default function LeftInputPanel({ onResults }) {
     societySanctionedLoad: "",
     perHouseSanctionedLoad: "",
     plant_size_kw: "",
-    extraCharges: "200",
+    extraCharges: "0",
+    batteryAmount: "0",
     psh: "5.5",
 
   };
@@ -219,7 +220,8 @@ export default function LeftInputPanel({ onResults }) {
             roof_area_unit: formData.roofUnit,
             sizing_method: sizingMethod,
             plant_size_kw: finalPlantSize,
-            discom_extra_charges: Number(formData.extraCharges) || 200,
+            discom_extra_charges: Number(formData.extraCharges) || 0,
+            battery_amount: Number(formData.batteryAmount) || 0,
             psh: Number(formData.psh) || 5.5,
           }),
         }
@@ -531,12 +533,31 @@ export default function LeftInputPanel({ onResults }) {
               <input
                 type="number"
                 name="extraCharges"
+                min="0"
+                max="1200"
                 value={formData.extraCharges || ""}
                 onChange={handleChange}
                 className="w-full p-2 rounded-lg bg-black border border-green-500"
-                placeholder="Default 200"
+                placeholder="Default 0"
               />
             </div>
+
+            {/* Battery Amount */}
+            <div>
+              <label className="block mb-1 font-bold whitespace-nowrap text-xs sm:text-sm">
+                Battery Cost (₹)
+              </label>
+              <input
+                type="number"
+                name="batteryAmount"
+                min="0"
+                value={formData.batteryAmount || ""}
+                onChange={handleChange}
+                className="w-full p-2 rounded-lg bg-black border border-green-500"
+                placeholder="Enter battery amount (optional)"
+              />
+            </div>
+
           </>
         ) : formData.mode === "rwa" ? (
           <>
@@ -633,16 +654,18 @@ export default function LeftInputPanel({ onResults }) {
 
             {/* Extra Charges (Discom) – common to all modes */}
             <div>
-              <label className="block mb-1 font-bold whitespace-nowrap text-xs sm:text-sm md:text-base">
+              <label className="block mb-1 font-bold whitespace-nowrap text-xs sm:text-sm">
                 Monthly Extra Charges (₹) (Discom)
               </label>
               <input
                 type="number"
                 name="extraCharges"
+                min="0"
+                max="1200"
                 value={formData.extraCharges || ""}
                 onChange={handleChange}
                 className="w-full p-2 rounded-lg bg-black border border-green-500"
-                placeholder="Default 200"
+                placeholder="Default 0"
               />
             </div>
           </>
@@ -679,18 +702,37 @@ export default function LeftInputPanel({ onResults }) {
 
             {/* Extra Charges (Discom) – common to all modes */}
             <div>
-              <label className="block mb-1 font-bold whitespace-nowrap text-xs sm:text-sm md:text-base">
+              <label className="block mb-1 font-bold whitespace-nowrap text-xs sm:text-sm">
                 Monthly Extra Charges (₹) (Discom)
               </label>
               <input
                 type="number"
                 name="extraCharges"
+                min="0"
+                max="1200"
                 value={formData.extraCharges || ""}
                 onChange={handleChange}
                 className="w-full p-2 rounded-lg bg-black border border-green-500"
-                placeholder="Default 200"
+                placeholder="Default 0"
               />
             </div>
+
+            {/* Battery Amount */}
+            <div>
+              <label className="block mb-1 font-bold whitespace-nowrap text-xs sm:text-sm">
+                Battery Cost (₹)
+              </label>
+              <input
+                type="number"
+                name="batteryAmount"
+                min="0"
+                value={formData.batteryAmount || ""}
+                onChange={handleChange}
+                className="w-full p-2 rounded-lg bg-black border border-green-500"
+                placeholder="Enter battery amount (optional)"
+              />
+            </div>
+
           </>
         ) : formData.mode === "manual_load" ? (
           <ManualLoadCalculator formData={formData} setFormData={setFormData} />
