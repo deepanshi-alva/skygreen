@@ -358,6 +358,30 @@ export default function CenterOutput({ results }) {
               ₹{format(results.net_cost_inr)}
             </span>
           </div>
+
+          {results?.battery_cost > 0 && (
+            <div className="flex items-center justify-center text-[clamp(10px,2.5vw,14px)] mb-1">
+              <span className="text-gray-300">Battery Cost</span>
+              <span className="font-semibold text-white ml-2">+ ₹{format(results.battery_cost)}</span>
+            </div>
+          )}
+
+          {results?.battery_cost > 0 && (
+            <div>
+              <hr className="border-white/10 my-2" />
+
+              {/* Net Cost */}
+              <div className="flex flex-col items-center mt-4 sm:mt-6">
+                <span className="text-xs sm:text-sm md:text-base text-gray-300 font-semibold text-center">
+                  Net Cost (Including Battery)
+                </span>
+                <span className="mt-1 text-2xl sm:text-3xl md:text-4xl font-bold text-green-400 whitespace-nowrap">
+                  ₹{format(results.net_cost_inr_including_battery)}
+                </span>
+              </div>
+            </div>
+          )}
+
         </div>
 
         {/* Right column stats */}
@@ -402,7 +426,7 @@ export default function CenterOutput({ results }) {
           <h3 className="text-sm sm:text-base md:text-lg font-bold mb-4">
             30-Year Economics
           </h3>
-          <ResponsiveContainer width="100%" height={220}>
+          <ResponsiveContainer width="100%" height={260}>
             <PieChart>
               <Pie
                 data={mode === "grid" ? gridData : solarData}
