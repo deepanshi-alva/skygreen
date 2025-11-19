@@ -511,7 +511,7 @@ export default function CenterOutput({ results }) {
       </div>
 
       {/* ---- System Configuration Section ---- */}
-      {(results?.inverter_options?.length > 0 ||
+      {/* {(results?.inverter_options?.length > 0 ||
         results?.string_design ||
         results?.battery_options?.length > 0) &&
         results.sizing_method !== "rwa" && (
@@ -520,7 +520,6 @@ export default function CenterOutput({ results }) {
               ⚙️ System Configuration
             </h3>
 
-            {/* Inverter Options */}
             {results?.inverter_options?.length > 0 && (
               <div className="mb-6">
                 <h4 className="text-lg font-semibold text-green-400 mb-2 text-center md:text-left">
@@ -548,7 +547,6 @@ export default function CenterOutput({ results }) {
               </div>
             )}
 
-            {/* SKU Recommendation */}
             {results?.inverter_options?.length > 0 &&
               (() => {
                 // Filter valid inverter options
@@ -588,7 +586,6 @@ export default function CenterOutput({ results }) {
                 );
               })()}
 
-            {/* String Design */}
             {results?.string_design && (
               <div className="mb-6">
                 <div className="flex items-center gap-2 mb-2">
@@ -596,7 +593,6 @@ export default function CenterOutput({ results }) {
                     String Design
                   </h4>
 
-                  {/* Info button with tooltip */}
                   <div className="relative group">
                     <Info className="w-4 h-4 text-blue-400 cursor-pointer mb-1" />
 
@@ -625,7 +621,6 @@ export default function CenterOutput({ results }) {
                   </div>
                 </div>
 
-                {/* ✅ New line with system summary */}
                 <p className="text-sm text-gray-400 mb-3 text-center md:text-left">
                   ( For a recommended system of{" "}
                   <span className="text-green-400 font-semibold">
@@ -638,9 +633,7 @@ export default function CenterOutput({ results }) {
                   panels )
                 </p>
 
-                {/* Cards */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {/* Single MPPT */}
                   <div className="p-4 rounded-lg border border-white/10 bg-[#111]">
                     <p className="font-semibold text-green-400">Single MPPT</p>
                     {results.string_design.single_mppt?.message ? (
@@ -663,7 +656,6 @@ export default function CenterOutput({ results }) {
                     )}
                   </div>
 
-                  {/* Dual MPPT */}
                   {results.panel_count > 6 && (
                     <div className="p-4 rounded-lg border border-white/10 bg-[#111]">
                       <p className="font-semibold text-green-400">Dual MPPT</p>
@@ -680,14 +672,12 @@ export default function CenterOutput({ results }) {
               </div>
             )}
 
-            {/* Battery Options */}
             {results?.battery_options?.length > 0 && (
               <div className="mt-8">
                 <h4 className="text-lg font-semibold text-green-400 mb-2 text-center md:text-left">
                   Battery Options
                 </h4>
 
-                {/* ✅ New line with system summary */}
                 <p className="text-xs sm:text-sm md:text-base text-gray-400 mb-3 text-center md:text-left">
                   ( For a recommended system of{" "}
                   <span className="text-green-400 font-semibold">
@@ -789,7 +779,7 @@ export default function CenterOutput({ results }) {
               </div>
             )}
           </div>
-        )}
+        )} */}
 
       {/* Disclaimer Section */}
       {Array.isArray(results?.disclaimer) && results.disclaimer.length > 0 && (
