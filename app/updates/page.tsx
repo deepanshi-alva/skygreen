@@ -34,6 +34,7 @@ export const metadata: Metadata = {
     "global solar news",
     "skygreen solar news",
     "skygreen energies blogs",
+    "Haryana Accelerates Clean Energy with New Biomass Plant & Strong Solar Momentum"
   ],
   openGraph: {
     type: "website",
